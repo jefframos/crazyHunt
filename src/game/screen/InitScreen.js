@@ -38,6 +38,7 @@ export default class InitScreen extends Screen{
 	    this.planet2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet2.png'))
 	    this.planet3 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet3.png'))
 	    this.planet4 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet4.png'))
+	    this.sun = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/sun.png'))
 	    this.invader = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/invader.png'))
 	    this.invader2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/invader.png'))
 
@@ -45,13 +46,23 @@ export default class InitScreen extends Screen{
 	    this.addChild(this.planet2);
 	    this.addChild(this.planet3);
 	    this.addChild(this.planet4);
+	    this.addChild(this.sun);
 	    this.addChild(this.invader);
 	    this.addChild(this.invader2);
 
-	    this.planet1.position.set(0,0);
-	    this.planet2.position.set(-50,300);
-	    this.planet3.position.set(500,-10);
+	    this.sun.anchor.set(0.5);
+
+	    this.planet1.scale.set(0.5);
+	    this.planet2.scale.set(0.5);
+	    this.planet3.scale.set(0.5);
+	    this.planet4.scale.set(0.5);
+	    this.sun.scale.set(0.5);
+
+	    this.planet1.position.set(20,20);
+	    this.planet2.position.set(150,300);
+	    this.planet3.position.set(500,10);
 	    this.planet4.position.set(500,300);
+	    this.sun.position.set(config.width / 2, config.height / 2);
 	    this.invader.position.set(300,100);
 	    this.invader2.position.set(340,160);
 
