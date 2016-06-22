@@ -39,16 +39,12 @@ export default class InitScreen extends Screen{
 	    this.planet3 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet3.png'))
 	    this.planet4 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet4.png'))
 	    this.sun = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/sun.png'))
-	    this.invader = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/invader.png'))
-	    this.invader2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/invader.png'))
 
-	    this.addChild(this.planet1);
-	    this.addChild(this.planet2);
-	    this.addChild(this.planet3);
-	    this.addChild(this.planet4);
-	    this.addChild(this.sun);
-	    this.addChild(this.invader);
-	    this.addChild(this.invader2);
+	    // this.addChild(this.planet1);
+	    // this.addChild(this.planet2);
+	    // this.addChild(this.planet3);
+	    // this.addChild(this.planet4);
+	    // this.addChild(this.sun);
 
 	    this.sun.anchor.set(0.5);
 
@@ -63,10 +59,6 @@ export default class InitScreen extends Screen{
 	    this.planet3.position.set(500,10);
 	    this.planet4.position.set(500,300);
 	    this.sun.position.set(config.width / 2, config.height / 2);
-	    this.invader.position.set(300,100);
-	    this.invader2.position.set(340,160);
-
-
 
 		this.playButton = this.createButton("");
 	    this.addChild(this.screenContainer)
@@ -84,9 +76,8 @@ export default class InitScreen extends Screen{
 
 	    setTimeout(function(){
 			//config.effectsLayer.addRGBSplitter();
-		}.bind(this), 400);		
-	    
-	    
+		}.bind(this), 400);
+    
 	}
 	goToPortfolio() {
 		 window.open('http://www.jefframos.me', '_blank');

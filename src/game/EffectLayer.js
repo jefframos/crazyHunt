@@ -75,16 +75,13 @@ export default class EffectLayer extends PIXI.Container{
 		this.ID_BLOOM = 3;
 		this.ID_SHOCKWAVE = 4;
 
-		this.updatePixelate(4,4);
+		this.updatePixelate(config.pixelSize,config.pixelSize);
 
 	}
 	hideGreyShape(time, delay){
 		TweenLite.to(this.grey, time, {alpha:0, delay:delay});
 	}
 	updateFilters(){
-		if(config.isJuicy == 0){
-			return;
-		}
 		var filtersToApply = [];
 		for (var i = 0; i < this.filtersList.length; i++) {
 			
@@ -199,6 +196,54 @@ export default class EffectLayer extends PIXI.Container{
 		let speed = time / steps;
 		for (var i = steps; i >= 0; i--) {
 			timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x: Math.random() * positionForce - positionForce/2, y: Math.random() * positionForce - positionForce/2, ease:"easeNoneLinear"}));
+		};
+
+		timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x:0, y:0, ease:"easeeaseNoneLinear"}));		
+	}
+
+	shakeX(force, steps, time){
+		if(config.isJuicy == 0){
+	      return;
+	    }
+		if(!force){
+			force = 1;
+		}
+		if(!steps){
+			steps = 4;
+		}
+		if(!time){
+			time = 1;
+		}
+		let timelinePosition = new TimelineLite();
+		let positionForce = (force * 50);
+		let spliterForce = (force * 20);
+		let speed = time / steps;
+		for (var i = steps; i >= 0; i--) {
+			timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x: Math.random() * positionForce - positionForce/2, ease:"easeNoneLinear"}));
+		};
+
+		timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x:0, y:0, ease:"easeeaseNoneLinear"}));		
+	}
+
+	shakeY(force, steps, time){
+		if(config.isJuicy == 0){
+	      return;
+	    }
+		if(!force){
+			force = 1;
+		}
+		if(!steps){
+			steps = 4;
+		}
+		if(!time){
+			time = 1;
+		}
+		let timelinePosition = new TimelineLite();
+		let positionForce = (force * 50);
+		let spliterForce = (force * 20);
+		let speed = time / steps;
+		for (var i = steps; i >= 0; i--) {
+			timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {y: Math.random() * positionForce - positionForce/2, ease:"easeNoneLinear"}));
 		};
 
 		timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x:0, y:0, ease:"easeeaseNoneLinear"}));		

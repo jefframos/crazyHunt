@@ -18,6 +18,12 @@ export default {
   	}
   	return value
   },
+    correctPosition(element){
+    let x = Math.floor(element.position.x / config.pixelSize) * config.pixelSize;
+    let y = Math.floor(element.position.y / config.pixelSize) * config.pixelSize;
+    element.position.x = x;
+    element.position.y = y;
+  },
   setGameScreen80(color){
   	config.palette.gameScreen80 = color;
   },

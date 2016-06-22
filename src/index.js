@@ -48,7 +48,7 @@ function configGame(){
 	screenManager.addScreen(gameScreen);
 	screenManager.addScreen(initScreen);
 	//change to init screen
-	screenManager.forceChange("INIT");
+	screenManager.forceChange("GAME");
 	
 
 	if(!config.isJuicy == 0){

@@ -29842,7 +29842,7 @@
 		screenManager.addScreen(gameScreen);
 		screenManager.addScreen(initScreen);
 		//change to init screen
-		screenManager.forceChange("INIT");
+		screenManager.forceChange("GAME");
 	
 		if (!_config2.default.isJuicy == 0) {
 			game.stage.addChild(effectLayer);
@@ -29893,16 +29893,18 @@
 		value: true
 	});
 	exports.default = {
-		width: 800,
-		height: 450,
-		bounds: { x: 60, y: 50 },
+		width: 414,
+		height: 736,
+		bounds: { x: 10, y: 20 },
+		squareSize: 30,
 		hitCorrection: { x: 20, y: 50 },
 		buttonRadius: 30,
 		debugAlpha: 0,
 		isJuicy: 1,
+		pixelSize: 4,
+		pieceSize: 24,
 		hardcore: false,
 		webgl: true,
-		levels: [{ timer: 6, bounds: { i: 4, j: 5 }, connect: 3 }, { timer: 3, bounds: { i: 4, j: 5 }, connect: 3 }, { timer: 2, bounds: { i: 4, j: 7 }, connect: 3 }, { timer: 5, bounds: { i: 5, j: 5 }, connect: 4 }, { timer: 3, bounds: { i: 5, j: 5 }, connect: 4 }, { timer: 2, bounds: { i: 5, j: 5 }, connect: 4 }, { timer: 5, bounds: { i: 5, j: 9 }, connect: 5 }, { timer: 3, bounds: { i: 5, j: 11 }, connect: 5 }, { timer: 2, bounds: { i: 5, j: 11 }, connect: 5 }, { timer: 1.5, bounds: { i: 5, j: 13 }, connect: 5 }],
 		currentLevel: 0,
 		firstEntry: false,
 		rendererOptions: {
@@ -30107,7 +30109,7 @@
 			_this.ID_BLOOM = 3;
 			_this.ID_SHOCKWAVE = 4;
 	
-			_this.updatePixelate(4, 4);
+			_this.updatePixelate(_config2.default.pixelSize, _config2.default.pixelSize);
 	
 			return _this;
 		}
@@ -30120,9 +30122,6 @@
 		}, {
 			key: 'updateFilters',
 			value: function updateFilters() {
-				if (_config2.default.isJuicy == 0) {
-					return;
-				}
 				var filtersToApply = [];
 				for (var i = 0; i < this.filtersList.length; i++) {
 	
@@ -30259,6 +30258,56 @@
 				var speed = time / steps;
 				for (var i = steps; i >= 0; i--) {
 					timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: Math.random() * positionForce - positionForce / 2, y: Math.random() * positionForce - positionForce / 2, ease: "easeNoneLinear" }));
+				};
+	
+				timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: 0, y: 0, ease: "easeeaseNoneLinear" }));
+			}
+		}, {
+			key: 'shakeX',
+			value: function shakeX(force, steps, time) {
+				if (_config2.default.isJuicy == 0) {
+					return;
+				}
+				if (!force) {
+					force = 1;
+				}
+				if (!steps) {
+					steps = 4;
+				}
+				if (!time) {
+					time = 1;
+				}
+				var timelinePosition = new TimelineLite();
+				var positionForce = force * 50;
+				var spliterForce = force * 20;
+				var speed = time / steps;
+				for (var i = steps; i >= 0; i--) {
+					timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: Math.random() * positionForce - positionForce / 2, ease: "easeNoneLinear" }));
+				};
+	
+				timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: 0, y: 0, ease: "easeeaseNoneLinear" }));
+			}
+		}, {
+			key: 'shakeY',
+			value: function shakeY(force, steps, time) {
+				if (_config2.default.isJuicy == 0) {
+					return;
+				}
+				if (!force) {
+					force = 1;
+				}
+				if (!steps) {
+					steps = 4;
+				}
+				if (!time) {
+					time = 1;
+				}
+				var timelinePosition = new TimelineLite();
+				var positionForce = force * 50;
+				var spliterForce = force * 20;
+				var speed = time / steps;
+				for (var i = steps; i >= 0; i--) {
+					timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { y: Math.random() * positionForce - positionForce / 2, ease: "easeNoneLinear" }));
 				};
 	
 				timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: 0, y: 0, ease: "easeeaseNoneLinear" }));
@@ -38014,6 +38063,10 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
+	var _InputManager = __webpack_require__(153);
+	
+	var _InputManager2 = _interopRequireDefault(_InputManager);
+	
 	var _utils = __webpack_require__(146);
 	
 	var _utils2 = _interopRequireDefault(_utils);
@@ -38055,119 +38108,50 @@
 			key: 'build',
 			value: function build() {
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
-	
 				//create background shape
 				this.background = new _pixi2.default.Graphics();
-				this.background.beginFill(0);
+				this.background.beginFill(0x010101);
 				this.background.drawRect(0, 0, _config2.default.width, _config2.default.height);
 				this.addChild(this.background);
-	
-				//create background
-				this.backgroundContainer = new _pixi2.default.Container();
-				this.addChild(this.backgroundContainer);
-				this.inGameBg1 = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/inGameBg1.png'));
-				this.backgroundContainer.addChild(this.inGameBg1);
-				this.inGameBg1.position.set(0, _config2.default.height - this.inGameBg1.height);
-	
-				//controller of lines in background
-				this.lineCounter = 1;
-				this.lineRespawn = 0.3;
-	
-				//create particles layer
-				this.createParticles();
-	
-				//create screen container
-				this.screenContainer = new _pixi2.default.Container();
-				this.addChild(this.screenContainer);
-	
-				//variable to speed game animations
-				this.normalizedDelta = 1;
-	
-				//initialize timer and label
-				this.timerMax = 5;
-				this.timer = this.timerMax;
-				this.timerStyleStandard = { font: '64px super_smash_tvregular', fill: 0xFFFFFF, align: 'center', dropShadow: true, dropShadowColor: '#666666' };
-				this.timerStylePause = { font: '184px super_smash_tvregular', fill: 0xFFFFFF, align: 'center', dropShadow: true, dropShadowColor: '#666666' };
-				this.labelTimer = new _pixi2.default.Text('0', this.timerStyleStandard);
-				this.screenContainer.addChild(this.labelTimer);
-				this.labelTimer.position.set(_config2.default.width / 2 - this.labelTimer.width / 2, 0);
-				_utils2.default.applyPositionCorrection(this.labelTimer);
-	
-				this.labelInstruction = new _pixi2.default.Text('0', { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-				this.labelInstruction.position.set(_config2.default.width / 2 - this.labelTimer.width / 2, this.labelTimer.position.y + this.labelTimer.height);
-				this.screenContainer.addChild(this.labelInstruction);
-				this.labelInstruction.visible = false;
-				this.labelTimer.visible = false;
-	
-				//size and distance of dots
-				this.dotRadius = 16;
-				this.dotDistance = 18;
-	
-				//create and position game container
 				this.gameContainer = new _pixi2.default.Container();
-				this.screenContainer.addChild(this.gameContainer);
+				this.gameMatrix = [];
+				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
+				this.drawMatrix(_config2.default.pieceSize);
+				this.initGame();
 	
-				//create invisible shape on baclground
-				var gameContainerBackground = new _pixi2.default.Graphics();
-				gameContainerBackground.beginFill(0);
-				gameContainerBackground.drawRect(-50, -50, this.gameContainer.width, this.gameContainer.height);
-				gameContainerBackground.alpha = 0;
-				// this.gameContainer.addChild(gameContainerBackground);
+				this.addChild(this.gameContainer);
+				this.gameContainer.position.x = _config2.default.width / 2 - this.gameContainer.width / 2;
+				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2;
 	
-				//glich variable controller
-				this.glichValue = 1;
+				_utils2.default.correctPosition(this.gameContainer);
 	
-				//set interactive
-				this.interactive = false;
-				this.gameContainer.interactive = true;
+				this.inputManager = new _InputManager2.default(this);
+				// config.effectsLayer.removeBloom();
+				setTimeout(function () {
+					_config2.default.effectsLayer.addRGBSplitter();
+				}.bind(this), 1000);
 	
-				//create start button
-				var playObj = this.createPlayButton("PLAY");
-				this.startButton = playObj.button;
-				// utils.applyPositionCorrection(this.startButton);
-				this.screenContainer.addChild(this.startButton);
-				this.startButton.position.set(_config2.default.width / 2 - playObj.size.width / 2, _config2.default.height / 2 - playObj.size.height);
-				_gsap2.default.from(this.startButton.position, 1, { delay: 0.5, y: _config2.default.height + playObj.size.height, ease: "easeOutBack" });
-	
-				var playHardObj = this.createPlayButton("HARDCORE");
-				this.hardCoreButton = playHardObj.button;
-				// utils.applyPositionCorrection(this.hardCoreButton);
-				this.screenContainer.addChild(this.hardCoreButton);
-				this.hardCoreButton.position.set(_config2.default.width / 2 - playHardObj.size.width / 2, _config2.default.height / 2 + playHardObj.size.height / 2);
-				_gsap2.default.from(this.hardCoreButton.position, 1, { delay: 0.7, y: _config2.default.height + playHardObj.size.height + 50, ease: "easeOutBack" });
-	
-				//create pause button
-				this.pauseButton = this.createButton("P").button;
-				this.screenContainer.addChild(this.pauseButton);
-				this.pauseButton.position.set(_config2.default.width - _config2.default.buttonRadius * 2, _config2.default.buttonRadius + _config2.default.bounds.y);
-				this.pauseButton.visible = false;
-				//TweenLite.from(this.pauseButton.scale, 0.8, {x:20,y:20});
-	
-				//create back button
-				var btnObject = this.createButton("");
-				this.backButton = btnObject.button;
-				this.buttonShape = btnObject.shape;
-				this.screenContainer.addChild(this.backButton);
-				this.backButton.position.set(_config2.default.buttonRadius + _config2.default.bounds.x, _config2.default.buttonRadius + _config2.default.bounds.y);
-				_gsap2.default.from(this.backButton.scale, 0.8, { x: 20, y: 20 });
-	
-				this.pauseContainer = new _PauseContainer2.default(this);
-				this.screenContainer.addChild(this.pauseContainer);
-				this.pauseContainer.hide(true);
-	
-				this.endContainer = new _EndContainer2.default(this);
-				this.screenContainer.addChild(this.endContainer);
-				this.endContainer.hide(true);
-	
-				this.pause = false;
-				this.updateInstructions();
-				this.addEvents();
-	
-				this.lastColum;
-	
-				this.playerPlaceds = [];
+				// config.effectsLayer.shake(1,15,1);
+				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
+				// config.effectsLayer.shakeSplitter(1,10,1.8);
+				// config.effectsLayer.fadeBloom(20,0,0.5,0, true);
+				this.newEntity();
 			}
-	
+		}, {
+			key: 'newEntity',
+			value: function newEntity() {
+				this.currentEntity = this.drawSquare();
+				this.currentEntity.position.x = Math.ceil(_config2.default.bounds.x / 2) * _config2.default.pieceSize;
+				this.gameContainer.addChild(this.currentEntity);
+			}
+		}, {
+			key: 'drawSquare',
+			value: function drawSquare() {
+				var square = new _pixi2.default.Graphics();
+				square.beginFill(0xFFFFFF);
+				square.drawRect(0, 0, _config2.default.pieceSize, _config2.default.pieceSize);
+				return square;
+			}
 			//EVENTS
 	
 		}, {
@@ -38209,632 +38193,46 @@
 			}
 		}, {
 			key: 'onGameClickCallback',
-			value: function onGameClickCallback(e) {
-				if (!this.playerRound || !this.started || this.ended) {
-					return;
-				}
-				var width = e.target.gameContainer.width * e.target.gameContainer.scale.x - this.dotRadius / 2;
-				var realativePosition = e.data.global.x - (e.target.gameContainer.position.x - width / 2) - this.dotRadius / 2;
-				console.log(e.data.global.x, e.target.gameContainer.position.x, e.target.gameContainer.width, e.target.gameContainer.scale.x, this.dotRadius / 2, 'click');
-				if (_config2.default.isJuicy) {
-					this.findCol(realativePosition + _config2.default.hitCorrection.x, width);
-				} else {
-					this.findCol(realativePosition, width);
-				}
-				if (this.addElementOnColum(this.currentColum, 1).added) {
-					this.lastColum = this.currentColum;
-					this.playerPlaceds.push(this.lastColum);
-					this.resetTimer();
-					this.opponentPlay();
-					this.playerRound = false;
-				}
-			}
+			value: function onGameClickCallback(e) {}
 		}, {
 			key: 'onPauseCallback',
-			value: function onPauseCallback() {
-				this.pause = !this.pause;
-				_gsap2.default.to(this, 3, { normalizedDelta: this.pause ? 0 : 1 });
-				_gsap2.default.killTweensOf(this.gameContainer.scale);
-				_gsap2.default.killTweensOf(this.gameContainer.position);
-				_gsap2.default.killTweensOf(this.gameContainer);
-				if (this.pause) {
-					_config2.default.effectsLayer.fadeBloom(10, 10, 1, 0, false);
-					this.pauseButton.visible = false;
-					this.backButton.visible = false;
-					_gsap2.default.to(this.gameContainer.scale, 2, { x: 0.3, y: 0.3, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer.position, 2, { y: this.initialYPosition - 40, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer.position, 2, { x: _config2.default.width / 2 + this.dotRadius, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer, 0.5, { alpha: 0 });
-					_config2.default.effectsLayer.addShockwave(this.pauseButton.position.x / _config2.default.width, this.pauseButton.position.y / _config2.default.height, 0.8);
-					this.pauseContainer.show();
-				} else {
-					_config2.default.effectsLayer.fadeBloom(10, 0, 0.5, 0, true);
-					this.pauseButton.visible = true;
-					this.backButton.visible = true;
-					_gsap2.default.to(this.gameContainer.scale, 1, { x: 1, y: 1, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer.position, 2, { y: this.initialYPosition, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer.position, 2, { x: this.initialXPosition, ease: "easeOutBack" });
-					_gsap2.default.to(this.gameContainer, 0.5, { alpha: 1 });
-					this.pauseContainer.hide();
-				}
-			}
+			value: function onPauseCallback() {}
 	
 			//GAMEPLAY
-	
-		}, {
-			key: 'updateInstructions',
-			value: function updateInstructions() {
-				var rnd1 = Math.floor(Math.random() * 9);
-				var rnd2 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
-				var connectLabel = 'CONNECT'.split('');
-				var rndPause = Math.random();
-				if (rndPause < 0.5) {
-					connectLabel[Math.floor(Math.random() * connectLabel.length)] = rnd1;
-					connectLabel[Math.floor(Math.random() * connectLabel.length)] = rnd2;
-				}
-				var connectString = '';
-				for (var i = 0; i < connectLabel.length; i++) {
-					connectString += connectLabel[i];
-				}
-				this.labelInstruction.text = connectString + " " + this.currentConnectFactor;
-				this.labelInstruction.position.set(_config2.default.width / 2 - this.labelInstruction.width / 2, this.labelTimer.position.y + this.labelTimer.height * 0.9);
-			}
-			//find colum by position
-	
-		}, {
-			key: 'findCol',
-			value: function findCol(position, width) {
-				this.currentColum = Math.floor((position + this.dotDistance) / (width / this.matrixBounds.j));
-				this.showCol(this.currentColum);
-			}
-			//update game colors
-	
-		}, {
-			key: 'updateColors',
-			value: function updateColors() {
-				for (var i = this.entityMatrix.length - 1; i >= 0; i--) {
-					for (var j = this.entityMatrix[i].length - 1; j >= 0; j--) {
-						if (this.gameMatrix[i][j] == 0) {
-							this.entityMatrix[i][j].tint = _config2.default.palette.tileColor;
-						} else if (this.gameMatrix[i][j] == 1) {
-							this.entityMatrix[i][j].tint = _config2.default.palette.playerColor;
-						} else if (this.gameMatrix[i][j] == 2) {
-							this.entityMatrix[i][j].tint = _config2.default.palette.opponentColor;
-						}
-					}
-				}
-			}
-			//highlight selected colum
-	
-		}, {
-			key: 'showCol',
-			value: function showCol(colum) {
-				if (this.pause || this.ended) {
-					return;
-				}
-				this.updateColors();
-				if (colum < 0 || colum >= this.entityMatrix.length) {
-					return;
-				}
-				for (var i = this.entityMatrix[colum].length - 1; i >= 0; i--) {
-					if (this.gameMatrix[colum][i] == 0) {
-						_gsap2.default.killTweensOf(this.entityMatrix[colum][i]);
-						this.entityMatrix[colum][i].tint = _config2.default.palette.highlightColor;
-					}
-				};
-			}
-			//if is possible, add on element on game
-	
-		}, {
-			key: 'addElementOnColum',
-			value: function addElementOnColum(colum, id) {
-				if (!colum && colum != 0 || colum < 0 || colum >= this.gameMatrix.length || !this.started || this.ended) {
-					return false;
-				}
-				var added = false;
-				var element = void 0;
-				var addedMatrixPosition = void 0;
-				for (var i = this.gameMatrix[colum].length - 1; i >= 0; i--) {
-					if (this.gameMatrix[colum][i] == 0) {
-						this.gameMatrix[colum][i] = id;
-						addedMatrixPosition = { j: colum, i: i };
-						element = this.entityMatrix[colum][i];
-						_gsap2.default.from(element.scale, 1, { x: 0, y: 0, ease: "easeOutElastic" });
-	
-						var normalX = (this.gameContainer.position.x - this.gameContainer.pivot.x + element.parent.position.x - this.dotRadius / 2) / _config2.default.width;
-						var normalY = (this.gameContainer.position.y - this.gameContainer.pivot.y + element.parent.position.y - this.dotRadius / 2) / _config2.default.height;
-	
-						_config2.default.effectsLayer.addShockwave(normalX, normalY, 1, 0.1);
-						added = true;
-						break;
-					}
-				};
-				this.updateColors();
-				var idWinner = false;
-				if (added) {
-					idWinner = this.verifyWinner(addedMatrixPosition, id);
-					if (idWinner >= 0) {
-						if (idWinner <= 0) {
-							element = this.entityMatrix[Math.floor(this.entityMatrix.length / 2)][this.entityMatrix[0].length - 1];
-						}
-						this.endGame(idWinner, element);
-					}
-					var timeline = new TimelineLite();
-					timeline.add(_gsap2.default.to(this.entityColums[colum].position, 0.05, { y: 20 }));
-					timeline.add(_gsap2.default.to(this.entityColums[colum].position, 0.2, { y: 0, ease: "easeOutBack" }));
-				}
-				return { added: added, hasWinner: idWinner >= 0 };
-			}
-			//opponents play
-	
-		}, {
-			key: 'opponentPlay',
-			value: function opponentPlay() {
-				if (this.ended || !this.started) {
-					return;
-				}
-				setTimeout(function () {
-					this.playerRound = true;
-					var added = false;
-					var rndPlay = this.lastColum;
-					rndPlay = this.lastColum - Math.floor(Math.random() * 3 - 1);
-					//simple inteligence to try prevent player victory
-					if (this.playerPlaceds.length >= 2) {
-						if (this.playerPlaceds[this.playerPlaceds.length - 1] == this.playerPlaceds[this.playerPlaceds.length - 2]) {
-							rndPlay = this.playerPlaceds[this.playerPlaceds.length - 1];
-						}
-						if (this.playerPlaceds[this.playerPlaceds.length - 2] == this.playerPlaceds[this.playerPlaceds.length - 1] - 1) {
-							rndPlay = this.playerPlaceds[this.playerPlaceds.length - 1] + 1;
-						}
-	
-						if (this.playerPlaceds[this.playerPlaceds.length - 2] == this.playerPlaceds[this.playerPlaceds.length - 1] + 1) {
-							rndPlay = this.playerPlaceds[this.playerPlaceds.length - 1] - 1;
-						}
-					}
-					while (!added) {
-						added = this.addElementOnColum(rndPlay, 2).added;
-						rndPlay = Math.floor(Math.random() * this.gameMatrix.length);
-					};
-					this.resetTimer();
-				}.bind(this), 400);
-			}
-			//verify if have winner
-	
-		}, {
-			key: 'verifyWinner',
-			value: function verifyWinner(addedMatrixPosition) {
-				var currentIdTested = void 0;
-				var seqAcum = void 0;
-				var possibleWinnerList = [];
-				var diagonal1List = [];
-				var diagonal2List = [];
-				var decressVerify = { i: addedMatrixPosition.i, j: addedMatrixPosition.j };
-				var decressVerify2 = { i: addedMatrixPosition.i, j: addedMatrixPosition.j };
-				var duplicate = false;
-				diagonal1List.push({ j: decressVerify.j, i: decressVerify.i });
-				diagonal2List.push({ j: decressVerify2.j, i: decressVerify2.i });
-				for (var j = this.gameMatrix.length; j >= 0; j--) {
-					if (decressVerify.j >= 0 && decressVerify.i >= 0) {
-						duplicate = false;
-						for (var i = diagonal1List.length - 1; i >= 0; i--) {
-							if (diagonal1List[i].i == decressVerify.i && diagonal1List[i].j == decressVerify.j) {
-								duplicate = true;
-								break;
-							}
-						}
-						if (!duplicate) {
-							diagonal1List.push({ i: decressVerify.i, j: decressVerify.j });
-						}
-						decressVerify.j--;
-						decressVerify.i--;
-					}
-					//add id
-					if (decressVerify2.j >= 0 && decressVerify2.i < this.gameMatrix[0].length) {
-						duplicate = false;
-						for (var i = diagonal2List.length - 1; i >= 0; i--) {
-							if (diagonal2List[i].i == decressVerify2.i && diagonal2List[i].j == decressVerify2.j) {
-								duplicate = true;
-								break;
-							}
-						}
-						if (!duplicate) {
-							diagonal2List.push({ i: decressVerify2.i, j: decressVerify2.j });
-						}
-						decressVerify2.j--;
-						decressVerify2.i++;
-					}
-				}
-	
-				decressVerify = { i: addedMatrixPosition.i, j: addedMatrixPosition.j };
-				decressVerify2 = { i: addedMatrixPosition.i, j: addedMatrixPosition.j };
-				for (var j = this.gameMatrix.length; j >= 0; j--) {
-					if (decressVerify.j < this.gameMatrix.length && decressVerify.i < this.gameMatrix[0].length) {
-						duplicate = false;
-						for (var i = diagonal1List.length - 1; i >= 0; i--) {
-							if (diagonal1List[i].i == decressVerify.i && diagonal1List[i].j == decressVerify.j) {
-								duplicate = true;
-								break;
-							}
-						}
-						if (!duplicate && decressVerify) {
-							diagonal1List.push({ i: decressVerify.i, j: decressVerify.j });
-						}
-						decressVerify.j++;
-						decressVerify.i++;
-					}
-	
-					if (decressVerify2.j < this.gameMatrix.length && decressVerify2.i >= 0) {
-						duplicate = false;
-						for (var i = diagonal2List.length - 1; i >= 0; i--) {
-							if (diagonal2List[i].i == decressVerify2.i && diagonal2List[i].j == decressVerify2.j) {
-								duplicate = true;
-								break;
-							}
-						}
-						if (!duplicate && decressVerify2) {
-							diagonal2List.push({ i: decressVerify2.i, j: decressVerify2.j });
-						}
-						decressVerify2.j++;
-						decressVerify2.i--;
-					}
-				}
-				diagonal1List.sort(function (objt1, objt2) {
-					return objt1.j - objt2.j;
-				});
-				diagonal2List.sort(function (objt1, objt2) {
-					return objt1.j - objt2.j;
-				});
-	
-				seqAcum = 0;
-				currentIdTested = -1;
-				possibleWinnerList = [];
-	
-				for (var i = 0; i < diagonal1List.length; i++) {
-					if (currentIdTested < 0) {
-						currentIdTested = this.gameMatrix[diagonal1List[i].j][diagonal1List[i].i];
-					}
-					if (currentIdTested == this.gameMatrix[diagonal1List[i].j][diagonal1List[i].i] && this.gameMatrix[diagonal1List[i].j][diagonal1List[i].i] > 0) {
-						seqAcum++;
-					} else {
-						currentIdTested = this.gameMatrix[diagonal1List[i].j][diagonal1List[i].i];
-						possibleWinnerList = [];
-						seqAcum = 1;
-					}
-					possibleWinnerList.push(this.entityMatrix[diagonal1List[i].j][diagonal1List[i].i]);
-					if (seqAcum >= this.currentConnectFactor) {
-						this.haveWinner(currentIdTested, possibleWinnerList);
-						return currentIdTested;
-						break;
-					}
-				}
-	
-				seqAcum = 0;
-				currentIdTested = -1;
-				possibleWinnerList = [];
-				for (var i = 0; i < diagonal2List.length; i++) {
-					if (currentIdTested < 0) {
-						currentIdTested = this.gameMatrix[diagonal2List[i].j][diagonal2List[i].i];
-					}
-					if (currentIdTested == this.gameMatrix[diagonal2List[i].j][diagonal2List[i].i] && this.gameMatrix[diagonal2List[i].j][diagonal2List[i].i] > 0) {
-						seqAcum++;
-					} else {
-						currentIdTested = this.gameMatrix[diagonal2List[i].j][diagonal2List[i].i];
-						possibleWinnerList = [];
-						seqAcum = 1;
-					}
-					possibleWinnerList.push(this.entityMatrix[diagonal2List[i].j][diagonal2List[i].i]);
-					if (seqAcum >= this.currentConnectFactor) {
-						this.haveWinner(currentIdTested, possibleWinnerList);
-						return currentIdTested;
-						break;
-					}
-				}
-	
-				seqAcum = 0;
-				currentIdTested = -1;
-				possibleWinnerList = [];
-				//HORIZONTAL
-				for (var i = 0; i < this.gameMatrix.length; i++) {
-					if (currentIdTested < 0) {
-						currentIdTested = this.gameMatrix[i][addedMatrixPosition.i];
-					}
-					if (currentIdTested == this.gameMatrix[i][addedMatrixPosition.i] && this.gameMatrix[i][addedMatrixPosition.i] > 0) {
-						seqAcum++;
-					} else {
-						currentIdTested = this.gameMatrix[i][addedMatrixPosition.i];
-						possibleWinnerList = [];
-						seqAcum = 1;
-					}
-					possibleWinnerList.push(this.entityMatrix[i][addedMatrixPosition.i]);
-					if (seqAcum >= this.currentConnectFactor) {
-						this.haveWinner(currentIdTested, possibleWinnerList);
-						return currentIdTested;
-						break;
-					}
-				}
-	
-				seqAcum = 0;
-				currentIdTested = -1;
-				possibleWinnerList = [];
-				//VERTICAL
-				for (var j = 0; j < this.gameMatrix[addedMatrixPosition.j].length; j++) {
-					if (currentIdTested < 0) {
-						currentIdTested = this.gameMatrix[addedMatrixPosition.j][j];
-					}
-					if (currentIdTested == this.gameMatrix[addedMatrixPosition.j][j] && this.gameMatrix[addedMatrixPosition.j][j] > 0) {
-						seqAcum++;
-					} else {
-						currentIdTested = this.gameMatrix[addedMatrixPosition.j][j];
-						seqAcum = 1;
-						possibleWinnerList = [];
-					}
-					possibleWinnerList.push(this.entityMatrix[addedMatrixPosition.j][j]);
-					if (seqAcum >= this.currentConnectFactor) {
-						this.haveWinner(currentIdTested, possibleWinnerList);
-						return currentIdTested;
-						break;
-					}
-				}
-	
-				//verify if have more options to play
-				var hasPossibility = false;
-				for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
-					for (var i = this.gameMatrix[j].length - 1; i >= 0; i--) {
-						if (this.gameMatrix[j][i] == 0) {
-							hasPossibility = true;
-							break;
-						}
-					}
-				}
-	
-				if (!hasPossibility) {
-					this.haveWinner(-1, []);
-					return 0;
-				}
-	
-				return -1;
-			}
-			//if have winner, o draw
-	
-		}, {
-			key: 'haveWinner',
-			value: function haveWinner(id, graphicsList) {
-				_config2.default.effectsLayer.shakeSplitter(1, 4, 0.4);
-				this.gameContainer.position.y = _config2.default.height - this.gameContainer.height + this.gameContainer.pivot.y;
-				_gsap2.default.from(this.gameContainer.position, 1, { y: this.gameContainer.position.y + 20, ease: "easeOutElastic" });
-				this.ended = true;
-				var stdDelay = 0.6;
-				var highlightColor = _config2.default.palette.playerHightlightColor;
-				if (id == 1) {
-					_config2.default.palette.currentGameStateColor = _config2.default.palette.winGameColor;
-				} else if (id == 2) {
-					_config2.default.palette.currentGameStateColor = _config2.default.palette.lostGameColor;
-					highlightColor = _config2.default.palette.opponentHightlightColor;
-				} else {
-					_config2.default.palette.currentGameStateColor = _config2.default.palette.drawGameColor;
-					highlightColor = _config2.default.palette.drawGameColor;
-					var element = this.entityMatrix[Math.floor(this.entityMatrix.length / 2)][this.entityMatrix[0].length - 1];
-					for (var i = this.entityMatrix.length - 1; i >= 0; i--) {
-						for (var j = this.entityMatrix[i].length - 1; j >= 0; j--) {
-							_gsap2.default.to(this.entityMatrix[i][j], 0.5, { tint: highlightColor });
-						}
-					}
-					_gsap2.default.to(element, 0.5, { tint: _config2.default.palette.currentGameStateColor, delay: stdDelay });
-					_gsap2.default.to(element, 1, { x: 1.2, y: 1.2, delay: stdDelay, ease: "easeOutElastic" });
-				}
-				this.labelTimer.text = "IT'S OVER";
-				this.labelTimer.style = this.timerStylePause;
-				this.updateInstructions();
-				this.labelTimer.position.x = _config2.default.width / 2 - this.labelTimer.width / 2 + _config2.default.hitCorrection.x;
-	
-				for (var i = graphicsList.length - 1; i >= 0; i--) {
-					_gsap2.default.to(graphicsList[i], 0.5, { tint: highlightColor, delay: 0.3 * i + stdDelay });
-					_gsap2.default.to(graphicsList[i].scale, 1, { x: 1.2, y: 1.2, delay: 0.2 * i + stdDelay, ease: "easeOutElastic" });
-				}
-				this.removeEvents();
-			}
 	
 			//end game
 	
 		}, {
 			key: 'endGame',
-			value: function endGame(idWinner, element) {
-				this.removeEvents();
-				var delay = idWinner > 0 ? this.currentConnectFactor * 0.7 : 1;
-	
-				this.ended = true;
-				_gsap2.default.to(this, 1, { normalizedDelta: 0.2 });
-				this.removeEvents();
-				_gsap2.default.to(element.parent.scale, 1.5, { delay: delay, x: 50, y: 50 });
-				_gsap2.default.to(element, 0.5, { delay: delay, tint: _config2.default.palette.currentGameStateColor });
-				var parent = element.parent.parent.parent;
-				var elementToChange = element.parent.parent;
-				parent.setChildIndex(elementToChange, parent.children.length - 1);
-	
-				parent = element.parent.parent;
-				elementToChange = element.parent;
-				parent.setChildIndex(elementToChange, parent.children.length - 1);
-	
-				this.pauseButton.visible = false;
-				this.backButton.visible = false;
-	
-				var normalX = (this.gameContainer.position.x - this.gameContainer.pivot.x + element.parent.position.x - this.dotRadius / 2) / _config2.default.width;
-				var normalY = (this.gameContainer.position.y - this.gameContainer.pivot.y + element.parent.position.y - this.dotRadius / 2) / _config2.default.height;
-	
-				_config2.default.effectsLayer.addShockwave(normalX, normalY, 2, 0);
-	
-				var labelStatus = "DRAW";
-				if (idWinner == 1) {
-					labelStatus = "YOU WIN";
-					this.endContainer.setStatus("LEVEL " + (_config2.default.currentLevel + 1), 0);
-				} else if (idWinner == 2) {
-					labelStatus = "YOU LOOSE";
-					this.endContainer.setStatus(labelStatus, 1);
-				} else {
-					this.endContainer.setStatus("LEVEL " + (_config2.default.currentLevel + 1), -1);
-				}
-				this.labelTimer.text = labelStatus;
-				this.labelTimer.position.x = _config2.default.width / 2 - this.labelTimer.width / 2 + _config2.default.hitCorrection.x;
-	
-				this.endContainer.show(delay);
-			}
+			value: function endGame() {}
 		}, {
 			key: 'forceHideGame',
-			value: function forceHideGame() {
-				this.labelTimer.visible = false;
-				this.gameContainer.visible = false;
-			}
+			value: function forceHideGame() {}
 		}, {
 			key: 'forceShowGame',
-			value: function forceShowGame() {
-				this.labelTimer.visible = true;
-				this.gameContainer.visible = true;
-			}
-			//update dots matrix position
-	
-		}, {
-			key: 'updateGameplayPosition',
-			value: function updateGameplayPosition() {
-				_gsap2.default.killTweensOf(this.gameContainer.scale);
-				_gsap2.default.killTweensOf(this.gameContainer.position);
-				_gsap2.default.killTweensOf(this.gameContainer);
-				this.gameContainerSinAcum = 0;
-				this.gameContainerCosAcum = 0;
-				this.gameContainerVelocity = { x: 0, y: 0 };
-				this.gameContainerScaleBase = { x: 1, y: 1 };
-				this.gameContainer.pivot.x = this.gameContainer.width / 2 / this.gameContainer.scale.x;
-				this.gameContainer.pivot.y = this.gameContainer.height / 2 / this.gameContainer.scale.y;
-				if (!this.initialXPosition) {
-					this.initialXPosition = this.gameContainer.pivot.x + _config2.default.width / 2 - this.gameContainer.width / 2 + this.dotRadius * 2;
-					this.initialYPosition = _config2.default.height / 2 - this.gameContainer.height / 2 + this.gameContainer.pivot.y + 30;
-				}
-				this.gameContainer.position.x = this.initialXPosition;
-				this.gameContainer.position.y = this.initialYPosition;
-				this.gameContainer.visible = false;
-				this.gameContainer.alpha = 1;
-			}
-			//remove elements on game matrix
-	
-		}, {
-			key: 'destroyGameMatrix',
-			value: function destroyGameMatrix() {
-				if (!this.entityMatrix) {
-					return;
-				}
-				for (var i = this.entityMatrix.length - 1; i >= 0; i--) {
-					for (var j = this.entityMatrix[i].length - 1; j >= 0; j--) {
-						this.entityMatrix[i][j].parent.parent.removeChild(this.entityMatrix[i][j].parent);
-					}
-				}
-				this.entityMatrix = [];
-			}
-			//init game
-	
-		}, {
-			key: 'initGameNormal',
-			value: function initGameNormal() {
-				_config2.default.currentLevel = 0;
-				this.initGame();
-			}
-		}, {
-			key: 'initGameHardcore',
-			value: function initGameHardcore() {
-				_config2.default.currentLevel = _config2.default.levels.length - 1;
-				this.initGame();
-			}
+			value: function forceShowGame() {}
 		}, {
 			key: 'initGame',
 			value: function initGame() {
-				this.levelConf = _config2.default.levels[_config2.default.currentLevel];
-				//game bounds
-				this.matrixBounds = this.levelConf.bounds;
-				//connect number
-				this.currentConnectFactor = this.levelConf.connect;
-				this.timerMax = this.levelConf.timer;
-	
-				this.labelInstruction.visible = true;
-				this.labelTimer.visible = true;
-				this.pauseButton.visible = true;
-	
-				this.pauseContainer.hide();
-				this.endContainer.hide();
-				this.pauseButton.visible = true;
-				this.backButton.visible = true;
-				//destroy graphics, if have
-				this.destroyGameMatrix();
-				//reset all matrix
-				this.gameMatrix = [];
-				this.entityMatrix = [];
-				this.entityColums = [];
-				//create game matrix
-				this.configGameMatrix(this.matrixBounds.i, this.matrixBounds.j);
-				//draw game matrix
-				this.drawMatrix(this.dotRadius, this.dotDistance * 2);
-				//update position of in game
-				this.updateGameplayPosition();
-				//set to player the first turn
-				this.playerRound = true;
-				this.pause = false;
-				//not ended mode
-				this.ended = false;
-				//normalized time variable
-				this.normalizedDelta = 1;
-				//hide start button
-				_gsap2.default.killTweensOf(this.startButton.position);
-				_gsap2.default.to(this.startButton.position, 0.4, { delay: 0.2, y: _config2.default.height + this.startButton.height, ease: "easeInBack" });
-	
-				_gsap2.default.killTweensOf(this.hardCoreButton.position);
-				_gsap2.default.to(this.hardCoreButton.position, 0.4, { y: _config2.default.height + this.hardCoreButton.height, ease: "easeInBack" });
-				//show game container
-				this.gameContainer.visible = true;
-				this.gameContainer.alpha = 0;
-				this.interactive = true;
-				//transition of in game
-				_gsap2.default.killTweensOf(this.gameContainer);
-				_gsap2.default.killTweensOf(this.gameContainer.scale);
-				this.gameContainer.scale.set(1);
-				this.gameContainer.position.set(this.initialXPosition, this.initialYPosition);
-				_gsap2.default.from(this.gameContainer.scale, 1, { delay: 0.3, y: 0.1, x: 0.1, ease: "easeOutBack" });
-				_gsap2.default.to(this.gameContainer, 0.5, { delay: 0.3, alpha: 1 });
-				//set first timer
-				this.timer = this.timerMax * 2;
-				//start
 				this.started = true;
-	
-				_config2.default.effectsLayer.fadeBloom(10, 0, 0.3, 0, true);
-	
-				setTimeout(function () {
-					this.addEvents();
-				}.bind(this), 400);
-	
-				//this.addEvents();
+				this.gameCounter = 0;
+				this.normalizedDelta = 1;
 			}
 			//reset timer
 	
 		}, {
 			key: 'resetTimer',
-			value: function resetTimer() {
-				this.timer = this.timerMax;
-			}
+			value: function resetTimer() {}
 			//end timer
 	
 		}, {
 			key: 'endTimer',
-			value: function endTimer() {
-				this.opponentPlay();
-				_config2.default.effectsLayer.shake(1, 5, 0.5);
-				_config2.default.effectsLayer.addShockwave(0.5, 0.5, 0.5);
-				_config2.default.effectsLayer.shakeSplitter(1, 4, 0.4);
-				//config.effectsLayer.fadeBloom(100,0,0.3,0, true);
-			}
+			value: function endTimer() {}
 			//destroy game
 	
 		}, {
 			key: 'destroyGame',
 			value: function destroyGame() {
-				this.resetTimer();
-				this.started = false;
-				this.destroyGameMatrix();
 				this.removeEvents();
 			}
 	
@@ -38846,7 +38244,6 @@
 			value: function configGameMatrix(i, j) {
 				this.gameMatrix = [];
 				this.entityMatrix = [];
-				this.entityColums = [];
 				var tempArray = [];
 				var tempArray2 = [];
 				for (var jj = 0; jj < j; jj++) {
@@ -38864,47 +38261,112 @@
 	
 		}, {
 			key: 'drawMatrix',
-			value: function drawMatrix(size, distance) {
-				this.entityColums = [];
-				for (var i = 0; i < this.gameMatrix.length; i++) {
-					var tempContainer = new _pixi2.default.Container();
-					for (var j = 0; j < this.gameMatrix[i].length; j++) {
-						var alphaBG = new _pixi2.default.Graphics();
-						alphaBG.beginFill(0xffffff);
-						alphaBG.drawCircle(0, 0, size);
-						var container = _utils2.default.addToContainer(alphaBG);
-						container.position.set(i * distance, j * distance);
-						tempContainer.addChild(container);
-	
-						this.entityMatrix[i][j] = alphaBG;
-					}
-					this.gameContainer.addChild(tempContainer);
-					this.entityColums.push(tempContainer);
-				};
-	
-				_utils2.default.applyPositionCorrection(this.gameContainer);
+			value: function drawMatrix(size) {
+				this.border = new _pixi2.default.Graphics();
+				this.border.lineStyle(_config2.default.pixelSize, 0xFF00FF);
+				this.border.drawRect(0, _config2.default.pixelSize, _config2.default.bounds.x * size + _config2.default.pixelSize, _config2.default.bounds.y * size);
+				this.gameContainer.addChild(this.border);
+				// config.bounds.x,config.bounds.y
 			}
 			//
 	
+		}, {
+			key: 'stopAction',
+			value: function stopAction(type) {}
+		}, {
+			key: 'updateAction',
+			value: function updateAction(type) {
+				if (!this.canMove(type)) {
+					return;
+				}
+				if (type == "left") {
+					this.currentEntity.position.x -= _config2.default.pieceSize;
+				} else if (type == "right") {
+					this.currentEntity.position.x += _config2.default.pieceSize;
+				} else if (type == "down") {
+					this.currentEntity.position.y += _config2.default.pieceSize / 2;
+				}
+				this.verifyPosition();
+			}
+		}, {
+			key: 'updateMove',
+			value: function updateMove() {
+				if (!this.canMove("down")) {
+					return;
+				}
+				this.currentEntity.position.y += _config2.default.pieceSize / 2;
+				this.verifyPosition();
+			}
+		}, {
+			key: 'canMove',
+			value: function canMove(type) {
+				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
+				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
+				var downCollide = false;
+				if (type == "left") {
+					if (tempX - 1 < 0) {
+						_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
+						return false;
+					}
+				} else if (type == "right") {
+					if (tempX >= _config2.default.bounds.x - 1) {
+						_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
+						return false;
+					}
+				} else if (type == "down") {
+					downCollide = this.verifyDown();
+				}
+				if (downCollide) {
+					this.newEntity();
+					return false;
+				}
+	
+				return true;
+			}
+		}, {
+			key: 'verifyDown',
+			value: function verifyDown() {
+				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
+				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
+				var roundedY = Math.floor(tempY);
+				console.log(tempX, roundedY);
+	
+				if (roundedY >= _config2.default.bounds.y - 1) {
+					_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+					this.addOnMatrix();
+					return true;
+				}
+	
+				var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
+				if (matrixContent && matrixContent != 0) {
+					_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+					this.addOnMatrix();
+					return true;
+				}
+			}
+		}, {
+			key: 'addOnMatrix',
+			value: function addOnMatrix() {
+				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
+				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
+				var roundedY = Math.ceil(tempY);
+				this.gameMatrix[tempX][roundedY] = 1;
+				//console.log(tempX, roundedY);
+			}
+		}, {
+			key: 'verifyPosition',
+			value: function verifyPosition() {
+				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
+				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
+			}
 			//SCREEN
 	
 		}, {
 			key: 'onBackCallback',
-			value: function onBackCallback() {
-				this.endContainer.hide();
-				this.pauseContainer.hide();
-				this.backButton.visible = true;
-				_config2.default.effectsLayer.addShockwave(this.backButton.position.x / _config2.default.width, this.backButton.position.y / _config2.default.height, 0.8);
-				// config.effectsLayer.fadeBloom(100,0,0.5,0, true);
-				this.backButton.interactive = false;
-				_gsap2.default.to(this.buttonShape.scale, 0.8, { delay: 0.2, x: 50, y: 50, onComplete: this.toInit, onCompleteScope: this });
-			}
+			value: function onBackCallback() {}
 		}, {
 			key: 'toInit',
-			value: function toInit() {
-				this.destroyGame();
-				this.screenManager.change("INIT");
-			}
+			value: function toInit() {}
 	
 			//PARTICLES
 			//update particles position
@@ -38971,38 +38433,6 @@
 				if (this.ended) {
 					return;
 				}
-				if (this.timer <= 0) {
-					this.resetTimer();
-					this.endTimer();
-				} else {
-					var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
-					var rnd2 = Math.floor(Math.random() * 9);
-					var rnd3 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
-					if (this.pause) {
-	
-						var pauseLabel = 'PAUSE'.split('');
-						var rndPause = Math.random();
-						if (rndPause < 0.5) {
-							pauseLabel[Math.floor(Math.random() * pauseLabel.length)] = rnd3;
-						}
-						var pauseString = '';
-						for (var i = 0; i < pauseLabel.length; i++) {
-							pauseString += pauseLabel[i];
-						}
-						this.labelTimer.text = pauseString;
-						this.labelTimer.style = this.timerStylePause;
-					} else {
-						this.labelTimer.text = this.timer.toFixed(3) + rnd1 + rnd2 + rnd3;
-						this.labelTimer.style = this.timerStyleStandard;
-					}
-					this.updateInstructions();
-				}
-				this.labelTimer.position.x = _config2.default.width / 2 - this.labelTimer.width / 2 + _config2.default.hitCorrection.x;
-				if (this.pause) {
-	
-					return;
-				}
-				this.timer -= delta;
 			}
 			//game update
 	
@@ -39014,90 +38444,11 @@
 				if (!this.started) {
 					return;
 				}
-				this.updateTimer(delta);
-				this.lineCounter -= delta;
-				if (this.lineCounter <= 0) {
-					this.lineCounter = this.lineRespawn;
-					var line = new _Line2.default(4);
-					this.addChild(line);
-					line.position.y = this.inGameBg1.position.y;
-	
-					this.setChildIndex(this.screenContainer, this.children.length - 1);
+				this.gameCounter += delta;
+				if (this.gameCounter > 1) {
+					this.updateMove();
+					this.gameCounter = 0;
 				}
-	
-				this.gameContainer.scale.y += this.gameContainerVelocity.x * 0.01;
-				this.gameContainer.position.x += this.gameContainerVelocity.x;
-				this.gameContainer.position.y += this.gameContainerVelocity.y;
-				this.gameContainerVelocity.x = Math.sin(this.gameContainerSinAcum += 0.1) * 0.2;
-				this.gameContainerVelocity.y = Math.sin(this.gameContainerCosAcum += 0.08) * 0.6;
-	
-				this.glichValue -= delta;
-				if (this.glichValue < 0) {
-					this.randomBallGlitch();
-					this.glichValue = Math.random() * 2;
-				}
-				this.updateParticles(delta);
-			}
-	
-			//EFFECTS
-	
-		}, {
-			key: 'randomBallGlitch',
-			value: function randomBallGlitch() {
-				if (_config2.default.isJuicy == 0) {
-					return;
-				}
-				var rndi = Math.floor(Math.random() * this.entityMatrix.length);
-				var rndj = Math.floor(Math.random() * this.entityMatrix[0].length);
-	
-				var tempColor = this.entityMatrix[rndi][rndj].tint;
-	
-				if (tempColor != 0xFFFFFF) {
-					return;
-				}
-	
-				this.entityMatrix[rndi][rndj].tint = _utils2.default.getRandomValue(_config2.default.palette.colors80);
-				_gsap2.default.killTweensOf(this.entityMatrix[rndi][rndj]);
-				_gsap2.default.to(this.entityMatrix[rndi][rndj], Math.random(), { tint: tempColor });
-			}
-	
-			//GRAPHICS
-	
-		}, {
-			key: 'createPlayButton',
-			value: function createPlayButton(label) {
-				var button = new _pixi2.default.Container();
-				var shape = new _pixi2.default.Graphics();
-				var descriptionLabel = new _pixi2.default.Text(label, { font: '80px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				var color = 0x00FFFF;
-				shape.beginFill(color);
-				shape.drawRect(0, 0, descriptionLabel.width, descriptionLabel.height);
-				//button.addChild( shape)
-				button.addChild(descriptionLabel);
-				button.interactive = true;
-				button.buttonMode = true;
-				_utils2.default.addMockRect(button, descriptionLabel.width, descriptionLabel.height);
-				descriptionLabel.position.x += 25;
-				return { button: button, size: { width: descriptionLabel.width, height: descriptionLabel.height } };
-			}
-		}, {
-			key: 'createButton',
-			value: function createButton(label) {
-				var button = new _pixi2.default.Container();
-				var shape = new _pixi2.default.Graphics();
-				var color = _config2.default.palette.gameScreen80;
-				_config2.default.palette.initScreen80 = color;
-				shape.beginFill(color);
-				shape.drawCircle(0, 0, _config2.default.buttonRadius);
-				button.addChild(shape);
-				var descriptionLabel = new _pixi2.default.Text(label, { font: '50px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				descriptionLabel.position.y = -20;
-				descriptionLabel.position.x = -10;
-				button.addChild(descriptionLabel);
-				button.interactive = true;
-				button.buttonMode = true;
-				_utils2.default.addMockObject(button);
-				return { button: button, shape: shape };
 			}
 		}]);
 	
@@ -39140,6 +38491,12 @@
 	      }
 	    }
 	    return value;
+	  },
+	  correctPosition: function correctPosition(element) {
+	    var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
+	    var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
+	    element.position.x = x;
+	    element.position.y = y;
 	  },
 	  setGameScreen80: function setGameScreen80(color) {
 	    _config2.default.palette.gameScreen80 = color;
@@ -39752,16 +39109,12 @@
 				this.planet3 = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/planet3.png'));
 				this.planet4 = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/planet4.png'));
 				this.sun = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/sun.png'));
-				this.invader = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/invader.png'));
-				this.invader2 = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/invader.png'));
 	
-				this.addChild(this.planet1);
-				this.addChild(this.planet2);
-				this.addChild(this.planet3);
-				this.addChild(this.planet4);
-				this.addChild(this.sun);
-				this.addChild(this.invader);
-				this.addChild(this.invader2);
+				// this.addChild(this.planet1);
+				// this.addChild(this.planet2);
+				// this.addChild(this.planet3);
+				// this.addChild(this.planet4);
+				// this.addChild(this.sun);
 	
 				this.sun.anchor.set(0.5);
 	
@@ -39776,8 +39129,6 @@
 				this.planet3.position.set(500, 10);
 				this.planet4.position.set(500, 300);
 				this.sun.position.set(_config2.default.width / 2, _config2.default.height / 2);
-				this.invader.position.set(300, 100);
-				this.invader2.position.set(340, 160);
 	
 				this.playButton = this.createButton("");
 				this.addChild(this.screenContainer);
@@ -40016,6 +39367,70 @@
 	}(_pixi2.default.Container);
 	
 	exports.default = ScreenManager;
+
+/***/ },
+/* 153 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var InputManager = function () {
+		function InputManager(game) {
+			var _this = this;
+	
+			_classCallCheck(this, InputManager);
+	
+			this.game = game;
+			document.addEventListener('keydown', function (event) {
+				_this.getKey(event);
+				event.preventDefault();
+			});
+	
+			document.addEventListener('keyup', function (event) {
+				_this.getUpKey(event);
+				event.preventDefault();
+			});
+			this.vecPositions = [];
+			//document.body.on('keydown', this.getKey.bind(this));		
+		}
+	
+		//
+	
+	
+		_createClass(InputManager, [{
+			key: 'getKey',
+			value: function getKey(e) {
+				if (e.keyCode === 87 || e.keyCode === 38) {
+					this.game.updateAction('up');
+				} else if (e.keyCode === 83 || e.keyCode === 40) {
+					this.game.updateAction('down');
+				} else if (e.keyCode === 65 || e.keyCode === 37) {
+					this.game.updateAction('left');
+				} else if (e.keyCode === 68 || e.keyCode === 39) {
+					this.game.updateAction('right');
+				}
+			}
+		}, {
+			key: 'getUpKey',
+			value: function getUpKey(e) {
+				if (e.keyCode === 83 || e.keyCode === 40) {
+					this.game.stopAction('down');
+				}
+			}
+		}]);
+	
+		return InputManager;
+	}();
+	
+	exports.default = InputManager;
 
 /***/ }
 /******/ ]);
