@@ -29808,17 +29808,17 @@
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(151);
+	var _InitScreen = __webpack_require__(152);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(152);
+	var _ScreenManager = __webpack_require__(153);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/frontTVDisplacement.jpg').add('./assets/glitch1.jpg').add('./assets/frontTVSoft.png').add('./assets/particle1.png').add('./assets/particle2.png').add('./assets/planet1.png').add('./assets/planet2.png').add('./assets/planet3.png').add('./assets/planet4.png').add('./assets/invader.png').add('./assets/logo.png').add('./assets/inGameBg1.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
+	PIXI.loader.add('./assets/frontTVDisplacement.jpg').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
 	
 	function configGame() {
 	
@@ -29960,15 +29960,29 @@
 			_classCallCheck(this, Game);
 	
 			var Renderer = config.webgl ? _pixi2.default.autoDetectRenderer : _pixi2.default.CanvasRenderer;
-			var ratio = config.width / config.height;
+			this.ratio = config.width / config.height;
 			this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
 			document.body.appendChild(this.renderer.view);
 	
 			this.animationLoop = new _pixi2.default.AnimationLoop(this.renderer);
 			this.animationLoop.on('prerender', this.update.bind(this));
+			this.resize();
 		}
 	
 		_createClass(Game, [{
+			key: 'resize',
+			value: function resize() {
+				if (window.innerWidth / window.innerHeight >= this.ratio) {
+					var w = window.innerHeight * this.ratio;
+					var h = window.innerHeight;
+				} else {
+					var w = window.innerWidth;
+					var h = window.innerWidth / this.ratio;
+				}
+				this.renderer.view.style.width = w + 'px';
+				this.renderer.view.style.height = h + 'px';
+			}
+		}, {
 			key: 'update',
 			value: function update() {
 				for (var i = 0; i < this.stage.children.length; i++) {
@@ -30062,30 +30076,39 @@
 			_this.tvLines.height = _config2.default.height;
 			_this.tvLines.blendMode = _pixi2.default.BLEND_MODES.ADD;
 	
+			// this.tvShape = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVsoft.png'))
+			// this.addChild(this.tvShape)
+			// this.tvShape.width = config.width;
+			// this.tvShape.height = config.height;
+	
+			// this.tvShape.blendMode = PIXI.BLEND_MODES.OVERLAY;
+	
 			//RGB SPLITTER
 			_this.rgpSplit = new _pixi2.default.filters.RGBSplitFilter();
 			_this.rgpSplit.red = new _pixi2.default.Point(1, 1);
 			_this.rgpSplit.green = new _pixi2.default.Point(-1, -1);
 			_this.rgpSplit.blue = new _pixi2.default.Point(1, -1);
 	
-			// //DISPLACEMENT FILTER
-			// let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVDisplacement.jpg'))
-			// //this.addChild(displacementTexture);
-			// this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
-			// displacementTexture.anchor.set(0.5,0.5);
-			// displacementTexture.position.set(config.width / 2, config.height / 2);
-	
 			//GLITCH 1
-			_this.glitch1 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glicthBugFix.png', 1000, 1000));
+			_this.glitch1 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glicthBugFix.png', _config2.default.width, _config2.default.height));
 			_this.addChild(_this.glitch1);
-			_this.glitch1.width = 1000;
-			_this.glitch1.height = 1000;
+			_this.glitch1.width = _config2.default.width;
+			_this.glitch1.height = _config2.default.width;
 			_this.displacementFilterGlitch1 = new _pixi2.default.filters.DisplacementFilter(_this.glitch1);
 	
 			//PIXELATE
 			_this.pixelate = new _pixi2.default.filters.PixelateFilter();
 			_this.pixelate.size.x = 32;
 			_this.pixelate.size.y = 32;
+	
+			//DISPLACEMENT FILTER
+			var displacementTexture = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/frontTVDisplacement.jpg'));
+			_this.addChild(displacementTexture);
+			_this.displacementFilter = new _pixi2.default.filters.DisplacementFilter(displacementTexture);
+			displacementTexture.width = _config2.default.width;
+			displacementTexture.height = _config2.default.height;
+			displacementTexture.anchor.set(0.5, 0.5);
+			displacementTexture.position.set(_config2.default.width / 2, _config2.default.height / 2);
 	
 			//BLOOM
 			_this.bloom = new _pixi2.default.filters.BloomFilter();
@@ -30097,17 +30120,17 @@
 			_this.shockwave.center.x = 0.5;
 			_this.shockwave.center.y = 0.5;
 	
-			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave];
-			_this.filtersActives = [false, true, false, false, false];
+			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilter, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave];
+			_this.filtersActives = [false, true, true, true, false];
 	
 			_this.updateFilters();
 	
 			_this.ID_PIXELATE = 1;
 			_this.ID_RGBSPLIT = 0;
-			// this.ID_DISPLACEMENT = 2;
-			_this.ID_GLITCH1 = 2;
-			_this.ID_BLOOM = 3;
-			_this.ID_SHOCKWAVE = 4;
+			_this.ID_DISPLACEMENT = 2;
+			_this.ID_GLITCH1 = 3;
+			_this.ID_BLOOM = 4;
+			_this.ID_SHOCKWAVE = 5;
 	
 			_this.updatePixelate(_config2.default.pixelSize, _config2.default.pixelSize);
 	
@@ -30313,9 +30336,34 @@
 				timelinePosition.append(_gsap2.default.to(this.screenManager.position, speed, { x: 0, y: 0, ease: "easeeaseNoneLinear" }));
 			}
 		}, {
+			key: 'shakeRotation',
+			value: function shakeRotation(force, steps, time) {
+				if (_config2.default.isJuicy == 0) {
+					return;
+				}
+				if (!force) {
+					force = 1;
+				}
+				if (!steps) {
+					steps = 4;
+				}
+				if (!time) {
+					time = 1;
+				}
+				var timelinePosition = new TimelineLite();
+				var rotationForce = force * 180 / Math.PI;
+				var speed = time / steps;
+				for (var i = steps; i >= 0; i--) {
+					timelinePosition.append(_gsap2.default.to(this.screenManager, speed, { rotation: Math.random() * rotationForce - rotationForce / 2, ease: "easeNoneLinear" }));
+				};
+	
+				timelinePosition.append(_gsap2.default.to(this.screenManager, speed, { rotation: 0, ease: "easeeaseNoneLinear" }));
+			}
+		}, {
 			key: 'update',
 			value: function update(delta) {
-				this.blackShape.alpha = Math.random() * 0.2;
+				this.blackShape.alpha = Math.random() * 0.3;
+				this.glitch1.tilePosition.y += 1;
 			}
 		}]);
 	
@@ -38063,27 +38111,27 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _InputManager = __webpack_require__(153);
+	var _InputManager = __webpack_require__(146);
 	
 	var _InputManager2 = _interopRequireDefault(_InputManager);
 	
-	var _utils = __webpack_require__(146);
+	var _utils = __webpack_require__(147);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _Screen2 = __webpack_require__(147);
+	var _Screen2 = __webpack_require__(148);
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
-	var _Line = __webpack_require__(148);
+	var _Line = __webpack_require__(149);
 	
 	var _Line2 = _interopRequireDefault(_Line);
 	
-	var _PauseContainer = __webpack_require__(149);
+	var _PauseContainer = __webpack_require__(150);
 	
 	var _PauseContainer2 = _interopRequireDefault(_PauseContainer);
 	
-	var _EndContainer = __webpack_require__(150);
+	var _EndContainer = __webpack_require__(151);
 	
 	var _EndContainer2 = _interopRequireDefault(_EndContainer);
 	
@@ -38101,7 +38149,16 @@
 		function GameScreen(label) {
 			_classCallCheck(this, GameScreen);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(GameScreen).call(this, label));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameScreen).call(this, label));
+	
+			_this.shapes = [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]];
+	
+			_this.shapesOrder = [];
+			_this.shapeStep = 0;
+			for (var i = 50; i >= 0; i--) {
+				_this.shapesOrder.push(Math.floor(_this.shapes.length * Math.random()));
+			}
+			return _this;
 		}
 	
 		_createClass(GameScreen, [{
@@ -38110,9 +38167,12 @@
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
 				//create background shape
 				this.background = new _pixi2.default.Graphics();
-				this.background.beginFill(0x010101);
-				this.background.drawRect(0, 0, _config2.default.width, _config2.default.height);
+				this.background.beginFill(0x101010);
+				this.background.drawRect(-100, -100, _config2.default.width + 200, _config2.default.height + 200);
 				this.addChild(this.background);
+	
+				this.createParticles();
+	
 				this.gameContainer = new _pixi2.default.Container();
 				this.gameMatrix = [];
 				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
@@ -38129,8 +38189,8 @@
 				// config.effectsLayer.removeBloom();
 				setTimeout(function () {
 					_config2.default.effectsLayer.addRGBSplitter();
-				}.bind(this), 1000);
-	
+				}.bind(this), 300);
+				// config.effectsLayer.removePixelate();
 				// config.effectsLayer.shake(1,15,1);
 				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 				// config.effectsLayer.shakeSplitter(1,10,1.8);
@@ -38138,43 +38198,129 @@
 				this.newEntity();
 			}
 		}, {
+			key: 'printMatrix',
+			value: function printMatrix(shapeArray) {
+				var tempLine = void 0;
+				var toPrint = '';
+				for (var i = 0; i < shapeArray.length; i++) {
+					tempLine = '';
+					for (var j = 0; j < shapeArray[i].length; j++) {
+						tempLine += shapeArray[i][j];
+					}
+					toPrint += tempLine + '\n';
+				}
+				console.log(toPrint);
+			}
+		}, {
+			key: 'rotateMatrixRight',
+			value: function rotateMatrixRight(shapeArray) {
+				var temp = new Array(shapeArray.length);
+				for (var i = 0; i < temp.length; ++i) {
+					temp[i] = new Array(temp.length);
+					for (var j = 0; j < temp.length; ++j) {
+						temp[i][j] = shapeArray[temp.length - j - 1][i];
+					}
+				}
+				return temp;
+			}
+		}, {
+			key: 'rotatePiece',
+			value: function rotatePiece() {
+				var minY = 99999;
+				var maxY = -99999;
+				var minX = 99999;
+				var maxX = -99999;
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					if (this.currentEntityList[i].position.x > maxX) {
+						maxX = this.currentEntityList[i].position.x;
+					}
+					if (this.currentEntityList[i].position.x < minX) {
+						minX = this.currentEntityList[i].position.x;
+					}
+					if (this.currentEntityList[i].position.y > maxY) {
+						maxY = this.currentEntityList[i].position.y;
+					}
+					if (this.currentEntityList[i].position.y < minY) {
+						minY = this.currentEntityList[i].position.y;
+					}
+					this.gameContainer.removeChild(this.currentEntityList[i]);
+				}
+				var ajdustedPositionY = maxY + (maxY - minY) / 2;
+				var ajdustedPositionX = minX + (maxX - minX) / 2;
+				ajdustedPositionX = Math.floor(ajdustedPositionX / _config2.default.pieceSize) * _config2.default.pieceSize;
+				this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+			}
+		}, {
+			key: 'getShape',
+			value: function getShape() {
+				this.shapeStep++;
+				if (this.shapeStep >= this.shapes.length) {
+					this.shapeStep = 0;
+				}
+				return this.shapes[this.shapeStep];
+			}
+		}, {
 			key: 'newEntity',
-			value: function newEntity() {
-				this.currentEntity = this.drawSquare();
-				this.currentEntity.position.x = Math.ceil(_config2.default.bounds.x / 2) * _config2.default.pieceSize;
-				this.gameContainer.addChild(this.currentEntity);
+			value: function newEntity(shapeArray, starterPosition) {
+				this.currentEntityList = [];
+				if (!shapeArray) {
+					this.currentShape = this.getShape();
+					var rotationRandom = Math.floor(Math.random() * 3);
+					for (var i = rotationRandom - 1; i >= 0; i--) {
+						this.currentShape = this.rotateMatrixRight(this.currentShape);
+					}
+				} else {
+					this.currentShape = shapeArray;
+				}
+				var starterXPosition = 0;
+				if (!starterPosition) {
+					starterPosition = { x: 0, y: 0 };
+					starterXPosition = (Math.ceil(_config2.default.bounds.x / 2) - 2) * _config2.default.pieceSize;
+				} else {
+					starterXPosition = starterPosition.x - 2 * _config2.default.pieceSize;
+				}
+				var shouldMove = 0;
+				this.currentColor = _config2.default.palette.colors80[Math.floor(_config2.default.palette.colors80.length * Math.random())];
+				for (var i = 0; i < this.currentShape.length; i++) {
+					for (var j = 0; j < this.currentShape[i].length; j++) {
+						if (this.currentShape[i][j]) {
+							var currentEntity = this.drawSquare(this.currentColor);
+							currentEntity.position.x = starterXPosition + j * _config2.default.pieceSize;
+							currentEntity.position.y = i * _config2.default.pieceSize - (this.currentShape[i].length - 2) * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
+							this.currentEntityList.push(currentEntity);
+							this.gameContainer.addChild(currentEntity);
+							if (currentEntity.position.x < 0) {
+								shouldMove = 1;
+							} else if (currentEntity.position.x >= _config2.default.bounds.x * _config2.default.pieceSize) {
+								shouldMove = -1;
+							}
+						}
+					}
+				}
+				console.log(shouldMove);
+				if (shouldMove) {
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						this.currentEntityList[i].position.x += _config2.default.pieceSize * shouldMove;
+					}
+				}
 			}
 		}, {
 			key: 'drawSquare',
-			value: function drawSquare() {
+			value: function drawSquare(color) {
 				var square = new _pixi2.default.Graphics();
-				square.beginFill(0xFFFFFF);
-				square.drawRect(0, 0, _config2.default.pieceSize, _config2.default.pieceSize);
+				square.beginFill(color);
+				square.drawRect(2, 2, _config2.default.pieceSize - 4, _config2.default.pieceSize - 4);
 				return square;
 			}
 			//EVENTS
 	
 		}, {
 			key: 'removeEvents',
-			value: function removeEvents() {
-				this.hardCoreButton.off('tap').off('click');
-				this.startButton.off('tap').off('click');
-				this.backButton.off('tap').off('click');
-				this.pauseButton.off('tap').off('click');
-				this.gameContainer.off('mousemove');
-				this.off('tap').off('mouseup');
-			}
+			value: function removeEvents() {}
 		}, {
 			key: 'addEvents',
 			value: function addEvents() {
 				this.removeEvents();
-				this.hardCoreButton.on('tap', this.initGameHardcore.bind(this)).on('click', this.initGameHardcore.bind(this));
-				this.startButton.on('tap', this.initGameNormal.bind(this)).on('click', this.initGameNormal.bind(this));
-				this.backButton.on('tap', this.onBackCallback.bind(this)).on('click', this.onBackCallback.bind(this));
-				this.pauseButton.on('tap', this.onPauseCallback.bind(this)).on('click', this.onPauseCallback.bind(this));
-				this.gameContainer.on('mousemove', this.onMouseMoveCallback.bind(this));
-				this.on('mouseup', this.onGameClickCallback.bind(this)).on('tap', this.onGameClickCallback.bind(this));
-				//this.gameContainer.on('click', this.onGameClickCallback.bind(this)).on('tap', this.onGameClickCallback.bind(this));	  
 			}
 		}, {
 			key: 'onMouseMoveCallback',
@@ -38263,11 +38409,26 @@
 			key: 'drawMatrix',
 			value: function drawMatrix(size) {
 				this.border = new _pixi2.default.Graphics();
-				this.border.lineStyle(_config2.default.pixelSize, 0xFF00FF);
+				this.border.lineStyle(_config2.default.pixelSize * 2, 0xFFFFFF);
+				this.border.alpha = 0.8;
+				this.border.tint = 0xFF00FF;
 				this.border.drawRect(0, _config2.default.pixelSize, _config2.default.bounds.x * size + _config2.default.pixelSize, _config2.default.bounds.y * size);
 				this.gameContainer.addChild(this.border);
-				// config.bounds.x,config.bounds.y
+	
+				// for (let i = 0; i < this.gameMatrix.length; i++) {
+				// 	for (let j = 0; j < this.gameMatrix[i].length; j++) {
+				// 		let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+				// 		// let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+				// 		this.gameContainer.addChild(description);
+				// 		description.position.x = config.pieceSize * i;
+				// 		description.position.y = config.pieceSize * j;
+				// 	}
+				// };
+	
+				// config.effectsLayer.removePixelate();
+				// config.effectsLayer.removeRGBSplitter();
 			}
+	
 			//
 	
 		}, {
@@ -38279,12 +38440,14 @@
 				if (!this.canMove(type)) {
 					return;
 				}
-				if (type == "left") {
-					this.currentEntity.position.x -= _config2.default.pieceSize;
-				} else if (type == "right") {
-					this.currentEntity.position.x += _config2.default.pieceSize;
-				} else if (type == "down") {
-					this.currentEntity.position.y += _config2.default.pieceSize / 2;
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					if (type == "left") {
+						this.currentEntityList[i].position.x -= _config2.default.pieceSize;
+					} else if (type == "right") {
+						this.currentEntityList[i].position.x += _config2.default.pieceSize;
+					} else if (type == "down") {
+						this.currentEntityList[i].position.y += _config2.default.pieceSize / 2;
+					}
 				}
 				this.verifyPosition();
 			}
@@ -38294,71 +38457,151 @@
 				if (!this.canMove("down")) {
 					return;
 				}
-				this.currentEntity.position.y += _config2.default.pieceSize / 2;
-				this.verifyPosition();
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					this.currentEntityList[i].position.y += _config2.default.pieceSize / 2;
+					this.verifyPosition();
+				}
 			}
 		}, {
 			key: 'canMove',
 			value: function canMove(type) {
-				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
-				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
-				var downCollide = false;
-				if (type == "left") {
-					if (tempX - 1 < 0) {
-						_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
-						return false;
+				if (type == "up") {
+					this.rotatePiece();
+				} else {
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
+						var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
+						var downCollide = false;
+						if (type == "left") {
+							if (tempX - 1 < 0 || this.verifySide(type)) {
+								_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
+								return false;
+							}
+							this.verifySide(type);
+						} else if (type == "right") {
+							if (tempX >= _config2.default.bounds.x - 1 || this.verifySide(type)) {
+								_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
+								return false;
+							}
+						} else if (type == "down") {
+							downCollide = this.verifyDown();
+						}
+						if (downCollide) {
+							this.verifyLines();
+							//this.started = false;
+							this.newEntity();
+							return false;
+						}
 					}
-				} else if (type == "right") {
-					if (tempX >= _config2.default.bounds.x - 1) {
-						_config2.default.effectsLayer.shakeX(0.2, 5, 0.3);
-						return false;
-					}
-				} else if (type == "down") {
-					downCollide = this.verifyDown();
 				}
-				if (downCollide) {
-					this.newEntity();
-					return false;
-				}
-	
 				return true;
+			}
+		}, {
+			key: 'verifyLines',
+			value: function verifyLines() {
+				var lineCounter = 0;
+				var height = this.gameMatrix[0].length - 1;
+				var linesToRemove = [];
+				for (var i = height; i >= 0; i--) {
+					lineCounter = 0;
+					for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
+						if (this.gameMatrix[j][i]) {
+							lineCounter++;
+						}
+					}
+					if (lineCounter >= this.gameMatrix.length) {
+						linesToRemove.push(i);
+					}
+				}
+				if (linesToRemove.length > 0) {
+					var yNormal = (this.gameContainer.position.y + linesToRemove[0] * _config2.default.pieceSize) / _config2.default.height;
+					var xNormal = (this.gameContainer.position.x + this.currentEntityList[0].x) / _config2.default.width;
+					_config2.default.effectsLayer.addShockwave(xNormal, yNormal, 1);
+					_config2.default.effectsLayer.shakeX(0.5, 5, 0.5);
+					_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
+				}
+				for (var i = linesToRemove.length - 1; i >= 0; i--) {
+					this.removeLine(linesToRemove[i]);
+				}
+			}
+		}, {
+			key: 'removeLine',
+			value: function removeLine(line) {
+				var lineCounter = 0;
+				for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
+					if (this.gameMatrix[j][line]) {
+						this.gameContainer.removeChild(this.gameMatrix[j][line]);
+						this.gameMatrix[j][line] = 0;
+					}
+				}
+				//console.log(this.gameMatrix);
+				var upTo = line - 1;
+				for (var i = this.gameMatrix.length - 1; i >= 0; i--) {
+					for (var j = upTo; j >= 0; j--) {
+						if (this.gameMatrix[i][j]) {
+							this.gameMatrix[i][j].position.y += _config2.default.pieceSize;
+							this.gameMatrix[i][j + 1] = this.gameMatrix[i][j];
+							this.gameMatrix[i][j] = 0;
+						}
+					}
+				}
+			}
+		}, {
+			key: 'verifySide',
+			value: function verifySide(type) {
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize + (type == "left" ? -1 : 1);
+					var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize + 0.5;
+					var roundedY = Math.floor(tempY);
+					var roundedX = Math.floor(tempX);
+					if (tempX < 0 || tempX >= this.gameMatrix.length) {
+						return true;
+					}
+					var matrixContent = this.gameMatrix[roundedX][roundedY];
+					if (matrixContent && matrixContent != 0) {
+						return true;
+					}
+				}
 			}
 		}, {
 			key: 'verifyDown',
 			value: function verifyDown() {
-				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
-				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
-				var roundedY = Math.floor(tempY);
-				console.log(tempX, roundedY);
-	
-				if (roundedY >= _config2.default.bounds.y - 1) {
-					_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
-					this.addOnMatrix();
-					return true;
-				}
-	
-				var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
-				if (matrixContent && matrixContent != 0) {
-					_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
-					this.addOnMatrix();
-					return true;
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
+					var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
+					var roundedY = Math.floor(tempY);
+					if (roundedY >= _config2.default.bounds.y - 1) {
+						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+						this.addOnMatrix();
+						return true;
+					}
+					var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
+					if (matrixContent && matrixContent != 0) {
+						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+						this.addOnMatrix();
+						return true;
+					}
 				}
 			}
 		}, {
 			key: 'addOnMatrix',
 			value: function addOnMatrix() {
-				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
-				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
-				var roundedY = Math.ceil(tempY);
-				this.gameMatrix[tempX][roundedY] = 1;
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
+					var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
+					var roundedY = Math.ceil(tempY);
+					this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+				}
+	
+				this.border.tint = this.currentColor;
 				//console.log(tempX, roundedY);
 			}
 		}, {
 			key: 'verifyPosition',
-			value: function verifyPosition() {
-				var tempX = this.currentEntity.position.x / _config2.default.pieceSize;
-				var tempY = this.currentEntity.position.y / _config2.default.pieceSize;
-			}
+			value: function verifyPosition() {}
+			//let tempX = (this.currentEntity.position.x / config.pieceSize);
+			//let tempY = (this.currentEntity.position.y / config.pieceSize);
+	
 			//SCREEN
 	
 		}, {
@@ -38374,17 +38617,16 @@
 		}, {
 			key: 'updateParticles',
 			value: function updateParticles(delta) {
-				for (var i = 0; i < this.particleUpdater; i++) {
+				for (var i = 0; i < this.particles.length; i++) {
 					var particle = this.particles[i];
 					particle.direction += particle.turningSpeed * 0.01;
 					particle.position.x += Math.sin(particle.direction) * (particle.speed * particle.scale.y);
 					particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y);
-					particle.rotation = -particle.direction + Math.PI;
-					particle.alpha += delta;
+					//particle.rotation = -particle.direction + Math.PI;
+					//particle.alpha += delta;
 					if (particle.position.x < 0 || particle.position.x > _config2.default.width || particle.y < 0) {
-						particle.x = _config2.default.width / 2 + Math.sin(particle.direction) * 100;
-						particle.y = _config2.default.height / 2 + Math.cos(particle.direction) * 50;
-						particle.alpha = 0;
+						particle.x = Math.floor(_config2.default.width * Math.random() / 4) * 4;
+						particle.y = _config2.default.height + 200 * Math.random();
 					}
 				}
 				this.particleUpdater += delta * 20;
@@ -38409,15 +38651,19 @@
 				this.particles = [];
 				for (var i = 0; i < 50; i++) {
 					var particle = _pixi2.default.Sprite.fromImage('./assets/particle2.png');
-					particle.anchor.set(0.5, 1);
-					particle.scale.set(1, 1);
-					var angle = (Math.random() * 180 + 90) / 180 * Math.PI;
-					particle.x = _config2.default.width / 2 + Math.sin(angle) * 100;
-					particle.y = _config2.default.height / 2 + Math.cos(angle) * 50;
-					particle.alpha = 0;
-					particle.direction = angle;
+					particle.anchor.set(1, 1);
+					particle.scale.set(1, 0.5);
+					// let angle = (Math.random() * 180 + 90) /180 * Math.PI;
+					// particle.x = config.width / 2 + Math.sin(angle) * 100;
+					// particle.y = config.height / 2 + Math.cos(angle) * 50;
+	
+					particle.x = Math.floor(_config2.default.width * Math.random() / 4) * 4;
+					particle.y = (_config2.default.height + 200) * Math.random();
+	
+					particle.alpha = Math.random();
+					particle.direction = 0;
 					particle.turningSpeed = 0;
-					particle.speed = 1 + Math.random() * 1.5;
+					particle.speed = -6 + Math.random() * 1.5;
 					this.particles.push(particle);
 					this.particlesContainer.addChild(particle);
 				}
@@ -38444,6 +38690,7 @@
 				if (!this.started) {
 					return;
 				}
+				this.updateParticles();
 				this.gameCounter += delta;
 				if (this.gameCounter > 1) {
 					this.updateMove();
@@ -38459,6 +38706,73 @@
 
 /***/ },
 /* 146 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var InputManager = function () {
+		function InputManager(game) {
+			var _this = this;
+	
+			_classCallCheck(this, InputManager);
+	
+			this.game = game;
+			document.addEventListener('keydown', function (event) {
+				_this.getKey(event);
+				event.preventDefault();
+			});
+	
+			document.addEventListener('keyup', function (event) {
+				_this.getUpKey(event);
+				event.preventDefault();
+			});
+			//document.body.on('keydown', this.getKey.bind(this));		
+		}
+	
+		//
+	
+	
+		_createClass(InputManager, [{
+			key: 'getKey',
+			value: function getKey(e) {
+				//   	if(e.keyCode === 87 || e.keyCode === 38){
+				// 	this.game.updateAction('up');
+				// }
+				if (e.keyCode === 83 || e.keyCode === 40) {
+					this.game.updateAction('down');
+				} else if (e.keyCode === 65 || e.keyCode === 37) {
+					this.game.updateAction('left');
+				} else if (e.keyCode === 68 || e.keyCode === 39) {
+					this.game.updateAction('right');
+				}
+			}
+		}, {
+			key: 'getUpKey',
+			value: function getUpKey(e) {
+				//   	if(e.keyCode === 83 || e.keyCode === 40){
+				// 	this.game.stopAction('down');
+				// }	
+				if (e.keyCode === 87 || e.keyCode === 38) {
+					this.game.updateAction('up');
+				}
+			}
+		}]);
+	
+		return InputManager;
+	}();
+	
+	exports.default = InputManager;
+
+/***/ },
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38544,7 +38858,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38676,7 +38990,7 @@
 	exports.default = Screen;
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38738,7 +39052,7 @@
 	exports.default = Line;
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38757,7 +39071,7 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utils = __webpack_require__(146);
+	var _utils = __webpack_require__(147);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
@@ -38869,7 +39183,7 @@
 	exports.default = PauseContainer;
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38888,7 +39202,7 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utils = __webpack_require__(146);
+	var _utils = __webpack_require__(147);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
@@ -39031,7 +39345,7 @@
 	exports.default = EndContainer;
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39056,11 +39370,11 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utils = __webpack_require__(146);
+	var _utils = __webpack_require__(147);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _Screen2 = __webpack_require__(147);
+	var _Screen2 = __webpack_require__(148);
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
@@ -39277,7 +39591,7 @@
 	exports.default = InitScreen;
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39367,70 +39681,6 @@
 	}(_pixi2.default.Container);
 	
 	exports.default = ScreenManager;
-
-/***/ },
-/* 153 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var InputManager = function () {
-		function InputManager(game) {
-			var _this = this;
-	
-			_classCallCheck(this, InputManager);
-	
-			this.game = game;
-			document.addEventListener('keydown', function (event) {
-				_this.getKey(event);
-				event.preventDefault();
-			});
-	
-			document.addEventListener('keyup', function (event) {
-				_this.getUpKey(event);
-				event.preventDefault();
-			});
-			this.vecPositions = [];
-			//document.body.on('keydown', this.getKey.bind(this));		
-		}
-	
-		//
-	
-	
-		_createClass(InputManager, [{
-			key: 'getKey',
-			value: function getKey(e) {
-				if (e.keyCode === 87 || e.keyCode === 38) {
-					this.game.updateAction('up');
-				} else if (e.keyCode === 83 || e.keyCode === 40) {
-					this.game.updateAction('down');
-				} else if (e.keyCode === 65 || e.keyCode === 37) {
-					this.game.updateAction('left');
-				} else if (e.keyCode === 68 || e.keyCode === 39) {
-					this.game.updateAction('right');
-				}
-			}
-		}, {
-			key: 'getUpKey',
-			value: function getUpKey(e) {
-				if (e.keyCode === 83 || e.keyCode === 40) {
-					this.game.stopAction('down');
-				}
-			}
-		}]);
-	
-		return InputManager;
-	}();
-	
-	exports.default = InputManager;
 
 /***/ }
 /******/ ]);

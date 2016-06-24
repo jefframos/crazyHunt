@@ -3,12 +3,24 @@ import PIXI from 'pixi.js';
 export default class Game {
 	constructor(config){
 		const Renderer = (config.webgl) ? PIXI.autoDetectRenderer : PIXI.CanvasRenderer;
-		let ratio = config.width / config.height;		
+		this.ratio = config.width / config.height;		
 		this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
 		document.body.appendChild(this.renderer.view);
 
 		this.animationLoop = new PIXI.AnimationLoop(this.renderer);
 		this.animationLoop.on('prerender', this.update.bind(this));
+		this.resize();
+	}
+	resize() {
+		if (window.innerWidth / window.innerHeight >= this.ratio) {
+			var w = window.innerHeight * this.ratio;
+			var h = window.innerHeight;
+		} else {
+			var w = window.innerWidth;
+			var h = window.innerWidth / this.ratio;
+		}
+		this.renderer.view.style.width = w + 'px';
+		this.renderer.view.style.height = h + 'px';
 	}
 
 	update(){

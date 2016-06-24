@@ -10,16 +10,15 @@ export default class InputManager{
 	  		this.getUpKey(event);
 	   		event.preventDefault()
 	 	})
-		this.vecPositions = [];
 		//document.body.on('keydown', this.getKey.bind(this));		
 	}
 
 	//
     getKey(e){
-    	if(e.keyCode === 87 || e.keyCode === 38){
-			this.game.updateAction('up');
-		}
-		else if(e.keyCode === 83 || e.keyCode === 40){
+  //   	if(e.keyCode === 87 || e.keyCode === 38){
+		// 	this.game.updateAction('up');
+		// }
+		if(e.keyCode === 83 || e.keyCode === 40){
 			this.game.updateAction('down');
 		}
 		else if(e.keyCode === 65 || e.keyCode === 37){
@@ -31,8 +30,11 @@ export default class InputManager{
     }
 
     getUpKey(e){
-    	if(e.keyCode === 83 || e.keyCode === 40){
-			this.game.stopAction('down');
-		}	
+  //   	if(e.keyCode === 83 || e.keyCode === 40){
+		// 	this.game.stopAction('down');
+		// }	
+		if(e.keyCode === 87 || e.keyCode === 38){
+			this.game.updateAction('up');
+		}
     }
 }

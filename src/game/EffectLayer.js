@@ -27,24 +27,26 @@ export default class EffectLayer extends PIXI.Container{
 		this.tvLines.blendMode = PIXI.BLEND_MODES.ADD;
 
 
+		// this.tvShape = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVsoft.png'))
+		// this.addChild(this.tvShape)
+		// this.tvShape.width = config.width;
+		// this.tvShape.height = config.height;
+
+		// this.tvShape.blendMode = PIXI.BLEND_MODES.OVERLAY;
+
+
 		//RGB SPLITTER
 		this.rgpSplit = new PIXI.filters.RGBSplitFilter();
 		this.rgpSplit.red = new PIXI.Point(1,1);
 		this.rgpSplit.green = new PIXI.Point(-1,-1);
 		this.rgpSplit.blue = new PIXI.Point(1,-1);
 
-		// //DISPLACEMENT FILTER
-		// let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVDisplacement.jpg'))
-		// //this.addChild(displacementTexture);
-		// this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
-		// displacementTexture.anchor.set(0.5,0.5);
-		// displacementTexture.position.set(config.width / 2, config.height / 2);
 
 		//GLITCH 1
-		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glicthBugFix.png', 1000, 1000))
+		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glicthBugFix.png', config.width, config.height))
 		this.addChild(this.glitch1)
-		this.glitch1.width = 1000;
-		this.glitch1.height = 1000;
+		this.glitch1.width = config.width;
+		this.glitch1.height = config.width;
 		this.displacementFilterGlitch1 = new PIXI.filters.DisplacementFilter(this.glitch1);
 
 		//PIXELATE
@@ -52,6 +54,14 @@ export default class EffectLayer extends PIXI.Container{
 		this.pixelate.size.x = 32;
 		this.pixelate.size.y = 32;
 
+		//DISPLACEMENT FILTER
+		let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVDisplacement.jpg'))
+		this.addChild(displacementTexture);
+		this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
+		displacementTexture.width = config.width;
+		displacementTexture.height = config.height;
+		displacementTexture.anchor.set(0.5,0.5);
+		displacementTexture.position.set(config.width / 2, config.height / 2);
 
 		//BLOOM
 		this.bloom = new PIXI.filters.BloomFilter();
@@ -63,17 +73,17 @@ export default class EffectLayer extends PIXI.Container{
 		this.shockwave.center.x = 0.5;
 		this.shockwave.center.y = 0.5;
 
-		this.filtersList = [this.rgpSplit, this.pixelate, this.displacementFilterGlitch1, this.bloom, this.shockwave];
-		this.filtersActives = [false, true,false,false, false];
+		this.filtersList = [this.rgpSplit, this.pixelate,  this.displacementFilter, this.displacementFilterGlitch1, this.bloom, this.shockwave];
+		this.filtersActives = [false, true,true,true, false];
 
 		this.updateFilters();
 		
 		this.ID_PIXELATE = 1;
 		this.ID_RGBSPLIT = 0;
-		// this.ID_DISPLACEMENT = 2;
-		this.ID_GLITCH1 = 2;
-		this.ID_BLOOM = 3;
-		this.ID_SHOCKWAVE = 4;
+		this.ID_DISPLACEMENT = 2;
+		this.ID_GLITCH1 = 3;
+		this.ID_BLOOM = 4;
+		this.ID_SHOCKWAVE = 5;
 
 		this.updatePixelate(config.pixelSize,config.pixelSize);
 
@@ -249,7 +259,31 @@ export default class EffectLayer extends PIXI.Container{
 		timelinePosition.append(TweenLite.to(this.screenManager.position, speed, {x:0, y:0, ease:"easeeaseNoneLinear"}));		
 	}
 
+	shakeRotation(force, steps, time){
+		if(config.isJuicy == 0){
+	      return;
+	    }
+		if(!force){
+			force = 1;
+		}
+		if(!steps){
+			steps = 4;
+		}
+		if(!time){
+			time = 1;
+		}
+		let timelinePosition = new TimelineLite();
+		let rotationForce = (force * 180 / Math.PI);
+		let speed = time / steps;
+		for (var i = steps; i >= 0; i--) {
+			timelinePosition.append(TweenLite.to(this.screenManager, speed, {rotation: Math.random() * rotationForce - rotationForce/2, ease:"easeNoneLinear"}));
+		};
+
+		timelinePosition.append(TweenLite.to(this.screenManager, speed, {rotation: 0, ease:"easeeaseNoneLinear"}));		
+	}
+
 	update(delta){
-		this.blackShape.alpha =  Math.random() * 0.2;
+		this.blackShape.alpha =  Math.random() * 0.3;
+		this.glitch1.tilePosition.y += 1;
 	}
 }
