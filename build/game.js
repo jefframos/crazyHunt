@@ -29818,7 +29818,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/frontTVDisplacement.jpg').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
+	PIXI.loader.add('./assets/tvlines.png').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
 	
 	function configGame() {
 	
@@ -30090,7 +30090,7 @@
 			_this.rgpSplit.blue = new _pixi2.default.Point(1, -1);
 	
 			//GLITCH 1
-			_this.glitch1 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glicthBugFix.png', _config2.default.width, _config2.default.height));
+			_this.glitch1 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glitch1.jpg', _config2.default.width, _config2.default.height));
 			_this.addChild(_this.glitch1);
 			_this.glitch1.width = _config2.default.width;
 			_this.glitch1.height = _config2.default.width;
@@ -30102,8 +30102,12 @@
 			_this.pixelate.size.y = 32;
 	
 			//DISPLACEMENT FILTER
-			var displacementTexture = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/frontTVDisplacement.jpg'));
+			// let displacementTexture2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
+			// this.addChild(displacementTexture2);
+	
+			var displacementTexture = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/glitch1.jpg'));
 			_this.addChild(displacementTexture);
+	
 			_this.displacementFilter = new _pixi2.default.filters.DisplacementFilter(displacementTexture);
 			displacementTexture.width = _config2.default.width;
 			displacementTexture.height = _config2.default.height;
@@ -30121,7 +30125,7 @@
 			_this.shockwave.center.y = 0.5;
 	
 			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilter, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave];
-			_this.filtersActives = [false, true, true, true, false];
+			_this.filtersActives = [false, true, false, true, false];
 	
 			_this.updateFilters();
 	
@@ -30152,7 +30156,6 @@
 						filtersToApply.push(this.filtersList[i]);
 					}
 				};
-				console.log(filtersToApply);
 				this.screenManager.filters = filtersToApply.length > 0 ? filtersToApply : null;
 			}
 		}, {
@@ -38153,15 +38156,35 @@
 	
 			_this.shapes = [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]];
 	
-			_this.shapesOrder = [];
-			_this.shapeStep = 0;
-			for (var i = 50; i >= 0; i--) {
-				_this.shapesOrder.push(Math.floor(_this.shapes.length * Math.random()));
-			}
 			return _this;
 		}
 	
 		_createClass(GameScreen, [{
+			key: 'shuffleText',
+			value: function shuffleText(label) {
+				var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
+				var rnd2 = Math.floor(Math.random() * 9);
+				var rnd3 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
+				var tempLabel = label.split('');
+				var rndPause = Math.random();
+				if (rndPause < 0.2) {
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd2;
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+				} else if (rndPause < 0.5) {
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+				}
+				var returnLabel = '';
+				for (var i = 0; i < tempLabel.length; i++) {
+					returnLabel += tempLabel[i];
+				}
+				return returnLabel;
+			}
+		}, {
+			key: 'goToPortfolio',
+			value: function goToPortfolio() {
+				window.open('http://www.jefframos.me', '_blank');
+			}
+		}, {
 			key: 'build',
 			value: function build() {
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
@@ -38174,14 +38197,27 @@
 				this.createParticles();
 	
 				this.gameContainer = new _pixi2.default.Container();
+				this.gameQueueContainer = new _pixi2.default.Container();
+				this.gameBorderContainer = new _pixi2.default.Container();
 				this.gameMatrix = [];
-				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
-				this.drawMatrix(_config2.default.pieceSize);
+	
 				this.initGame();
 	
 				this.addChild(this.gameContainer);
-				this.gameContainer.position.x = _config2.default.width / 2 - this.gameContainer.width / 2;
-				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2;
+				this.addChild(this.gameQueueContainer);
+				this.addChild(this.gameBorderContainer);
+				this.gameContainer.position.x = 50; //config.width / 2 - this.gameContainer.width / 1.5;
+				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2 + 100;
+	
+				this.gameBorderContainer.position.x = this.gameContainer.position.x;
+				this.gameBorderContainer.position.y = this.gameContainer.position.y;
+				//gambiarra pra mudar a borda
+				this.gameBorderContainer.addChild(this.border);
+	
+				var descriptionNext = new _pixi2.default.Text('NEXT', { font: '44px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.gameQueueContainer.position.y = this.gameContainer.position.y;
+				this.gameQueueContainer.addChild(descriptionNext);
+				descriptionNext.position.x = 20;
 	
 				_utils2.default.correctPosition(this.gameContainer);
 	
@@ -38190,12 +38226,41 @@
 				setTimeout(function () {
 					_config2.default.effectsLayer.addRGBSplitter();
 				}.bind(this), 300);
+	
+				this.creatorLabel = new _pixi2.default.Text('by Jeff Ramos', { font: '36px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.creatorLabel.interactive = true;
+				this.creatorLabel.buttonMode = true;
+				_utils2.default.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
+				this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
+				this.addChild(this.creatorLabel);
+				this.creatorLabel.position.x = _config2.default.width - this.creatorLabel.width;
+				this.creatorLabel.position.y = 20;
 				// config.effectsLayer.removePixelate();
 				// config.effectsLayer.shake(1,15,1);
 				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 				// config.effectsLayer.shakeSplitter(1,10,1.8);
 				// config.effectsLayer.fadeBloom(20,0,0.5,0, true);
-				this.newEntity();
+				this.labelPoints = new _pixi2.default.Text('000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.addChild(this.labelPoints);
+				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
+				this.labelPoints.position.y = 80;
+			}
+		}, {
+			key: 'drawShapeOnList',
+			value: function drawShapeOnList(array) {
+				var shape = new _pixi2.default.Container();
+				var starterPosition = { x: 0, y: 0 };
+				for (var i = 0; i < array.length; i++) {
+					for (var j = 0; j < array[i].length; j++) {
+						if (array[i][j]) {
+							var currentEntity = this.drawSquare(this.currentColor);
+							currentEntity.position.x = starterPosition.x + j * _config2.default.pieceSize;
+							currentEntity.position.y = i * _config2.default.pieceSize - (array[i].length - 2) * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
+							shape.addChild(currentEntity);
+						}
+					}
+				}
+				return shape;
 			}
 		}, {
 			key: 'printMatrix',
@@ -38209,7 +38274,7 @@
 					}
 					toPrint += tempLine + '\n';
 				}
-				console.log(toPrint);
+				// console.log(toPrint);
 			}
 		}, {
 			key: 'rotateMatrixRight',
@@ -38251,13 +38316,37 @@
 				this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
 			}
 		}, {
+			key: 'updateQueue',
+			value: function updateQueue() {
+				for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
+					this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+				}
+				var totalQueue = 3;
+				var tempShape = void 0;
+				var tempId = void 0;
+				var newId = 0;
+				for (var i = 0; i < totalQueue; i++) {
+					tempId = this.shapeStep + i + 1;
+					if (tempId >= this.shapesOrder.length) {
+						tempId = newId;
+						newId++;
+					}
+					tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]]);
+					this.shapeQueue.push(tempShape);
+					this.gameQueueContainer.addChild(tempShape);
+					tempShape.position.y = 130 * (i + 1);
+				}
+	
+				this.gameQueueContainer.position.x = _config2.default.width - 120;
+			}
+		}, {
 			key: 'getShape',
 			value: function getShape() {
 				this.shapeStep++;
-				if (this.shapeStep >= this.shapes.length) {
+				if (this.shapeStep >= this.shapesOrder.length) {
 					this.shapeStep = 0;
 				}
-				return this.shapes[this.shapeStep];
+				return this.shapes[this.shapesOrder[this.shapeStep]];
 			}
 		}, {
 			key: 'newEntity',
@@ -38265,10 +38354,11 @@
 				this.currentEntityList = [];
 				if (!shapeArray) {
 					this.currentShape = this.getShape();
-					var rotationRandom = Math.floor(Math.random() * 3);
+					var rotationRandom = 0; //Math.floor(Math.random()*3);
 					for (var i = rotationRandom - 1; i >= 0; i--) {
 						this.currentShape = this.rotateMatrixRight(this.currentShape);
 					}
+					this.updateQueue();
 				} else {
 					this.currentShape = shapeArray;
 				}
@@ -38297,7 +38387,8 @@
 						}
 					}
 				}
-				console.log(shouldMove);
+				this.updateVisibleParts();
+				// console.log(shouldMove);
 				if (shouldMove) {
 					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 						this.currentEntityList[i].position.x += _config2.default.pieceSize * shouldMove;
@@ -38363,6 +38454,22 @@
 				this.started = true;
 				this.gameCounter = 0;
 				this.normalizedDelta = 1;
+				this.currentColor = _config2.default.palette.colors80[Math.floor(_config2.default.palette.colors80.length * Math.random())];
+				this.shapesOrder = [];
+				this.shapeStep = 0;
+				this.shapeQueue = [];
+				this.points = 0;
+				this.gameLevelSpeedMax = 1;
+				this.gameLevelSpeed = this.gameLevelSpeedMax;
+				for (var i = 100; i >= 0; i--) {
+					this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()));
+				}
+	
+				console.log(this.shapesOrder);
+				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
+				this.drawMatrix(_config2.default.pieceSize);
+	
+				this.newEntity();
 			}
 			//reset timer
 	
@@ -38379,6 +38486,15 @@
 		}, {
 			key: 'destroyGame',
 			value: function destroyGame() {
+				while (this.gameContainer.children.length) {
+	
+					this.gameContainer.removeChildAt(0);
+				}
+				// for (var i = this.gameContainer.chidren.length - 1; i >= 0; i--) {
+				// }
+				for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
+					this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+				}
 				this.removeEvents();
 			}
 	
@@ -38411,22 +38527,17 @@
 				this.border = new _pixi2.default.Graphics();
 				this.border.lineStyle(_config2.default.pixelSize * 2, 0xFFFFFF);
 				this.border.alpha = 0.8;
-				this.border.tint = 0xFF00FF;
-				this.border.drawRect(0, _config2.default.pixelSize, _config2.default.bounds.x * size + _config2.default.pixelSize, _config2.default.bounds.y * size);
+				this.border.tint = this.currentColor;
+				this.border.drawRect(0, _config2.default.pixelSize / 2, _config2.default.bounds.x * size + _config2.default.pixelSize, _config2.default.bounds.y * size);
 				this.gameContainer.addChild(this.border);
 	
-				// for (let i = 0; i < this.gameMatrix.length; i++) {
-				// 	for (let j = 0; j < this.gameMatrix[i].length; j++) {
-				// 		let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-				// 		// let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-				// 		this.gameContainer.addChild(description);
-				// 		description.position.x = config.pieceSize * i;
-				// 		description.position.y = config.pieceSize * j;
-				// 	}
-				// };
-	
-				// config.effectsLayer.removePixelate();
-				// config.effectsLayer.removeRGBSplitter();
+				// this.mask = new PIXI.Graphics();
+				// this.mask.beginFill(0xFFFFFF);
+				// // this.mask.alpha = 0.8;
+				// // this.mask.tint = this.currentColor;
+				// this.mask.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
+				// //this.gameContainer.addChild(this.mask);
+				// // this.gameContainer.mask = this.mask;
 			}
 	
 			//
@@ -38434,6 +38545,21 @@
 		}, {
 			key: 'stopAction',
 			value: function stopAction(type) {}
+		}, {
+			key: 'updateVisibleParts',
+			value: function updateVisibleParts() {
+				var haveOne = false;
+				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+					if (this.currentEntityList[i].position.y < 0) {
+						this.currentEntityList[i].alpha = 0;
+						haveOne = true;
+					} else {
+	
+						this.currentEntityList[i].alpha = 1;
+					}
+				}
+				return haveOne;
+			}
 		}, {
 			key: 'updateAction',
 			value: function updateAction(type) {
@@ -38461,6 +38587,7 @@
 					this.currentEntityList[i].position.y += _config2.default.pieceSize / 2;
 					this.verifyPosition();
 				}
+				this.updateVisibleParts();
 			}
 		}, {
 			key: 'canMove',
@@ -38494,6 +38621,7 @@
 						}
 					}
 				}
+				this.updateVisibleParts();
 				return true;
 			}
 		}, {
@@ -38525,13 +38653,21 @@
 				}
 			}
 		}, {
+			key: 'addPoints',
+			value: function addPoints() {
+				this.points += 10;
+			}
+		}, {
 			key: 'removeLine',
 			value: function removeLine(line) {
 				var lineCounter = 0;
+	
+				var timeline = new TimelineLite();
 				for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 					if (this.gameMatrix[j][line]) {
 						this.gameContainer.removeChild(this.gameMatrix[j][line]);
 						this.gameMatrix[j][line] = 0;
+						timeline.add(_gsap2.default.to(this, 0.1, { onComplete: this.addPoints, onCompleteScope: this }));
 					}
 				}
 				//console.log(this.gameMatrix);
@@ -38572,38 +38708,45 @@
 					var roundedY = Math.floor(tempY);
 					if (roundedY >= _config2.default.bounds.y - 1) {
 						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
-						this.addOnMatrix();
+						this.addOnMatrix(true);
 						return true;
 					}
 					var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
 					if (matrixContent && matrixContent != 0) {
 						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
-						this.addOnMatrix();
+						this.addOnMatrix(true);
 						return true;
 					}
 				}
 			}
 		}, {
 			key: 'addOnMatrix',
-			value: function addOnMatrix() {
+			value: function addOnMatrix(isColided) {
 				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 					var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
 					var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
 					var roundedY = Math.ceil(tempY);
 					this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
 				}
-	
+				if (isColided && this.updateVisibleParts()) {
+					this.gameOver();
+				}
 				this.border.tint = this.currentColor;
+	
 				//console.log(tempX, roundedY);
 			}
 		}, {
-			key: 'verifyPosition',
-			value: function verifyPosition() {}
-			//let tempX = (this.currentEntity.position.x / config.pieceSize);
-			//let tempY = (this.currentEntity.position.y / config.pieceSize);
+			key: 'gameOver',
+			value: function gameOver() {
+				this.destroyGame();
 	
+				this.initGame();
+			}
 			//SCREEN
 	
+		}, {
+			key: 'verifyPosition',
+			value: function verifyPosition() {}
 		}, {
 			key: 'onBackCallback',
 			value: function onBackCallback() {}
@@ -38683,6 +38826,31 @@
 			//game update
 	
 		}, {
+			key: 'updatePoints',
+			value: function updatePoints() {
+				var str = '000000';
+				if (this.points < 10) {
+					str = '00000' + this.points;
+				} else if (this.points < 100) {
+					str = '0000' + this.points;
+				} else if (this.points < 1000) {
+					str = '000' + this.points;
+				} else if (this.points < 10000) {
+					str = '00' + this.points;
+				} else if (this.points < 100000) {
+					str = '0' + this.points;
+				} else {
+					str = this.points;
+				}
+				if (this.points > 0) {
+					this.gameLevelSpeed = this.gameLevelSpeedMax - Math.floor(this.points / 200) * 0.05;
+				}
+				if (this.gameLevelSpeed < 0.08) {
+					this.gameLevelSpeed = 0.08;
+				}
+				this.labelPoints.text = str;
+			}
+		}, {
 			key: 'update',
 			value: function update(delta) {
 				delta *= this.normalizedDelta;
@@ -38692,10 +38860,13 @@
 				}
 				this.updateParticles();
 				this.gameCounter += delta;
-				if (this.gameCounter > 1) {
+				if (this.gameCounter > this.gameLevelSpeed) {
 					this.updateMove();
 					this.gameCounter = 0;
 				}
+				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+	
+				this.updatePoints();
 			}
 		}]);
 	

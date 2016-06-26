@@ -62,11 +62,28 @@ export default class GameScreen extends Screen{
 		],
 		]
 
-		this.shapesOrder = [];
-		this.shapeStep = 0;
-		for (var i = 50; i >= 0; i--) {
-			this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()))
+
+	}
+	shuffleText(label){
+		let rnd1 = String.fromCharCode(Math.floor(Math.random()*20) + 65);
+		let rnd2 = Math.floor(Math.random()* 9);
+		let rnd3 = String.fromCharCode(Math.floor(Math.random()*20) + 65);
+		let tempLabel = label.split('');
+		let rndPause = Math.random();
+		if(rndPause < 0.2){
+			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd2;
+			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd3;
+		}else if(rndPause < 0.5){
+			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd3;
 		}
+		let returnLabel = '';
+		for (var i = 0; i < tempLabel.length; i++) {
+			returnLabel+=tempLabel[i];
+		}
+		return returnLabel
+	}
+	goToPortfolio() {
+		 window.open('http://www.jefframos.me', '_blank');
 	}
 	build(){
 		super.build();
@@ -79,14 +96,27 @@ export default class GameScreen extends Screen{
 		this.createParticles();
 
 		this.gameContainer = new PIXI.Container();
+		this.gameQueueContainer = new PIXI.Container();
+		this.gameBorderContainer = new PIXI.Container();
 		this.gameMatrix = [];
-		this.configGameMatrix(config.bounds.y,config.bounds.x);
-		this.drawMatrix(config.pieceSize);
+		
 		this.initGame();
 
 		this.addChild(this.gameContainer);
-		this.gameContainer.position.x = config.width / 2 - this.gameContainer.width / 2;
-		this.gameContainer.position.y = config.height / 2 - this.gameContainer.height / 2;
+		this.addChild(this.gameQueueContainer);
+		this.addChild(this.gameBorderContainer);
+		this.gameContainer.position.x = 50;//config.width / 2 - this.gameContainer.width / 1.5;
+		this.gameContainer.position.y = config.height / 2 - this.gameContainer.height / 2 + 100;
+
+		this.gameBorderContainer.position.x = this.gameContainer.position.x;
+		this.gameBorderContainer.position.y = this.gameContainer.position.y;
+		//gambiarra pra mudar a borda
+		this.gameBorderContainer.addChild(this.border);
+
+		let descriptionNext = new PIXI.Text('NEXT',{font : '44px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.gameQueueContainer.position.y = this.gameContainer.position.y;
+		this.gameQueueContainer.addChild(descriptionNext);
+		descriptionNext.position.x = 20;
 
 		utils.correctPosition(this.gameContainer);
 
@@ -95,12 +125,40 @@ export default class GameScreen extends Screen{
 		setTimeout(function(){
 			config.effectsLayer.addRGBSplitter();
 		}.bind(this), 300);
+
+
+		this.creatorLabel = new PIXI.Text('by Jeff Ramos',{font : '36px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.creatorLabel.interactive = true;
+		this.creatorLabel.buttonMode = true;
+		utils.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
+		this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
+		this.addChild(this.creatorLabel);
+		this.creatorLabel.position.x = config.width - this.creatorLabel.width;
+		this.creatorLabel.position.y = 20;
 		// config.effectsLayer.removePixelate();
 		// config.effectsLayer.shake(1,15,1);
 		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 		// config.effectsLayer.shakeSplitter(1,10,1.8);
 		// config.effectsLayer.fadeBloom(20,0,0.5,0, true);
-		this.newEntity();
+		this.labelPoints = new PIXI.Text('000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.addChild(this.labelPoints);
+		this.labelPoints.position.x = config.width - this.labelPoints.width;
+		this.labelPoints.position.y = 80;
+	}
+	drawShapeOnList(array){
+		let shape = new PIXI.Container();
+		let starterPosition = {x:0,y:0};
+		for (var i = 0; i < array.length; i++) {
+			for (var j = 0; j < array[i].length; j++) {
+				if(array[i][j]){
+					let currentEntity = this.drawSquare(this.currentColor);
+					currentEntity.position.x = starterPosition.x + j * config.pieceSize;
+					currentEntity.position.y = i * config.pieceSize - (array[i].length - 2) * config.pieceSize - config.pieceSize/2 + starterPosition.y;
+					shape.addChild(currentEntity);
+				}
+			}
+		}
+		return shape;
 	}
 	printMatrix(shapeArray){
 		let tempLine;
@@ -112,7 +170,7 @@ export default class GameScreen extends Screen{
 			}
 			toPrint += tempLine +'\n';
 		}
-		console.log(toPrint);
+		// console.log(toPrint);
 	}
 	rotateMatrixRight(shapeArray){
     	let temp = new Array(shapeArray.length);
@@ -150,21 +208,44 @@ export default class GameScreen extends Screen{
 		ajdustedPositionX = Math.floor(ajdustedPositionX / config.pieceSize) * config.pieceSize;
 		this.newEntity(this.rotateMatrixRight(this.currentShape), {x:ajdustedPositionX, y:ajdustedPositionY});
 	}
+	updateQueue(){
+		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
+			this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+		}
+		let totalQueue = 3;
+		let tempShape;
+		let tempId;
+		let newId = 0;
+		for (var i = 0; i < totalQueue; i++) {
+			tempId = this.shapeStep + i + 1;
+			if(tempId >= this.shapesOrder.length){
+				tempId = newId;
+				newId ++;
+			}
+			tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]]);
+			this.shapeQueue.push(tempShape);
+			this.gameQueueContainer.addChild(tempShape);
+			tempShape.position.y = 130 * (i + 1);
+		}
+
+		this.gameQueueContainer.position.x = config.width  - 120;
+	}
 	getShape(){
 		this.shapeStep ++;
-		if(this.shapeStep >= this.shapes.length){
+		if(this.shapeStep >= this.shapesOrder.length){
 			this.shapeStep = 0;
 		}
-		return this.shapes[this.shapeStep];
+		return this.shapes[this.shapesOrder[this.shapeStep]];
 	}
 	newEntity(shapeArray, starterPosition){
 		this.currentEntityList = [];
 		if(!shapeArray){
 			this.currentShape = this.getShape();
-			let rotationRandom = Math.floor(Math.random()*3);
+			let rotationRandom = 0;//Math.floor(Math.random()*3);
 			for (var i = rotationRandom - 1; i >= 0; i--) {
 				this.currentShape = this.rotateMatrixRight(this.currentShape);
 			}
+			this.updateQueue();
 		}else{
 			this.currentShape = shapeArray;
 		}
@@ -193,7 +274,8 @@ export default class GameScreen extends Screen{
 				}
 			}
 		}
-		console.log(shouldMove);
+		this.updateVisibleParts();
+		// console.log(shouldMove);
 		if(shouldMove){
 			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 				this.currentEntityList[i].position.x += config.pieceSize * shouldMove;
@@ -250,6 +332,24 @@ export default class GameScreen extends Screen{
 		this.started = true;
 		this.gameCounter = 0;
 		this.normalizedDelta = 1;
+		this.currentColor = config.palette.colors80[Math.floor(config.palette.colors80.length * Math.random())];
+		this.shapesOrder = [];
+		this.shapeStep = 0;
+		this.shapeQueue = [];
+		this.points = 0;
+		this.gameLevelSpeedMax = 1;
+		this.gameLevelSpeed = this.gameLevelSpeedMax;
+		for (var i = 100; i >= 0; i--) {
+			this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()))
+		}
+
+		console.log(this.shapesOrder);
+		this.configGameMatrix(config.bounds.y,config.bounds.x);
+		this.drawMatrix(config.pieceSize);
+		
+
+		this.newEntity();
+
 	}
 	//reset timer
 	resetTimer(){
@@ -259,6 +359,15 @@ export default class GameScreen extends Screen{
 	}
 	//destroy game
 	destroyGame(){
+		while(this.gameContainer.children.length){
+
+			this.gameContainer.removeChildAt(0);
+		}
+		// for (var i = this.gameContainer.chidren.length - 1; i >= 0; i--) {
+		// }
+		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
+			this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+		}
 		this.removeEvents();
 	}
 
@@ -286,27 +395,37 @@ export default class GameScreen extends Screen{
 		this.border = new PIXI.Graphics();
 		this.border.lineStyle(config.pixelSize*2,0xFFFFFF);
 		this.border.alpha = 0.8;
-		this.border.tint = 0xFF00FF;
-		this.border.drawRect(0,config.pixelSize,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
+		this.border.tint = this.currentColor;
+		this.border.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
 		this.gameContainer.addChild(this.border);
 
-		// for (let i = 0; i < this.gameMatrix.length; i++) {
-		// 	for (let j = 0; j < this.gameMatrix[i].length; j++) {
-		// 		let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-		// 		// let description = new PIXI.Text(i+','+j,{font : '10px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-		// 		this.gameContainer.addChild(description);
-		// 		description.position.x = config.pieceSize * i;
-		// 		description.position.y = config.pieceSize * j;
-		// 	}
-		// };
 
-		// config.effectsLayer.removePixelate();
-		// config.effectsLayer.removeRGBSplitter();
+		// this.mask = new PIXI.Graphics();
+		// this.mask.beginFill(0xFFFFFF);
+		// // this.mask.alpha = 0.8;
+		// // this.mask.tint = this.currentColor;
+		// this.mask.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
+		// //this.gameContainer.addChild(this.mask);
+		// // this.gameContainer.mask = this.mask;
+
 	}
 
 	//
 	stopAction(type){
 
+	}
+	updateVisibleParts(){
+		let haveOne = false;
+		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+			if(this.currentEntityList[i].position.y < 0){
+				this.currentEntityList[i].alpha = 0;
+				haveOne = true;
+			}else{
+
+				this.currentEntityList[i].alpha = 1;
+			}
+		}
+		return haveOne;
 	}
 	updateAction(type){
 		if(!this.canMove(type)){
@@ -326,11 +445,12 @@ export default class GameScreen extends Screen{
 	updateMove(){
 		if(!this.canMove("down")){
 			return;
-		}
+		}		
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 			this.currentEntityList[i].position.y += config.pieceSize / 2;
 			this.verifyPosition();
 		}
+		this.updateVisibleParts();
 	}
 	canMove(type) {
 		if(type == "up"){
@@ -364,6 +484,7 @@ export default class GameScreen extends Screen{
 				}			
 			}
 		}
+		this.updateVisibleParts();
 		return true
 	}
 	verifyLines() {
@@ -392,12 +513,19 @@ export default class GameScreen extends Screen{
 			this.removeLine(linesToRemove[i]);
 		}
 	}
+	addPoints() {
+		this.points += 10;
+	}
 	removeLine(line) {
 		let lineCounter = 0;
+		
+		let timeline = new TimelineLite();
 		for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 			if(this.gameMatrix[j][line]){
 				this.gameContainer.removeChild(this.gameMatrix[j][line]);
 				this.gameMatrix[j][line] = 0;
+				timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
+				
 			}				
 		}
 		//console.log(this.gameMatrix);
@@ -411,6 +539,7 @@ export default class GameScreen extends Screen{
 				}
 			}
 		}
+
 	}
 	verifySide(type) {
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
@@ -435,35 +564,41 @@ export default class GameScreen extends Screen{
 			let roundedY = Math.floor(tempY);
 			if(roundedY >= config.bounds.y - 1){
 				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix();
+				this.addOnMatrix(true);
 				return true
 			}
 			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
 			if(matrixContent && matrixContent != 0){
 				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix();
+				this.addOnMatrix(true);
 				return true
 			}
 		}
 	}
-	addOnMatrix() {
+	addOnMatrix(isColided) {
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
 			let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
 			let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
 			let roundedY = Math.ceil(tempY)
 			this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
 		}
-
+		if(isColided && this.updateVisibleParts()){
+			this.gameOver();
+		}
 		this.border.tint = this.currentColor;
+		
 		//console.log(tempX, roundedY);
 	}
-	verifyPosition() {
-		//let tempX = (this.currentEntity.position.x / config.pieceSize);
-		//let tempY = (this.currentEntity.position.y / config.pieceSize);
+	gameOver() {
+		this.destroyGame();
 
-		
+
+
+		this.initGame();		
 	}
 	//SCREEN
+	verifyPosition() {
+	}
 	onBackCallback() {
 		
 	}
@@ -537,6 +672,29 @@ export default class GameScreen extends Screen{
 		
 	}
 	//game update
+	updatePoints(){
+		let str = '000000';
+		if(this.points < 10){
+			str = '00000'+this.points
+		}else if(this.points < 100){
+			str = '0000'+this.points
+		}else if(this.points < 1000){
+			str = '000'+this.points
+		}else if(this.points < 10000){
+			str = '00'+this.points
+		}else if(this.points < 100000){
+			str = '0'+this.points
+		}else{
+			str = this.points
+		}
+		if(this.points > 0){
+			this.gameLevelSpeed = this.gameLevelSpeedMax - Math.floor(this.points / 200) * 0.05;
+		}
+		if(this.gameLevelSpeed < 0.08){
+			this.gameLevelSpeed = 0.08;
+		}
+		this.labelPoints.text = str;
+	}
 	update(delta){
 		delta *= this.normalizedDelta;
 		super.update(delta);
@@ -545,9 +703,13 @@ export default class GameScreen extends Screen{
 		}
 		this.updateParticles();
 		this.gameCounter += delta;
-		if(this.gameCounter > 1){
+		if(this.gameCounter > this.gameLevelSpeed){
 			this.updateMove();
 			this.gameCounter = 0;
 		}
+		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+
+		this.updatePoints();
+		
 	}
 }

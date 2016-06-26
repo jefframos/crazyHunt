@@ -43,7 +43,7 @@ export default class EffectLayer extends PIXI.Container{
 
 
 		//GLITCH 1
-		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glicthBugFix.png', config.width, config.height))
+		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glitch1.jpg', config.width, config.height))
 		this.addChild(this.glitch1)
 		this.glitch1.width = config.width;
 		this.glitch1.height = config.width;
@@ -55,8 +55,12 @@ export default class EffectLayer extends PIXI.Container{
 		this.pixelate.size.y = 32;
 
 		//DISPLACEMENT FILTER
-		let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/frontTVDisplacement.jpg'))
+		// let displacementTexture2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
+		// this.addChild(displacementTexture2);
+
+		let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
 		this.addChild(displacementTexture);
+
 		this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
 		displacementTexture.width = config.width;
 		displacementTexture.height = config.height;
@@ -74,7 +78,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.shockwave.center.y = 0.5;
 
 		this.filtersList = [this.rgpSplit, this.pixelate,  this.displacementFilter, this.displacementFilterGlitch1, this.bloom, this.shockwave];
-		this.filtersActives = [false, true,true,true, false];
+		this.filtersActives = [false, true,false,true, false];
 
 		this.updateFilters();
 		
@@ -99,7 +103,6 @@ export default class EffectLayer extends PIXI.Container{
 				filtersToApply.push(this.filtersList[i]);
 			}
 		};
-		console.log(filtersToApply);
 		this.screenManager.filters = filtersToApply.length > 0?filtersToApply:null;
 	}
 	removeBloom(){

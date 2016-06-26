@@ -8,7 +8,7 @@ import ScreenManager from './screenManager/ScreenManager';
 
 
 PIXI.loader
-	.add('./assets/frontTVDisplacement.jpg')
+	.add('./assets/tvlines.png')
 	.add('./assets/glitch1.jpg')
 	.add('./assets/particle2.png')
 	.add('./assets/fonts/super_smash_tv-webfont.woff')
