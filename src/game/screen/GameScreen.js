@@ -287,7 +287,7 @@ export default class GameScreen extends Screen{
 			break
 			case 6:
 				config.effectsLayer.addGlitch2();
-				this.filterLabel = "PROBL3M"
+				this.filterLabel = "3RRORR"
 				//config.effectsLayer.addBloom();
 			break
 			case 7:

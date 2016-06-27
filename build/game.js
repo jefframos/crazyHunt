@@ -38484,7 +38484,7 @@
 						break;
 					case 6:
 						_config2.default.effectsLayer.addGlitch2();
-						this.filterLabel = "PROBL3M";
+						this.filterLabel = "3RRORR";
 						//config.effectsLayer.addBloom();
 						break;
 					case 7:
