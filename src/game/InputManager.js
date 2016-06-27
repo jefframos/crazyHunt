@@ -26,13 +26,19 @@ export default class InputManager{
 		}
 		else if(e.keyCode === 68 || e.keyCode === 39){
 			this.game.updateAction('right');
+		}else if(e.keyCode === 32){
+			// this.game.changeFilter();
+			this.game.updateAction('down');
 		}
     }
 
     getUpKey(e){
   //   	if(e.keyCode === 83 || e.keyCode === 40){
 		// 	this.game.stopAction('down');
-		// }	
+		// }
+		if(e.keyCode === 83 || e.keyCode === 40 || e.keyCode === 32){
+			this.game.stopAction('down');
+		}
 		if(e.keyCode === 87 || e.keyCode === 38){
 			this.game.updateAction('up');
 		}

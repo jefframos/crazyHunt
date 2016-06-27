@@ -32,7 +32,7 @@
 		colors80:[
 			0xFC3C3A, //red
 			0xFFA226, //orange
-			0x2A0E79, //green
+			0x19db30, //green
 			0x44A6C6, //light blue
 			0xDB1993 //pink
 		],

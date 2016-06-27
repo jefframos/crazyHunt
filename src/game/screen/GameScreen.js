@@ -71,10 +71,16 @@ export default class GameScreen extends Screen{
 		let tempLabel = label.split('');
 		let rndPause = Math.random();
 		if(rndPause < 0.2){
-			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd2;
-			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd3;
+			let pos1 = Math.floor(Math.random()*tempLabel.length);
+			let pos2 = Math.floor(Math.random()*tempLabel.length);
+			if(tempLabel[pos1] != '\n')
+				tempLabel[pos1] = rnd2;
+			if(tempLabel[pos2] != '\n')
+				tempLabel[pos2] = rnd3;
 		}else if(rndPause < 0.5){
-			tempLabel[Math.floor(Math.random()*tempLabel.length)] = rnd3;
+			let pos3 = Math.floor(Math.random()*tempLabel.length);
+			if(tempLabel[pos3] != '\n')
+				tempLabel[pos3] = rnd3;
 		}
 		let returnLabel = '';
 		for (var i = 0; i < tempLabel.length; i++) {
@@ -100,6 +106,10 @@ export default class GameScreen extends Screen{
 		this.gameBorderContainer = new PIXI.Container();
 		this.gameMatrix = [];
 		
+
+		this.filterLabel = "JUST";
+		this.filterDescription = new PIXI.Text(this.filterLabel,{font : '70px super_smash_tvregular', fill : 0xBBBBBB, align : 'center'});
+		
 		this.initGame();
 
 		this.addChild(this.gameContainer);
@@ -107,16 +117,32 @@ export default class GameScreen extends Screen{
 		this.addChild(this.gameBorderContainer);
 		this.gameContainer.position.x = 50;//config.width / 2 - this.gameContainer.width / 1.5;
 		this.gameContainer.position.y = config.height / 2 - this.gameContainer.height / 2 + 100;
+		
+		this.gameContainer.pivot.x = this.gameContainer.width / 2;
+		this.gameContainer.pivot.y = this.gameContainer.height / 2;
 
+		this.gameContainer.position.x += this.gameContainer.pivot.x;
+		this.gameContainer.position.y += this.gameContainer.pivot.y;
+
+		//gambiarra pra mudar a borda
+		this.gameBorderContainer.pivot.x = this.gameContainer.pivot.x;
+		this.gameBorderContainer.pivot.y = this.gameContainer.pivot.y;
+		
 		this.gameBorderContainer.position.x = this.gameContainer.position.x;
 		this.gameBorderContainer.position.y = this.gameContainer.position.y;
-		//gambiarra pra mudar a borda
+
+
 		this.gameBorderContainer.addChild(this.border);
 
+
 		let descriptionNext = new PIXI.Text('NEXT',{font : '44px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-		this.gameQueueContainer.position.y = this.gameContainer.position.y;
+		this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 		this.gameQueueContainer.addChild(descriptionNext);
 		descriptionNext.position.x = 20;
+
+		this.filterDescription.position.x = this.gameBorderContainer.width / 2 - this.filterDescription.width / 2;
+		this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
+		
 
 		utils.correctPosition(this.gameContainer);
 
@@ -139,7 +165,6 @@ export default class GameScreen extends Screen{
 		// config.effectsLayer.shake(1,15,1);
 		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 		// config.effectsLayer.shakeSplitter(1,10,1.8);
-		// config.effectsLayer.fadeBloom(20,0,0.5,0, true);
 		this.labelPoints = new PIXI.Text('000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
 		this.addChild(this.labelPoints);
 		this.labelPoints.position.x = config.width - this.labelPoints.width;
@@ -159,6 +184,123 @@ export default class GameScreen extends Screen{
 			}
 		}
 		return shape;
+	}
+	changeFilter(){
+		let nextID = this.currentEffectID;
+		if(this.currentEffectID >= 0){
+			nextID = -1;
+		}else{
+			//nao shuffle
+			nextID = Math.floor(Math.random() * 7)
+		}
+		if(this.currentEffectID < 9999){
+			this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?']
+			this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
+		}
+		switch(this.currentEffectID){
+			case 0:
+				//this.currentEffect = "INVERT";
+				config.effectsLayer.removeInvert();
+				config.effectsLayer.removeAllFilters();
+			break
+			case 1:
+				//this.currentEffect = "CROSS";
+				config.effectsLayer.removeAllFilters();
+			break
+			case 2:
+				//this.currentEffect = "ASCII";
+				config.effectsLayer.removeAllFilters();
+				this.gameContainer.scale.y = 1;
+				this.gameBorderContainer.scale.y = 1;
+
+				this.gameContainer.position.y += 100;
+				this.gameBorderContainer.position.y += 100;
+			break
+			case 3:
+				this.gameContainer.scale.y = 1;
+				this.gameBorderContainer.scale.y = 1;
+			break
+			case 4:
+				this.gameContainer.scale.x = 1;
+				this.gameBorderContainer.scale.x = 1;
+			case 5:
+				config.effectsLayer.removeAllFilters();
+			case 6:
+				config.effectsLayer.removeAllFilters();
+			case 7:
+				this.randomizeCrazy = false;
+			default:
+				config.effectsLayer.removeAllFilters();
+				this.linearParticles();
+				break
+		}
+		config.effectsLayer.filtersActives[this.ID_GLITCH1] = true;
+		config.effectsLayer.addRGBSplitter();
+		config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
+
+		switch(nextID){
+			case 0:
+				//this.currentEffect = "INVERT";
+				config.effectsLayer.addInvert();
+				config.effectsLayer.shakeSplitter(1,6,0.3);
+				this.filterLabel = "INVERT"
+			break
+			case 1:
+				//this.currentEffect = "CROSS";
+				config.effectsLayer.removeAllFilters();
+				config.effectsLayer.addCrossHatch();
+				this.filterLabel = "CROSS"
+			break
+			case 2:
+				//this.currentEffect = "ASCII";
+				config.effectsLayer.removeAllFilters();
+				config.effectsLayer.addAscii();
+				this.gameContainer.scale.y = -1;
+				this.gameBorderContainer.scale.y = -1;
+
+				this.gameContainer.position.y -= 100;
+				this.gameBorderContainer.position.y -= 100;
+				this.filterLabel = "OLD\nTIMES"
+			break
+			case 3:
+				this.gameContainer.scale.y = -1;
+				this.gameBorderContainer.scale.y = -1;
+				config.effectsLayer.removeAllFilters();
+			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
+				config.effectsLayer.shakeSplitter(1,6,0.3);
+				this.filterLabel = "INVERT Y"
+			break
+			case 4:
+				this.gameContainer.scale.x = -1;
+				this.gameBorderContainer.scale.x = -1;
+				config.effectsLayer.removeAllFilters();
+			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
+				config.effectsLayer.shakeSplitter(1,6,0.3);
+				this.filterLabel = "X TREVNI"
+
+			break
+			case 5:
+				config.effectsLayer.shakeSplitter(1,6,0.3);
+				config.effectsLayer.addGray();
+				config.effectsLayer.addBlur();
+				this.filterLabel = "NOT COOL"
+			break
+			case 6:
+				config.effectsLayer.addGlitch2();
+				this.filterLabel = "PROBL3M"
+				//config.effectsLayer.addBloom();
+			break
+			case 7:
+				this.randomizeCrazy = true;
+				this.randomParticles();
+				this.filterLabel = "SHUFFLE"
+			break
+			default:
+				config.effectsLayer.shakeSplitter(1,10,0.5);
+				break
+			break
+		}
+		this.currentEffectID = nextID;
 	}
 	printMatrix(shapeArray){
 		let tempLine;
@@ -206,7 +348,13 @@ export default class GameScreen extends Screen{
 		let ajdustedPositionY = maxY + (maxY - minY) / 2;
 		let ajdustedPositionX = minX + (maxX - minX) / 2 ;
 		ajdustedPositionX = Math.floor(ajdustedPositionX / config.pieceSize) * config.pieceSize;
-		this.newEntity(this.rotateMatrixRight(this.currentShape), {x:ajdustedPositionX, y:ajdustedPositionY});
+
+		if(this.randomizeCrazy){
+			let id = Math.floor(Math.random()*this.shapes.length);
+			this.newEntity(this.shapes[id], {x:ajdustedPositionX, y:ajdustedPositionY}, true);
+		}else{
+			this.newEntity(this.rotateMatrixRight(this.currentShape), {x:ajdustedPositionX, y:ajdustedPositionY});
+		}
 	}
 	updateQueue(){
 		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
@@ -237,18 +385,22 @@ export default class GameScreen extends Screen{
 		}
 		return this.shapes[this.shapesOrder[this.shapeStep]];
 	}
-	newEntity(shapeArray, starterPosition){
+	newEntity(shapeArray, starterPosition, randomRotate){
 		this.currentEntityList = [];
 		if(!shapeArray){
 			this.currentShape = this.getShape();
-			let rotationRandom = 0;//Math.floor(Math.random()*3);
-			for (var i = rotationRandom - 1; i >= 0; i--) {
-				this.currentShape = this.rotateMatrixRight(this.currentShape);
-			}
 			this.updateQueue();
 		}else{
 			this.currentShape = shapeArray;
 		}
+
+		if(randomRotate){
+		let rotationRandom = Math.floor(Math.random()*3);
+			for (var i = rotationRandom - 1; i >= 0; i--) {
+				this.currentShape = this.rotateMatrixRight(this.currentShape);
+			}
+		}
+		
 		let starterXPosition = 0;
 		if(!starterPosition){
 			starterPosition = {x:0,y:0};
@@ -329,8 +481,9 @@ export default class GameScreen extends Screen{
 	
 	
 	initGame() {
-		this.started = true;
+		// this.started = true;
 		this.gameCounter = 0;
+		this.downSpeedIncrease = 0;
 		this.normalizedDelta = 1;
 		this.currentColor = config.palette.colors80[Math.floor(config.palette.colors80.length * Math.random())];
 		this.shapesOrder = [];
@@ -339,16 +492,26 @@ export default class GameScreen extends Screen{
 		this.points = 0;
 		this.gameLevelSpeedMax = 1;
 		this.gameLevelSpeed = this.gameLevelSpeedMax;
+		this.scoring = 0;
+		//force to reset filter
+		this.currentEffectID = 99999;
+		this.changeFilter();
+
 		for (var i = 100; i >= 0; i--) {
 			this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()))
 		}
 
-		console.log(this.shapesOrder);
 		this.configGameMatrix(config.bounds.y,config.bounds.x);
 		this.drawMatrix(config.pieceSize);
 		
-
-		this.newEntity();
+		this.updateQueue();
+		setTimeout(function(){
+			this.started = true;
+			this.downSpeedIncrease = 0;
+			this.newEntity();
+		}.bind(this), 300);
+		
+		this.gameContainer.addChild(this.filterDescription);
 
 	}
 	//reset timer
@@ -398,21 +561,16 @@ export default class GameScreen extends Screen{
 		this.border.tint = this.currentColor;
 		this.border.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
 		this.gameContainer.addChild(this.border);
-
-
-		// this.mask = new PIXI.Graphics();
-		// this.mask.beginFill(0xFFFFFF);
-		// // this.mask.alpha = 0.8;
-		// // this.mask.tint = this.currentColor;
-		// this.mask.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
-		// //this.gameContainer.addChild(this.mask);
-		// // this.gameContainer.mask = this.mask;
-
 	}
 
 	//
 	stopAction(type){
-
+		if(!this.started){
+			return;
+		}
+		if(type == "down"){
+			this.downSpeedIncrease = 0;
+		}
 	}
 	updateVisibleParts(){
 		let haveOne = false;
@@ -428,6 +586,9 @@ export default class GameScreen extends Screen{
 		return haveOne;
 	}
 	updateAction(type){
+		if(!this.started){
+			return;
+		}
 		if(!this.canMove(type)){
 			return;
 		}
@@ -437,7 +598,8 @@ export default class GameScreen extends Screen{
 			}else if(type == "right"){
 				this.currentEntityList[i].position.x += config.pieceSize;
 			}else if(type == "down"){
-				this.currentEntityList[i].position.y += config.pieceSize / 2;
+				// this.currentEntityList[i].position.y += config.pieceSize / 2;
+				this.downSpeedIncrease = 200;
 			}
 		}
 		this.verifyPosition();
@@ -503,11 +665,24 @@ export default class GameScreen extends Screen{
 			}
 		}
 		if(linesToRemove.length > 0){
-			let yNormal = (this.gameContainer.position.y + linesToRemove[0] * config.pieceSize) / config.height;
-			let xNormal = (this.gameContainer.position.x + this.currentEntityList[0].x) / config.width;
+			let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + linesToRemove[0] * config.pieceSize) / config.height;
+			let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[0].x) / config.width;
 			config.effectsLayer.addShockwave(xNormal,yNormal,1);
 			config.effectsLayer.shakeX(0.5,5,0.5);
 			config.effectsLayer.shakeY(0.5,5,0.5);
+
+			//console.log(this.gameMatrix);
+			this.scoring ++;
+
+			if(this.scoring == 1){
+				this.filterLabel = "JUST\nA"
+			}else if(this.scoring == 2){
+				this.filterLabel = "JUST\nA\nSIMPLE"
+			}else if(this.scoring == 3){			
+				this.filterLabel = "TETRIS?"
+			}else{
+				this.changeFilter();
+			}
 		}
 		for (var i = linesToRemove.length - 1; i >= 0; i--) {			
 			this.removeLine(linesToRemove[i]);
@@ -517,6 +692,7 @@ export default class GameScreen extends Screen{
 		this.points += 10;
 	}
 	removeLine(line) {
+		
 		let lineCounter = 0;
 		
 		let timeline = new TimelineLite();
@@ -528,7 +704,7 @@ export default class GameScreen extends Screen{
 				
 			}				
 		}
-		//console.log(this.gameMatrix);
+		
 		let upTo = line - 1;
 		for (var i = this.gameMatrix.length - 1; i >= 0; i--) {
 			for (var j = upTo; j >= 0; j--) {
@@ -590,10 +766,9 @@ export default class GameScreen extends Screen{
 		//console.log(tempX, roundedY);
 	}
 	gameOver() {
+		this.downSpeedIncrease = 0;
+		this.started = false;
 		this.destroyGame();
-
-
-
 		this.initGame();		
 	}
 	//SCREEN
@@ -615,7 +790,7 @@ export default class GameScreen extends Screen{
 	        var particle = this.particles[i];
 	        particle.direction += particle.turningSpeed * 0.01;
 	        particle.position.x += Math.sin(particle.direction) * (particle.speed * particle.scale.y);
-	        particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y);
+	        particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y) - (delta * 0.7);
 	        //particle.rotation = -particle.direction + Math.PI;
 	        //particle.alpha += delta;
 	        if(particle.position.x < 0 || particle.position.x > config.width || particle.y < 0){
@@ -623,12 +798,26 @@ export default class GameScreen extends Screen{
 		    	particle.y = (config.height) + 200 * Math.random();
 	        }
 		}
-		this.particleUpdater += delta*20;
-		if(this.particleUpdater > this.particles.length){
-			this.particleUpdater = this.particles.length;
-		}
+		// this.particleUpdater += delta*20;
+		// if(this.particleUpdater > this.particles.length){
+		// 	this.particleUpdater = this.particles.length;
+		// }
 	}
 	//create new particles
+	randomParticles(){
+		for (var i = 0; i < this.particles.length; i++)
+	    {
+	        var particle = this.particles[i];
+	        particle.direction = ((Math.random() * 180 - 90) /180 * Math.PI);
+	    }
+	}
+	linearParticles(){
+		for (var i = 0; i < this.particles.length; i++)
+	    {
+	        var particle = this.particles[i];
+	        particle.direction = 0;
+	    }
+	}
 	createParticles(){
 		this.particleUpdater = 0;
 		this.particlesContainer = new PIXI.ParticleContainer(500, {
@@ -656,7 +845,7 @@ export default class GameScreen extends Screen{
 		    particle.alpha = Math.random();
 		    particle.direction = 0;
 		    particle.turningSpeed = 0;
-		    particle.speed = -6 + Math.random() * 1.5;
+		    particle.speed = -8 + Math.random() * 1.5;
 		    this.particles.push(particle);
 		    this.particlesContainer.addChild(particle);
 		}
@@ -696,18 +885,25 @@ export default class GameScreen extends Screen{
 		this.labelPoints.text = str;
 	}
 	update(delta){
-		delta *= this.normalizedDelta;
+		delta *= (this.normalizedDelta + this.downSpeedIncrease);
 		super.update(delta);
 		if(!this.started){
 			return;
 		}
-		this.updateParticles();
+		this.updateParticles(delta);
 		this.gameCounter += delta;
 		if(this.gameCounter > this.gameLevelSpeed){
 			this.updateMove();
 			this.gameCounter = 0;
 		}
 		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+
+		this.filterDescription.text = this.shuffleText(this.filterLabel);
+		this.filterDescription.position.x = (this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2) ;
+		this.filterDescription.position.y = this.gameBorderContainer.height * this.gameContainer.scale.y / 2 - this.filterDescription.height;
+		if(this.filterDescription.tint != this.currentColor){
+			this.filterDescription.tint = this.currentColor;
+		}
 
 		this.updatePoints();
 		

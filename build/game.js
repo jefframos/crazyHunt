@@ -29925,7 +29925,7 @@
 			drawGameColor: 0xA547A4,
 			colors80: [0xFC3C3A, //red
 			0xFFA226, //orange
-			0x2A0E79, //green
+			0x19db30, //green
 			0x44A6C6, //light blue
 			0xDB1993 //pink
 			],
@@ -30089,6 +30089,21 @@
 			_this.rgpSplit.green = new _pixi2.default.Point(-1, -1);
 			_this.rgpSplit.blue = new _pixi2.default.Point(1, -1);
 	
+			//crosshatch
+			_this.crossHatch = new _pixi2.default.filters.CrossHatchFilter();
+	
+			//blur
+			_this.blur = new _pixi2.default.filters.BlurFilter();
+	
+			//gray
+			_this.gray = new _pixi2.default.filters.GrayFilter();
+	
+			//invert
+			_this.invertFilter = new _pixi2.default.filters.InvertFilter();
+	
+			//ascii
+			_this.ascii = new _pixi2.default.filters.AsciiFilter();
+	
 			//GLITCH 1
 			_this.glitch1 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glitch1.jpg', _config2.default.width, _config2.default.height));
 			_this.addChild(_this.glitch1);
@@ -30105,14 +30120,12 @@
 			// let displacementTexture2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
 			// this.addChild(displacementTexture2);
 	
-			var displacementTexture = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/glitch1.jpg'));
-			_this.addChild(displacementTexture);
-	
-			_this.displacementFilter = new _pixi2.default.filters.DisplacementFilter(displacementTexture);
-			displacementTexture.width = _config2.default.width;
-			displacementTexture.height = _config2.default.height;
-			displacementTexture.anchor.set(0.5, 0.5);
-			displacementTexture.position.set(_config2.default.width / 2, _config2.default.height / 2);
+			//GLITCH 1
+			_this.glitch2 = new _pixi2.default.extras.TilingSprite(_pixi2.default.Texture.fromImage('./assets/glitch2.jpg', _config2.default.width, _config2.default.height));
+			_this.addChild(_this.glitch2);
+			_this.glitch2.width = _config2.default.width;
+			_this.glitch2.height = _config2.default.width;
+			_this.displacementFilterGlitch2 = new _pixi2.default.filters.DisplacementFilter(_this.glitch2);
 	
 			//BLOOM
 			_this.bloom = new _pixi2.default.filters.BloomFilter();
@@ -30124,17 +30137,23 @@
 			_this.shockwave.center.x = 0.5;
 			_this.shockwave.center.y = 0.5;
 	
-			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilter, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave];
-			_this.filtersActives = [false, true, false, true, false];
+			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilterGlitch2, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave, _this.crossHatch, _this.invertFilter, _this.ascii, _this.gray, _this.blur];
+	
+			_this.filtersActives = [false, false, false, true, false, false, false, false, false, false, false];
 	
 			_this.updateFilters();
 	
-			_this.ID_PIXELATE = 1;
 			_this.ID_RGBSPLIT = 0;
-			_this.ID_DISPLACEMENT = 2;
+			_this.ID_PIXELATE = 1;
+			_this.ID_GLITCH2 = 2;
 			_this.ID_GLITCH1 = 3;
 			_this.ID_BLOOM = 4;
 			_this.ID_SHOCKWAVE = 5;
+			_this.ID_CROSSHATCH = 6;
+			_this.ID_INVERT = 7;
+			_this.ID_ASCII = 8;
+			_this.ID_GRAY = 9;
+			_this.ID_BLUR = 10;
 	
 			_this.updatePixelate(_config2.default.pixelSize, _config2.default.pixelSize);
 	
@@ -30147,6 +30166,14 @@
 				_gsap2.default.to(this.grey, time, { alpha: 0, delay: delay });
 			}
 		}, {
+			key: 'removeAllFilters',
+			value: function removeAllFilters() {
+				for (var i = this.filtersActives.length - 1; i >= 0; i--) {
+					this.filtersActives[i] = false;
+				}
+				this.updateFilters();
+			}
+		}, {
 			key: 'updateFilters',
 			value: function updateFilters() {
 				var filtersToApply = [];
@@ -30157,6 +30184,79 @@
 					}
 				};
 				this.screenManager.filters = filtersToApply.length > 0 ? filtersToApply : null;
+				console.log(this.screenManager.filters);
+			}
+		}, {
+			key: 'removeBlur',
+			value: function removeBlur() {
+				this.filtersActives[this.ID_BLUR] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addBlur',
+			value: function addBlur() {
+				this.filtersActives[this.ID_BLUR] = true;
+				this.updateFilters();
+			}
+		}, {
+			key: 'removeGlitch2',
+			value: function removeGlitch2() {
+				this.filtersActives[this.ID_GLITCH2] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addGlitch2',
+			value: function addGlitch2() {
+				this.filtersActives[this.ID_GLITCH2] = true;
+				this.updateFilters();
+			}
+		}, {
+			key: 'removeGray',
+			value: function removeGray() {
+				this.filtersActives[this.ID_GRAY] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addGray',
+			value: function addGray() {
+				this.filtersActives[this.ID_GRAY] = true;
+				this.updateFilters();
+			}
+		}, {
+			key: 'removeCrossHatch',
+			value: function removeCrossHatch() {
+				this.filtersActives[this.ID_CROSSHATCH] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addCrossHatch',
+			value: function addCrossHatch() {
+				this.filtersActives[this.ID_CROSSHATCH] = true;
+				this.updateFilters();
+			}
+		}, {
+			key: 'removeInvert',
+			value: function removeInvert() {
+				this.filtersActives[this.ID_INVERT] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addInvert',
+			value: function addInvert() {
+				this.filtersActives[this.ID_INVERT] = true;
+				this.updateFilters();
+			}
+		}, {
+			key: 'removeAscii',
+			value: function removeAscii() {
+				this.filtersActives[this.ID_ASCII] = false;
+				this.updateFilters();
+			}
+		}, {
+			key: 'addAscii',
+			value: function addAscii() {
+				this.filtersActives[this.ID_ASCII] = true;
+				this.updateFilters();
 			}
 		}, {
 			key: 'removeBloom',
@@ -38168,10 +38268,13 @@
 				var tempLabel = label.split('');
 				var rndPause = Math.random();
 				if (rndPause < 0.2) {
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd2;
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+					var pos1 = Math.floor(Math.random() * tempLabel.length);
+					var pos2 = Math.floor(Math.random() * tempLabel.length);
+					if (tempLabel[pos1] != '\n') tempLabel[pos1] = rnd2;
+					if (tempLabel[pos2] != '\n') tempLabel[pos2] = rnd3;
 				} else if (rndPause < 0.5) {
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+					var pos3 = Math.floor(Math.random() * tempLabel.length);
+					if (tempLabel[pos3] != '\n') tempLabel[pos3] = rnd3;
 				}
 				var returnLabel = '';
 				for (var i = 0; i < tempLabel.length; i++) {
@@ -38201,6 +38304,9 @@
 				this.gameBorderContainer = new _pixi2.default.Container();
 				this.gameMatrix = [];
 	
+				this.filterLabel = "JUST";
+				this.filterDescription = new _pixi2.default.Text(this.filterLabel, { font: '70px super_smash_tvregular', fill: 0xBBBBBB, align: 'center' });
+	
 				this.initGame();
 	
 				this.addChild(this.gameContainer);
@@ -38209,15 +38315,28 @@
 				this.gameContainer.position.x = 50; //config.width / 2 - this.gameContainer.width / 1.5;
 				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2 + 100;
 	
+				this.gameContainer.pivot.x = this.gameContainer.width / 2;
+				this.gameContainer.pivot.y = this.gameContainer.height / 2;
+	
+				this.gameContainer.position.x += this.gameContainer.pivot.x;
+				this.gameContainer.position.y += this.gameContainer.pivot.y;
+	
+				//gambiarra pra mudar a borda
+				this.gameBorderContainer.pivot.x = this.gameContainer.pivot.x;
+				this.gameBorderContainer.pivot.y = this.gameContainer.pivot.y;
+	
 				this.gameBorderContainer.position.x = this.gameContainer.position.x;
 				this.gameBorderContainer.position.y = this.gameContainer.position.y;
-				//gambiarra pra mudar a borda
+	
 				this.gameBorderContainer.addChild(this.border);
 	
 				var descriptionNext = new _pixi2.default.Text('NEXT', { font: '44px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.gameQueueContainer.position.y = this.gameContainer.position.y;
+				this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 				this.gameQueueContainer.addChild(descriptionNext);
 				descriptionNext.position.x = 20;
+	
+				this.filterDescription.position.x = this.gameBorderContainer.width / 2 - this.filterDescription.width / 2;
+				this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
 	
 				_utils2.default.correctPosition(this.gameContainer);
 	
@@ -38239,7 +38358,6 @@
 				// config.effectsLayer.shake(1,15,1);
 				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 				// config.effectsLayer.shakeSplitter(1,10,1.8);
-				// config.effectsLayer.fadeBloom(20,0,0.5,0, true);
 				this.labelPoints = new _pixi2.default.Text('000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.addChild(this.labelPoints);
 				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
@@ -38261,6 +38379,125 @@
 					}
 				}
 				return shape;
+			}
+		}, {
+			key: 'changeFilter',
+			value: function changeFilter() {
+				var nextID = this.currentEffectID;
+				if (this.currentEffectID >= 0) {
+					nextID = -1;
+				} else {
+					//nao shuffle
+					nextID = Math.floor(Math.random() * 7);
+				}
+				if (this.currentEffectID < 9999) {
+					this.standardLabels = ['SIMPLE', 'JUICY', 'FUN', 'CRAZY?'];
+					this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
+				}
+				switch (this.currentEffectID) {
+					case 0:
+						//this.currentEffect = "INVERT";
+						_config2.default.effectsLayer.removeInvert();
+						_config2.default.effectsLayer.removeAllFilters();
+						break;
+					case 1:
+						//this.currentEffect = "CROSS";
+						_config2.default.effectsLayer.removeAllFilters();
+						break;
+					case 2:
+						//this.currentEffect = "ASCII";
+						_config2.default.effectsLayer.removeAllFilters();
+						this.gameContainer.scale.y = 1;
+						this.gameBorderContainer.scale.y = 1;
+	
+						this.gameContainer.position.y += 100;
+						this.gameBorderContainer.position.y += 100;
+						break;
+					case 3:
+						this.gameContainer.scale.y = 1;
+						this.gameBorderContainer.scale.y = 1;
+						break;
+					case 4:
+						this.gameContainer.scale.x = 1;
+						this.gameBorderContainer.scale.x = 1;
+					case 5:
+						_config2.default.effectsLayer.removeAllFilters();
+					case 6:
+						_config2.default.effectsLayer.removeAllFilters();
+					case 7:
+						this.randomizeCrazy = false;
+					default:
+						_config2.default.effectsLayer.removeAllFilters();
+						this.linearParticles();
+						break;
+				}
+				_config2.default.effectsLayer.filtersActives[this.ID_GLITCH1] = true;
+				_config2.default.effectsLayer.addRGBSplitter();
+				_config2.default.effectsLayer.updatePixelate(_config2.default.pixelSize, _config2.default.pixelSize);
+	
+				switch (nextID) {
+					case 0:
+						//this.currentEffect = "INVERT";
+						_config2.default.effectsLayer.addInvert();
+						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+						this.filterLabel = "INVERT";
+						break;
+					case 1:
+						//this.currentEffect = "CROSS";
+						_config2.default.effectsLayer.removeAllFilters();
+						_config2.default.effectsLayer.addCrossHatch();
+						this.filterLabel = "CROSS";
+						break;
+					case 2:
+						//this.currentEffect = "ASCII";
+						_config2.default.effectsLayer.removeAllFilters();
+						_config2.default.effectsLayer.addAscii();
+						this.gameContainer.scale.y = -1;
+						this.gameBorderContainer.scale.y = -1;
+	
+						this.gameContainer.position.y -= 100;
+						this.gameBorderContainer.position.y -= 100;
+						this.filterLabel = "OLD\nTIMES";
+						break;
+					case 3:
+						this.gameContainer.scale.y = -1;
+						this.gameBorderContainer.scale.y = -1;
+						_config2.default.effectsLayer.removeAllFilters();
+						_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+						this.filterLabel = "INVERT Y";
+						break;
+					case 4:
+						this.gameContainer.scale.x = -1;
+						this.gameBorderContainer.scale.x = -1;
+						_config2.default.effectsLayer.removeAllFilters();
+						_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+						this.filterLabel = "X TREVNI";
+	
+						break;
+					case 5:
+						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+						_config2.default.effectsLayer.addGray();
+						_config2.default.effectsLayer.addBlur();
+						this.filterLabel = "NOT COOL";
+						break;
+					case 6:
+						_config2.default.effectsLayer.addGlitch2();
+						this.filterLabel = "PROBL3M";
+						//config.effectsLayer.addBloom();
+						break;
+					case 7:
+						this.randomizeCrazy = true;
+						this.randomParticles();
+						this.filterLabel = "SHUFFLE";
+						break;
+					default:
+						_config2.default.effectsLayer.shakeSplitter(1, 10, 0.5);
+						break;
+						break;
+				}
+				this.currentEffectID = nextID;
 			}
 		}, {
 			key: 'printMatrix',
@@ -38313,7 +38550,13 @@
 				var ajdustedPositionY = maxY + (maxY - minY) / 2;
 				var ajdustedPositionX = minX + (maxX - minX) / 2;
 				ajdustedPositionX = Math.floor(ajdustedPositionX / _config2.default.pieceSize) * _config2.default.pieceSize;
-				this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+	
+				if (this.randomizeCrazy) {
+					var id = Math.floor(Math.random() * this.shapes.length);
+					this.newEntity(this.shapes[id], { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+				} else {
+					this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+				}
 			}
 		}, {
 			key: 'updateQueue',
@@ -38350,18 +38593,22 @@
 			}
 		}, {
 			key: 'newEntity',
-			value: function newEntity(shapeArray, starterPosition) {
+			value: function newEntity(shapeArray, starterPosition, randomRotate) {
 				this.currentEntityList = [];
 				if (!shapeArray) {
 					this.currentShape = this.getShape();
-					var rotationRandom = 0; //Math.floor(Math.random()*3);
-					for (var i = rotationRandom - 1; i >= 0; i--) {
-						this.currentShape = this.rotateMatrixRight(this.currentShape);
-					}
 					this.updateQueue();
 				} else {
 					this.currentShape = shapeArray;
 				}
+	
+				if (randomRotate) {
+					var rotationRandom = Math.floor(Math.random() * 3);
+					for (var i = rotationRandom - 1; i >= 0; i--) {
+						this.currentShape = this.rotateMatrixRight(this.currentShape);
+					}
+				}
+	
 				var starterXPosition = 0;
 				if (!starterPosition) {
 					starterPosition = { x: 0, y: 0 };
@@ -38451,8 +38698,9 @@
 		}, {
 			key: 'initGame',
 			value: function initGame() {
-				this.started = true;
+				// this.started = true;
 				this.gameCounter = 0;
+				this.downSpeedIncrease = 0;
 				this.normalizedDelta = 1;
 				this.currentColor = _config2.default.palette.colors80[Math.floor(_config2.default.palette.colors80.length * Math.random())];
 				this.shapesOrder = [];
@@ -38461,15 +38709,26 @@
 				this.points = 0;
 				this.gameLevelSpeedMax = 1;
 				this.gameLevelSpeed = this.gameLevelSpeedMax;
+				this.scoring = 0;
+				//force to reset filter
+				this.currentEffectID = 99999;
+				this.changeFilter();
+	
 				for (var i = 100; i >= 0; i--) {
 					this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()));
 				}
 	
-				console.log(this.shapesOrder);
 				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
 				this.drawMatrix(_config2.default.pieceSize);
 	
-				this.newEntity();
+				this.updateQueue();
+				setTimeout(function () {
+					this.started = true;
+					this.downSpeedIncrease = 0;
+					this.newEntity();
+				}.bind(this), 300);
+	
+				this.gameContainer.addChild(this.filterDescription);
 			}
 			//reset timer
 	
@@ -38530,21 +38789,20 @@
 				this.border.tint = this.currentColor;
 				this.border.drawRect(0, _config2.default.pixelSize / 2, _config2.default.bounds.x * size + _config2.default.pixelSize, _config2.default.bounds.y * size);
 				this.gameContainer.addChild(this.border);
-	
-				// this.mask = new PIXI.Graphics();
-				// this.mask.beginFill(0xFFFFFF);
-				// // this.mask.alpha = 0.8;
-				// // this.mask.tint = this.currentColor;
-				// this.mask.drawRect(0,config.pixelSize/2,config.bounds.x*size + config.pixelSize ,config.bounds.y*size);
-				// //this.gameContainer.addChild(this.mask);
-				// // this.gameContainer.mask = this.mask;
 			}
 	
 			//
 	
 		}, {
 			key: 'stopAction',
-			value: function stopAction(type) {}
+			value: function stopAction(type) {
+				if (!this.started) {
+					return;
+				}
+				if (type == "down") {
+					this.downSpeedIncrease = 0;
+				}
+			}
 		}, {
 			key: 'updateVisibleParts',
 			value: function updateVisibleParts() {
@@ -38563,6 +38821,9 @@
 		}, {
 			key: 'updateAction',
 			value: function updateAction(type) {
+				if (!this.started) {
+					return;
+				}
 				if (!this.canMove(type)) {
 					return;
 				}
@@ -38572,7 +38833,8 @@
 					} else if (type == "right") {
 						this.currentEntityList[i].position.x += _config2.default.pieceSize;
 					} else if (type == "down") {
-						this.currentEntityList[i].position.y += _config2.default.pieceSize / 2;
+						// this.currentEntityList[i].position.y += config.pieceSize / 2;
+						this.downSpeedIncrease = 200;
 					}
 				}
 				this.verifyPosition();
@@ -38642,11 +38904,24 @@
 					}
 				}
 				if (linesToRemove.length > 0) {
-					var yNormal = (this.gameContainer.position.y + linesToRemove[0] * _config2.default.pieceSize) / _config2.default.height;
-					var xNormal = (this.gameContainer.position.x + this.currentEntityList[0].x) / _config2.default.width;
+					var yNormal = (this.gameContainer.position.y - this.gameContainer.pivot.y + linesToRemove[0] * _config2.default.pieceSize) / _config2.default.height;
+					var xNormal = (this.gameContainer.position.x - this.gameContainer.pivot.x + this.currentEntityList[0].x) / _config2.default.width;
 					_config2.default.effectsLayer.addShockwave(xNormal, yNormal, 1);
 					_config2.default.effectsLayer.shakeX(0.5, 5, 0.5);
 					_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
+	
+					//console.log(this.gameMatrix);
+					this.scoring++;
+	
+					if (this.scoring == 1) {
+						this.filterLabel = "JUST\nA";
+					} else if (this.scoring == 2) {
+						this.filterLabel = "JUST\nA\nSIMPLE";
+					} else if (this.scoring == 3) {
+						this.filterLabel = "TETRIS?";
+					} else {
+						this.changeFilter();
+					}
 				}
 				for (var i = linesToRemove.length - 1; i >= 0; i--) {
 					this.removeLine(linesToRemove[i]);
@@ -38660,6 +38935,7 @@
 		}, {
 			key: 'removeLine',
 			value: function removeLine(line) {
+	
 				var lineCounter = 0;
 	
 				var timeline = new TimelineLite();
@@ -38670,7 +38946,7 @@
 						timeline.add(_gsap2.default.to(this, 0.1, { onComplete: this.addPoints, onCompleteScope: this }));
 					}
 				}
-				//console.log(this.gameMatrix);
+	
 				var upTo = line - 1;
 				for (var i = this.gameMatrix.length - 1; i >= 0; i--) {
 					for (var j = upTo; j >= 0; j--) {
@@ -38738,8 +39014,9 @@
 		}, {
 			key: 'gameOver',
 			value: function gameOver() {
+				this.downSpeedIncrease = 0;
+				this.started = false;
 				this.destroyGame();
-	
 				this.initGame();
 			}
 			//SCREEN
@@ -38764,7 +39041,7 @@
 					var particle = this.particles[i];
 					particle.direction += particle.turningSpeed * 0.01;
 					particle.position.x += Math.sin(particle.direction) * (particle.speed * particle.scale.y);
-					particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y);
+					particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y) - delta * 0.7;
 					//particle.rotation = -particle.direction + Math.PI;
 					//particle.alpha += delta;
 					if (particle.position.x < 0 || particle.position.x > _config2.default.width || particle.y < 0) {
@@ -38772,13 +39049,29 @@
 						particle.y = _config2.default.height + 200 * Math.random();
 					}
 				}
-				this.particleUpdater += delta * 20;
-				if (this.particleUpdater > this.particles.length) {
-					this.particleUpdater = this.particles.length;
-				}
+				// this.particleUpdater += delta*20;
+				// if(this.particleUpdater > this.particles.length){
+				// 	this.particleUpdater = this.particles.length;
+				// }
 			}
 			//create new particles
 	
+		}, {
+			key: 'randomParticles',
+			value: function randomParticles() {
+				for (var i = 0; i < this.particles.length; i++) {
+					var particle = this.particles[i];
+					particle.direction = (Math.random() * 180 - 90) / 180 * Math.PI;
+				}
+			}
+		}, {
+			key: 'linearParticles',
+			value: function linearParticles() {
+				for (var i = 0; i < this.particles.length; i++) {
+					var particle = this.particles[i];
+					particle.direction = 0;
+				}
+			}
 		}, {
 			key: 'createParticles',
 			value: function createParticles() {
@@ -38806,7 +39099,7 @@
 					particle.alpha = Math.random();
 					particle.direction = 0;
 					particle.turningSpeed = 0;
-					particle.speed = -6 + Math.random() * 1.5;
+					particle.speed = -8 + Math.random() * 1.5;
 					this.particles.push(particle);
 					this.particlesContainer.addChild(particle);
 				}
@@ -38853,18 +39146,25 @@
 		}, {
 			key: 'update',
 			value: function update(delta) {
-				delta *= this.normalizedDelta;
+				delta *= this.normalizedDelta + this.downSpeedIncrease;
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
 				if (!this.started) {
 					return;
 				}
-				this.updateParticles();
+				this.updateParticles(delta);
 				this.gameCounter += delta;
 				if (this.gameCounter > this.gameLevelSpeed) {
 					this.updateMove();
 					this.gameCounter = 0;
 				}
 				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+	
+				this.filterDescription.text = this.shuffleText(this.filterLabel);
+				this.filterDescription.position.x = this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2;
+				this.filterDescription.position.y = this.gameBorderContainer.height * this.gameContainer.scale.y / 2 - this.filterDescription.height;
+				if (this.filterDescription.tint != this.currentColor) {
+					this.filterDescription.tint = this.currentColor;
+				}
 	
 				this.updatePoints();
 			}
@@ -38923,6 +39223,9 @@
 					this.game.updateAction('left');
 				} else if (e.keyCode === 68 || e.keyCode === 39) {
 					this.game.updateAction('right');
+				} else if (e.keyCode === 32) {
+					// this.game.changeFilter();
+					this.game.updateAction('down');
 				}
 			}
 		}, {
@@ -38930,7 +39233,10 @@
 			value: function getUpKey(e) {
 				//   	if(e.keyCode === 83 || e.keyCode === 40){
 				// 	this.game.stopAction('down');
-				// }	
+				// }
+				if (e.keyCode === 83 || e.keyCode === 40 || e.keyCode === 32) {
+					this.game.stopAction('down');
+				}
 				if (e.keyCode === 87 || e.keyCode === 38) {
 					this.game.updateAction('up');
 				}

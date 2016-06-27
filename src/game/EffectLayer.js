@@ -42,6 +42,22 @@ export default class EffectLayer extends PIXI.Container{
 		this.rgpSplit.blue = new PIXI.Point(1,-1);
 
 
+		//crosshatch
+		this.crossHatch = new PIXI.filters.CrossHatchFilter();
+
+		//blur
+		this.blur = new PIXI.filters.BlurFilter();
+		
+		//gray
+		this.gray = new PIXI.filters.GrayFilter();
+
+		//invert
+		this.invertFilter = new PIXI.filters.InvertFilter();
+
+		//ascii
+		this.ascii = new PIXI.filters.AsciiFilter();
+
+
 		//GLITCH 1
 		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glitch1.jpg', config.width, config.height))
 		this.addChild(this.glitch1)
@@ -58,14 +74,12 @@ export default class EffectLayer extends PIXI.Container{
 		// let displacementTexture2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
 		// this.addChild(displacementTexture2);
 
-		let displacementTexture = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/glitch1.jpg'))
-		this.addChild(displacementTexture);
-
-		this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
-		displacementTexture.width = config.width;
-		displacementTexture.height = config.height;
-		displacementTexture.anchor.set(0.5,0.5);
-		displacementTexture.position.set(config.width / 2, config.height / 2);
+		//GLITCH 1
+		this.glitch2 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glitch2.jpg', config.width, config.height))
+		this.addChild(this.glitch2)
+		this.glitch2.width = config.width;
+		this.glitch2.height = config.width;
+		this.displacementFilterGlitch2 = new PIXI.filters.DisplacementFilter(this.glitch2);
 
 		//BLOOM
 		this.bloom = new PIXI.filters.BloomFilter();
@@ -77,23 +91,46 @@ export default class EffectLayer extends PIXI.Container{
 		this.shockwave.center.x = 0.5;
 		this.shockwave.center.y = 0.5;
 
-		this.filtersList = [this.rgpSplit, this.pixelate,  this.displacementFilter, this.displacementFilterGlitch1, this.bloom, this.shockwave];
-		this.filtersActives = [false, true,false,true, false];
+		this.filtersList = 
+		[this.rgpSplit,
+		this.pixelate,
+		this.displacementFilterGlitch2,
+		this.displacementFilterGlitch1,
+		this.bloom,
+		this.shockwave,
+		this.crossHatch,
+		this.invertFilter,
+		this.ascii,
+		this.gray,
+		this.blur];
+
+		this.filtersActives = [false, false,false,true, false, false, false, false, false, false, false];
 
 		this.updateFilters();
 		
-		this.ID_PIXELATE = 1;
 		this.ID_RGBSPLIT = 0;
-		this.ID_DISPLACEMENT = 2;
+		this.ID_PIXELATE = 1;
+		this.ID_GLITCH2 = 2;
 		this.ID_GLITCH1 = 3;
 		this.ID_BLOOM = 4;
 		this.ID_SHOCKWAVE = 5;
+		this.ID_CROSSHATCH = 6;
+		this.ID_INVERT = 7;
+		this.ID_ASCII = 8;
+		this.ID_GRAY = 9;
+		this.ID_BLUR = 10;
 
 		this.updatePixelate(config.pixelSize,config.pixelSize);
 
 	}
 	hideGreyShape(time, delay){
 		TweenLite.to(this.grey, time, {alpha:0, delay:delay});
+	}
+	removeAllFilters(){
+		for (var i = this.filtersActives.length - 1; i >= 0; i--) {
+			this.filtersActives[i] = false;
+		}
+		this.updateFilters();
 	}
 	updateFilters(){
 		var filtersToApply = [];
@@ -104,7 +141,61 @@ export default class EffectLayer extends PIXI.Container{
 			}
 		};
 		this.screenManager.filters = filtersToApply.length > 0?filtersToApply:null;
+		console.log(this.screenManager.filters);
 	}
+	removeBlur(){
+		this.filtersActives[this.ID_BLUR] = false;
+		this.updateFilters();
+	}
+	addBlur(){
+		this.filtersActives[this.ID_BLUR] = true;		
+		this.updateFilters();		
+	}
+	removeGlitch2(){
+		this.filtersActives[this.ID_GLITCH2] = false;
+		this.updateFilters();
+	}
+	addGlitch2(){
+		this.filtersActives[this.ID_GLITCH2] = true;		
+		this.updateFilters();		
+	}
+
+	removeGray(){
+		this.filtersActives[this.ID_GRAY] = false;
+		this.updateFilters();
+	}
+	addGray(){
+		this.filtersActives[this.ID_GRAY] = true;		
+		this.updateFilters();		
+	}
+
+	removeCrossHatch(){
+		this.filtersActives[this.ID_CROSSHATCH] = false;
+		this.updateFilters();
+	}
+	addCrossHatch(){
+		this.filtersActives[this.ID_CROSSHATCH] = true;		
+		this.updateFilters();		
+	}
+
+	removeInvert(){
+		this.filtersActives[this.ID_INVERT] = false;
+		this.updateFilters();
+	}
+	addInvert(){
+		this.filtersActives[this.ID_INVERT] = true;		
+		this.updateFilters();		
+	}
+
+	removeAscii(){
+		this.filtersActives[this.ID_ASCII] = false;
+		this.updateFilters();
+	}
+	addAscii(){
+		this.filtersActives[this.ID_ASCII] = true;		
+		this.updateFilters();		
+	}
+
 	removeBloom(){
 		this.filtersActives[this.ID_BLOOM] = false;
 		this.updateFilters();
