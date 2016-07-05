@@ -13,53 +13,61 @@ export default class GameScreen extends Screen{
 		super(label);
 
 		this.shapes = [
+		{shape:
 		[
 			[0,0,0,0],
 			[0,1,1,0],
 			[0,1,1,0],
 			[0,0,0,0],
-		],[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,1,0,0],
 			[0,0,1,0,0],
 			[0,0,1,0,0],
 			[0,0,1,0,0],
-		],
-		[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,1,0,0],
 			[0,0,1,0,0],
 			[0,1,1,0,0],
 			[0,0,0,0,0],
-		],
-		[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,1,0,0],
 			[0,0,1,0,0],
 			[0,0,1,1,0],
 			[0,0,0,0,0],
-		],
-		[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,0,0,0],
 			[0,0,1,1,0],
 			[0,1,1,0,0],
 			[0,0,0,0,0],
-		],
-		[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,0,0,0],
 			[0,1,1,0,0],
 			[0,0,1,1,0],
 			[0,0,0,0,0],
-		],
-		[
+		], type:"STANDARD"},
+		{shape:[
 			[0,0,0,0,0],
 			[0,0,0,0,0],
 			[0,0,1,0,0],
 			[0,1,1,1,0],
 			[0,0,0,0,0],			
-		],
+		], type:"STANDARD"},
+		{shape:[
+			[0,0,0,0,0],
+			[0,0,0,0,0],
+			[0,0,1,0,0],
+			[0,0,1,0,0],			
+		], type:"SHOOTER"},
 		]
 
 
@@ -99,6 +107,7 @@ export default class GameScreen extends Screen{
 	    this.background.drawRect( -100, -100, config.width + 200, config.height+ 200);
 		this.addChild(this.background);
 		
+		this.bulletList = [];
 		this.createParticles();
 
 		this.gameContainer = new PIXI.Container();
@@ -108,15 +117,44 @@ export default class GameScreen extends Screen{
 		
 
 		this.filterLabel = "JUST";
-		this.filterDescription = new PIXI.Text(this.filterLabel,{font : '70px super_smash_tvregular', fill : 0xBBBBBB, align : 'center'});
-		
-		this.initGame();
+		this.filterDescription = new PIXI.Text(this.filterLabel,{font : '50px super_smash_tvregular', fill : 0xBBBBBB, align : 'center'});
+		this.filterDescription.alpha = 0;
+
+		this.creatorLabel = new PIXI.Text('by Jeff Ramos',{font : '24px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.creatorLabel.interactive = true;
+		this.creatorLabel.buttonMode = true;
+		utils.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
+		this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
+		this.addChild(this.creatorLabel);
+		this.creatorLabel.position.x = config.width - this.creatorLabel.width;
+		this.creatorLabel.position.y = 20;
+		// config.effectsLayer.removePixelate();
+		// config.effectsLayer.shake(1,15,1);
+		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
+		// config.effectsLayer.shakeSplitter(1,10,1.8);
+		this.labelPoints = new PIXI.Text('000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.addChild(this.labelPoints);
+		this.labelPoints.position.x = config.width - this.labelPoints.width;
+		this.labelPoints.position.y = 80;
+		this.labelPoints.alpha = 0;
+
+		this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?',{font : '45px super_smash_tvregular', fill : 0xFFFFFF, align : 'center'});
+		this.addChild(this.labelTitle);
+		this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
+		this.labelTitle.position.y = 70;
+		this.labelTitle.alpha = 0;
+
+
 
 		this.addChild(this.gameContainer);
 		this.addChild(this.gameQueueContainer);
 		this.addChild(this.gameBorderContainer);
-		this.gameContainer.position.x = 50;//config.width / 2 - this.gameContainer.width / 1.5;
-		this.gameContainer.position.y = config.height / 2 - this.gameContainer.height / 2 + 100;
+
+		this.initGame();
+
+
+		this.gameContainer.position.x = config.width / 2 - this.gameContainer.width / 2;
+		this.gameContainer.position.y = config.height / 2 - this.gameContainer.height / 2 + 40;
 		
 		this.gameContainer.pivot.x = this.gameContainer.width / 2;
 		this.gameContainer.pivot.y = this.gameContainer.height / 2;
@@ -135,7 +173,7 @@ export default class GameScreen extends Screen{
 		this.gameBorderContainer.addChild(this.border);
 
 
-		let descriptionNext = new PIXI.Text('NEXT',{font : '44px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		let descriptionNext = new PIXI.Text('NEXT',{font : '40px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
 		this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 		this.gameQueueContainer.addChild(descriptionNext);
 		descriptionNext.position.x = 20;
@@ -148,27 +186,15 @@ export default class GameScreen extends Screen{
 
 		this.inputManager = new InputManager(this);
 		// config.effectsLayer.removeBloom();
-		setTimeout(function(){
-			config.effectsLayer.addRGBSplitter();
-		}.bind(this), 300);
+		// setTimeout(function(){
+		// 	config.effectsLayer.addRGBSplitter();
+		// }.bind(this), 300);
 
 
-		this.creatorLabel = new PIXI.Text('by Jeff Ramos',{font : '36px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-		this.creatorLabel.interactive = true;
-		this.creatorLabel.buttonMode = true;
-		utils.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
-		this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
-		this.addChild(this.creatorLabel);
-		this.creatorLabel.position.x = config.width - this.creatorLabel.width;
-		this.creatorLabel.position.y = 20;
-		// config.effectsLayer.removePixelate();
-		// config.effectsLayer.shake(1,15,1);
-		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
-		// config.effectsLayer.shakeSplitter(1,10,1.8);
-		this.labelPoints = new PIXI.Text('000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
-		this.addChild(this.labelPoints);
-		this.labelPoints.position.x = config.width - this.labelPoints.width;
-		this.labelPoints.position.y = 80;
+		
+
+
+		
 	}
 	drawShapeOnList(array){
 		let shape = new PIXI.Container();
@@ -236,7 +262,8 @@ export default class GameScreen extends Screen{
 		}
 		config.effectsLayer.filtersActives[this.ID_GLITCH1] = true;
 		config.effectsLayer.addRGBSplitter();
-		config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
+		config.effectsLayer.addPixelate();
+		// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
 
 		switch(nextID){
 			case 0:
@@ -325,6 +352,49 @@ export default class GameScreen extends Screen{
 	    return temp;
 	}
 
+	shoot(){
+		//this.bulletList = [];
+		let tempBullet = this.drawSquare(this.currentColor);
+		tempBullet.position.x = this.currentEntityList[this.currentEntityList.length - 1].x;
+		tempBullet.position.y = this.currentEntityList[this.currentEntityList.length - 1].y + config.pieceSize / 2;
+		this.gameContainer.addChild(tempBullet);
+		this.bulletList.push(tempBullet);
+		//let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + this.currentEntityList[0].y) / config.height;
+		//let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[0].x) / config.width;
+
+	}
+	updateBulletList(delta){
+		for (var i = this.bulletList.length - 1; i >= 0; i--) {
+			this.bulletList[i].position.y += delta * 400;
+			console.log(this.verifyBulletPosition());
+		}
+		if(this.currentShapeData && this.currentShapeData.type == "SHOOTER"){
+			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+				this.currentEntityList[i].tint = utils.getRandomValue(config.palette.colors80);
+			}
+		}
+	}
+	verifyBulletPosition(){		
+		let toRemove = [];
+		for (var i = this.bulletList.length - 1; i >= 0; i--) {	
+			let tempX = (this.bulletList[i].position.x / config.pieceSize);
+			let tempY = (this.bulletList[i].position.y / config.pieceSize);
+			let roundedY = Math.floor(tempY);
+			if(roundedY >= config.bounds.y - 1){
+				config.effectsLayer.shakeY(0.3,5,0.5);
+				this.addOnMatrix(true, this.bulletList[i]);
+				this.bulletList.splice(i,1);			
+				return true
+			}
+			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
+			if(matrixContent && matrixContent != 0){
+				config.effectsLayer.shakeY(0.3,5,0.5);
+				this.addOnMatrix(true, this.bulletList[i]);
+				this.bulletList.splice(i,1);
+				return true
+			}
+		}
+	}
 	rotatePiece(){
 		let minY = 99999;
 		let maxY = -99999;
@@ -351,7 +421,7 @@ export default class GameScreen extends Screen{
 
 		if(this.randomizeCrazy){
 			let id = Math.floor(Math.random()*this.shapes.length);
-			this.newEntity(this.shapes[id], {x:ajdustedPositionX, y:ajdustedPositionY}, true);
+			this.newEntity(this.shapes[id].shape, {x:ajdustedPositionX, y:ajdustedPositionY}, true);
 		}else{
 			this.newEntity(this.rotateMatrixRight(this.currentShape), {x:ajdustedPositionX, y:ajdustedPositionY});
 		}
@@ -370,13 +440,13 @@ export default class GameScreen extends Screen{
 				tempId = newId;
 				newId ++;
 			}
-			tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]]);
+			tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
 			this.shapeQueue.push(tempShape);
 			this.gameQueueContainer.addChild(tempShape);
-			tempShape.position.y = 130 * (i + 1);
+			tempShape.position.y = 110 * (i + 1);
 		}
 
-		this.gameQueueContainer.position.x = config.width  - 120;
+		this.gameQueueContainer.position.x = config.width  - 130;
 	}
 	getShape(){
 		this.shapeStep ++;
@@ -388,7 +458,8 @@ export default class GameScreen extends Screen{
 	newEntity(shapeArray, starterPosition, randomRotate){
 		this.currentEntityList = [];
 		if(!shapeArray){
-			this.currentShape = this.getShape();
+			this.currentShapeData = this.getShape();
+			this.currentShape = this.currentShapeData.shape;
 			this.updateQueue();
 		}else{
 			this.currentShape = shapeArray;
@@ -413,7 +484,13 @@ export default class GameScreen extends Screen{
 		for (var i = 0; i < this.currentShape.length; i++) {
 			for (var j = 0; j < this.currentShape[i].length; j++) {
 				if(this.currentShape[i][j]){
-					let currentEntity = this.drawSquare(this.currentColor);
+					let currentEntity;
+					if(this.currentShapeData.type == "SHOOTER"){
+						currentEntity = this.drawSquare(0xFFFFFF);
+					}
+					else{
+						currentEntity = this.drawSquare(this.currentColor);
+					}
 					currentEntity.position.x = starterXPosition + j * config.pieceSize;
 					currentEntity.position.y = i * config.pieceSize - (this.currentShape[i].length - 2) * config.pieceSize - config.pieceSize/2 + starterPosition.y;
 					this.currentEntityList.push(currentEntity);
@@ -495,7 +572,7 @@ export default class GameScreen extends Screen{
 		this.scoring = 0;
 		//force to reset filter
 		this.currentEffectID = 99999;
-		this.changeFilter();
+		// this.changeFilter();
 
 		for (var i = 100; i >= 0; i--) {
 			this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()))
@@ -505,20 +582,101 @@ export default class GameScreen extends Screen{
 		this.drawMatrix(config.pieceSize);
 		
 		this.updateQueue();
-		setTimeout(function(){
-			this.started = true;
-			this.downSpeedIncrease = 0;
-			this.newEntity();
-		}.bind(this), 300);
+		// setTimeout(function(){
+		// 	this.started = true;
+		// 	this.downSpeedIncrease = 0;
+		// 	this.newEntity();
+		// }.bind(this), 300);
 		
 		this.gameContainer.addChild(this.filterDescription);
+		this.gameQueueContainer.alpha = 0;
+		this.started = true;
+		this.showMenu();
 
 	}
+	setInGamePositions(){
+		if(this.menuContainer){
+			while(this.menuContainer.children.length){
+				this.menuContainer.removeChildAt(0);
+			}
+		}
+		TweenLite.to(this.gameContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameQueueContainer, 1, {alpha:1});
+		TweenLite.to(this.labelTitle, 0.15, {alpha:0});
+		TweenLite.to(this.labelPoints, 0.3, {alpha:1});
+		TweenLite.to(this.filterDescription, 0.3, {alpha:1});
+		// config.effectsLayer.updateRGBSplitter(1);
+		// TweenLite.to(this.labelPoints, 1, {alpha:1});
+		this.filterLabel = "JUST";
+		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
+		config.effectsLayer.fadeSplitter(1,1,0);
+		this.updateQueue();
+		setTimeout(function(){
+			this.started = true;
+			//this.showMenu();
+			this.downSpeedIncrease = 0;
+			this.newEntity();
+		}.bind(this), 500);
+
+		this.menuMode = false;
+	}
 	//reset timer
-	resetTimer(){
+	showMenu(){
+		this.menuMode = true;
+
+		if(this.menuContainer){
+			while(this.menuContainer.children.length){
+				this.menuContainer.removeChildAt(0);
+			}
+		}
+		this.menuContainer = new PIXI.Container();
+		this.gameContainer.addChild(this.menuContainer);
+		this.menuList = ["PLAY", "?????????", "?????????", "?????????", "?????????", "?????????"];
+		this.currentSelectedMenuItem = 0;
+		this.menuLabels = [];
+
+		for (var i = 0; i < this.menuList.length; i++) {
+
+			let menuLabel = new PIXI.Text(this.menuList[i],{font : '30px super_smash_tvregular', fill : 0xFFFFFF, align : 'center', wordWrap:true, wordWrapWidth:200});		
+
+			this.menuContainer.addChild(menuLabel)
+			menuLabel.position.y = i * 40 + 100;
+			menuLabel.position.x = this.gameContainer.width / 2 - menuLabel.width / 2;
+			this.menuLabels.push(menuLabel);
+		}
+
+		config.effectsLayer.removeBloom();
+		//config.effectsLayer.fadeSplitter(4,1,0);
+		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 2, 2, 0.5, false);
+		TweenLite.to(this.gameContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameQueueContainer, 0.3, {alpha:0});
+		TweenLite.to(this.filterDescription, 0.15, {alpha:0});
+		TweenLite.to(this.labelPoints, 0.15, {alpha:0});
+		TweenLite.to(this.labelTitle, 0.3, {alpha:1});
+		
+	}
+	updateMenu(){
+
+		this.labelTitle.text = this.shuffleText('Just a simple\nTETRIS?');
+
+		for (var i = this.menuLabels.length - 1; i >= 0; i--) {
+			if(this.currentSelectedMenuItem == i){
+				this.menuLabels[i].tint = this.currentColor;
+			}
+			else{
+				this.menuLabels[i].tint = 0xFFFFFF;
+			}
+		}
 	}
 	//end timer
-	endTimer(){
+	selectMenu(){
+		switch(this.currentSelectedMenuItem)
+		{
+			case 0:this.setInGamePositions();
+			break
+		}
 	}
 	//destroy game
 	destroyGame(){
@@ -568,7 +726,29 @@ export default class GameScreen extends Screen{
 		if(!this.started){
 			return;
 		}
-		if(type == "down"){
+		if(this.menuMode){
+			if(!this.inMenuKeyPressed){
+				return;
+			}
+			if(type == "up"){
+				this.currentSelectedMenuItem --;
+				if(this.currentSelectedMenuItem < 0){
+					this.currentSelectedMenuItem = this.menuLabels.length - 1;
+				}
+				config.effectsLayer.fadeSplitter(this.currentSelectedMenuItem,1,0);
+			}else if(type == "down"){
+				this.currentSelectedMenuItem ++;
+				if(this.currentSelectedMenuItem >= this.menuLabels.length){
+					this.currentSelectedMenuItem = 0;
+				}
+				config.effectsLayer.fadeSplitter(this.currentSelectedMenuItem,1,0);
+			}else if (type == "space"){
+				this.selectMenu();
+			}
+			this.updateMenu();
+			return;
+		}
+		if(type == "down" || type == "space"){
 			this.downSpeedIncrease = 0;
 		}
 	}
@@ -589,6 +769,10 @@ export default class GameScreen extends Screen{
 		if(!this.started){
 			return;
 		}
+		if(this.menuMode){
+			this.inMenuKeyPressed = true;
+			return;
+		}
 		if(!this.canMove(type)){
 			return;
 		}
@@ -597,11 +781,12 @@ export default class GameScreen extends Screen{
 				this.currentEntityList[i].position.x -= config.pieceSize;
 			}else if(type == "right"){
 				this.currentEntityList[i].position.x += config.pieceSize;
-			}else if(type == "down"){
+			}else if(type == "down" || type == "space"){
 				// this.currentEntityList[i].position.y += config.pieceSize / 2;
 				this.downSpeedIncrease = 200;
 			}
 		}
+		this.inMenuKeyPressed = false;
 		this.verifyPosition();
 	}
 	updateMove(){
@@ -616,6 +801,11 @@ export default class GameScreen extends Screen{
 	}
 	canMove(type) {
 		if(type == "up"){
+			if(this.currentShapeData.type == "SHOOTER"){
+				this.shoot();
+				return;
+			}
+
 			this.rotatePiece();				
 		}
 		else
@@ -751,15 +941,42 @@ export default class GameScreen extends Screen{
 			}
 		}
 	}
-	addOnMatrix(isColided) {
-		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
-			let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
-			let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
-			let roundedY = Math.ceil(tempY)
-			this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+	addOnMatrix(isColided, piece) {
+		if(this.currentShapeData.type == "SHOOTER" && !piece){
+			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+				this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
+
+			}
+
+			let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + this.currentEntityList[this.currentEntityList.length - 1].y) / config.height;
+			let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[this.currentEntityList.length - 1].x) / config.width;
+			config.effectsLayer.addShockwave(xNormal,yNormal,1);
+			config.effectsLayer.shakeX(0.5,5,0.5);
+			config.effectsLayer.shakeY(0.5,5,0.5);
+			config.effectsLayer.updateRGBSplitter(4);
+			config.effectsLayer.fadeSplitter(0,2,0);
+
+			this.border.tint = this.currentColor;
+			return;
 		}
-		if(isColided && this.updateVisibleParts()){
-			this.gameOver();
+		if(!piece){
+			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
+				let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
+				let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
+				let roundedY = Math.ceil(tempY)
+				this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+			}
+			if(isColided && this.updateVisibleParts()){
+				this.gameOver();
+			}
+		}else{
+			let tempX = (piece.position.x / config.pieceSize);
+			let tempY = (piece.position.y / config.pieceSize);
+			let roundedY = Math.ceil(tempY) - 1
+			piece.position.y = Math.floor(piece.position.y / config.pieceSize) * config.pieceSize;
+			piece.tint = this.currentColor;
+			this.gameMatrix[tempX][roundedY] = piece;
+			this.verifyLines();			
 		}
 		this.border.tint = this.currentColor;
 		
@@ -891,7 +1108,15 @@ export default class GameScreen extends Screen{
 			return;
 		}
 		this.updateParticles(delta);
+
+		if(this.menuMode){
+			this.updateMenu();
+			return;
+		}
+
+
 		this.gameCounter += delta;
+		this.updateBulletList(delta);
 		if(this.gameCounter > this.gameLevelSpeed){
 			this.updateMove();
 			this.gameCounter = 0;

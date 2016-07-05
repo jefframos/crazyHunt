@@ -37,9 +37,9 @@ export default class EffectLayer extends PIXI.Container{
 
 		//RGB SPLITTER
 		this.rgpSplit = new PIXI.filters.RGBSplitFilter();
-		this.rgpSplit.red = new PIXI.Point(1,1);
-		this.rgpSplit.green = new PIXI.Point(-1,-1);
-		this.rgpSplit.blue = new PIXI.Point(1,-1);
+		this.rgpSplit.red = new PIXI.Point(1.5,1.5);
+		this.rgpSplit.green = new PIXI.Point(-1.5,-1.5);
+		this.rgpSplit.blue = new PIXI.Point(1.5,-1.5);
 
 
 		//crosshatch
@@ -104,7 +104,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.gray,
 		this.blur];
 
-		this.filtersActives = [false, false,false,true, false, false, false, false, false, false, false];
+		this.filtersActives = [false, true,false,false, false, false, false, false, false, false, false];
 
 		this.updateFilters();
 		
@@ -131,6 +131,11 @@ export default class EffectLayer extends PIXI.Container{
 			this.filtersActives[i] = false;
 		}
 		this.updateFilters();
+	}
+	updateRGBSplitter(value){
+		this.rgpSplit.red = new PIXI.Point(value,value);
+		this.rgpSplit.green = new PIXI.Point(-value,-value);
+		this.rgpSplit.blue = new PIXI.Point(value,-value);
 	}
 	updateFilters(){
 		var filtersToApply = [];
@@ -206,6 +211,7 @@ export default class EffectLayer extends PIXI.Container{
 	}
 
 	removePixelate(){
+		console.log(removePixelate);
 		this.filtersActives[this.ID_PIXELATE] = false;
 		this.updateFilters();
 	}
@@ -218,6 +224,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.updateFilters();
 	}
 	addRGBSplitter(){
+		console.log(this);
 		this.filtersActives[this.ID_RGBSPLIT] = true;		
 		this.updateFilters();		
 	}
@@ -242,11 +249,22 @@ export default class EffectLayer extends PIXI.Container{
 	fadeBloom(initValue, endValue, time, delay, removeAfter){
 		this.addBloom();
 		this.bloom.blur = initValue;
+		TweenLite.killTweensOf(this.bloom);
 		if(removeAfter){
 			TweenLite.to(this.bloom, time, {delay:delay, blur:endValue, onComplete:this.removeBloom, onCompleteScope: this});
 		}else{
 			TweenLite.to(this.bloom, time, {delay:delay, blur:endValue});
 		}
+	}
+	fadeSplitter(endValue, time, delay){
+		this.addRGBSplitter();
+		TweenLite.killTweensOf(this.rgpSplit.red);
+		TweenLite.killTweensOf(this.rgpSplit.green);
+		TweenLite.killTweensOf(this.rgpSplit.blue);
+
+		TweenLite.to(this.rgpSplit.red, time, {delay:delay, x:endValue, y:endValue});
+		TweenLite.to(this.rgpSplit.green, time, {delay:delay, x:-endValue, y:-endValue});
+		TweenLite.to(this.rgpSplit.blue, time, {delay:delay, x:endValue, y:-endValue});
 	}
 	shakeSplitter(force, steps, time, removeAfter){
 		this.filtersActives[this.ID_RGBSPLIT] = true;		

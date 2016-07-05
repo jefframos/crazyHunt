@@ -29808,11 +29808,11 @@
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(152);
+	var _InitScreen = __webpack_require__(146);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(153);
+	var _ScreenManager = __webpack_require__(149);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
@@ -29896,13 +29896,13 @@
 		width: 414,
 		height: 736,
 		bounds: { x: 10, y: 20 },
-		squareSize: 30,
+		squareSize: 20,
 		hitCorrection: { x: 20, y: 50 },
 		buttonRadius: 30,
 		debugAlpha: 0,
 		isJuicy: 1,
-		pixelSize: 4,
-		pieceSize: 24,
+		pixelSize: 2,
+		pieceSize: 22,
 		hardcore: false,
 		webgl: true,
 		currentLevel: 0,
@@ -30085,9 +30085,9 @@
 	
 			//RGB SPLITTER
 			_this.rgpSplit = new _pixi2.default.filters.RGBSplitFilter();
-			_this.rgpSplit.red = new _pixi2.default.Point(1, 1);
-			_this.rgpSplit.green = new _pixi2.default.Point(-1, -1);
-			_this.rgpSplit.blue = new _pixi2.default.Point(1, -1);
+			_this.rgpSplit.red = new _pixi2.default.Point(1.5, 1.5);
+			_this.rgpSplit.green = new _pixi2.default.Point(-1.5, -1.5);
+			_this.rgpSplit.blue = new _pixi2.default.Point(1.5, -1.5);
 	
 			//crosshatch
 			_this.crossHatch = new _pixi2.default.filters.CrossHatchFilter();
@@ -30139,7 +30139,7 @@
 	
 			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilterGlitch2, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave, _this.crossHatch, _this.invertFilter, _this.ascii, _this.gray, _this.blur];
 	
-			_this.filtersActives = [false, false, false, true, false, false, false, false, false, false, false];
+			_this.filtersActives = [false, true, false, false, false, false, false, false, false, false, false];
 	
 			_this.updateFilters();
 	
@@ -30172,6 +30172,13 @@
 					this.filtersActives[i] = false;
 				}
 				this.updateFilters();
+			}
+		}, {
+			key: 'updateRGBSplitter',
+			value: function updateRGBSplitter(value) {
+				this.rgpSplit.red = new _pixi2.default.Point(value, value);
+				this.rgpSplit.green = new _pixi2.default.Point(-value, -value);
+				this.rgpSplit.blue = new _pixi2.default.Point(value, -value);
 			}
 		}, {
 			key: 'updateFilters',
@@ -30272,10 +30279,21 @@
 			}
 		}, {
 			key: 'removePixelate',
-			value: function removePixelate() {
+			value: function (_removePixelate) {
+				function removePixelate() {
+					return _removePixelate.apply(this, arguments);
+				}
+	
+				removePixelate.toString = function () {
+					return _removePixelate.toString();
+				};
+	
+				return removePixelate;
+			}(function () {
+				console.log(removePixelate);
 				this.filtersActives[this.ID_PIXELATE] = false;
 				this.updateFilters();
-			}
+			})
 		}, {
 			key: 'addPixelate',
 			value: function addPixelate() {
@@ -30291,6 +30309,7 @@
 		}, {
 			key: 'addRGBSplitter',
 			value: function addRGBSplitter() {
+				console.log(this);
 				this.filtersActives[this.ID_RGBSPLIT] = true;
 				this.updateFilters();
 			}
@@ -30322,11 +30341,24 @@
 			value: function fadeBloom(initValue, endValue, time, delay, removeAfter) {
 				this.addBloom();
 				this.bloom.blur = initValue;
+				_gsap2.default.killTweensOf(this.bloom);
 				if (removeAfter) {
 					_gsap2.default.to(this.bloom, time, { delay: delay, blur: endValue, onComplete: this.removeBloom, onCompleteScope: this });
 				} else {
 					_gsap2.default.to(this.bloom, time, { delay: delay, blur: endValue });
 				}
+			}
+		}, {
+			key: 'fadeSplitter',
+			value: function fadeSplitter(endValue, time, delay) {
+				this.addRGBSplitter();
+				_gsap2.default.killTweensOf(this.rgpSplit.red);
+				_gsap2.default.killTweensOf(this.rgpSplit.green);
+				_gsap2.default.killTweensOf(this.rgpSplit.blue);
+	
+				_gsap2.default.to(this.rgpSplit.red, time, { delay: delay, x: endValue, y: endValue });
+				_gsap2.default.to(this.rgpSplit.green, time, { delay: delay, x: -endValue, y: -endValue });
+				_gsap2.default.to(this.rgpSplit.blue, time, { delay: delay, x: endValue, y: -endValue });
 			}
 		}, {
 			key: 'shakeSplitter',
@@ -38214,7 +38246,7 @@
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _InputManager = __webpack_require__(146);
+	var _InputManager = __webpack_require__(150);
 	
 	var _InputManager2 = _interopRequireDefault(_InputManager);
 	
@@ -38226,15 +38258,15 @@
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
-	var _Line = __webpack_require__(149);
+	var _Line = __webpack_require__(151);
 	
 	var _Line2 = _interopRequireDefault(_Line);
 	
-	var _PauseContainer = __webpack_require__(150);
+	var _PauseContainer = __webpack_require__(152);
 	
 	var _PauseContainer2 = _interopRequireDefault(_PauseContainer);
 	
-	var _EndContainer = __webpack_require__(151);
+	var _EndContainer = __webpack_require__(153);
 	
 	var _EndContainer2 = _interopRequireDefault(_EndContainer);
 	
@@ -38254,7 +38286,7 @@
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameScreen).call(this, label));
 	
-			_this.shapes = [[[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]];
+			_this.shapes = [{ shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER" }];
 	
 			return _this;
 		}
@@ -38297,6 +38329,7 @@
 				this.background.drawRect(-100, -100, _config2.default.width + 200, _config2.default.height + 200);
 				this.addChild(this.background);
 	
+				this.bulletList = [];
 				this.createParticles();
 	
 				this.gameContainer = new _pixi2.default.Container();
@@ -38305,15 +38338,41 @@
 				this.gameMatrix = [];
 	
 				this.filterLabel = "JUST";
-				this.filterDescription = new _pixi2.default.Text(this.filterLabel, { font: '70px super_smash_tvregular', fill: 0xBBBBBB, align: 'center' });
+				this.filterDescription = new _pixi2.default.Text(this.filterLabel, { font: '50px super_smash_tvregular', fill: 0xBBBBBB, align: 'center' });
+				this.filterDescription.alpha = 0;
 	
-				this.initGame();
+				this.creatorLabel = new _pixi2.default.Text('by Jeff Ramos', { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.creatorLabel.interactive = true;
+				this.creatorLabel.buttonMode = true;
+				_utils2.default.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
+				this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
+				this.addChild(this.creatorLabel);
+				this.creatorLabel.position.x = _config2.default.width - this.creatorLabel.width;
+				this.creatorLabel.position.y = 20;
+				// config.effectsLayer.removePixelate();
+				// config.effectsLayer.shake(1,15,1);
+				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
+				// config.effectsLayer.shakeSplitter(1,10,1.8);
+				this.labelPoints = new _pixi2.default.Text('000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.addChild(this.labelPoints);
+				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
+				this.labelPoints.position.y = 80;
+				this.labelPoints.alpha = 0;
+	
+				this.labelTitle = new _pixi2.default.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+				this.addChild(this.labelTitle);
+				this.labelTitle.position.x = _config2.default.width / 2 - this.labelTitle.width / 2;
+				this.labelTitle.position.y = 70;
+				this.labelTitle.alpha = 0;
 	
 				this.addChild(this.gameContainer);
 				this.addChild(this.gameQueueContainer);
 				this.addChild(this.gameBorderContainer);
-				this.gameContainer.position.x = 50; //config.width / 2 - this.gameContainer.width / 1.5;
-				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2 + 100;
+	
+				this.initGame();
+	
+				this.gameContainer.position.x = _config2.default.width / 2 - this.gameContainer.width / 2;
+				this.gameContainer.position.y = _config2.default.height / 2 - this.gameContainer.height / 2 + 40;
 	
 				this.gameContainer.pivot.x = this.gameContainer.width / 2;
 				this.gameContainer.pivot.y = this.gameContainer.height / 2;
@@ -38330,7 +38389,7 @@
 	
 				this.gameBorderContainer.addChild(this.border);
 	
-				var descriptionNext = new _pixi2.default.Text('NEXT', { font: '44px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				var descriptionNext = new _pixi2.default.Text('NEXT', { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 				this.gameQueueContainer.addChild(descriptionNext);
 				descriptionNext.position.x = 20;
@@ -38342,26 +38401,9 @@
 	
 				this.inputManager = new _InputManager2.default(this);
 				// config.effectsLayer.removeBloom();
-				setTimeout(function () {
-					_config2.default.effectsLayer.addRGBSplitter();
-				}.bind(this), 300);
-	
-				this.creatorLabel = new _pixi2.default.Text('by Jeff Ramos', { font: '36px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.creatorLabel.interactive = true;
-				this.creatorLabel.buttonMode = true;
-				_utils2.default.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
-				this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
-				this.addChild(this.creatorLabel);
-				this.creatorLabel.position.x = _config2.default.width - this.creatorLabel.width;
-				this.creatorLabel.position.y = 20;
-				// config.effectsLayer.removePixelate();
-				// config.effectsLayer.shake(1,15,1);
-				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
-				// config.effectsLayer.shakeSplitter(1,10,1.8);
-				this.labelPoints = new _pixi2.default.Text('000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.addChild(this.labelPoints);
-				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
-				this.labelPoints.position.y = 80;
+				// setTimeout(function(){
+				// 	config.effectsLayer.addRGBSplitter();
+				// }.bind(this), 300);
 			}
 		}, {
 			key: 'drawShapeOnList',
@@ -38433,7 +38475,8 @@
 				}
 				_config2.default.effectsLayer.filtersActives[this.ID_GLITCH1] = true;
 				_config2.default.effectsLayer.addRGBSplitter();
-				_config2.default.effectsLayer.updatePixelate(_config2.default.pixelSize, _config2.default.pixelSize);
+				_config2.default.effectsLayer.addPixelate();
+				// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
 	
 				switch (nextID) {
 					case 0:
@@ -38526,6 +38569,54 @@
 				return temp;
 			}
 		}, {
+			key: 'shoot',
+			value: function shoot() {
+				//this.bulletList = [];
+				var tempBullet = this.drawSquare(this.currentColor);
+				tempBullet.position.x = this.currentEntityList[this.currentEntityList.length - 1].x;
+				tempBullet.position.y = this.currentEntityList[this.currentEntityList.length - 1].y + _config2.default.pieceSize / 2;
+				this.gameContainer.addChild(tempBullet);
+				this.bulletList.push(tempBullet);
+				//let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + this.currentEntityList[0].y) / config.height;
+				//let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[0].x) / config.width;
+			}
+		}, {
+			key: 'updateBulletList',
+			value: function updateBulletList(delta) {
+				for (var i = this.bulletList.length - 1; i >= 0; i--) {
+					this.bulletList[i].position.y += delta * 400;
+					console.log(this.verifyBulletPosition());
+				}
+				if (this.currentShapeData && this.currentShapeData.type == "SHOOTER") {
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						this.currentEntityList[i].tint = _utils2.default.getRandomValue(_config2.default.palette.colors80);
+					}
+				}
+			}
+		}, {
+			key: 'verifyBulletPosition',
+			value: function verifyBulletPosition() {
+				var toRemove = [];
+				for (var i = this.bulletList.length - 1; i >= 0; i--) {
+					var tempX = this.bulletList[i].position.x / _config2.default.pieceSize;
+					var tempY = this.bulletList[i].position.y / _config2.default.pieceSize;
+					var roundedY = Math.floor(tempY);
+					if (roundedY >= _config2.default.bounds.y - 1) {
+						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+						this.addOnMatrix(true, this.bulletList[i]);
+						this.bulletList.splice(i, 1);
+						return true;
+					}
+					var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
+					if (matrixContent && matrixContent != 0) {
+						_config2.default.effectsLayer.shakeY(0.3, 5, 0.5);
+						this.addOnMatrix(true, this.bulletList[i]);
+						this.bulletList.splice(i, 1);
+						return true;
+					}
+				}
+			}
+		}, {
 			key: 'rotatePiece',
 			value: function rotatePiece() {
 				var minY = 99999;
@@ -38553,7 +38644,7 @@
 	
 				if (this.randomizeCrazy) {
 					var id = Math.floor(Math.random() * this.shapes.length);
-					this.newEntity(this.shapes[id], { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+					this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
 				} else {
 					this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
 				}
@@ -38574,13 +38665,13 @@
 						tempId = newId;
 						newId++;
 					}
-					tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]]);
+					tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
-					tempShape.position.y = 130 * (i + 1);
+					tempShape.position.y = 110 * (i + 1);
 				}
 	
-				this.gameQueueContainer.position.x = _config2.default.width - 120;
+				this.gameQueueContainer.position.x = _config2.default.width - 130;
 			}
 		}, {
 			key: 'getShape',
@@ -38596,7 +38687,8 @@
 			value: function newEntity(shapeArray, starterPosition, randomRotate) {
 				this.currentEntityList = [];
 				if (!shapeArray) {
-					this.currentShape = this.getShape();
+					this.currentShapeData = this.getShape();
+					this.currentShape = this.currentShapeData.shape;
 					this.updateQueue();
 				} else {
 					this.currentShape = shapeArray;
@@ -38621,7 +38713,12 @@
 				for (var i = 0; i < this.currentShape.length; i++) {
 					for (var j = 0; j < this.currentShape[i].length; j++) {
 						if (this.currentShape[i][j]) {
-							var currentEntity = this.drawSquare(this.currentColor);
+							var currentEntity = void 0;
+							if (this.currentShapeData.type == "SHOOTER") {
+								currentEntity = this.drawSquare(0xFFFFFF);
+							} else {
+								currentEntity = this.drawSquare(this.currentColor);
+							}
 							currentEntity.position.x = starterXPosition + j * _config2.default.pieceSize;
 							currentEntity.position.y = i * _config2.default.pieceSize - (this.currentShape[i].length - 2) * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
 							this.currentEntityList.push(currentEntity);
@@ -38712,7 +38809,7 @@
 				this.scoring = 0;
 				//force to reset filter
 				this.currentEffectID = 99999;
-				this.changeFilter();
+				// this.changeFilter();
 	
 				for (var i = 100; i >= 0; i--) {
 					this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()));
@@ -38722,24 +38819,109 @@
 				this.drawMatrix(_config2.default.pieceSize);
 	
 				this.updateQueue();
-				setTimeout(function () {
-					this.started = true;
-					this.downSpeedIncrease = 0;
-					this.newEntity();
-				}.bind(this), 300);
+				// setTimeout(function(){
+				// 	this.started = true;
+				// 	this.downSpeedIncrease = 0;
+				// 	this.newEntity();
+				// }.bind(this), 300);
 	
 				this.gameContainer.addChild(this.filterDescription);
+				this.gameQueueContainer.alpha = 0;
+				this.started = true;
+				this.showMenu();
+			}
+		}, {
+			key: 'setInGamePositions',
+			value: function setInGamePositions() {
+				if (this.menuContainer) {
+					while (this.menuContainer.children.length) {
+						this.menuContainer.removeChildAt(0);
+					}
+				}
+				_gsap2.default.to(this.gameContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameQueueContainer, 1, { alpha: 1 });
+				_gsap2.default.to(this.labelTitle, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelPoints, 0.3, { alpha: 1 });
+				_gsap2.default.to(this.filterDescription, 0.3, { alpha: 1 });
+				// config.effectsLayer.updateRGBSplitter(1);
+				// TweenLite.to(this.labelPoints, 1, {alpha:1});
+				this.filterLabel = "JUST";
+				//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
+				_config2.default.effectsLayer.fadeSplitter(1, 1, 0);
+				this.updateQueue();
+				setTimeout(function () {
+					this.started = true;
+					//this.showMenu();
+					this.downSpeedIncrease = 0;
+					this.newEntity();
+				}.bind(this), 500);
+	
+				this.menuMode = false;
 			}
 			//reset timer
 	
 		}, {
-			key: 'resetTimer',
-			value: function resetTimer() {}
+			key: 'showMenu',
+			value: function showMenu() {
+				this.menuMode = true;
+	
+				if (this.menuContainer) {
+					while (this.menuContainer.children.length) {
+						this.menuContainer.removeChildAt(0);
+					}
+				}
+				this.menuContainer = new _pixi2.default.Container();
+				this.gameContainer.addChild(this.menuContainer);
+				this.menuList = ["PLAY", "?????????", "?????????", "?????????", "?????????", "?????????"];
+				this.currentSelectedMenuItem = 0;
+				this.menuLabels = [];
+	
+				for (var i = 0; i < this.menuList.length; i++) {
+	
+					var menuLabel = new _pixi2.default.Text(this.menuList[i], { font: '30px super_smash_tvregular', fill: 0xFFFFFF, align: 'center', wordWrap: true, wordWrapWidth: 200 });
+	
+					this.menuContainer.addChild(menuLabel);
+					menuLabel.position.y = i * 40 + 100;
+					menuLabel.position.x = this.gameContainer.width / 2 - menuLabel.width / 2;
+					this.menuLabels.push(menuLabel);
+				}
+	
+				_config2.default.effectsLayer.removeBloom();
+				//config.effectsLayer.fadeSplitter(4,1,0);
+				//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 2, 2, 0.5, false);
+				_gsap2.default.to(this.gameContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameQueueContainer, 0.3, { alpha: 0 });
+				_gsap2.default.to(this.filterDescription, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelPoints, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelTitle, 0.3, { alpha: 1 });
+			}
+		}, {
+			key: 'updateMenu',
+			value: function updateMenu() {
+	
+				this.labelTitle.text = this.shuffleText('Just a simple\nTETRIS?');
+	
+				for (var i = this.menuLabels.length - 1; i >= 0; i--) {
+					if (this.currentSelectedMenuItem == i) {
+						this.menuLabels[i].tint = this.currentColor;
+					} else {
+						this.menuLabels[i].tint = 0xFFFFFF;
+					}
+				}
+			}
 			//end timer
 	
 		}, {
-			key: 'endTimer',
-			value: function endTimer() {}
+			key: 'selectMenu',
+			value: function selectMenu() {
+				switch (this.currentSelectedMenuItem) {
+					case 0:
+						this.setInGamePositions();
+						break;
+				}
+			}
 			//destroy game
 	
 		}, {
@@ -38799,7 +38981,29 @@
 				if (!this.started) {
 					return;
 				}
-				if (type == "down") {
+				if (this.menuMode) {
+					if (!this.inMenuKeyPressed) {
+						return;
+					}
+					if (type == "up") {
+						this.currentSelectedMenuItem--;
+						if (this.currentSelectedMenuItem < 0) {
+							this.currentSelectedMenuItem = this.menuLabels.length - 1;
+						}
+						_config2.default.effectsLayer.fadeSplitter(this.currentSelectedMenuItem, 1, 0);
+					} else if (type == "down") {
+						this.currentSelectedMenuItem++;
+						if (this.currentSelectedMenuItem >= this.menuLabels.length) {
+							this.currentSelectedMenuItem = 0;
+						}
+						_config2.default.effectsLayer.fadeSplitter(this.currentSelectedMenuItem, 1, 0);
+					} else if (type == "space") {
+						this.selectMenu();
+					}
+					this.updateMenu();
+					return;
+				}
+				if (type == "down" || type == "space") {
 					this.downSpeedIncrease = 0;
 				}
 			}
@@ -38824,6 +39028,10 @@
 				if (!this.started) {
 					return;
 				}
+				if (this.menuMode) {
+					this.inMenuKeyPressed = true;
+					return;
+				}
 				if (!this.canMove(type)) {
 					return;
 				}
@@ -38832,11 +39040,12 @@
 						this.currentEntityList[i].position.x -= _config2.default.pieceSize;
 					} else if (type == "right") {
 						this.currentEntityList[i].position.x += _config2.default.pieceSize;
-					} else if (type == "down") {
+					} else if (type == "down" || type == "space") {
 						// this.currentEntityList[i].position.y += config.pieceSize / 2;
 						this.downSpeedIncrease = 200;
 					}
 				}
+				this.inMenuKeyPressed = false;
 				this.verifyPosition();
 			}
 		}, {
@@ -38855,6 +39064,11 @@
 			key: 'canMove',
 			value: function canMove(type) {
 				if (type == "up") {
+					if (this.currentShapeData.type == "SHOOTER") {
+						this.shoot();
+						return;
+					}
+	
 					this.rotatePiece();
 				} else {
 					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
@@ -38997,15 +39211,41 @@
 			}
 		}, {
 			key: 'addOnMatrix',
-			value: function addOnMatrix(isColided) {
-				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-					var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
-					var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
-					var roundedY = Math.ceil(tempY);
-					this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+			value: function addOnMatrix(isColided, piece) {
+				if (this.currentShapeData.type == "SHOOTER" && !piece) {
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
+					}
+	
+					var yNormal = (this.gameContainer.position.y - this.gameContainer.pivot.y + this.currentEntityList[this.currentEntityList.length - 1].y) / _config2.default.height;
+					var xNormal = (this.gameContainer.position.x - this.gameContainer.pivot.x + this.currentEntityList[this.currentEntityList.length - 1].x) / _config2.default.width;
+					_config2.default.effectsLayer.addShockwave(xNormal, yNormal, 1);
+					_config2.default.effectsLayer.shakeX(0.5, 5, 0.5);
+					_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
+					_config2.default.effectsLayer.updateRGBSplitter(4);
+					_config2.default.effectsLayer.fadeSplitter(0, 2, 0);
+	
+					this.border.tint = this.currentColor;
+					return;
 				}
-				if (isColided && this.updateVisibleParts()) {
-					this.gameOver();
+				if (!piece) {
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						var tempX = this.currentEntityList[i].position.x / _config2.default.pieceSize;
+						var tempY = this.currentEntityList[i].position.y / _config2.default.pieceSize;
+						var roundedY = Math.ceil(tempY);
+						this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+					}
+					if (isColided && this.updateVisibleParts()) {
+						this.gameOver();
+					}
+				} else {
+					var _tempX = piece.position.x / _config2.default.pieceSize;
+					var _tempY = piece.position.y / _config2.default.pieceSize;
+					var _roundedY = Math.ceil(_tempY) - 1;
+					piece.position.y = Math.floor(piece.position.y / _config2.default.pieceSize) * _config2.default.pieceSize;
+					piece.tint = this.currentColor;
+					this.gameMatrix[_tempX][_roundedY] = piece;
+					this.verifyLines();
 				}
 				this.border.tint = this.currentColor;
 	
@@ -39152,7 +39392,14 @@
 					return;
 				}
 				this.updateParticles(delta);
+	
+				if (this.menuMode) {
+					this.updateMenu();
+					return;
+				}
+	
 				this.gameCounter += delta;
+				this.updateBulletList(delta);
 				if (this.gameCounter > this.gameLevelSpeed) {
 					this.updateMove();
 					this.gameCounter = 0;
@@ -39177,652 +39424,6 @@
 
 /***/ },
 /* 146 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var InputManager = function () {
-		function InputManager(game) {
-			var _this = this;
-	
-			_classCallCheck(this, InputManager);
-	
-			this.game = game;
-			document.addEventListener('keydown', function (event) {
-				_this.getKey(event);
-				event.preventDefault();
-			});
-	
-			document.addEventListener('keyup', function (event) {
-				_this.getUpKey(event);
-				event.preventDefault();
-			});
-			//document.body.on('keydown', this.getKey.bind(this));		
-		}
-	
-		//
-	
-	
-		_createClass(InputManager, [{
-			key: 'getKey',
-			value: function getKey(e) {
-				//   	if(e.keyCode === 87 || e.keyCode === 38){
-				// 	this.game.updateAction('up');
-				// }
-				if (e.keyCode === 83 || e.keyCode === 40) {
-					this.game.updateAction('down');
-				} else if (e.keyCode === 65 || e.keyCode === 37) {
-					this.game.updateAction('left');
-				} else if (e.keyCode === 68 || e.keyCode === 39) {
-					this.game.updateAction('right');
-				} else if (e.keyCode === 32) {
-					// this.game.changeFilter();
-					this.game.updateAction('down');
-				}
-			}
-		}, {
-			key: 'getUpKey',
-			value: function getUpKey(e) {
-				//   	if(e.keyCode === 83 || e.keyCode === 40){
-				// 	this.game.stopAction('down');
-				// }
-				if (e.keyCode === 83 || e.keyCode === 40 || e.keyCode === 32) {
-					this.game.stopAction('down');
-				}
-				if (e.keyCode === 87 || e.keyCode === 38) {
-					this.game.updateAction('up');
-				}
-			}
-		}]);
-	
-		return InputManager;
-	}();
-	
-	exports.default = InputManager;
-
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _config = __webpack_require__(140);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-	  getRandomValue: function getRandomValue(array, exception) {
-	    var value = array[Math.floor(Math.random() * array.length)];
-	    if (exception) {
-	      var equal = true;
-	      while (equal) {
-	        equal = false;
-	        for (var i = 0; i < exception.length; i++) {
-	          if (exception[i] == value) {
-	            equal = true;
-	          }
-	        }
-	        if (equal) {
-	          value = array[Math.floor(Math.random() * array.length)];
-	        }
-	      }
-	    }
-	    return value;
-	  },
-	  correctPosition: function correctPosition(element) {
-	    var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    element.position.x = x;
-	    element.position.y = y;
-	  },
-	  setGameScreen80: function setGameScreen80(color) {
-	    _config2.default.palette.gameScreen80 = color;
-	  },
-	  setInitScreen80: function setInitScreen80(color) {
-	    _config2.default.palette.initScreen80 = color;
-	  },
-	  applyPositionCorrection: function applyPositionCorrection(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    element.position.x += _config2.default.hitCorrection.x;
-	    element.position.y += _config2.default.hitCorrection.y;
-	  },
-	  addToContainer: function addToContainer(element) {
-	    var elementContainer = new PIXI.Container();
-	    elementContainer.addChild(element);
-	    return elementContainer;
-	  },
-	  centerPivot: function centerPivot(element) {
-	    element.pivot.x = element.width / 2;
-	    element.pivot.y = element.height / 2;
-	    element.position.x += element.width / 2;
-	    element.position.y += element.height / 2;
-	  },
-	  addMockRect: function addMockRect(element, width, height) {
-	    var fake = new PIXI.Graphics();
-	    fake.beginFill(0);
-	    fake.drawRect(-width, -height, width * 2, height * 2);
-	    fake.alpha = 0;
-	    element.addChild(fake);
-	  },
-	  addMockObject: function addMockObject(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    var alphaBG2 = new PIXI.Graphics();
-	    alphaBG2.beginFill(0);
-	    alphaBG2.drawRect(-element.width / 2, -element.height / 2, element.width, element.height);
-	    alphaBG2.position.x -= _config2.default.hitCorrection.x;
-	    alphaBG2.position.y -= _config2.default.hitCorrection.y;
-	    alphaBG2.alpha = _config2.default.debugMockobjectsAlpha;
-	    element.addChild(alphaBG2);
-	  }
-	};
-
-/***/ },
-/* 148 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Screen = function (_PIXI$Container) {
-		_inherits(Screen, _PIXI$Container);
-	
-		function Screen(label) {
-			_classCallCheck(this, Screen);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Screen).call(this));
-	
-			_this.label = label;
-			_this.entityList = [];
-			_this.updateable = false;
-			_this.nextScreen;
-			_this.screenManager;
-			_this.built;
-			return _this;
-		}
-		//add here the entities to easily remove after by parameter "kill"
-	
-	
-		_createClass(Screen, [{
-			key: 'addChild',
-			value: function addChild(entity) {
-				_get(Object.getPrototypeOf(Screen.prototype), 'addChild', this).call(this, entity);
-				this.entityList.push(entity);
-			}
-			//if the element is inside another, put here to force updates on the screen
-	
-		}, {
-			key: 'addOnUpdateList',
-			value: function addOnUpdateList(entity) {
-				for (var i = 0; i < this.entityList.length; i++) {
-					if (this.entityList[i] == entity) {
-						return;
-					}
-				}
-				this.entityList.push(entity);
-			}
-			//update all childs
-	
-		}, {
-			key: 'update',
-			value: function update(delta) {
-				if (!this.updateable) {
-					return;
-				}
-				for (var i = 0; i < this.entityList.length; i++) {
-					if (this.entityList[i].update) {
-						this.entityList[i].update(delta);
-					}
-				}
-				for (var _i = 0; _i < this.entityList.length; _i++) {
-					if (this.entityList[_i].kill) {
-						if (this.entityList[_i].parent) {
-							this.entityList[_i].parent.removeChild(this.entityList[_i]);
-						}
-						this.entityList.splice(_i, 1);
-					}
-				}
-			}
-		}, {
-			key: 'destroy',
-			value: function destroy() {
-				this.built = false;
-				if (this.entityList) {
-					for (var i = 0; i < this.entityList.length; i++) {
-						if (this.entityList[i].parent) {
-							this.entityList[i].parent.removeChild(this.entityList[i]);
-						}
-					}
-				}
-				this.entityList = [];
-			}
-		}, {
-			key: 'build',
-			value: function build() {
-				this.built = true;
-			}
-		}, {
-			key: 'transitionIn',
-			value: function transitionIn() {
-				this.updateable = true;
-				this.endTransitionIn();
-			}
-		}, {
-			key: 'endTransitionIn',
-			value: function endTransitionIn() {}
-		}, {
-			key: 'transitionOut',
-			value: function transitionOut(nextScreen) {
-				this.nextScreen = nextScreen;
-				this.endTransitionOut();
-			}
-		}, {
-			key: 'endTransitionOut',
-			value: function endTransitionOut() {
-				this.updateable = false;
-				this.screenManager.forceChange(this.nextScreen.label);
-				this.destroy();
-			}
-		}]);
-	
-		return Screen;
-	}(_pixi2.default.Container);
-	
-	exports.default = Screen;
-
-/***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	var _config = __webpack_require__(140);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	var _gsap = __webpack_require__(143);
-	
-	var _gsap2 = _interopRequireDefault(_gsap);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Line = function (_PIXI$Container) {
-		_inherits(Line, _PIXI$Container);
-	
-		function Line(speed) {
-			_classCallCheck(this, Line);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Line).call(this));
-	
-			_this.speed = speed;
-			_this.line = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/line.png'));
-			_this.addChild(_this.line);
-			return _this;
-		}
-	
-		_createClass(Line, [{
-			key: 'update',
-			value: function update(delta) {
-				this.position.y += this.speed;
-	
-				if (this.position.y > _config2.default.height) {
-					this.kill = true;
-				}
-			}
-		}]);
-	
-		return Line;
-	}(_pixi2.default.Container);
-	
-	exports.default = Line;
-
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	var _config = __webpack_require__(140);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	var _utils = __webpack_require__(147);
-	
-	var _utils2 = _interopRequireDefault(_utils);
-	
-	var _gsap = __webpack_require__(143);
-	
-	var _gsap2 = _interopRequireDefault(_gsap);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var PauseContainer = function (_PIXI$Container) {
-		_inherits(PauseContainer, _PIXI$Container);
-	
-		function PauseContainer(screen) {
-			_classCallCheck(this, PauseContainer);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PauseContainer).call(this));
-	
-			_this.screen = screen;
-			var buttonDistance = 65;
-			var continueButtonConfig = _this.createButton("CONTINUE");
-			_this.continueButton = continueButtonConfig.button;
-			_this.addChild(_this.continueButton);
-			_this.continueButton.position.set(_config2.default.width / 2 - continueButtonConfig.size.width / 2, _config2.default.height / 2 + continueButtonConfig.size.height / 2);
-	
-			var reestartButtonConfig = _this.createButton("RESTART");
-			_this.reestartButton = reestartButtonConfig.button;
-			_this.addChild(_this.reestartButton);
-			_this.reestartButton.position.set(_config2.default.width / 2 - reestartButtonConfig.size.width / 2, _this.continueButton.position.y + buttonDistance);
-	
-			var backButtonConfig = _this.createButton("BACK");
-			_this.backButton = backButtonConfig.button;
-			_this.addChild(_this.backButton);
-			_this.backButton.position.set(_config2.default.width / 2 - backButtonConfig.size.width / 2, _this.reestartButton.position.y + buttonDistance);
-			// utils.applyPositionCorrection(this);
-			return _this;
-		}
-	
-		_createClass(PauseContainer, [{
-			key: 'show',
-			value: function show() {
-				this.visible = true;
-				_gsap2.default.to(this.position, 1, { y: 0, ease: "easeOutBack" });
-				this.addEvents();
-			}
-		}, {
-			key: 'hide',
-			value: function hide(force) {
-				_gsap2.default.to(this.position, force ? 0 : 1, { y: _config2.default.height / 2, ease: "easeOutBack", onComplete: this.disable, onCompleteScope: this });
-				this.removeEvents();
-			}
-		}, {
-			key: 'disable',
-			value: function disable() {
-				this.visible = false;
-			}
-		}, {
-			key: 'removeEvents',
-			value: function removeEvents() {
-				this.reestartButton.off('tap').off('click');
-				this.backButton.off('tap').off('click');
-				this.continueButton.off('tap').off('click');
-			}
-		}, {
-			key: 'addEvents',
-			value: function addEvents() {
-				this.removeEvents();
-				this.reestartButton.on('tap', this.onReestartCallback.bind(this)).on('click', this.onReestartCallback.bind(this));
-				this.backButton.on('tap', this.onBackCallback.bind(this)).on('click', this.onBackCallback.bind(this));
-				this.continueButton.on('tap', this.onContinueCallback.bind(this)).on('click', this.onContinueCallback.bind(this));
-			}
-		}, {
-			key: 'onReestartCallback',
-			value: function onReestartCallback() {
-				this.screen.initGame();
-			}
-		}, {
-			key: 'onBackCallback',
-			value: function onBackCallback() {
-				this.screen.onBackCallback();
-			}
-		}, {
-			key: 'onContinueCallback',
-			value: function onContinueCallback() {
-				this.screen.onPauseCallback();
-			}
-		}, {
-			key: 'createButton',
-			value: function createButton(label) {
-				var button = new _pixi2.default.Container();
-				var descriptionLabel = new _pixi2.default.Text(label, { font: '50px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				var color = 0x00FFFF;
-				button.addChild(descriptionLabel);
-				button.interactive = true;
-				button.buttonMode = true;
-				_utils2.default.addMockRect(button, descriptionLabel.width, descriptionLabel.height);
-				return { button: button, size: { width: descriptionLabel.width, height: descriptionLabel.height } };
-			}
-		}]);
-	
-		return PauseContainer;
-	}(_pixi2.default.Container);
-	
-	exports.default = PauseContainer;
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	var _config = __webpack_require__(140);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	var _utils = __webpack_require__(147);
-	
-	var _utils2 = _interopRequireDefault(_utils);
-	
-	var _gsap = __webpack_require__(143);
-	
-	var _gsap2 = _interopRequireDefault(_gsap);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var EndContainer = function (_PIXI$Container) {
-		_inherits(EndContainer, _PIXI$Container);
-	
-		function EndContainer(screen) {
-			_classCallCheck(this, EndContainer);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EndContainer).call(this));
-	
-			_this.screen = screen;
-			var buttonDistance = 65;
-	
-			_this.status = new _pixi2.default.Text('---', { font: '150px super_smash_tvregular', fill: 0xFFFFFF, align: 'right', dropShadow: true, dropShadowColor: '#666666' });
-			_this.addChild(_this.status);
-			_this.status.position.set(_config2.default.width / 2 - _this.status.width / 2, 20);
-	
-			var reestartButtonConfig = _this.createButton("TO EASY?");
-			_this.restartLabel = reestartButtonConfig.label;
-			_this.reestartButton = reestartButtonConfig.button;
-			_this.addChild(_this.reestartButton);
-			_this.reestartButton.position.set(_config2.default.width / 2 - reestartButtonConfig.size.width / 2, _config2.default.height / 2 + reestartButtonConfig.size.height / 2);
-	
-			var backButtonConfig = _this.createButton("BACK");
-			_this.backButton = backButtonConfig.button;
-			_this.addChild(_this.backButton);
-			_this.backButton.position.set(_config2.default.width / 2 - backButtonConfig.size.width / 2, _this.reestartButton.position.y + buttonDistance);
-			_utils2.default.applyPositionCorrection(_this);
-			return _this;
-		}
-	
-		_createClass(EndContainer, [{
-			key: 'setStatus',
-			value: function setStatus(label, lost) {
-				this.status.text = label;
-				this.lost = lost;
-				if (lost > 0) {
-					this.restartLabel.text = "LEVEL -1";
-				} else if (lost < 0) {
-					this.restartLabel.text = "AGAIN";
-				} else {
-					this.restartLabel.text = "LEVEL +1";
-				}
-				if (_config2.default.currentLevel >= _config2.default.levels.length - 1) {
-					this.status.text = "AWESOME";
-					this.restartLabel.text = "AGAIN?";
-				}
-				this.status.position.set(_config2.default.width / 2 - this.status.width / 2, 20);
-			}
-		}, {
-			key: 'show',
-			value: function show(delay) {
-				this.visible = true;
-				_gsap2.default.to(this.position, 1, { delay: delay ? delay : 0, y: 0, ease: "easeOutBack" });
-				this.status.position.y = -500;
-				this.status.alpha = 1;
-				_gsap2.default.to(this.status.position, 1, { delay: delay ? delay + 0.5 : 0.5, y: 60, ease: "easeOutBack" });
-				this.addEvents();
-			}
-		}, {
-			key: 'hide',
-			value: function hide(force) {
-				_gsap2.default.to(this.status, 1, { alpha: 0 });
-				_gsap2.default.to(this.status.position, 1, { y: -500 });
-				_gsap2.default.to(this.position, force ? 0 : 1, { y: _config2.default.height / 2, ease: "easeOutBack", onComplete: this.disable, onCompleteScope: this });
-				this.removeEvents();
-			}
-		}, {
-			key: 'disable',
-			value: function disable() {
-				this.visible = false;
-			}
-		}, {
-			key: 'removeEvents',
-			value: function removeEvents() {
-				this.reestartButton.off('tap').off('click');
-				this.backButton.off('tap').off('click');
-			}
-		}, {
-			key: 'addEvents',
-			value: function addEvents() {
-				this.reestartButton.on('tap', this.onReestartCallback.bind(this)).on('click', this.onReestartCallback.bind(this));
-				this.backButton.on('tap', this.onBackCallback.bind(this)).on('click', this.onBackCallback.bind(this));
-			}
-		}, {
-			key: 'onReestartCallback',
-			value: function onReestartCallback() {
-				if (this.lost == 0) {
-					if (_config2.default.currentLevel < _config2.default.levels.length - 1) {
-						_config2.default.currentLevel++;
-					}
-				} else if (this.lost == 1) {
-					_config2.default.currentLevel--;
-					if (_config2.default.currentLevel <= 0) {
-						_config2.default.currentLevel = 0;
-					}
-				}
-				this.screen.initGame();
-			}
-		}, {
-			key: 'onBackCallback',
-			value: function onBackCallback() {
-				this.screen.onBackCallback();
-			}
-		}, {
-			key: 'onContinueCallback',
-			value: function onContinueCallback() {
-				this.screen.onPauseCallback();
-			}
-		}, {
-			key: 'createButton',
-			value: function createButton(label) {
-				var button = new _pixi2.default.Container();
-				var descriptionLabel = new _pixi2.default.Text(label, { font: '50px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				var color = 0x00FFFF;
-				button.addChild(descriptionLabel);
-				button.interactive = true;
-				button.buttonMode = true;
-				_utils2.default.addMockRect(button, descriptionLabel.width, descriptionLabel.height);
-				return { button: button, size: { width: descriptionLabel.width, height: descriptionLabel.height }, label: descriptionLabel };
-			}
-		}]);
-	
-		return EndContainer;
-	}(_pixi2.default.Container);
-	
-	exports.default = EndContainer;
-
-/***/ },
-/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40068,7 +39669,225 @@
 	exports.default = InitScreen;
 
 /***/ },
-/* 153 */
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _config = __webpack_require__(140);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  getRandomValue: function getRandomValue(array, exception) {
+	    var value = array[Math.floor(Math.random() * array.length)];
+	    if (exception) {
+	      var equal = true;
+	      while (equal) {
+	        equal = false;
+	        for (var i = 0; i < exception.length; i++) {
+	          if (exception[i] == value) {
+	            equal = true;
+	          }
+	        }
+	        if (equal) {
+	          value = array[Math.floor(Math.random() * array.length)];
+	        }
+	      }
+	    }
+	    return value;
+	  },
+	  correctPosition: function correctPosition(element) {
+	    var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
+	    var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
+	    element.position.x = x;
+	    element.position.y = y;
+	  },
+	  setGameScreen80: function setGameScreen80(color) {
+	    _config2.default.palette.gameScreen80 = color;
+	  },
+	  setInitScreen80: function setInitScreen80(color) {
+	    _config2.default.palette.initScreen80 = color;
+	  },
+	  applyPositionCorrection: function applyPositionCorrection(element) {
+	    if (_config2.default.isJuicy == 0) {
+	      return;
+	    }
+	    element.position.x += _config2.default.hitCorrection.x;
+	    element.position.y += _config2.default.hitCorrection.y;
+	  },
+	  addToContainer: function addToContainer(element) {
+	    var elementContainer = new PIXI.Container();
+	    elementContainer.addChild(element);
+	    return elementContainer;
+	  },
+	  centerPivot: function centerPivot(element) {
+	    element.pivot.x = element.width / 2;
+	    element.pivot.y = element.height / 2;
+	    element.position.x += element.width / 2;
+	    element.position.y += element.height / 2;
+	  },
+	  addMockRect: function addMockRect(element, width, height) {
+	    var fake = new PIXI.Graphics();
+	    fake.beginFill(0);
+	    fake.drawRect(-width, -height, width * 2, height * 2);
+	    fake.alpha = 0;
+	    element.addChild(fake);
+	  },
+	  addMockObject: function addMockObject(element) {
+	    if (_config2.default.isJuicy == 0) {
+	      return;
+	    }
+	    var alphaBG2 = new PIXI.Graphics();
+	    alphaBG2.beginFill(0);
+	    alphaBG2.drawRect(-element.width / 2, -element.height / 2, element.width, element.height);
+	    alphaBG2.position.x -= _config2.default.hitCorrection.x;
+	    alphaBG2.position.y -= _config2.default.hitCorrection.y;
+	    alphaBG2.alpha = _config2.default.debugMockobjectsAlpha;
+	    element.addChild(alphaBG2);
+	  }
+	};
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Screen = function (_PIXI$Container) {
+		_inherits(Screen, _PIXI$Container);
+	
+		function Screen(label) {
+			_classCallCheck(this, Screen);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Screen).call(this));
+	
+			_this.label = label;
+			_this.entityList = [];
+			_this.updateable = false;
+			_this.nextScreen;
+			_this.screenManager;
+			_this.built;
+			return _this;
+		}
+		//add here the entities to easily remove after by parameter "kill"
+	
+	
+		_createClass(Screen, [{
+			key: 'addChild',
+			value: function addChild(entity) {
+				_get(Object.getPrototypeOf(Screen.prototype), 'addChild', this).call(this, entity);
+				this.entityList.push(entity);
+			}
+			//if the element is inside another, put here to force updates on the screen
+	
+		}, {
+			key: 'addOnUpdateList',
+			value: function addOnUpdateList(entity) {
+				for (var i = 0; i < this.entityList.length; i++) {
+					if (this.entityList[i] == entity) {
+						return;
+					}
+				}
+				this.entityList.push(entity);
+			}
+			//update all childs
+	
+		}, {
+			key: 'update',
+			value: function update(delta) {
+				if (!this.updateable) {
+					return;
+				}
+				for (var i = 0; i < this.entityList.length; i++) {
+					if (this.entityList[i].update) {
+						this.entityList[i].update(delta);
+					}
+				}
+				for (var _i = 0; _i < this.entityList.length; _i++) {
+					if (this.entityList[_i].kill) {
+						if (this.entityList[_i].parent) {
+							this.entityList[_i].parent.removeChild(this.entityList[_i]);
+						}
+						this.entityList.splice(_i, 1);
+					}
+				}
+			}
+		}, {
+			key: 'destroy',
+			value: function destroy() {
+				this.built = false;
+				if (this.entityList) {
+					for (var i = 0; i < this.entityList.length; i++) {
+						if (this.entityList[i].parent) {
+							this.entityList[i].parent.removeChild(this.entityList[i]);
+						}
+					}
+				}
+				this.entityList = [];
+			}
+		}, {
+			key: 'build',
+			value: function build() {
+				this.built = true;
+			}
+		}, {
+			key: 'transitionIn',
+			value: function transitionIn() {
+				this.updateable = true;
+				this.endTransitionIn();
+			}
+		}, {
+			key: 'endTransitionIn',
+			value: function endTransitionIn() {}
+		}, {
+			key: 'transitionOut',
+			value: function transitionOut(nextScreen) {
+				this.nextScreen = nextScreen;
+				this.endTransitionOut();
+			}
+		}, {
+			key: 'endTransitionOut',
+			value: function endTransitionOut() {
+				this.updateable = false;
+				this.screenManager.forceChange(this.nextScreen.label);
+				this.destroy();
+			}
+		}]);
+	
+		return Screen;
+	}(_pixi2.default.Container);
+	
+	exports.default = Screen;
+
+/***/ },
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40158,6 +39977,438 @@
 	}(_pixi2.default.Container);
 	
 	exports.default = ScreenManager;
+
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var InputManager = function () {
+		function InputManager(game) {
+			var _this = this;
+	
+			_classCallCheck(this, InputManager);
+	
+			this.game = game;
+			document.addEventListener('keydown', function (event) {
+				_this.getKey(event);
+				event.preventDefault();
+			});
+	
+			document.addEventListener('keyup', function (event) {
+				_this.getUpKey(event);
+				event.preventDefault();
+			});
+			//document.body.on('keydown', this.getKey.bind(this));		
+		}
+	
+		//
+	
+	
+		_createClass(InputManager, [{
+			key: 'getKey',
+			value: function getKey(e) {
+				//   	if(e.keyCode === 87 || e.keyCode === 38){
+				// 	this.game.updateAction('up');
+				// }
+				if (e.keyCode === 83 || e.keyCode === 40) {
+					this.game.updateAction('down');
+				} else if (e.keyCode === 65 || e.keyCode === 37) {
+					this.game.updateAction('left');
+				} else if (e.keyCode === 68 || e.keyCode === 39) {
+					this.game.updateAction('right');
+				} else if (e.keyCode === 32) {
+					// this.game.changeFilter();
+					this.game.updateAction('space');
+				}
+			}
+		}, {
+			key: 'getUpKey',
+			value: function getUpKey(e) {
+				//   	if(e.keyCode === 83 || e.keyCode === 40){
+				// 	this.game.stopAction('down');
+				// }
+				if (e.keyCode === 83 || e.keyCode === 40) {
+					this.game.stopAction('down');
+				}
+				if (e.keyCode === 32) {
+					this.game.stopAction('space');
+				}
+				if (e.keyCode === 87 || e.keyCode === 38) {
+					this.game.updateAction('up');
+					this.game.stopAction('up');
+				}
+			}
+		}]);
+	
+		return InputManager;
+	}();
+	
+	exports.default = InputManager;
+
+/***/ },
+/* 151 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _config = __webpack_require__(140);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _gsap = __webpack_require__(143);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Line = function (_PIXI$Container) {
+		_inherits(Line, _PIXI$Container);
+	
+		function Line(speed) {
+			_classCallCheck(this, Line);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Line).call(this));
+	
+			_this.speed = speed;
+			_this.line = new _pixi2.default.Sprite(_pixi2.default.Texture.fromImage('./assets/line.png'));
+			_this.addChild(_this.line);
+			return _this;
+		}
+	
+		_createClass(Line, [{
+			key: 'update',
+			value: function update(delta) {
+				this.position.y += this.speed;
+	
+				if (this.position.y > _config2.default.height) {
+					this.kill = true;
+				}
+			}
+		}]);
+	
+		return Line;
+	}(_pixi2.default.Container);
+	
+	exports.default = Line;
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _config = __webpack_require__(140);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _utils = __webpack_require__(147);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _gsap = __webpack_require__(143);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PauseContainer = function (_PIXI$Container) {
+		_inherits(PauseContainer, _PIXI$Container);
+	
+		function PauseContainer(screen) {
+			_classCallCheck(this, PauseContainer);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PauseContainer).call(this));
+	
+			_this.screen = screen;
+			var buttonDistance = 65;
+			var continueButtonConfig = _this.createButton("CONTINUE");
+			_this.continueButton = continueButtonConfig.button;
+			_this.addChild(_this.continueButton);
+			_this.continueButton.position.set(_config2.default.width / 2 - continueButtonConfig.size.width / 2, _config2.default.height / 2 + continueButtonConfig.size.height / 2);
+	
+			var reestartButtonConfig = _this.createButton("RESTART");
+			_this.reestartButton = reestartButtonConfig.button;
+			_this.addChild(_this.reestartButton);
+			_this.reestartButton.position.set(_config2.default.width / 2 - reestartButtonConfig.size.width / 2, _this.continueButton.position.y + buttonDistance);
+	
+			var backButtonConfig = _this.createButton("BACK");
+			_this.backButton = backButtonConfig.button;
+			_this.addChild(_this.backButton);
+			_this.backButton.position.set(_config2.default.width / 2 - backButtonConfig.size.width / 2, _this.reestartButton.position.y + buttonDistance);
+			// utils.applyPositionCorrection(this);
+			return _this;
+		}
+	
+		_createClass(PauseContainer, [{
+			key: 'show',
+			value: function show() {
+				this.visible = true;
+				_gsap2.default.to(this.position, 1, { y: 0, ease: "easeOutBack" });
+				this.addEvents();
+			}
+		}, {
+			key: 'hide',
+			value: function hide(force) {
+				_gsap2.default.to(this.position, force ? 0 : 1, { y: _config2.default.height / 2, ease: "easeOutBack", onComplete: this.disable, onCompleteScope: this });
+				this.removeEvents();
+			}
+		}, {
+			key: 'disable',
+			value: function disable() {
+				this.visible = false;
+			}
+		}, {
+			key: 'removeEvents',
+			value: function removeEvents() {
+				this.reestartButton.off('tap').off('click');
+				this.backButton.off('tap').off('click');
+				this.continueButton.off('tap').off('click');
+			}
+		}, {
+			key: 'addEvents',
+			value: function addEvents() {
+				this.removeEvents();
+				this.reestartButton.on('tap', this.onReestartCallback.bind(this)).on('click', this.onReestartCallback.bind(this));
+				this.backButton.on('tap', this.onBackCallback.bind(this)).on('click', this.onBackCallback.bind(this));
+				this.continueButton.on('tap', this.onContinueCallback.bind(this)).on('click', this.onContinueCallback.bind(this));
+			}
+		}, {
+			key: 'onReestartCallback',
+			value: function onReestartCallback() {
+				this.screen.initGame();
+			}
+		}, {
+			key: 'onBackCallback',
+			value: function onBackCallback() {
+				this.screen.onBackCallback();
+			}
+		}, {
+			key: 'onContinueCallback',
+			value: function onContinueCallback() {
+				this.screen.onPauseCallback();
+			}
+		}, {
+			key: 'createButton',
+			value: function createButton(label) {
+				var button = new _pixi2.default.Container();
+				var descriptionLabel = new _pixi2.default.Text(label, { font: '50px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				var color = 0x00FFFF;
+				button.addChild(descriptionLabel);
+				button.interactive = true;
+				button.buttonMode = true;
+				_utils2.default.addMockRect(button, descriptionLabel.width, descriptionLabel.height);
+				return { button: button, size: { width: descriptionLabel.width, height: descriptionLabel.height } };
+			}
+		}]);
+	
+		return PauseContainer;
+	}(_pixi2.default.Container);
+	
+	exports.default = PauseContainer;
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _config = __webpack_require__(140);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _utils = __webpack_require__(147);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _gsap = __webpack_require__(143);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EndContainer = function (_PIXI$Container) {
+		_inherits(EndContainer, _PIXI$Container);
+	
+		function EndContainer(screen) {
+			_classCallCheck(this, EndContainer);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EndContainer).call(this));
+	
+			_this.screen = screen;
+			var buttonDistance = 65;
+	
+			_this.status = new _pixi2.default.Text('---', { font: '150px super_smash_tvregular', fill: 0xFFFFFF, align: 'right', dropShadow: true, dropShadowColor: '#666666' });
+			_this.addChild(_this.status);
+			_this.status.position.set(_config2.default.width / 2 - _this.status.width / 2, 20);
+	
+			var reestartButtonConfig = _this.createButton("TO EASY?");
+			_this.restartLabel = reestartButtonConfig.label;
+			_this.reestartButton = reestartButtonConfig.button;
+			_this.addChild(_this.reestartButton);
+			_this.reestartButton.position.set(_config2.default.width / 2 - reestartButtonConfig.size.width / 2, _config2.default.height / 2 + reestartButtonConfig.size.height / 2);
+	
+			var backButtonConfig = _this.createButton("BACK");
+			_this.backButton = backButtonConfig.button;
+			_this.addChild(_this.backButton);
+			_this.backButton.position.set(_config2.default.width / 2 - backButtonConfig.size.width / 2, _this.reestartButton.position.y + buttonDistance);
+			_utils2.default.applyPositionCorrection(_this);
+			return _this;
+		}
+	
+		_createClass(EndContainer, [{
+			key: 'setStatus',
+			value: function setStatus(label, lost) {
+				this.status.text = label;
+				this.lost = lost;
+				if (lost > 0) {
+					this.restartLabel.text = "LEVEL -1";
+				} else if (lost < 0) {
+					this.restartLabel.text = "AGAIN";
+				} else {
+					this.restartLabel.text = "LEVEL +1";
+				}
+				if (_config2.default.currentLevel >= _config2.default.levels.length - 1) {
+					this.status.text = "AWESOME";
+					this.restartLabel.text = "AGAIN?";
+				}
+				this.status.position.set(_config2.default.width / 2 - this.status.width / 2, 20);
+			}
+		}, {
+			key: 'show',
+			value: function show(delay) {
+				this.visible = true;
+				_gsap2.default.to(this.position, 1, { delay: delay ? delay : 0, y: 0, ease: "easeOutBack" });
+				this.status.position.y = -500;
+				this.status.alpha = 1;
+				_gsap2.default.to(this.status.position, 1, { delay: delay ? delay + 0.5 : 0.5, y: 60, ease: "easeOutBack" });
+				this.addEvents();
+			}
+		}, {
+			key: 'hide',
+			value: function hide(force) {
+				_gsap2.default.to(this.status, 1, { alpha: 0 });
+				_gsap2.default.to(this.status.position, 1, { y: -500 });
+				_gsap2.default.to(this.position, force ? 0 : 1, { y: _config2.default.height / 2, ease: "easeOutBack", onComplete: this.disable, onCompleteScope: this });
+				this.removeEvents();
+			}
+		}, {
+			key: 'disable',
+			value: function disable() {
+				this.visible = false;
+			}
+		}, {
+			key: 'removeEvents',
+			value: function removeEvents() {
+				this.reestartButton.off('tap').off('click');
+				this.backButton.off('tap').off('click');
+			}
+		}, {
+			key: 'addEvents',
+			value: function addEvents() {
+				this.reestartButton.on('tap', this.onReestartCallback.bind(this)).on('click', this.onReestartCallback.bind(this));
+				this.backButton.on('tap', this.onBackCallback.bind(this)).on('click', this.onBackCallback.bind(this));
+			}
+		}, {
+			key: 'onReestartCallback',
+			value: function onReestartCallback() {
+				if (this.lost == 0) {
+					if (_config2.default.currentLevel < _config2.default.levels.length - 1) {
+						_config2.default.currentLevel++;
+					}
+				} else if (this.lost == 1) {
+					_config2.default.currentLevel--;
+					if (_config2.default.currentLevel <= 0) {
+						_config2.default.currentLevel = 0;
+					}
+				}
+				this.screen.initGame();
+			}
+		}, {
+			key: 'onBackCallback',
+			value: function onBackCallback() {
+				this.screen.onBackCallback();
+			}
+		}, {
+			key: 'onContinueCallback',
+			value: function onContinueCallback() {
+				this.screen.onPauseCallback();
+			}
+		}, {
+			key: 'createButton',
+			value: function createButton(label) {
+				var button = new _pixi2.default.Container();
+				var descriptionLabel = new _pixi2.default.Text(label, { font: '50px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				var color = 0x00FFFF;
+				button.addChild(descriptionLabel);
+				button.interactive = true;
+				button.buttonMode = true;
+				_utils2.default.addMockRect(button, descriptionLabel.width, descriptionLabel.height);
+				return { button: button, size: { width: descriptionLabel.width, height: descriptionLabel.height }, label: descriptionLabel };
+			}
+		}]);
+	
+		return EndContainer;
+	}(_pixi2.default.Container);
+	
+	exports.default = EndContainer;
 
 /***/ }
 /******/ ]);

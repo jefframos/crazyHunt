@@ -28,7 +28,7 @@ export default class InputManager{
 			this.game.updateAction('right');
 		}else if(e.keyCode === 32){
 			// this.game.changeFilter();
-			this.game.updateAction('down');
+			this.game.updateAction('space');
 		}
     }
 
@@ -36,11 +36,15 @@ export default class InputManager{
   //   	if(e.keyCode === 83 || e.keyCode === 40){
 		// 	this.game.stopAction('down');
 		// }
-		if(e.keyCode === 83 || e.keyCode === 40 || e.keyCode === 32){
+		if(e.keyCode === 83 || e.keyCode === 40){
 			this.game.stopAction('down');
+		}
+		if(e.keyCode === 32){
+			this.game.stopAction('space');
 		}
 		if(e.keyCode === 87 || e.keyCode === 38){
 			this.game.updateAction('up');
+			this.game.stopAction('up');
 		}
     }
 }
