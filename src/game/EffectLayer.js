@@ -146,7 +146,7 @@ export default class EffectLayer extends PIXI.Container{
 			}
 		};
 		this.screenManager.filters = filtersToApply.length > 0?filtersToApply:null;
-		console.log(this.screenManager.filters);
+		// console.log(this.screenManager.filters);
 	}
 	removeBlur(){
 		this.filtersActives[this.ID_BLUR] = false;
@@ -224,7 +224,6 @@ export default class EffectLayer extends PIXI.Container{
 		this.updateFilters();
 	}
 	addRGBSplitter(){
-		console.log(this);
 		this.filtersActives[this.ID_RGBSPLIT] = true;		
 		this.updateFilters();		
 	}
@@ -257,12 +256,11 @@ export default class EffectLayer extends PIXI.Container{
 		}
 	}
 	fadeSplitter(endValue, time, delay){
-		this.addRGBSplitter();
+		// this.addRGBSplitter();
 		TweenLite.killTweensOf(this.rgpSplit.red);
 		TweenLite.killTweensOf(this.rgpSplit.green);
 		TweenLite.killTweensOf(this.rgpSplit.blue);
-
-		TweenLite.to(this.rgpSplit.red, time, {delay:delay, x:endValue, y:endValue});
+		TweenLite.to(this.rgpSplit.red, time, {delay:delay, x:endValue, y:endValue, onStart:this.addRGBSplitter, onStartScope: this});
 		TweenLite.to(this.rgpSplit.green, time, {delay:delay, x:-endValue, y:-endValue});
 		TweenLite.to(this.rgpSplit.blue, time, {delay:delay, x:endValue, y:-endValue});
 	}

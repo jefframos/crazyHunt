@@ -68,6 +68,12 @@ export default class GameScreen extends Screen{
 			[0,0,1,0,0],
 			[0,0,1,0,0],			
 		], type:"SHOOTER"},
+		{shape:[
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,1,1,0],			
+		], type:"BRICK_BREAKER"},
 		]
 
 
@@ -182,18 +188,13 @@ export default class GameScreen extends Screen{
 		this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
 		
 
-		utils.correctPosition(this.gameContainer);
+		//utils.correctPosition(this.gameContainer);
 
 		this.inputManager = new InputManager(this);
 		// config.effectsLayer.removeBloom();
 		// setTimeout(function(){
 		// 	config.effectsLayer.addRGBSplitter();
 		// }.bind(this), 300);
-
-
-		
-
-
 		
 	}
 	drawShapeOnList(array){
@@ -211,7 +212,14 @@ export default class GameScreen extends Screen{
 		}
 		return shape;
 	}
-	changeFilter(){
+	starterEffect(){
+		config.effectsLayer.removeAllFilters();
+		config.effectsLayer.updateRGBSplitter(5);
+		config.effectsLayer.fadeSplitter(1,3,0.2);		
+		config.effectsLayer.addPixelate();
+		config.effectsLayer.filtersActives[config.effectsLayer.ID_GLITCH1] = true;
+	}
+	changeFilter(effect){
 		let nextID = this.currentEffectID;
 		if(this.currentEffectID >= 0){
 			nextID = -1;
@@ -219,6 +227,9 @@ export default class GameScreen extends Screen{
 			//nao shuffle
 			nextID = Math.floor(Math.random() * 7)
 		}
+		// if(effect != null){
+		// 	nextID = effect;
+		// }
 		if(this.currentEffectID < 9999){
 			this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?']
 			this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
@@ -236,11 +247,13 @@ export default class GameScreen extends Screen{
 			case 2:
 				//this.currentEffect = "ASCII";
 				config.effectsLayer.removeAllFilters();
-				this.gameContainer.scale.y = 1;
-				this.gameBorderContainer.scale.y = 1;
+				this.scale.y = 1;
+				this.position.y -= config.height;
+				// this.gameContainer.scale.y = 1;
+				// this.gameBorderContainer.scale.y = 1;
 
-				this.gameContainer.position.y += 100;
-				this.gameBorderContainer.position.y += 100;
+				// this.gameContainer.position.y += 100;
+				// this.gameBorderContainer.position.y += 100;
 			break
 			case 3:
 				this.gameContainer.scale.y = 1;
@@ -260,11 +273,9 @@ export default class GameScreen extends Screen{
 				this.linearParticles();
 				break
 		}
-		config.effectsLayer.filtersActives[this.ID_GLITCH1] = true;
-		config.effectsLayer.addRGBSplitter();
-		config.effectsLayer.addPixelate();
+		this.starterEffect();
+		//nextID = 2
 		// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
-
 		switch(nextID){
 			case 0:
 				//this.currentEffect = "INVERT";
@@ -282,11 +293,15 @@ export default class GameScreen extends Screen{
 				//this.currentEffect = "ASCII";
 				config.effectsLayer.removeAllFilters();
 				config.effectsLayer.addAscii();
-				this.gameContainer.scale.y = -1;
-				this.gameBorderContainer.scale.y = -1;
+				this.scale.y = -1;
+				this.position.y += config.height;
+				// this.gameContainer.scale.y = -1;
+				// this.gameBorderContainer.scale.y = -1;
 
-				this.gameContainer.position.y -= 100;
-				this.gameBorderContainer.position.y -= 100;
+				// this.gameContainer.position.y -= 100;
+				// this.gameBorderContainer.position.y -= 100;
+
+
 				this.filterLabel = "OLD\nTIMES"
 			break
 			case 3:
@@ -323,7 +338,7 @@ export default class GameScreen extends Screen{
 				this.filterLabel = "SHUFFLE"
 			break
 			default:
-				config.effectsLayer.shakeSplitter(1,10,0.5);
+				//config.effectsLayer.shakeSplitter(1,10,0.5);
 				break
 			break
 		}
@@ -350,50 +365,6 @@ export default class GameScreen extends Screen{
 	        }
 	    }
 	    return temp;
-	}
-
-	shoot(){
-		//this.bulletList = [];
-		let tempBullet = this.drawSquare(this.currentColor);
-		tempBullet.position.x = this.currentEntityList[this.currentEntityList.length - 1].x;
-		tempBullet.position.y = this.currentEntityList[this.currentEntityList.length - 1].y + config.pieceSize / 2;
-		this.gameContainer.addChild(tempBullet);
-		this.bulletList.push(tempBullet);
-		//let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + this.currentEntityList[0].y) / config.height;
-		//let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[0].x) / config.width;
-
-	}
-	updateBulletList(delta){
-		for (var i = this.bulletList.length - 1; i >= 0; i--) {
-			this.bulletList[i].position.y += delta * 400;
-			console.log(this.verifyBulletPosition());
-		}
-		if(this.currentShapeData && this.currentShapeData.type == "SHOOTER"){
-			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-				this.currentEntityList[i].tint = utils.getRandomValue(config.palette.colors80);
-			}
-		}
-	}
-	verifyBulletPosition(){		
-		let toRemove = [];
-		for (var i = this.bulletList.length - 1; i >= 0; i--) {	
-			let tempX = (this.bulletList[i].position.x / config.pieceSize);
-			let tempY = (this.bulletList[i].position.y / config.pieceSize);
-			let roundedY = Math.floor(tempY);
-			if(roundedY >= config.bounds.y - 1){
-				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix(true, this.bulletList[i]);
-				this.bulletList.splice(i,1);			
-				return true
-			}
-			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
-			if(matrixContent && matrixContent != 0){
-				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix(true, this.bulletList[i]);
-				this.bulletList.splice(i,1);
-				return true
-			}
-		}
 	}
 	rotatePiece(){
 		let minY = 99999;
@@ -426,6 +397,159 @@ export default class GameScreen extends Screen{
 			this.newEntity(this.rotateMatrixRight(this.currentShape), {x:ajdustedPositionX, y:ajdustedPositionY});
 		}
 	}
+	addShockwaveByPiece(piece){
+		let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + piece.y) / config.height;
+		let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + piece.x) / config.width;
+		config.effectsLayer.addShockwave(xNormal,yNormal,1);
+	}
+	shoot(){
+		let tempBullet = this.drawSquare(0xFFFFFF);
+		tempBullet.tint = this.currentColor;
+		tempBullet.position.x = this.currentEntityList[this.currentEntityList.length - 1].x;
+		tempBullet.position.y = this.currentEntityList[this.currentEntityList.length - 1].y + config.pieceSize / 2;
+		this.gameContainer.addChild(tempBullet);
+		this.bulletList.push(tempBullet);
+	}
+	updateBrickBreaker(delta){
+		if(this.brickBreakerPiece && this.brickBreakerSpeed){
+			this.brickBreakerPiece.position.x += this.brickBreakerSpeed.x * delta;
+			this.brickBreakerPiece.position.y += this.brickBreakerSpeed.y * delta;
+
+			if(this.brickBreakerPiece.position.y - config.pieceSize <= config.pieceSize/2 && this.brickBreakerSpeed.y < 0)
+			{
+				if(this.brickBreakerPiece.position.x > this.currentEntityList[0].position.x - config.pieceSize * 1.5 && this.brickBreakerPiece.position.x < this.currentEntityList[1].position.x + config.pieceSize * 1.5)
+				{
+					this.brickBreakerSpeed.y *= -1;
+					this.currentColor = utils.getRandomValue(config.palette.colors80);
+					this.brickBreakerPiece.tint = this.currentColor;
+				}else{
+					this.addShockwaveByPiece(this.brickBreakerPiece);
+					this.brickBreakerPiece.parent.removeChild(this.brickBreakerPiece);
+					this.brickBreakerPiece = null;
+					this.removeCurrentPiece();
+					this.newEntity();
+				}
+			}
+
+			let sideCollider = this.verifySingleSide(this.brickBreakerPiece, this.brickBreakerSpeed.x < 0);
+			if(sideCollider){
+				if(sideCollider.tint){
+					sideCollider.tint = 0
+					this.removeSinglePiece(sideCollider);
+				}else{
+					sideCollider = false;
+				}
+				this.brickBreakerSpeed.x *= -1;
+				this.brickBreakerPiece.position.x += this.brickBreakerSpeed.x * delta;			
+				
+			}
+			let upDownCollider = this.verifySingleDown(this.brickBreakerPiece, this.brickBreakerSpeed.y < 0);
+			if(upDownCollider){
+				if(upDownCollider.tint){
+					upDownCollider.tint = 0
+					this.removeSinglePiece(upDownCollider);
+				}else{
+					upDownCollider = false;
+				}
+				this.brickBreakerSpeed.y *= -1;
+				this.brickBreakerPiece.position.y += this.brickBreakerSpeed.y * delta;
+			}
+
+			if(upDownCollider || sideCollider){
+				this.currentColor = utils.getRandomValue(config.palette.colors80);
+				this.brickBreakerPiece.tint = this.currentColor;
+				this.pointsParticle(10, this.brickBreakerPiece);
+			}
+		}else{
+			this.brickBreakerPiece = this.drawCircle(0xFFFFFF);
+			this.brickBreakerPiece.tint = this.currentColor;
+			this.brickBreakerPiece.position.x = config.bounds.x / 2 * config.pieceSize;
+			this.brickBreakerPiece.position.y = config.pieceSize * 2;
+			this.gameContainer.addChild(this.brickBreakerPiece);
+			this.brickBreakerSpeed = {x:0,y:0};
+			this.brickBreakerStandardSpeed = 300;
+			this.brickBreakerSpeed.y = this.brickBreakerStandardSpeed;
+			this.brickBreakerSpeed.x = this.brickBreakerStandardSpeed;
+		}
+	}
+	startMeteorRain(erase, quant){
+		this.meteorRain = true;
+		this.meteorCounter = quant?quant:8;
+		this.meteorTimeCounter = 0;
+		this.shooterErase = erase;
+	}
+	fallMeteor(){
+		this.meteorTimeCounter = 0
+		this.meteorCounter --;
+		if(this.meteorCounter <= 0){
+			this.meteorRain = false;
+		}
+		let tempBullet = this.drawSquare(0xFFFFFF);
+		tempBullet.tint = this.currentColor;
+		tempBullet.position.x = Math.floor(config.bounds.x * Math.random()) * config.pieceSize;
+		tempBullet.position.y = config.pieceSize / 2;
+		this.gameContainer.addChild(tempBullet);
+		this.bulletList.push(tempBullet);
+
+	}
+	pointsParticle(value, entity){
+		this.points += value;
+		let tempLabel = new PIXI.Text(value,{font : '40px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		tempLabel.position.x = entity.position.x + entity.width / 2 - tempLabel.width/2;
+		tempLabel.position.y = entity.position.y;
+		this.gameContainer.addChild(tempLabel);
+		TweenLite.to(tempLabel, 1, {y: entity.position.y - config.pieceSize, onComplete:function(toRemove){
+			toRemove.parent.removeChild(toRemove);
+		},onCompleteScope:this, onCompleteParams:[tempLabel]})
+	}
+	updateBulletList(delta){
+		for (var i = this.bulletList.length - 1; i >= 0; i--) {
+			this.bulletList[i].position.y += delta * 500;
+			this.verifyBulletPosition(this.shooterErase);
+		}
+		if(this.currentShapeData && this.currentShapeData.type == "SHOOTER"){
+			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+				this.currentEntityList[i].tint = utils.getRandomValue(config.palette.colors80);
+			}
+		}
+	}
+	verifyBulletPosition(erase){		
+		let toRemove = [];
+		for (var i = this.bulletList.length - 1; i >= 0; i--) {	
+			let tempX = (this.bulletList[i].position.x / config.pieceSize);
+			let tempY = (this.bulletList[i].position.y / config.pieceSize);
+			let roundedY = Math.floor(tempY);
+			if(roundedY >= config.bounds.y - 1){
+				config.effectsLayer.shakeY(0.3,5,0.5);
+				if(!erase){
+					this.addOnMatrix(true, this.bulletList[i]);
+				}else{
+					this.bulletList[i].parent.removeChild(this.bulletList[i]);
+				}
+				this.bulletList.splice(i,1);			
+				//return true
+			}
+			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
+			if(matrixContent && matrixContent != 0){
+				config.effectsLayer.shakeY(0.3,5,0.5);
+				if(!erase){
+					this.addOnMatrix(true, this.bulletList[i]);
+				}else{
+					matrixContent.parent.removeChild(matrixContent);
+					this.gameMatrix[Math.ceil(tempX)][roundedY + 1] = 0;
+					this.addShockwaveByPiece(this.bulletList[i]);
+					this.bulletList[i].parent.removeChild(this.bulletList[i]);
+					config.effectsLayer.shakeY(0.5,5,0.5);
+					config.effectsLayer.updateRGBSplitter(5);
+					config.effectsLayer.fadeSplitter(0,4,0);
+
+				}
+				this.bulletList.splice(i,1);
+				//return true
+			}
+		}
+	}
+
 	updateQueue(){
 		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
 			this.gameQueueContainer.removeChild(this.shapeQueue[i]);
@@ -456,10 +580,28 @@ export default class GameScreen extends Screen{
 		return this.shapes[this.shapesOrder[this.shapeStep]];
 	}
 	newEntity(shapeArray, starterPosition, randomRotate){
+
 		this.currentEntityList = [];
 		if(!shapeArray){
 			this.currentShapeData = this.getShape();
 			this.currentShape = this.currentShapeData.shape;
+			if(this.currentShapeData.type == "SHOOTER"){
+				this.shooterErase = Math.random() < 0.4;//!this.shooterErase;
+				if(this.shooterErase){
+					this.filterLabel = "ERASE";
+				}else{
+					this.filterLabel = "ADD";
+				}
+			}else if(this.currentShapeData.type == "BRICK_BREAKER"){
+				this.normalizedDelta = 1;
+				this.downSpeedIncrease = 0;
+			}else{
+				if(!this.meteorRain && this.scoring > 5){
+					if(Math.random()<0.1){
+						this.startMeteorRain(Math.random()<0.1, 5 + Math.floor(Math.random() * 9));
+					}
+				}
+			}
 			this.updateQueue();
 		}else{
 			this.currentShape = shapeArray;
@@ -517,6 +659,12 @@ export default class GameScreen extends Screen{
 	    square.drawRect( 2, 2, config.pieceSize -4, config.pieceSize-4);
 	    return square;
 	}
+	drawCircle(color){
+		let circle = new PIXI.Graphics();
+		circle.beginFill( color );
+	    circle.drawCircle( config.pieceSize,config.pieceSize/2,config.pieceSize/2);
+	    return circle;
+	}
 	//EVENTS
 	removeEvents(){
 	}
@@ -552,8 +700,26 @@ export default class GameScreen extends Screen{
 	forceHideGame(){
 		
 	}
-	forceShowGame(){
-		
+	appendMorePieces(){
+		let tempArray = [];
+		let tempId;
+		for (var i = 0; i < 200; i++) {
+			tempId = Math.floor(this.shapes.length * Math.random());
+			if(this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.3){
+				// console.log("RECALC BRICK");
+				tempId = Math.floor(this.shapes.length * Math.random());
+			}
+			if(i > 1){
+				while(tempId == tempArray[i - 1] || tempId == tempArray[i - 2]){
+					tempId = Math.floor(this.shapes.length * Math.random());
+				}
+			}
+
+			tempArray.push(tempId);
+		}
+		this.shapesOrder = this.shapesOrder.slice(0, this.shapeStep + 3);
+		this.shapesOrder = this.shapesOrder.concat(tempArray);
+
 	}
 	
 	
@@ -574,10 +740,14 @@ export default class GameScreen extends Screen{
 		this.currentEffectID = 99999;
 		// this.changeFilter();
 
-		for (var i = 100; i >= 0; i--) {
-			this.shapesOrder.push(Math.floor(this.shapes.length * Math.random()))
+		this.shapesOrder.push(0)
+		// this.shapesOrder.push(0)
+		this.shapesOrder.push(1)
+		// this.shapesOrder.push(1)
+		for (var i = 500; i >= 0; i--) {
+			this.shapesOrder.push(Math.floor(Math.random()*4))
 		}
-
+		//console.log(this.shapesOrder);
 		this.configGameMatrix(config.bounds.y,config.bounds.x);
 		this.drawMatrix(config.pieceSize);
 		
@@ -619,11 +789,11 @@ export default class GameScreen extends Screen{
 			this.newEntity();
 		}.bind(this), 500);
 
-		this.menuMode = false;
+		this.gameMode = "STANDARD";
 	}
 	//reset timer
 	showMenu(){
-		this.menuMode = true;
+		this.gameMode = "MENU";
 
 		if(this.menuContainer){
 			while(this.menuContainer.children.length){
@@ -646,7 +816,8 @@ export default class GameScreen extends Screen{
 			this.menuLabels.push(menuLabel);
 		}
 
-		config.effectsLayer.removeBloom();
+		this.starterEffect();
+		// config.effectsLayer.removeBloom();
 		//config.effectsLayer.fadeSplitter(4,1,0);
 		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 2, 2, 0.5, false);
 		TweenLite.to(this.gameContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
@@ -659,7 +830,7 @@ export default class GameScreen extends Screen{
 	}
 	updateMenu(){
 
-		this.labelTitle.text = this.shuffleText('Just a simple\nTETRIS?');
+		this.labelTitle.text = this.shuffleText('Just a simple\nBRICK GAME?');
 
 		for (var i = this.menuLabels.length - 1; i >= 0; i--) {
 			if(this.currentSelectedMenuItem == i){
@@ -726,7 +897,7 @@ export default class GameScreen extends Screen{
 		if(!this.started){
 			return;
 		}
-		if(this.menuMode){
+		if(this.gameMode == "MENU"){
 			if(!this.inMenuKeyPressed){
 				return;
 			}
@@ -769,7 +940,7 @@ export default class GameScreen extends Screen{
 		if(!this.started){
 			return;
 		}
-		if(this.menuMode){
+		if(this.gameMode == "MENU"){
 			this.inMenuKeyPressed = true;
 			return;
 		}
@@ -783,7 +954,9 @@ export default class GameScreen extends Screen{
 				this.currentEntityList[i].position.x += config.pieceSize;
 			}else if(type == "down" || type == "space"){
 				// this.currentEntityList[i].position.y += config.pieceSize / 2;
-				this.downSpeedIncrease = 200;
+				if(this.currentShapeData.type != "BRICK_BREAKER"){
+					this.downSpeedIncrease = 200;
+				}
 			}
 		}
 		this.inMenuKeyPressed = false;
@@ -805,8 +978,9 @@ export default class GameScreen extends Screen{
 				this.shoot();
 				return;
 			}
-
-			this.rotatePiece();				
+			if(this.currentShapeData.type == "STANDARD"){
+				this.rotatePiece();				
+			}
 		}
 		else
 		{
@@ -863,35 +1037,43 @@ export default class GameScreen extends Screen{
 
 			//console.log(this.gameMatrix);
 			this.scoring ++;
-
+			
 			if(this.scoring == 1){
 				this.filterLabel = "JUST\nA"
 			}else if(this.scoring == 2){
 				this.filterLabel = "JUST\nA\nSIMPLE"
 			}else if(this.scoring == 3){			
-				this.filterLabel = "TETRIS?"
-			}else{
+				this.filterLabel = "BRICK\nGAME?"
 				this.changeFilter();
+			}else if(this.scoring == 4){	
+				this.appendMorePieces();
+				this.changeFilter();
+			}else{
+				this.changeFilter();				
 			}
 		}
 		for (var i = linesToRemove.length - 1; i >= 0; i--) {			
 			this.removeLine(linesToRemove[i]);
 		}
 	}
-	addPoints() {
+	addPoints(toRemove) {
+		if(toRemove){
+			this.pointsParticle(10, toRemove);
+		}
 		this.points += 10;
 	}
 	removeLine(line) {
 		
 		let lineCounter = 0;
 		
+		this.pointsParticle(100, this.gameMatrix[Math.floor(this.gameMatrix.length / 2)][line]);
+
 		let timeline = new TimelineLite();
 		for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 			if(this.gameMatrix[j][line]){
 				this.gameContainer.removeChild(this.gameMatrix[j][line]);
-				this.gameMatrix[j][line] = 0;
 				timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
-				
+				this.gameMatrix[j][line] = 0;
 			}				
 		}
 		
@@ -909,48 +1091,109 @@ export default class GameScreen extends Screen{
 	}
 	verifySide(type) {
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
-			let tempX = (this.currentEntityList[i].position.x / config.pieceSize) + (type=="left"?-1:1);
-			let tempY = (this.currentEntityList[i].position.y / config.pieceSize) + 0.5;
-			let roundedY = Math.floor(tempY);
-			let roundedX = Math.floor(tempX);
-			if(tempX < 0 || tempX >= this.gameMatrix.length){
-				return true
+			if(this.verifySingleSide(this.currentEntityList[i], type)){
+				return true;
 			}
-			let matrixContent = this.gameMatrix[roundedX][roundedY]
-			if(matrixContent && matrixContent != 0){
-				return true
+			// let tempX = (this.currentEntityList[i].position.x / config.pieceSize) + (type=="left"?-1:1);
+			// let tempY = (this.currentEntityList[i].position.y / config.pieceSize) + 0.5;
+			// let roundedY = Math.floor(tempY);
+			// let roundedX = Math.floor(tempX);
+			// if(tempX < 0 || tempX >= this.gameMatrix.length){
+			// 	return true
+			// }
+			// let matrixContent = this.gameMatrix[roundedX][roundedY]
+			// if(matrixContent && matrixContent != 0){
+			// 	return true
+			// }
+		}
+	}
+	verifySingleSide(entity, type) {
+		if(!entity){
+			return false;
+		}
+		let tempX = (entity.position.x / config.pieceSize) + (type=="left"?-1:1);
+		let tempY = (entity.position.y / config.pieceSize) + 0.5;
+		let roundedY = Math.floor(tempY);
+		let roundedX = Math.floor(tempX);
+		if(tempX < 0 || tempX >= this.gameMatrix.length){
+			return true
+		}
+		let matrixContent = this.gameMatrix[roundedX][roundedY]
+		if(matrixContent && matrixContent != 0){
+			return matrixContent
+		}
+		return false
+	}
+	verifySingleDown(entity, type) {
+		if(!entity){
+			return false;
+		}
+		// for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
+		let tempX = (entity.position.x / config.pieceSize);
+		let tempY = (entity.position.y / config.pieceSize) + (type? - 1:0);
+		let roundedY = Math.floor(tempY);
+		if(tempX >= this.gameMatrix.length){
+			return false
+		}
+		if(roundedY >= this.gameMatrix[0].length){
+			return false
+		}
+		if(roundedY >= config.bounds.y - 1){
+			return true
+		}
+		let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
+		if(matrixContent && matrixContent != 0){
+			return matrixContent
+		}
+		// }
+	}
+	verifyDown() {
+		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
+			if(this.verifySingleDown(this.currentEntityList[i])){
+				config.effectsLayer.shakeY(0.3,5,0.5);
+				this.addOnMatrix(true);
+				return true;
+			}
+			// let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
+			// let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
+			// let roundedY = Math.floor(tempY);
+			// if(roundedY >= config.bounds.y - 1){
+			// 	config.effectsLayer.shakeY(0.3,5,0.5);
+			// 	this.addOnMatrix(true);
+			// 	return true
+			// }
+			// let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
+			// if(matrixContent && matrixContent != 0){
+			// 	config.effectsLayer.shakeY(0.3,5,0.5);
+			// 	this.addOnMatrix(true);
+			// 	return true
+			// }
+		}
+	}
+	removeCurrentPiece(){
+		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+			if(this.currentEntityList[i] && this.currentEntityList[i].parent){
+				this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
 			}
 		}
 	}
-	
-	verifyDown() {
-		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {	
-			let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
-			let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
-			let roundedY = Math.floor(tempY);
-			if(roundedY >= config.bounds.y - 1){
-				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix(true);
-				return true
-			}
-			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
-			if(matrixContent && matrixContent != 0){
-				config.effectsLayer.shakeY(0.3,5,0.5);
-				this.addOnMatrix(true);
-				return true
-			}
-		}
+	removeSinglePiece(piece){
+		let tempX = (piece.position.x / config.pieceSize);
+		let tempY = (piece.position.y / config.pieceSize);
+		let roundedY = Math.ceil(tempY)
+		this.gameMatrix[tempX][roundedY] = 0;
+		if(piece.parent)
+			piece.parent.removeChild(piece);
 	}
 	addOnMatrix(isColided, piece) {
 		if(this.currentShapeData.type == "SHOOTER" && !piece){
-			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-				this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
-
-			}
-
-			let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + this.currentEntityList[this.currentEntityList.length - 1].y) / config.height;
-			let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[this.currentEntityList.length - 1].x) / config.width;
-			config.effectsLayer.addShockwave(xNormal,yNormal,1);
+			this.removeCurrentPiece();
+			// for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+			// 	if(this.currentEntityList[i] && this.currentEntityList[i].parent){
+			// 		this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
+			// 	}
+			// }
+			this.addShockwaveByPiece(this.currentEntityList[this.currentEntityList.length - 1]);
 			config.effectsLayer.shakeX(0.5,5,0.5);
 			config.effectsLayer.shakeY(0.5,5,0.5);
 			config.effectsLayer.updateRGBSplitter(4);
@@ -964,7 +1207,14 @@ export default class GameScreen extends Screen{
 				let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
 				let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
 				let roundedY = Math.ceil(tempY)
-				this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+				if(this.gameMatrix[tempX][roundedY] == 0){
+					this.gameMatrix[tempX][roundedY] = this.currentEntityList[i];
+					this.currentEntityList[i].position.y = Math.floor(this.currentEntityList[i].position.y / config.pieceSize) * config.pieceSize;
+				}else{
+					if(this.currentEntityList[i] && this.currentEntityList[i].parent){
+						this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
+					}
+				}
 			}
 			if(isColided && this.updateVisibleParts()){
 				this.gameOver();
@@ -973,14 +1223,19 @@ export default class GameScreen extends Screen{
 			let tempX = (piece.position.x / config.pieceSize);
 			let tempY = (piece.position.y / config.pieceSize);
 			let roundedY = Math.ceil(tempY) - 1
-			piece.position.y = Math.floor(piece.position.y / config.pieceSize) * config.pieceSize;
-			piece.tint = this.currentColor;
-			this.gameMatrix[tempX][roundedY] = piece;
-			this.verifyLines();			
+			if(this.gameMatrix[tempX][roundedY] == 0){
+
+				// if(!this.gameMatrix[tempX][roundedY]){
+				piece.position.y = Math.floor(piece.position.y / config.pieceSize) * config.pieceSize;
+				piece.tint = this.currentColor;
+				this.gameMatrix[tempX][roundedY] = piece;
+				this.verifyLines();			
+			}else{
+				piece.parent.removeChild(piece);
+			}
+
 		}
 		this.border.tint = this.currentColor;
-		
-		//console.log(tempX, roundedY);
 	}
 	gameOver() {
 		this.downSpeedIncrease = 0;
@@ -1094,7 +1349,7 @@ export default class GameScreen extends Screen{
 			str = this.points
 		}
 		if(this.points > 0){
-			this.gameLevelSpeed = this.gameLevelSpeedMax - Math.floor(this.points / 200) * 0.05;
+			this.gameLevelSpeed = this.gameLevelSpeedMax - Math.floor(this.points / 400) * 0.05;
 		}
 		if(this.gameLevelSpeed < 0.08){
 			this.gameLevelSpeed = 0.08;
@@ -1102,26 +1357,20 @@ export default class GameScreen extends Screen{
 		this.labelPoints.text = str;
 	}
 	update(delta){
+		this.rawDelta = delta;
 		delta *= (this.normalizedDelta + this.downSpeedIncrease);
 		super.update(delta);
 		if(!this.started){
 			return;
 		}
+		
 		this.updateParticles(delta);
+		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
 
-		if(this.menuMode){
+		if(this.gameMode == "MENU"){
 			this.updateMenu();
 			return;
 		}
-
-
-		this.gameCounter += delta;
-		this.updateBulletList(delta);
-		if(this.gameCounter > this.gameLevelSpeed){
-			this.updateMove();
-			this.gameCounter = 0;
-		}
-		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
 
 		this.filterDescription.text = this.shuffleText(this.filterLabel);
 		this.filterDescription.position.x = (this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2) ;
@@ -1131,6 +1380,24 @@ export default class GameScreen extends Screen{
 		}
 
 		this.updatePoints();
+		this.gameCounter += delta;
+		this.updateBulletList(this.rawDelta);
+
+		if(this.meteorRain){
+			this.meteorTimeCounter += this.rawDelta;
+			if(this.meteorTimeCounter >= 0.3){
+				this.fallMeteor();
+			}
+		}
+
+		if(this.currentShapeData && this.currentShapeData.type == "BRICK_BREAKER"){
+			this.updateBrickBreaker(this.rawDelta);
+			return;
+		}
+		if(this.gameCounter > this.gameLevelSpeed){
+			this.updateMove();
+			this.gameCounter = 0;
+		}
 		
 	}
 }
