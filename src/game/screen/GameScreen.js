@@ -76,8 +76,18 @@ export default class GameScreen extends Screen{
 		], type:"BRICK_BREAKER"},
 		]
 
-
+		this.addEvents();
 	}
+
+		//EVENTS
+	removeEvents(){
+		this.off('tap').off('mouseup');
+	}
+	addEvents(){
+		this.removeEvents();
+	    this.on('mouseup', this.onGameClickCallback.bind(this)).on('tap', this.onGameClickCallback.bind(this));	    	    
+	}
+
 	shuffleText(label){
 		let rnd1 = String.fromCharCode(Math.floor(Math.random()*20) + 65);
 		let rnd2 = Math.floor(Math.random()* 9);
@@ -667,9 +677,14 @@ export default class GameScreen extends Screen{
 	}
 	//EVENTS
 	removeEvents(){
+		this.off('touchstart').off('mousedown');
+		this.off('touchend').off('mouseup');
 	}
 	addEvents(){
-		this.removeEvents();	    	    
+		this.removeEvents();
+		this.interactive = true;
+		this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this)); 
+		this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this)); 	    
 	}
 	onMouseMoveCallback(e) {
 		if(!this.started || this.ended){
@@ -684,8 +699,35 @@ export default class GameScreen extends Screen{
 			this.findCol(realativePosition, width);
 		}
 	}
-	onGameClickCallback(e) {
-		
+	onTapUp(e) {
+		this.stopAction("space");
+	}
+	onTapDown(e) {
+
+		//console.log(e.data.global.y, config.height / 4);
+		let type;
+		if(e.data.global.y < config.height / 4){
+			type = "up";
+		}else if(e.data.global.y > config.height - config.height / 4){
+			type = "down";
+		}else if(e.data.global.x < config.width / 2){
+			type = "left";
+		}else if(e.data.global.x > config.width / 2){
+			type = "right";
+		}
+		if(type){
+			if(this.gameMode == "MENU"){
+				console.log(type);
+				if(type == "right"){
+					type = "space";
+				}
+				this.inMenuKeyPressed = true;
+				this.stopAction(type);
+			}else{
+				this.updateAction(type);
+			}
+		}
+		// console.log(e.data.global.x, e.data.global.y);
 	}
 	onPauseCallback() {
 		

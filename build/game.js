@@ -38286,10 +38286,25 @@
 	
 			_this.shapes = [{ shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER" }, { shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER" }];
 	
+			_this.addEvents();
 			return _this;
 		}
 	
+		//EVENTS
+	
+	
 		_createClass(GameScreen, [{
+			key: 'removeEvents',
+			value: function removeEvents() {
+				this.off('tap').off('mouseup');
+			}
+		}, {
+			key: 'addEvents',
+			value: function addEvents() {
+				this.removeEvents();
+				this.on('mouseup', this.onGameClickCallback.bind(this)).on('tap', this.onGameClickCallback.bind(this));
+			}
+		}, {
 			key: 'shuffleText',
 			value: function shuffleText(label) {
 				var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
@@ -38905,11 +38920,17 @@
 	
 		}, {
 			key: 'removeEvents',
-			value: function removeEvents() {}
+			value: function removeEvents() {
+				this.off('touchstart').off('mousedown');
+				this.off('touchend').off('mouseup');
+			}
 		}, {
 			key: 'addEvents',
 			value: function addEvents() {
 				this.removeEvents();
+				this.interactive = true;
+				this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this));
+				this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this));
 			}
 		}, {
 			key: 'onMouseMoveCallback',
@@ -38927,8 +38948,39 @@
 				}
 			}
 		}, {
-			key: 'onGameClickCallback',
-			value: function onGameClickCallback(e) {}
+			key: 'onTapUp',
+			value: function onTapUp(e) {
+				this.stopAction("space");
+			}
+		}, {
+			key: 'onTapDown',
+			value: function onTapDown(e) {
+	
+				//console.log(e.data.global.y, config.height / 4);
+				var type = void 0;
+				if (e.data.global.y < _config2.default.height / 4) {
+					type = "up";
+				} else if (e.data.global.y > _config2.default.height - _config2.default.height / 4) {
+					type = "down";
+				} else if (e.data.global.x < _config2.default.width / 2) {
+					type = "left";
+				} else if (e.data.global.x > _config2.default.width / 2) {
+					type = "right";
+				}
+				if (type) {
+					if (this.gameMode == "MENU") {
+						console.log(type);
+						if (type == "right") {
+							type = "space";
+						}
+						this.inMenuKeyPressed = true;
+						this.stopAction(type);
+					} else {
+						this.updateAction(type);
+					}
+				}
+				// console.log(e.data.global.x, e.data.global.y);
+			}
 		}, {
 			key: 'onPauseCallback',
 			value: function onPauseCallback() {}
