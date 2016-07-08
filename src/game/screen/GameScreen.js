@@ -79,15 +79,6 @@ export default class GameScreen extends Screen{
 		this.addEvents();
 	}
 
-		//EVENTS
-	removeEvents(){
-		this.off('tap').off('mouseup');
-	}
-	addEvents(){
-		this.removeEvents();
-	    this.on('mouseup', this.onGameClickCallback.bind(this)).on('tap', this.onGameClickCallback.bind(this));	    	    
-	}
-
 	shuffleText(label){
 		let rnd1 = String.fromCharCode(Math.floor(Math.random()*20) + 65);
 		let rnd2 = Math.floor(Math.random()* 9);
@@ -222,6 +213,7 @@ export default class GameScreen extends Screen{
 		}
 		return shape;
 	}
+	//FILTERS
 	starterEffect(){
 		config.effectsLayer.removeAllFilters();
 		config.effectsLayer.updateRGBSplitter(5);
@@ -229,21 +221,7 @@ export default class GameScreen extends Screen{
 		config.effectsLayer.addPixelate();
 		config.effectsLayer.filtersActives[config.effectsLayer.ID_GLITCH1] = true;
 	}
-	changeFilter(effect){
-		let nextID = this.currentEffectID;
-		if(this.currentEffectID >= 0){
-			nextID = -1;
-		}else{
-			//nao shuffle
-			nextID = Math.floor(Math.random() * 7)
-		}
-		// if(effect != null){
-		// 	nextID = effect;
-		// }
-		if(this.currentEffectID < 9999){
-			this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?']
-			this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
-		}
+	removeFilter(){
 		switch(this.currentEffectID){
 			case 0:
 				//this.currentEffect = "INVERT";
@@ -257,8 +235,11 @@ export default class GameScreen extends Screen{
 			case 2:
 				//this.currentEffect = "ASCII";
 				config.effectsLayer.removeAllFilters();
-				this.scale.y = 1;
-				this.position.y -= config.height;
+				
+				//this.scale.y = 1;
+				//this.position.y -= config.height;
+
+				
 				// this.gameContainer.scale.y = 1;
 				// this.gameBorderContainer.scale.y = 1;
 
@@ -283,6 +264,39 @@ export default class GameScreen extends Screen{
 				this.linearParticles();
 				break
 		}
+	}
+	changeFilter(effect){
+		let nextID = this.currentEffectID;
+		if(this.currentEffectID >= 0){
+			nextID = -1;
+		}else{
+			//nao shuffle
+			nextID = Math.floor(Math.random() * 8)
+		}
+		
+
+		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+		// 	this.crazyCurrentPieces();
+		// }
+
+		if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+			this.removeOneColum();
+		}
+
+		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+		// 	this.addRandomBomb();
+		// }
+
+		if(!this.rotatingCrazy && Math.random() < 0.01){
+			this.fallForRandomSide();
+		}
+
+
+		if(this.currentEffectID < 9999){
+			this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?']
+			this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
+		}
+		this.removeFilter();
 		this.starterEffect();
 		//nextID = 2
 		// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
@@ -301,18 +315,12 @@ export default class GameScreen extends Screen{
 			break
 			case 2:
 				//this.currentEffect = "ASCII";
-				config.effectsLayer.removeAllFilters();
-				config.effectsLayer.addAscii();
-				this.scale.y = -1;
-				this.position.y += config.height;
-				// this.gameContainer.scale.y = -1;
-				// this.gameBorderContainer.scale.y = -1;
+				// config.effectsLayer.removeAllFilters();
+				// config.effectsLayer.addAscii();
+				// this.scale.y = -1;
+				// this.position.y += config.height;
+				// this.filterLabel = "OLD\nTIMES"
 
-				// this.gameContainer.position.y -= 100;
-				// this.gameBorderContainer.position.y -= 100;
-
-
-				this.filterLabel = "OLD\nTIMES"
 			break
 			case 3:
 				this.gameContainer.scale.y = -1;
@@ -329,6 +337,7 @@ export default class GameScreen extends Screen{
 			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
 				config.effectsLayer.shakeSplitter(1,6,0.3);
 				this.filterLabel = "X TREVNI"
+
 
 			break
 			case 5:
@@ -354,6 +363,7 @@ export default class GameScreen extends Screen{
 		}
 		this.currentEffectID = nextID;
 	}
+	//END FILTERS
 	printMatrix(shapeArray){
 		let tempLine;
 		let toPrint = '';
@@ -443,7 +453,7 @@ export default class GameScreen extends Screen{
 
 			let sideCollider = this.verifySingleSide(this.brickBreakerPiece, this.brickBreakerSpeed.x < 0);
 			if(sideCollider){
-				if(sideCollider.tint){
+				if(sideCollider.tint && sideCollider.name != "BOMB"){
 					sideCollider.tint = 0
 					this.removeSinglePiece(sideCollider);
 				}else{
@@ -455,7 +465,7 @@ export default class GameScreen extends Screen{
 			}
 			let upDownCollider = this.verifySingleDown(this.brickBreakerPiece, this.brickBreakerSpeed.y < 0);
 			if(upDownCollider){
-				if(upDownCollider.tint){
+				if(upDownCollider.tint && upDownCollider.name != "BOMB"){
 					upDownCollider.tint = 0
 					this.removeSinglePiece(upDownCollider);
 				}else{
@@ -663,16 +673,26 @@ export default class GameScreen extends Screen{
 			}
 		}
 	}
-	drawSquare(color){
+	drawSquare(color, padding){
+		let newPadding = padding;
+		if(!newPadding)
+		{
+			newPadding = 2;
+		}
 		let square = new PIXI.Graphics();
 		square.beginFill( color );
-	    square.drawRect( 2, 2, config.pieceSize -4, config.pieceSize-4);
+	    square.drawRect( newPadding, newPadding, config.pieceSize -newPadding*2, config.pieceSize-newPadding*2);
 	    return square;
 	}
-	drawCircle(color){
+	drawCircle(color, padding){
+		let newPadding = padding;
+		if(!newPadding)
+		{
+			newPadding = 0;
+		}
 		let circle = new PIXI.Graphics();
 		circle.beginFill( color );
-	    circle.drawCircle( config.pieceSize,config.pieceSize/2,config.pieceSize/2);
+	    circle.drawCircle( config.pieceSize - newPadding,(config.pieceSize - newPadding)/2,(config.pieceSize - newPadding)/2);
 	    return circle;
 	}
 	//EVENTS
@@ -683,8 +703,8 @@ export default class GameScreen extends Screen{
 	addEvents(){
 		this.removeEvents();
 		this.interactive = true;
-		this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this)); 
-		this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this)); 	    
+		//this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this)); 
+		//this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this)); 	    
 	}
 	onMouseMoveCallback(e) {
 		if(!this.started || this.ended){
@@ -717,7 +737,6 @@ export default class GameScreen extends Screen{
 		}
 		if(type){
 			if(this.gameMode == "MENU"){
-				console.log(type);
 				if(type == "right"){
 					type = "space";
 				}
@@ -765,13 +784,33 @@ export default class GameScreen extends Screen{
 	}
 	
 	
+	addButtonHUD(callback) {
+		if(!this.buttonList){
+			this.buttonList = [];
+		}
+		let tempButton = this.drawSquare(Math.random() * 0xFFFFFF, -10);
+		tempButton.interactive = true;
+		tempButton.on('tap', callback.bind(this)).on('click', callback.bind(this));
+		this.addChild(tempButton);
+		tempButton.position.x = tempButton.width * this.buttonList.length + tempButton.width;
+		tempButton.position.y = tempButton.height / 2;
+		this.buttonList.push(tempButton);
+	}
 	initGame() {
 		// this.started = true;
+		// this.addButtonHUD(this.crazyCurrentPieces);
+		// this.addButtonHUD(this.removeOneColum);
+		// this.addButtonHUD(this.addRandomBomb);
+		// this.addButtonHUD(this.fallForRandomSide);
+		// this.addButtonHUD(this.changeFilter);
+		this.resetRotation();
+		this.rotatingCrazy = false;
 		this.gameCounter = 0;
 		this.downSpeedIncrease = 0;
 		this.normalizedDelta = 1;
 		this.currentColor = config.palette.colors80[Math.floor(config.palette.colors80.length * Math.random())];
 		this.shapesOrder = [];
+		this.bombList = [];
 		this.shapeStep = 0;
 		this.shapeQueue = [];
 		this.points = 0;
@@ -779,17 +818,23 @@ export default class GameScreen extends Screen{
 		this.gameLevelSpeed = this.gameLevelSpeedMax;
 		this.scoring = 0;
 		//force to reset filter
+		this.removeFilter();
 		this.currentEffectID = 99999;
 		// this.changeFilter();
 
 		this.shapesOrder.push(0)
-		// this.shapesOrder.push(0)
 		this.shapesOrder.push(1)
-		// this.shapesOrder.push(1)
-		for (var i = 500; i >= 0; i--) {
-			this.shapesOrder.push(Math.floor(Math.random()*4))
+		let tempId;
+		for (var i = 0; i < 10; i++) {
+			tempId = Math.floor(Math.random()*4);
+			if(this.shapesOrder.length > 1){
+				while(tempId == this.shapesOrder[this.shapesOrder.length - 1] || tempId == this.shapesOrder[this.shapesOrder.length - 2]){
+					tempId = Math.floor(Math.random()*4);
+				}
+			}
+			this.shapesOrder.push(tempId)
 		}
-		//console.log(this.shapesOrder);
+		console.log(this.shapesOrder);
 		this.configGameMatrix(config.bounds.y,config.bounds.x);
 		this.drawMatrix(config.pieceSize);
 		
@@ -814,6 +859,10 @@ export default class GameScreen extends Screen{
 		}
 		TweenLite.to(this.gameContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
 		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+
+		TweenLite.to(this.gameContainer, 0.5, {rotation:0});
+		TweenLite.to(this.gameBorderContainer, 0.5, {rotation:0});
+
 		TweenLite.to(this.gameQueueContainer, 1, {alpha:1});
 		TweenLite.to(this.labelTitle, 0.15, {alpha:0});
 		TweenLite.to(this.labelPoints, 0.3, {alpha:1});
@@ -904,8 +953,171 @@ export default class GameScreen extends Screen{
 		}
 		this.removeEvents();
 	}
+	changePieceStyle(element, char, color, shape){
+		if(element.name == "BOMB"){
+			return;
+		}
+		let tempLabel = new PIXI.Text(char,{font : '30px super_smash_tvregular', fill : color, align : 'right'});
+		tempLabel.position.x = element.position.x + element.width / 2 - tempLabel.width/2;
+		tempLabel.position.y = element.position.y;
+		this.gameContainer.addChild(tempLabel);
+		this.gameContainer.removeChild(element);
+		return tempLabel;
+	}
+
+	resetRotation(){
+
+		this.rotatingCrazy = false;
+		TweenLite.killTweensOf(this.gameContainer);
+		TweenLite.killTweensOf(this.gameBorderContainer);
+		TweenLite.to(this.gameContainer, 0.5, {rotation:0, ease:"easeOutBack"});
+		TweenLite.to(this.gameBorderContainer, 0.5, {rotation:0, ease:"easeOutBack"});
 
 
+		TweenLite.killTweensOf(this.gameContainer.scale);
+		TweenLite.killTweensOf(this.gameBorderContainer.scale);
+		TweenLite.to(this.gameContainer.scale, 0.5, {x: 1, y:1, ease:"easeOutBack"});
+		TweenLite.to(this.gameBorderContainer.scale, 0.5, {x: 1, y:1, ease:"easeOutBack"});
+	}
+
+	fallForRandomSide(){
+		let side = Math.random() < 0.5 ? 1:-1;
+		// side = 1;
+		//(30 / 180 * Math.PI)
+		this.rotatingCrazy = true;
+		TweenLite.to(this.gameContainer, 80, {rotation:44.05 * side, ease:"easeOutBack"});
+		TweenLite.to(this.gameBorderContainer, 80.3, {rotation:44.05 * side, ease:"easeOutBack", onComplete:this.resetRotation, onCompleteScope:this});
+
+		TweenLite.to(this.gameContainer.scale, 0.5, {x: 0.8, y:0.8, ease:"easeOutBack"});
+		TweenLite.to(this.gameBorderContainer.scale, 0.5, {x: 0.8, y:0.8, ease:"easeOutBack"});
+
+	}
+	updateBombList(){
+		for (var i = 0; i < this.bombList.length; i++) {
+			this.bombList[i].tint = utils.getRandomValue(config.palette.colors80);
+		}
+	}
+	removeBomb(element){
+		for (var i = 0; i < this.bombList.length; i++) {
+			if(this.bombList[i] == element){
+				if(this.bombList[i].parent){
+					this.bombList[i].parent.removeChild(this.bombList[i]);
+				}
+				this.bombList.splice(i, 1);
+				return;
+			}
+		}
+	}
+	setBomb(element){
+		let square = this.drawSquare(0xFFFFFF);
+		square.position.x = element.position.x;
+		square.position.y = element.position.y;
+		this.gameContainer.addChild(square);
+		this.gameContainer.removeChild(element);
+		square.name = "BOMB";		
+		this.bombList.push(square);
+		return square;
+	}
+
+	addRandomBomb() {
+		let havePieces = false;
+		let height = this.gameMatrix[0].length - 1;
+		for (var i = height; i >= 0; i--) {
+			for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
+				if(this.gameMatrix[j][i]){
+					havePieces = true;
+					break;
+				}
+			}			
+		}
+		if(!havePieces){
+			return
+		}
+		let tempi = Math.floor(Math.random() * this.gameMatrix.length);
+		let tempj = Math.floor(Math.random() * this.gameMatrix[0].length);
+		while(!this.gameMatrix[tempi][tempj] || this.gameMatrix[tempi][tempj].name == "BOMB"){
+			tempi = Math.floor(Math.random() * this.gameMatrix.length);
+			tempj = Math.floor(Math.random() * this.gameMatrix[0].length);			
+		}
+		this.gameMatrix[tempi][tempj] = this.setBomb(this.gameMatrix[tempi][tempj]);
+	}
+	removeOneColum(forceColum, side) {
+		let currentSide = 1;
+		if(side){
+			currentSide = side;
+		}
+		let columID = forceColum != null?forceColum:Math.floor(Math.random() * this.gameMatrix.length);
+		let tempEffect = new PIXI.Graphics();
+		tempEffect.beginFill( 0xFFFFFF );
+	    tempEffect.drawRect( 0, 0, config.pieceSize, config.pieceSize * config.bounds.y);
+		tempEffect.position.x = columID * config.pieceSize;
+		tempEffect.height = config.bounds.y * config.pieceSize;
+		TweenLite.to(tempEffect, 0.5, {alpha:0, onComplete:function(toRemove){
+			toRemove.parent.removeChild(toRemove);
+		}, onCompleteParams:[tempEffect]});
+		this.gameContainer.addChild(tempEffect);
+		for (var i = this.gameMatrix[columID].length; i >= 0; i--) {			
+			if(this.gameMatrix[columID][i]){
+				this.addPoints(this.gameMatrix[columID][i]);
+				this.gameContainer.removeChild(this.gameMatrix[columID][i]);
+				this.gameMatrix[columID][i] = 0;
+			}
+		}
+		let delayAcc = 0;
+		config.effectsLayer.shakeY(0.5,5,0.5);
+		config.effectsLayer.updateRGBSplitter(5);
+		config.effectsLayer.fadeSplitter(1,3);
+
+		let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + config.bounds.y * config.pieceSize) / config.height;
+		let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + columID * config.pieceSize) / config.width;
+
+		config.effectsLayer.addShockwave(xNormal,yNormal,1);
+		for (var i = columID + 1; i < this.gameMatrix.length; i++) {
+			for (var j = this.gameMatrix[i].length - 1; j >= 0; j--) {
+				if(this.gameMatrix[i][j]){
+					delayAcc += 0.01;
+					TweenLite.killTweensOf(this.gameMatrix[i][j].position);
+					let addMore = 0;
+					if(this.gameMatrix[i][j].name == "BOMB"){
+						addMore = this.gameMatrix[i][j].width / 2;
+					}
+					TweenLite.to(this.gameMatrix[i][j].position, 0.5, {delay:delayAcc, x:(i - 1) * config.pieceSize + addMore, ease:"easeOutElastic"});
+					this.gameMatrix[i - currentSide][j] = this.gameMatrix[i][j];
+					this.gameMatrix[i][j] = 0;
+				}
+			}
+		}
+	}
+
+	crazyCurrentPieces() {		
+
+		let height = this.gameMatrix[0].length - 1;
+		let linesToChange = [];
+		let lineCounter;
+		for (var i = height; i >= 0; i--) {
+			lineCounter = 0;
+			for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
+				if(this.gameMatrix[j][i]){
+					lineCounter ++;
+				}
+				if(lineCounter > Math.random() * 8)	{
+					linesToChange.push(i)
+				}
+			}			
+		}
+		for (var i = linesToChange.length - 1; i >= 0; i--) {			
+			for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
+				if(this.gameMatrix[j][linesToChange[i]] && Math.random() < 0.5){
+					this.gameMatrix[j][linesToChange[i]] = this.changePieceStyle(
+							this.gameMatrix[j][linesToChange[i]],
+							String.fromCharCode(Math.floor(Math.random()*20) + 65),
+							utils.getRandomValue(config.palette.colors80)
+						);
+				}				
+			}
+		}
+		
+	}
 	//INITIALIZE
 	//create matrix based on game bounds
 	configGameMatrix(i,j) {
@@ -1071,6 +1283,7 @@ export default class GameScreen extends Screen{
 			}
 		}
 		if(linesToRemove.length > 0){
+
 			let yNormal = ((this.gameContainer.position.y - this.gameContainer.pivot.y) + linesToRemove[0] * config.pieceSize) / config.height;
 			let xNormal = ((this.gameContainer.position.x - this.gameContainer.pivot.x) + this.currentEntityList[0].x) / config.width;
 			config.effectsLayer.addShockwave(xNormal,yNormal,1);
@@ -1097,12 +1310,24 @@ export default class GameScreen extends Screen{
 		for (var i = linesToRemove.length - 1; i >= 0; i--) {			
 			this.removeLine(linesToRemove[i]);
 		}
+		if(linesToRemove.length >= 2){
+			this.addRandomBomb();
+		}
+		if(linesToRemove.length >= 3){
+			this.addRandomBomb();
+			this.addRandomBomb();
+		}
+		if(linesToRemove.length >= 4){
+			this.addRandomBomb();
+			this.addRandomBomb();
+			this.addRandomBomb();
+		}
 	}
 	addPoints(toRemove) {
 		if(toRemove){
-			this.pointsParticle(10, toRemove);
+			this.pointsParticle(this.rotatingCrazy ? 20 : 10, toRemove);
 		}
-		this.points += 10;
+		this.points += this.rotatingCrazy ? 20 : 10;
 	}
 	removeLine(line) {
 		
@@ -1113,6 +1338,10 @@ export default class GameScreen extends Screen{
 		let timeline = new TimelineLite();
 		for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 			if(this.gameMatrix[j][line]){
+				if(this.gameMatrix[j][line].name == "BOMB"){
+					this.removeBomb(this.gameMatrix[j][line]);
+					this.removeOneColum(j);
+				}
 				this.gameContainer.removeChild(this.gameMatrix[j][line]);
 				timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
 				this.gameMatrix[j][line] = 0;
@@ -1136,17 +1365,6 @@ export default class GameScreen extends Screen{
 			if(this.verifySingleSide(this.currentEntityList[i], type)){
 				return true;
 			}
-			// let tempX = (this.currentEntityList[i].position.x / config.pieceSize) + (type=="left"?-1:1);
-			// let tempY = (this.currentEntityList[i].position.y / config.pieceSize) + 0.5;
-			// let roundedY = Math.floor(tempY);
-			// let roundedX = Math.floor(tempX);
-			// if(tempX < 0 || tempX >= this.gameMatrix.length){
-			// 	return true
-			// }
-			// let matrixContent = this.gameMatrix[roundedX][roundedY]
-			// if(matrixContent && matrixContent != 0){
-			// 	return true
-			// }
 		}
 	}
 	verifySingleSide(entity, type) {
@@ -1196,20 +1414,6 @@ export default class GameScreen extends Screen{
 				this.addOnMatrix(true);
 				return true;
 			}
-			// let tempX = (this.currentEntityList[i].position.x / config.pieceSize);
-			// let tempY = (this.currentEntityList[i].position.y / config.pieceSize);
-			// let roundedY = Math.floor(tempY);
-			// if(roundedY >= config.bounds.y - 1){
-			// 	config.effectsLayer.shakeY(0.3,5,0.5);
-			// 	this.addOnMatrix(true);
-			// 	return true
-			// }
-			// let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
-			// if(matrixContent && matrixContent != 0){
-			// 	config.effectsLayer.shakeY(0.3,5,0.5);
-			// 	this.addOnMatrix(true);
-			// 	return true
-			// }
 		}
 	}
 	removeCurrentPiece(){
@@ -1223,6 +1427,10 @@ export default class GameScreen extends Screen{
 		let tempX = (piece.position.x / config.pieceSize);
 		let tempY = (piece.position.y / config.pieceSize);
 		let roundedY = Math.ceil(tempY)
+		// if(this.gameMatrix[tempX][roundedY] && this.gameMatrix[tempX][roundedY].name == "BOMB"){
+		// 	this.removeBomb(this.gameMatrix[tempX][line]);
+		// 	this.removeOneColum(tempX);
+		// }
 		this.gameMatrix[tempX][roundedY] = 0;
 		if(piece.parent)
 			piece.parent.removeChild(piece);
@@ -1283,7 +1491,10 @@ export default class GameScreen extends Screen{
 		this.downSpeedIncrease = 0;
 		this.started = false;
 		this.destroyGame();
-		this.initGame();		
+
+		setTimeout(function(){
+			this.initGame();	
+		}.bind(this), 1000);	
 	}
 	//SCREEN
 	verifyPosition() {
@@ -1400,7 +1611,8 @@ export default class GameScreen extends Screen{
 	}
 	update(delta){
 		this.rawDelta = delta;
-		delta *= (this.normalizedDelta + this.downSpeedIncrease);
+		delta *= (this.normalizedDelta + (this.rotatingCrazy ? 0 : this.downSpeedIncrease));
+		
 		super.update(delta);
 		if(!this.started){
 			return;
@@ -1421,9 +1633,12 @@ export default class GameScreen extends Screen{
 			this.filterDescription.tint = this.currentColor;
 		}
 
+		//this.gameContainer.rotation += 0.001;
+		//this.gameBorderContainer.rotation += 0.001;
 		this.updatePoints();
 		this.gameCounter += delta;
 		this.updateBulletList(this.rawDelta);
+		this.updateBombList();
 
 		if(this.meteorRain){
 			this.meteorTimeCounter += this.rawDelta;
