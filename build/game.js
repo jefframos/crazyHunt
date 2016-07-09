@@ -29960,6 +29960,8 @@
 			_classCallCheck(this, Game);
 	
 			var Renderer = config.webgl ? _pixi2.default.autoDetectRenderer : _pixi2.default.CanvasRenderer;
+			//config.width = window.screen.width;
+			//config.height = window.screen.height;
 			this.ratio = config.width / config.height;
 			this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
 			document.body.appendChild(this.renderer.view);
@@ -38286,7 +38288,11 @@
 	
 			_this.shapes = [{ shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER" }, { shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER" }];
 	
+			_this.whatPiece = { shape: [[0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0]], type: "WHAT" };
+	
+			_this.gameTitle = "Simple\nBRICK GAME";
 			_this.addEvents();
+	
 			return _this;
 		}
 	
@@ -38324,9 +38330,12 @@
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
 				//create background shape
 				this.background = new _pixi2.default.Graphics();
-				this.background.beginFill(0x101010);
+				this.background.beginFill(0xFFFFFF);
 				this.background.drawRect(-100, -100, _config2.default.width + 200, _config2.default.height + 200);
 				this.addChild(this.background);
+				this.backgroundColor = 0x101010;
+				this.backgroundStandardColor = 0x101010;
+				this.background.tint = this.backgroundColor;
 	
 				this.bulletList = [];
 				this.createParticles();
@@ -38334,6 +38343,8 @@
 				this.gameContainer = new _pixi2.default.Container();
 				this.gameQueueContainer = new _pixi2.default.Container();
 				this.gameBorderContainer = new _pixi2.default.Container();
+				this.gameInfoContainer = new _pixi2.default.Container();
+				this.gameComboBarContainer = new _pixi2.default.Container();
 				this.gameMatrix = [];
 	
 				this.filterLabel = "JUST";
@@ -38367,6 +38378,12 @@
 				this.addChild(this.gameContainer);
 				this.addChild(this.gameQueueContainer);
 				this.addChild(this.gameBorderContainer);
+				this.addChild(this.gameInfoContainer);
+				this.addChild(this.gameComboBarContainer);
+				this.drawComboContainer();
+	
+				this.gameComboBarContainer.position.x = 0;
+				this.gameComboBarContainer.position.y = this.labelPoints.position.y + this.labelPoints.height;
 	
 				this.initGame();
 	
@@ -38390,8 +38407,9 @@
 	
 				var descriptionNext = new _pixi2.default.Text('NEXT', { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
-				this.gameQueueContainer.addChild(descriptionNext);
-				descriptionNext.position.x = 20;
+				//this.gameQueueContainer.addChild(descriptionNext);
+				this.gameQueueContainer.alpha = 0;
+				// descriptionNext.position.x = 20;
 	
 				this.filterDescription.position.x = this.gameBorderContainer.width / 2 - this.filterDescription.width / 2;
 				this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
@@ -38403,6 +38421,41 @@
 				// setTimeout(function(){
 				// 	config.effectsLayer.addRGBSplitter();
 				// }.bind(this), 300);
+			}
+		}, {
+			key: 'updateComboBar',
+			value: function updateComboBar() {
+				this.comboBar.scale.x = this.comboTimer / this.comboMaxTimer;
+				if (this.comboTimer <= 0) {
+					this.comboCounter = 0;
+				}
+				this.comboBar.tint = this.currentColor;
+			}
+		}, {
+			key: 'addCombo',
+			value: function addCombo() {
+				this.comboTimer = this.comboMaxTimer;
+				if (this.comboTimer > 0) {
+					this.comboCounter++;
+				}
+				this.comboAddList = ["GOOD", "NICE", "GREAT", "SEXY", "AWESOME"];
+				var comboWordID = Math.floor(this.comboCounter / 5);
+				if (comboWordID >= this.comboAddList.length) {
+					comboWordID = this.comboAddList.length - 1;
+				}
+				if (this.comboCounter > 1) {
+	
+					this.addInfoLabel(["x" + this.comboCounter, "", this.comboAddList[comboWordID]], true);
+				}
+			}
+		}, {
+			key: 'drawComboContainer',
+			value: function drawComboContainer() {
+	
+				this.comboBar = new _pixi2.default.Graphics();
+				this.comboBar.beginFill(0xFFFFFF);
+				this.comboBar.drawRect(0, -10, _config2.default.width, 10);
+				this.gameComboBarContainer.addChild(this.comboBar);
 			}
 		}, {
 			key: 'drawShapeOnList',
@@ -38430,7 +38483,6 @@
 				_config2.default.effectsLayer.updateRGBSplitter(5);
 				_config2.default.effectsLayer.fadeSplitter(1, 3, 0.2);
 				_config2.default.effectsLayer.addPixelate();
-				_config2.default.effectsLayer.filtersActives[_config2.default.effectsLayer.ID_GLITCH1] = true;
 			}
 		}, {
 			key: 'removeFilter',
@@ -38441,22 +38493,13 @@
 						_config2.default.effectsLayer.removeInvert();
 						_config2.default.effectsLayer.removeAllFilters();
 						break;
-					case 1:
-						//this.currentEffect = "CROSS";
-						_config2.default.effectsLayer.removeAllFilters();
-						break;
+					// case 1:
+					// 	//this.currentEffect = "CROSS";
+					// 	config.effectsLayer.removeAllFilters();
+					// break
 					case 2:
 						//this.currentEffect = "ASCII";
 						_config2.default.effectsLayer.removeAllFilters();
-	
-						//this.scale.y = 1;
-						//this.position.y -= config.height;
-	
-						// this.gameContainer.scale.y = 1;
-						// this.gameBorderContainer.scale.y = 1;
-	
-						// this.gameContainer.position.y += 100;
-						// this.gameBorderContainer.position.y += 100;
 						break;
 					case 3:
 						this.gameContainer.scale.y = 1;
@@ -38465,6 +38508,7 @@
 					case 4:
 						this.gameContainer.scale.x = 1;
 						this.gameBorderContainer.scale.x = 1;
+						this.gameQueueContainer.alpha = 1;
 					case 5:
 						_config2.default.effectsLayer.removeAllFilters();
 					case 6:
@@ -38488,51 +38532,56 @@
 					nextID = Math.floor(Math.random() * 8);
 				}
 	
-				// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-				// 	this.crazyCurrentPieces();
-				// }
+				if (this.scoring > 4) {
+					// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+					// 	this.crazyCurrentPieces();
+					// }
 	
-				// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-				// 	this.removeOneColum();
-				// }
+					if (Math.random() < 0.05) {
+						this.changeBackgroundColor();
+					}
+					// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+					// 	this.removeOneColum();
+					// }
 	
-				// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-				// 	this.addRandomBomb();
-				// }
+					// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+					// 	this.addRandomBomb();
+					// }
 	
-				if (!this.rotatingCrazy && Math.random() < 0.01) {
-					this.fallForRandomSide();
+					if (!this.rotatingCrazy && Math.random() < 0.01) {
+						this.fallForRandomSide();
+					}
 				}
 	
-				if (this.currentEffectID < 9999) {
-					this.standardLabels = ['SIMPLE', 'JUICY', 'FUN', 'CRAZY?'];
-					this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
-				}
+				this.standardLabels = ['SIMPLE', 'JUICY', 'FUN', 'CRAZY?', 'INSANE', 'BRICK', 'WHY'];
+				this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
+	
 				this.removeFilter();
 				this.starterEffect();
-				//nextID = 2
+				//nextID = 4
 				// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
 				switch (nextID) {
 					case 0:
 						//this.currentEffect = "INVERT";
 						_config2.default.effectsLayer.addInvert();
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
-						this.filterLabel = "INVERT";
+						this.addInfoLabel(["INVERT", ["COLOR"]]);
 						break;
-					case 1:
-						//this.currentEffect = "CROSS";
-						_config2.default.effectsLayer.removeAllFilters();
-						_config2.default.effectsLayer.addCrossHatch();
-						this.filterLabel = "CROSS";
-						break;
+					// case 1:
+					// 	//this.currentEffect = "CROSS";
+					// 	config.effectsLayer.removeAllFilters();
+					// 	config.effectsLayer.addCrossHatch();
+					// 	this.addInfoLabel(["CROSS"])
+					// break
 					case 2:
+						_config2.default.effectsLayer.shakeSplitter(1, 80, 5);
+						this.addInfoLabel(["EARTHQUAKE"]);
 						//this.currentEffect = "ASCII";
 						// config.effectsLayer.removeAllFilters();
 						// config.effectsLayer.addAscii();
 						// this.scale.y = -1;
 						// this.position.y += config.height;
-						// this.filterLabel = "OLD\nTIMES"
-	
+						// this.addInfoLabel(["OLD\nTIMES"])
 						break;
 					case 3:
 						this.gameContainer.scale.y = -1;
@@ -38540,7 +38589,7 @@
 						_config2.default.effectsLayer.removeAllFilters();
 						_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
-						this.filterLabel = "INVERT Y";
+						this.addInfoLabel(["INVERT Y"]);
 						break;
 					case 4:
 						this.gameContainer.scale.x = -1;
@@ -38548,27 +38597,28 @@
 						_config2.default.effectsLayer.removeAllFilters();
 						_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
-						this.filterLabel = "X TREVNI";
+						this.addInfoLabel(["X TREVNI"]);
+						this.gameQueueContainer.alpha = 0;
 	
 						break;
 					case 5:
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
 						_config2.default.effectsLayer.addGray();
 						_config2.default.effectsLayer.addBlur();
-						this.filterLabel = "NOT COOL";
+						this.addInfoLabel(["NOT COOL"]);
 						break;
 					case 6:
 						_config2.default.effectsLayer.addGlitch2();
-						this.filterLabel = "3RRORR";
+						this.addInfoLabel(["3RRORR"]);
 						//config.effectsLayer.addBloom();
 						break;
 					case 7:
 						this.randomizeCrazy = true;
 						this.randomParticles();
-						this.filterLabel = "SHUFFLE";
+						this.addInfoLabel(["SHUFFLE"]);
 						break;
 					default:
-						//config.effectsLayer.shakeSplitter(1,10,0.5);
+	
 						break;
 						break;
 				}
@@ -38699,7 +38749,8 @@
 					if (upDownCollider || sideCollider) {
 						this.currentColor = _utils2.default.getRandomValue(_config2.default.palette.colors80);
 						this.brickBreakerPiece.tint = this.currentColor;
-						this.pointsParticle(10, this.brickBreakerPiece);
+						this.pointsParticle(10 * (this.comboCounter ? this.comboCounter : 1), this.brickBreakerPiece);
+						this.addCombo();
 					}
 				} else {
 					this.brickBreakerPiece = this.drawCircle(0xFFFFFF);
@@ -38720,6 +38771,7 @@
 				this.meteorCounter = quant ? quant : 8;
 				this.meteorTimeCounter = 0;
 				this.shooterErase = erase;
+				this.addInfoLabel(["METEOR", "RAIN"]);
 			}
 		}, {
 			key: 'fallMeteor',
@@ -38804,6 +38856,7 @@
 				for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
 					this.gameQueueContainer.removeChild(this.shapeQueue[i]);
 				}
+				// this.gameQueueContainer.alpha = 1;
 				var totalQueue = 3;
 				var tempShape = void 0;
 				var tempId = void 0;
@@ -38814,13 +38867,19 @@
 						tempId = newId;
 						newId++;
 					}
-					tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+					if (this.scoring > 4 && Math.random() < 0.1) {
+						tempShape = this.drawShapeOnList(this.whatPiece.shape);
+						//tempShape.scale.y = 0.7;
+						//tempShape.scale.x = 0.7;
+					} else {
+							tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+						}
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
-					tempShape.position.y = 110 * (i + 1);
+					tempShape.position.y = 130 * (i + 1);
 				}
 	
-				this.gameQueueContainer.position.x = _config2.default.width - 130;
+				this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
 			}
 		}, {
 			key: 'getShape',
@@ -38842,16 +38901,16 @@
 					if (this.currentShapeData.type == "SHOOTER") {
 						this.shooterErase = Math.random() < 0.4; //!this.shooterErase;
 						if (this.shooterErase) {
-							this.filterLabel = "ERASE";
+							this.addInfoLabel(["ERASE"]);
 						} else {
-							this.filterLabel = "ADD";
+							this.addInfoLabel(["ADD"]);
 						}
 					} else if (this.currentShapeData.type == "BRICK_BREAKER") {
 						this.normalizedDelta = 1;
 						this.downSpeedIncrease = 0;
 					} else {
 						if (!this.meteorRain && this.scoring > 5) {
-							if (Math.random() < 0.1) {
+							if (Math.random() < 0.15) {
 								this.startMeteorRain(Math.random() < 0.1, 5 + Math.floor(Math.random() * 9));
 							}
 						}
@@ -38986,7 +39045,7 @@
 						if (type == "right") {
 							type = "space";
 						}
-						this.inMenuKeyPressed = true;
+						// this.inMenuKeyPressed = true;
 						this.stopAction(type);
 					} else {
 						this.updateAction(type);
@@ -39045,14 +39104,81 @@
 				this.buttonList.push(tempButton);
 			}
 		}, {
+			key: 'addInfoLabel',
+			value: function addInfoLabel(label, addEffects, dontRemove) {
+				var tempLabel = label;
+				if (!addEffects) {
+					_config2.default.effectsLayer.updateRGBSplitter(-4);
+					_config2.default.effectsLayer.fadeSplitter(1, 1, 0);
+					// config.effectsLayer.fadeSplitter(1, 1, 1);
+					// config.effectsLayer.fadeBloom(2,0, 2, 0, true);
+				}
+				var distance = 40;
+				var lineHeight = 60;
+				var timeDelay = 0.05;
+				var time = 0.6;
+				var timeToRemove = 1;
+				while (this.gameInfoContainer.children.length) {
+	
+					_gsap2.default.killTweensOf(this.gameInfoContainer.removeChildAt(0));
+				}
+				var rainbowColors = ["#FF110C", "#FCA40A", "#FCFD01", "#3DFD0B", "#0CACFA", "#7442FD"];
+				var fontColor = 0xFFFFFF;
+				var rainbowColorsID = Math.floor(Math.random() * rainbowColors.length);
+				for (var i = 0; i < tempLabel.length; i++) {
+					for (var j = 0; j < tempLabel[i].length; j++) {
+						var tempLetter = new _pixi2.default.Text(tempLabel[i][j], { font: '80px super_smash_tvregular', fill: fontColor, align: 'center',
+							dropShadow: true,
+							dropShadowColor: rainbowColors[rainbowColorsID],
+							dropShadowAngle: 45,
+							dropShadowDistance: 10,
+							stroke: rainbowColors[rainbowColorsID],
+							strokeTickness: 6
+						});
+						this.gameInfoContainer.addChild(tempLetter);
+						rainbowColorsID++;
+						if (rainbowColorsID >= rainbowColors.length) {
+							rainbowColorsID = 0;
+						}
+						tempLetter.position.y = _config2.default.height / 2 - tempLabel.length / 2 * lineHeight + lineHeight * i;
+						tempLetter.position.x = distance * j + _config2.default.width / 2 - ((tempLabel[i].length - 1) * distance + distance) / 2;
+						// tempLetter.position.x = distance * j + config.width / 2 - ((tempLabel[i].length - 1) * distance + distance/2)/2;
+	
+						var delay = j * timeDelay;
+						if (i > 0) {
+							delay += tempLabel[i - 1].length * timeDelay;
+						}
+	
+						_gsap2.default.from(tempLetter.position, time, { y: tempLetter.position.y + 30, delay: delay, ease: "easeOutElastic" });
+						_gsap2.default.from(tempLetter, time, { alpha: 0, delay: delay });
+	
+						if (!dontRemove) {
+							_gsap2.default.to(tempLetter.position, time / 2, { y: tempLetter.position.y - 30, delay: delay + timeToRemove });
+							_gsap2.default.to(tempLetter, time / 2, { alpha: 0, delay: delay + timeToRemove, onComplete: function onComplete(toRemove) {
+									if (toRemove && toRemove.parent) {
+										toRemove.parent.removeChild(toRemove);
+									}
+								}, onCompleteParams: [tempLetter] });
+						}
+					}
+				}
+			}
+		}, {
 			key: 'initGame',
 			value: function initGame() {
 				// this.started = true;
+				// this.addButtonHUD(this.changeBackgroundColor);
 				// this.addButtonHUD(this.crazyCurrentPieces);
-				// this.addButtonHUD(this.removeOneColum);
-				// this.addButtonHUD(this.addRandomBomb);
-				// this.addButtonHUD(this.fallForRandomSide);
+				// this.addButtonHUD(this.addInfoLabel);
+				// this.addButtonHUD(this.addCombo);
+				// // this.addButtonHUD(this.removeOneColum);
+				// // this.addButtonHUD(this.addRandomBomb);
+				// // this.addButtonHUD(this.fallForRandomSide);
 				// this.addButtonHUD(this.changeFilter);
+	
+				this.comboTimer = 0;
+				this.comboMaxTimer = 5;
+				this.comboCounter = 0;
 				this.resetRotation();
 				this.rotatingCrazy = false;
 				this.gameCounter = 0;
@@ -39084,20 +39210,13 @@
 					}
 					this.shapesOrder.push(tempId);
 				}
-				console.log(this.shapesOrder);
+	
 				this.configGameMatrix(_config2.default.bounds.y, _config2.default.bounds.x);
 				this.drawMatrix(_config2.default.pieceSize);
-	
-				this.updateQueue();
-				// setTimeout(function(){
-				// 	this.started = true;
-				// 	this.downSpeedIncrease = 0;
-				// 	this.newEntity();
-				// }.bind(this), 300);
-	
 				this.gameContainer.addChild(this.filterDescription);
 				this.gameQueueContainer.alpha = 0;
 				this.started = true;
+				this.updateComboBar();
 				this.showMenu();
 			}
 		}, {
@@ -39108,33 +39227,52 @@
 						this.menuContainer.removeChildAt(0);
 					}
 				}
-				_gsap2.default.to(this.gameContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
-				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
-	
-				_gsap2.default.to(this.gameContainer, 0.5, { rotation: 0 });
-				_gsap2.default.to(this.gameBorderContainer, 0.5, { rotation: 0 });
-	
-				_gsap2.default.to(this.gameQueueContainer, 1, { alpha: 1 });
-				_gsap2.default.to(this.labelTitle, 0.15, { alpha: 0 });
-				_gsap2.default.to(this.labelPoints, 0.3, { alpha: 1 });
-				_gsap2.default.to(this.filterDescription, 0.3, { alpha: 1 });
+				this.showGame();
 				// config.effectsLayer.updateRGBSplitter(1);
 				// TweenLite.to(this.labelPoints, 1, {alpha:1});
 				this.filterLabel = "JUST";
 				//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
 				_config2.default.effectsLayer.fadeSplitter(1, 1, 0);
-				this.updateQueue();
+				//this.updateQueue();
 				setTimeout(function () {
 					this.started = true;
 					//this.showMenu();
 					this.downSpeedIncrease = 0;
 					this.newEntity();
+					_gsap2.default.to(this.gameQueueContainer, 1, { alpha: 1 });
 				}.bind(this), 500);
 	
 				this.gameMode = "STANDARD";
 			}
-			//reset timer
+		}, {
+			key: 'showGame',
+			value: function showGame() {
+				console.log("showGame");
+				_gsap2.default.to(this.gameContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
 	
+				_gsap2.default.to(this.gameContainer, 0.5, { rotation: 0 });
+				_gsap2.default.to(this.gameBorderContainer, 0.5, { rotation: 0 });
+				_gsap2.default.to(this.gameBorderContainer, 0.5, { alpha: 1 });
+	
+				_gsap2.default.to(this.labelTitle, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelPoints, 0.3, { alpha: 1 });
+				_gsap2.default.to(this.filterDescription, 0.3, { alpha: 1 });
+				this.gameComboBarContainer.alpha = 1;
+			}
+		}, {
+			key: 'hideGame',
+			value: function hideGame() {
+				console.log("hideGame");
+				_gsap2.default.to(this.gameContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
+				_gsap2.default.to(this.gameQueueContainer, 0.3, { alpha: 0 });
+				_gsap2.default.to(this.filterDescription, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelPoints, 0.15, { alpha: 0 });
+				_gsap2.default.to(this.labelTitle, 0.3, { alpha: 1 });
+				this.gameComboBarContainer.alpha = 0;
+				this.gameBorderContainer.alpha = 0;
+			}
 		}, {
 			key: 'showMenu',
 			value: function showMenu() {
@@ -39147,44 +39285,36 @@
 				}
 				this.menuContainer = new _pixi2.default.Container();
 				this.gameContainer.addChild(this.menuContainer);
-				this.menuList = ["PLAY", "?????????", "?????????", "?????????", "?????????", "?????????"];
+				this.menuList = ["PLAY", "??????", "??????", "??????", "??????", "??????"];
 				this.currentSelectedMenuItem = 0;
-				this.menuLabels = [];
-	
-				for (var i = 0; i < this.menuList.length; i++) {
-	
-					var menuLabel = new _pixi2.default.Text(this.menuList[i], { font: '30px super_smash_tvregular', fill: 0xFFFFFF, align: 'center', wordWrap: true, wordWrapWidth: 200 });
-	
-					this.menuContainer.addChild(menuLabel);
-					menuLabel.position.y = i * 40 + 100;
-					menuLabel.position.x = this.gameContainer.width / 2 - menuLabel.width / 2;
-					this.menuLabels.push(menuLabel);
-				}
 	
 				this.starterEffect();
-				// config.effectsLayer.removeBloom();
-				//config.effectsLayer.fadeSplitter(4,1,0);
-				//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 2, 2, 0.5, false);
-				_gsap2.default.to(this.gameContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
-				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: _config2.default.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x });
-				_gsap2.default.to(this.gameQueueContainer, 0.3, { alpha: 0 });
-				_gsap2.default.to(this.filterDescription, 0.15, { alpha: 0 });
-				_gsap2.default.to(this.labelPoints, 0.15, { alpha: 0 });
-				_gsap2.default.to(this.labelTitle, 0.3, { alpha: 1 });
+	
+				this.hideGame();
+	
+				this.updateMenu();
+			}
+		}, {
+			key: 'updateTitle',
+			value: function updateTitle() {
+				this.labelTitle.text = this.shuffleText(this.gameTitle);
+				this.labelTitle.position.x = _config2.default.width / 2 - this.labelTitle.width / 2;
 			}
 		}, {
 			key: 'updateMenu',
 			value: function updateMenu() {
 	
-				this.labelTitle.text = this.shuffleText('Just a simple\nBRICK GAME?');
+				//console.log([this.menuList[this.currentSelectedMenuItem]]);
+				this.addInfoLabel([this.menuList[this.currentSelectedMenuItem]], false, true);
 	
-				for (var i = this.menuLabels.length - 1; i >= 0; i--) {
-					if (this.currentSelectedMenuItem == i) {
-						this.menuLabels[i].tint = this.currentColor;
-					} else {
-						this.menuLabels[i].tint = 0xFFFFFF;
-					}
-				}
+				// for (var i = this.menuLabels.length - 1; i >= 0; i--) {
+				// 	if(this.currentSelectedMenuItem == i){
+				// 		this.menuLabels[i].tint = this.currentColor;
+				// 	}
+				// 	else{
+				// 		this.menuLabels[i].tint = 0xFFFFFF;
+				// 	}
+				// }
 			}
 			//end timer
 	
@@ -39194,6 +39324,9 @@
 				switch (this.currentSelectedMenuItem) {
 					case 0:
 						this.setInGamePositions();
+						while (this.gameInfoContainer.children.length) {
+							this.gameInfoContainer.removeChildAt(0);
+						}
 						break;
 				}
 			}
@@ -39208,9 +39341,15 @@
 				}
 				// for (var i = this.gameContainer.chidren.length - 1; i >= 0; i--) {
 				// }
-				for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
-					this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+				while (this.gameQueueContainer.children.length) {
+					this.gameQueueContainer.removeChildAt(0);
 				}
+	
+				while (this.gameInfoContainer.children.length) {
+	
+					this.gameInfoContainer.removeChildAt(0);
+				}
+	
 				this.removeEvents();
 			}
 		}, {
@@ -39219,8 +39358,8 @@
 				if (element.name == "BOMB") {
 					return;
 				}
-				var tempLabel = new _pixi2.default.Text(char, { font: '30px super_smash_tvregular', fill: color, align: 'right' });
-				tempLabel.position.x = element.position.x + element.width / 2 - tempLabel.width / 2;
+				var tempLabel = this.drawSquare(0xBBBBBB, 4); //new PIXI.Text(char,{font : '30px super_smash_tvregular', fill : color, align : 'right'});
+				tempLabel.position.x = element.position.x;
 				tempLabel.position.y = element.position.y;
 				this.gameContainer.addChild(tempLabel);
 				this.gameContainer.removeChild(element);
@@ -39253,6 +39392,15 @@
 	
 				_gsap2.default.to(this.gameContainer.scale, 0.5, { x: 0.8, y: 0.8, ease: "easeOutBack" });
 				_gsap2.default.to(this.gameBorderContainer.scale, 0.5, { x: 0.8, y: 0.8, ease: "easeOutBack" });
+			}
+		}, {
+			key: 'changeBackgroundColor',
+			value: function changeBackgroundColor() {
+				this.background.tint = _utils2.default.getRandomValue(_config2.default.palette.colors80);
+				_gsap2.default.killTweensOf(this.background);
+				this.background.alpha = 0.5;
+				_gsap2.default.to(this.background, 2, { alpha: 1 });
+				_gsap2.default.to(this.background, 4, { tint: this.backgroundStandardColor, delay: 2 });
 			}
 		}, {
 			key: 'updateBombList',
@@ -39304,9 +39452,14 @@
 				}
 				var tempi = Math.floor(Math.random() * this.gameMatrix.length);
 				var tempj = Math.floor(Math.random() * this.gameMatrix[0].length);
+				var tries = 500;
 				while (!this.gameMatrix[tempi][tempj] || this.gameMatrix[tempi][tempj].name == "BOMB") {
 					tempi = Math.floor(Math.random() * this.gameMatrix.length);
 					tempj = Math.floor(Math.random() * this.gameMatrix[0].length);
+					tries--;
+					if (tries <= 0) {
+						return;
+					}
 				}
 				this.gameMatrix[tempi][tempj] = this.setBomb(this.gameMatrix[tempi][tempj]);
 			}
@@ -39352,7 +39505,8 @@
 							if (this.gameMatrix[i][j].name == "BOMB") {
 								addMore = this.gameMatrix[i][j].width / 2;
 							}
-							_gsap2.default.to(this.gameMatrix[i][j].position, 0.5, { delay: delayAcc, x: (i - 1) * _config2.default.pieceSize + addMore, ease: "easeOutElastic" });
+							// TweenLite.to(this.gameMatrix[i][j].position, 0.5, {delay:delayAcc, x:(i - 1) * config.pieceSize + addMore, ease:"easeOutElastic"});
+							this.gameMatrix[i][j].position.x = (i - 1) * _config2.default.pieceSize;
 							this.gameMatrix[i - currentSide][j] = this.gameMatrix[i][j];
 							this.gameMatrix[i][j] = 0;
 						}
@@ -39411,6 +39565,9 @@
 		}, {
 			key: 'drawMatrix',
 			value: function drawMatrix(size) {
+				if (this.border) {
+					return;
+				}
 				this.border = new _pixi2.default.Graphics();
 				this.border.lineStyle(_config2.default.pixelSize * 2, 0xFFFFFF);
 				this.border.alpha = 0.8;
@@ -39425,28 +39582,35 @@
 			key: 'stopAction',
 			value: function stopAction(type) {
 				if (!this.started) {
+					if (type == "space") {
+						this.initGame();
+						return;
+					}
+				}
+				if (!this.started || this.gameOvering) {
 					return;
 				}
 				if (this.gameMode == "MENU") {
-					if (!this.inMenuKeyPressed) {
-						return;
-					}
-					if (type == "up") {
+					// if(!this.inMenuKeyPressed){
+					//return;
+					//}
+					if (type == "left") {
 						this.currentSelectedMenuItem--;
 						if (this.currentSelectedMenuItem < 0) {
-							this.currentSelectedMenuItem = this.menuLabels.length - 1;
+							this.currentSelectedMenuItem = this.menuList.length - 1;
 						}
 						_config2.default.effectsLayer.fadeSplitter(this.currentSelectedMenuItem, 1, 0);
-					} else if (type == "down") {
+						this.updateMenu();
+					} else if (type == "right") {
 						this.currentSelectedMenuItem++;
-						if (this.currentSelectedMenuItem >= this.menuLabels.length) {
+						if (this.currentSelectedMenuItem >= this.menuList.length) {
 							this.currentSelectedMenuItem = 0;
 						}
 						_config2.default.effectsLayer.fadeSplitter(this.currentSelectedMenuItem, 1, 0);
+						this.updateMenu();
 					} else if (type == "space") {
 						this.selectMenu();
 					}
-					this.updateMenu();
 					return;
 				}
 				if (type == "down" || type == "space") {
@@ -39471,11 +39635,12 @@
 		}, {
 			key: 'updateAction',
 			value: function updateAction(type) {
-				if (!this.started) {
+	
+				if (!this.started || this.gameOvering) {
 					return;
 				}
 				if (this.gameMode == "MENU") {
-					this.inMenuKeyPressed = true;
+					// this.inMenuKeyPressed = true;
 					return;
 				}
 				if (!this.canMove(type)) {
@@ -39493,8 +39658,7 @@
 						}
 					}
 				}
-				this.inMenuKeyPressed = false;
-				this.verifyPosition();
+				// this.inMenuKeyPressed = false;
 			}
 		}, {
 			key: 'updateMove',
@@ -39504,7 +39668,6 @@
 				}
 				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 					this.currentEntityList[i].position.y += _config2.default.pieceSize / 2;
-					this.verifyPosition();
 				}
 				this.updateVisibleParts();
 			}
@@ -39599,30 +39762,33 @@
 				}
 				if (linesToRemove.length >= 3) {
 					this.addRandomBomb();
-					this.addRandomBomb();
+					//this.addRandomBomb();
 				}
 				if (linesToRemove.length >= 4) {
 					this.addRandomBomb();
 					this.addRandomBomb();
-					this.addRandomBomb();
+					//this.addRandomBomb();
 				}
 			}
 		}, {
 			key: 'addPoints',
 			value: function addPoints(toRemove) {
+				var toAdd = this.rotatingCrazy ? 20 : 10 * (this.comboCounter ? this.comboCounter : 1);
+				console.log(toAdd);
 				if (toRemove) {
-					this.pointsParticle(this.rotatingCrazy ? 20 : 10, toRemove);
+					this.pointsParticle(toAdd, toRemove);
 				}
-				this.points += this.rotatingCrazy ? 20 : 10;
+				this.points += toAdd;
 			}
 		}, {
 			key: 'removeLine',
 			value: function removeLine(line) {
 	
+				this.addCombo();
+	
 				var lineCounter = 0;
 	
-				this.pointsParticle(100, this.gameMatrix[Math.floor(this.gameMatrix.length / 2)][line]);
-	
+				this.pointsParticle(100 * (this.comboCounter ? this.comboCounter : 1), this.gameMatrix[Math.floor(this.gameMatrix.length / 2)][line]);
 				var timeline = new TimelineLite();
 				for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 					if (this.gameMatrix[j][line]) {
@@ -39631,7 +39797,7 @@
 							this.removeOneColum(j);
 						}
 						this.gameContainer.removeChild(this.gameMatrix[j][line]);
-						timeline.add(_gsap2.default.to(this, 0.1, { onComplete: this.addPoints, onCompleteScope: this }));
+						// timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
 						this.gameMatrix[j][line] = 0;
 					}
 				}
@@ -39782,17 +39948,22 @@
 			value: function gameOver() {
 				this.downSpeedIncrease = 0;
 				this.started = false;
-				this.destroyGame();
+				this.gameOvering = true;
+				this.hideGame();
 	
 				setTimeout(function () {
-					this.initGame();
-				}.bind(this), 1000);
+					this.destroyGame();
+					this.showGameOverInfo();
+				}.bind(this), 500);
 			}
 			//SCREEN
 	
 		}, {
-			key: 'verifyPosition',
-			value: function verifyPosition() {}
+			key: 'showGameOverInfo',
+			value: function showGameOverInfo() {
+				this.gameOvering = false;
+				this.addInfoLabel(["new", "record", this.labelPoints.text], false, true);
+			}
 		}, {
 			key: 'onBackCallback',
 			value: function onBackCallback() {}
@@ -39919,19 +40090,20 @@
 				delta *= this.normalizedDelta + this.downSpeedIncrease;
 	
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
+				this.updateParticles(delta);
+				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+	
+				if (this.gameMode == "MENU" || this.gameOvering) {
+					this.updateTitle();
+					//this.updateMenu();
+					return;
+				}
+	
 				if (!this.started) {
 					return;
 				}
 	
-				this.updateParticles(delta);
-				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
-	
-				if (this.gameMode == "MENU") {
-					this.updateMenu();
-					return;
-				}
-	
-				this.filterDescription.text = this.shuffleText(this.filterLabel);
+				this.filterDescription.text = this.shuffleText(this.filterLabel, false, true);
 				this.filterDescription.position.x = this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2;
 				this.filterDescription.position.y = this.gameBorderContainer.height * this.gameContainer.scale.y / 2 - this.filterDescription.height;
 				if (this.filterDescription.tint != this.currentColor) {
@@ -39956,6 +40128,12 @@
 					this.updateBrickBreaker(this.rawDelta);
 					return;
 				}
+	
+				this.comboTimer -= this.rawDelta;
+				if (this.comboTimer < 0) {
+					this.comboTimer = 0;
+				}
+				this.updateComboBar();
 				if (this.gameCounter > (this.rotatingCrazy ? 0.5 : this.gameLevelSpeed)) {
 					this.updateMove();
 					this.gameCounter = 0;
@@ -40029,11 +40207,13 @@
 				// }
 				if (e.keyCode === 83 || e.keyCode === 40) {
 					this.game.stopAction('down');
-				}
-				if (e.keyCode === 32) {
+				} else if (e.keyCode === 65 || e.keyCode === 37) {
+					this.game.stopAction('left');
+				} else if (e.keyCode === 68 || e.keyCode === 39) {
+					this.game.stopAction('right');
+				} else if (e.keyCode === 32) {
 					this.game.stopAction('space');
-				}
-				if (e.keyCode === 87 || e.keyCode === 38) {
+				} else if (e.keyCode === 87 || e.keyCode === 38) {
 					this.game.updateAction('up');
 					this.game.stopAction('up');
 				}

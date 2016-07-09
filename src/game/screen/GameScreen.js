@@ -76,7 +76,18 @@ export default class GameScreen extends Screen{
 		], type:"BRICK_BREAKER"},
 		]
 
+		this.whatPiece = {shape:[
+			[0,0,1,0,0],
+			[0,1,0,1,0],
+			[0,0,0,1,0],
+			[0,0,1,0,0],			
+			[0,0,0,0,0],			
+			[0,0,1,0,0],			
+		], type:"WHAT"}
+
+		this.gameTitle = "Simple\nBRICK GAME";
 		this.addEvents();
+
 	}
 
 	shuffleText(label){
@@ -110,9 +121,12 @@ export default class GameScreen extends Screen{
 		super.build();
 		//create background shape
 		this.background = new PIXI.Graphics();
-		this.background.beginFill( 0x101010);
+		this.background.beginFill(0xFFFFFF);
 	    this.background.drawRect( -100, -100, config.width + 200, config.height+ 200);
 		this.addChild(this.background);
+		this.backgroundColor = 0x101010;
+		this.backgroundStandardColor = 0x101010;
+		this.background.tint = this.backgroundColor;
 		
 		this.bulletList = [];
 		this.createParticles();
@@ -120,6 +134,8 @@ export default class GameScreen extends Screen{
 		this.gameContainer = new PIXI.Container();
 		this.gameQueueContainer = new PIXI.Container();
 		this.gameBorderContainer = new PIXI.Container();
+		this.gameInfoContainer = new PIXI.Container();
+		this.gameComboBarContainer = new PIXI.Container();
 		this.gameMatrix = [];
 		
 
@@ -156,6 +172,12 @@ export default class GameScreen extends Screen{
 		this.addChild(this.gameContainer);
 		this.addChild(this.gameQueueContainer);
 		this.addChild(this.gameBorderContainer);
+		this.addChild(this.gameInfoContainer);
+		this.addChild(this.gameComboBarContainer);
+		this.drawComboContainer();
+
+		this.gameComboBarContainer.position.x = 0;
+		this.gameComboBarContainer.position.y = this.labelPoints.position.y + this.labelPoints.height;
 
 		this.initGame();
 
@@ -182,8 +204,9 @@ export default class GameScreen extends Screen{
 
 		let descriptionNext = new PIXI.Text('NEXT',{font : '40px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
 		this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
-		this.gameQueueContainer.addChild(descriptionNext);
-		descriptionNext.position.x = 20;
+		//this.gameQueueContainer.addChild(descriptionNext);
+		this.gameQueueContainer.alpha = 0;
+		// descriptionNext.position.x = 20;
 
 		this.filterDescription.position.x = this.gameBorderContainer.width / 2 - this.filterDescription.width / 2;
 		this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
@@ -197,6 +220,37 @@ export default class GameScreen extends Screen{
 		// 	config.effectsLayer.addRGBSplitter();
 		// }.bind(this), 300);
 		
+	}
+	updateComboBar(){
+		this.comboBar.scale.x = this.comboTimer / this.comboMaxTimer;
+		if(this.comboTimer <= 0){
+			this.comboCounter = 0;
+		}
+		this.comboBar.tint = this.currentColor;
+	}
+	addCombo(){
+		this.comboTimer = this.comboMaxTimer;
+		if(this.comboTimer > 0){
+			this.comboCounter ++;
+		}
+		this.comboAddList = ["GOOD", "NICE", "GREAT", "SEXY", "AWESOME"];
+		let comboWordID = Math.floor(this.comboCounter / 5);
+		if(comboWordID >= this.comboAddList.length){
+			comboWordID = this.comboAddList.length - 1;
+		}
+		if(this.comboCounter > 1){
+
+			this.addInfoLabel(["x" + this.comboCounter,"", this.comboAddList[comboWordID]], true);
+		}
+
+	}
+	drawComboContainer(){
+
+		this.comboBar = new PIXI.Graphics();
+		this.comboBar.beginFill( 0xFFFFFF );
+	    this.comboBar.drawRect(0,-10,config.width, 10);
+		this.gameComboBarContainer.addChild(this.comboBar);
+
 	}
 	drawShapeOnList(array){
 		let shape = new PIXI.Container();
@@ -219,7 +273,6 @@ export default class GameScreen extends Screen{
 		config.effectsLayer.updateRGBSplitter(5);
 		config.effectsLayer.fadeSplitter(1,3,0.2);		
 		config.effectsLayer.addPixelate();
-		config.effectsLayer.filtersActives[config.effectsLayer.ID_GLITCH1] = true;
 	}
 	removeFilter(){
 		switch(this.currentEffectID){
@@ -228,23 +281,13 @@ export default class GameScreen extends Screen{
 				config.effectsLayer.removeInvert();
 				config.effectsLayer.removeAllFilters();
 			break
-			case 1:
-				//this.currentEffect = "CROSS";
-				config.effectsLayer.removeAllFilters();
-			break
+			// case 1:
+			// 	//this.currentEffect = "CROSS";
+			// 	config.effectsLayer.removeAllFilters();
+			// break
 			case 2:
 				//this.currentEffect = "ASCII";
 				config.effectsLayer.removeAllFilters();
-				
-				//this.scale.y = 1;
-				//this.position.y -= config.height;
-
-				
-				// this.gameContainer.scale.y = 1;
-				// this.gameBorderContainer.scale.y = 1;
-
-				// this.gameContainer.position.y += 100;
-				// this.gameBorderContainer.position.y += 100;
 			break
 			case 3:
 				this.gameContainer.scale.y = 1;
@@ -253,6 +296,7 @@ export default class GameScreen extends Screen{
 			case 4:
 				this.gameContainer.scale.x = 1;
 				this.gameBorderContainer.scale.x = 1;
+				this.gameQueueContainer.alpha = 1;
 			case 5:
 				config.effectsLayer.removeAllFilters();
 			case 6:
@@ -275,52 +319,60 @@ export default class GameScreen extends Screen{
 		}
 		
 
-		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-		// 	this.crazyCurrentPieces();
-		// }
 
-		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-		// 	this.removeOneColum();
-		// }
 
-		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-		// 	this.addRandomBomb();
-		// }
+		if(this.scoring > 4){
+			// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+			// 	this.crazyCurrentPieces();
+			// }
 
-		if(!this.rotatingCrazy && Math.random() < 0.01){
-			this.fallForRandomSide();
+
+			if(Math.random() < 0.05){
+				this.changeBackgroundColor();
+			}
+			// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+			// 	this.removeOneColum();
+			// }
+
+			// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+			// 	this.addRandomBomb();
+			// }
+
+			if(!this.rotatingCrazy && Math.random() < 0.01){
+				this.fallForRandomSide();
+			}
 		}
 
 
-		if(this.currentEffectID < 9999){
-			this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?']
-			this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
-		}
+		this.standardLabels = ['SIMPLE','JUICY','FUN','CRAZY?','INSANE','BRICK','WHY']
+		this.filterLabel = this.standardLabels[Math.floor(Math.random()*this.standardLabels.length)];
+
 		this.removeFilter();
 		this.starterEffect();
-		//nextID = 2
+		//nextID = 4
 		// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
 		switch(nextID){
 			case 0:
 				//this.currentEffect = "INVERT";
 				config.effectsLayer.addInvert();
 				config.effectsLayer.shakeSplitter(1,6,0.3);
-				this.filterLabel = "INVERT"
+				this.addInfoLabel(["INVERT",["COLOR"]])
 			break
-			case 1:
-				//this.currentEffect = "CROSS";
-				config.effectsLayer.removeAllFilters();
-				config.effectsLayer.addCrossHatch();
-				this.filterLabel = "CROSS"
-			break
+			// case 1:
+			// 	//this.currentEffect = "CROSS";
+			// 	config.effectsLayer.removeAllFilters();
+			// 	config.effectsLayer.addCrossHatch();
+			// 	this.addInfoLabel(["CROSS"])
+			// break
 			case 2:
+				config.effectsLayer.shakeSplitter(1,80,5);
+				this.addInfoLabel(["EARTHQUAKE"])
 				//this.currentEffect = "ASCII";
 				// config.effectsLayer.removeAllFilters();
 				// config.effectsLayer.addAscii();
 				// this.scale.y = -1;
 				// this.position.y += config.height;
-				// this.filterLabel = "OLD\nTIMES"
-
+				// this.addInfoLabel(["OLD\nTIMES"])
 			break
 			case 3:
 				this.gameContainer.scale.y = -1;
@@ -328,7 +380,7 @@ export default class GameScreen extends Screen{
 				config.effectsLayer.removeAllFilters();
 			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
 				config.effectsLayer.shakeSplitter(1,6,0.3);
-				this.filterLabel = "INVERT Y"
+				this.addInfoLabel(["INVERT Y"])
 			break
 			case 4:
 				this.gameContainer.scale.x = -1;
@@ -336,28 +388,28 @@ export default class GameScreen extends Screen{
 				config.effectsLayer.removeAllFilters();
 			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
 				config.effectsLayer.shakeSplitter(1,6,0.3);
-				this.filterLabel = "X TREVNI"
-
+				this.addInfoLabel(["X TREVNI"]);
+				this.gameQueueContainer.alpha = 0;
 
 			break
 			case 5:
 				config.effectsLayer.shakeSplitter(1,6,0.3);
 				config.effectsLayer.addGray();
 				config.effectsLayer.addBlur();
-				this.filterLabel = "NOT COOL"
+				this.addInfoLabel(["NOT COOL"])
 			break
 			case 6:
 				config.effectsLayer.addGlitch2();
-				this.filterLabel = "3RRORR"
+				this.addInfoLabel(["3RRORR"])
 				//config.effectsLayer.addBloom();
 			break
 			case 7:
 				this.randomizeCrazy = true;
 				this.randomParticles();
-				this.filterLabel = "SHUFFLE"
+				this.addInfoLabel(["SHUFFLE"])
 			break
 			default:
-				//config.effectsLayer.shakeSplitter(1,10,0.5);
+				
 				break
 			break
 		}
@@ -478,7 +530,8 @@ export default class GameScreen extends Screen{
 			if(upDownCollider || sideCollider){
 				this.currentColor = utils.getRandomValue(config.palette.colors80);
 				this.brickBreakerPiece.tint = this.currentColor;
-				this.pointsParticle(10, this.brickBreakerPiece);
+				this.pointsParticle(10 * (this.comboCounter?this.comboCounter:1), this.brickBreakerPiece);
+				this.addCombo();
 			}
 		}else{
 			this.brickBreakerPiece = this.drawCircle(0xFFFFFF);
@@ -497,6 +550,7 @@ export default class GameScreen extends Screen{
 		this.meteorCounter = quant?quant:8;
 		this.meteorTimeCounter = 0;
 		this.shooterErase = erase;
+		this.addInfoLabel(["METEOR","RAIN"]);
 	}
 	fallMeteor(){
 		this.meteorTimeCounter = 0
@@ -574,6 +628,7 @@ export default class GameScreen extends Screen{
 		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
 			this.gameQueueContainer.removeChild(this.shapeQueue[i]);
 		}
+		// this.gameQueueContainer.alpha = 1;
 		let totalQueue = 3;
 		let tempShape;
 		let tempId;
@@ -584,13 +639,19 @@ export default class GameScreen extends Screen{
 				tempId = newId;
 				newId ++;
 			}
-			tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+			if(this.scoring > 4 && Math.random() < 0.1){
+				tempShape = this.drawShapeOnList(this.whatPiece.shape);
+				//tempShape.scale.y = 0.7;
+				//tempShape.scale.x = 0.7;
+			}else{
+				tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+			}
 			this.shapeQueue.push(tempShape);
 			this.gameQueueContainer.addChild(tempShape);
-			tempShape.position.y = 110 * (i + 1);
+			tempShape.position.y = 130 * (i + 1);
 		}
 
-		this.gameQueueContainer.position.x = config.width  - 130;
+		this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
 	}
 	getShape(){
 		this.shapeStep ++;
@@ -608,16 +669,16 @@ export default class GameScreen extends Screen{
 			if(this.currentShapeData.type == "SHOOTER"){
 				this.shooterErase = Math.random() < 0.4;//!this.shooterErase;
 				if(this.shooterErase){
-					this.filterLabel = "ERASE";
+					this.addInfoLabel(["ERASE"]);
 				}else{
-					this.filterLabel = "ADD";
+					this.addInfoLabel(["ADD"]);
 				}
 			}else if(this.currentShapeData.type == "BRICK_BREAKER"){
 				this.normalizedDelta = 1;
 				this.downSpeedIncrease = 0;
 			}else{
 				if(!this.meteorRain && this.scoring > 5){
-					if(Math.random()<0.1){
+					if(Math.random()<0.15){
 						this.startMeteorRain(Math.random()<0.1, 5 + Math.floor(Math.random() * 9));
 					}
 				}
@@ -740,7 +801,7 @@ export default class GameScreen extends Screen{
 				if(type == "right"){
 					type = "space";
 				}
-				this.inMenuKeyPressed = true;
+				// this.inMenuKeyPressed = true;
 				this.stopAction(type);
 			}else{
 				this.updateAction(type);
@@ -796,13 +857,83 @@ export default class GameScreen extends Screen{
 		tempButton.position.y = tempButton.height / 2;
 		this.buttonList.push(tempButton);
 	}
+	addInfoLabel(label, addEffects, dontRemove) {
+		let tempLabel = label;
+		if(!addEffects){
+			config.effectsLayer.updateRGBSplitter(-4);
+			config.effectsLayer.fadeSplitter(1, 1, 0);
+			// config.effectsLayer.fadeSplitter(1, 1, 1);
+			// config.effectsLayer.fadeBloom(2,0, 2, 0, true);
+		}
+		let distance = 40;
+		let lineHeight = 60;
+		let timeDelay = 0.05
+		let time = 0.6
+		let timeToRemove = 1;
+		while(this.gameInfoContainer.children.length){
+
+			TweenLite.killTweensOf(this.gameInfoContainer.removeChildAt(0));
+		}
+		let rainbowColors = ["#FF110C",
+		"#FCA40A",
+		"#FCFD01",
+		"#3DFD0B",
+		"#0CACFA",
+		"#7442FD"]
+		let fontColor = 0xFFFFFF;
+		let rainbowColorsID = Math.floor(Math.random()*rainbowColors.length);
+		for (var i = 0; i < tempLabel.length; i++) {
+			for (var j = 0; j < tempLabel[i].length; j++) {
+				let tempLetter = new PIXI.Text(tempLabel[i][j],{font : '80px super_smash_tvregular', fill : fontColor, align : 'center',
+					dropShadow:true,
+					dropShadowColor: rainbowColors[rainbowColorsID],
+					dropShadowAngle:45,
+					dropShadowDistance:10,
+					stroke: rainbowColors[rainbowColorsID],
+					strokeTickness:6
+				});
+				this.gameInfoContainer.addChild(tempLetter);
+				rainbowColorsID ++;
+				if(rainbowColorsID >= rainbowColors.length){
+					rainbowColorsID = 0;
+				}
+				tempLetter.position.y = config.height / 2 - tempLabel.length/2*lineHeight + lineHeight * i;
+				tempLetter.position.x = distance * j + config.width / 2 - ((tempLabel[i].length - 1) * distance + distance)/2;
+				// tempLetter.position.x = distance * j + config.width / 2 - ((tempLabel[i].length - 1) * distance + distance/2)/2;
+
+				let delay = j*timeDelay;
+				if(i > 0){
+					delay += tempLabel[i - 1].length * timeDelay;
+				}
+
+				TweenLite.from(tempLetter.position, time, {y:tempLetter.position.y + 30, delay:delay, ease:"easeOutElastic"});
+				TweenLite.from(tempLetter, time, {alpha:0, delay:delay});
+
+				if(!dontRemove){
+					TweenLite.to(tempLetter.position, time/2, {y:tempLetter.position.y - 30, delay:delay + timeToRemove});
+					TweenLite.to(tempLetter, time/2, {alpha:0, delay:delay + timeToRemove,onComplete:function(toRemove){
+						if(toRemove && toRemove.parent){
+							toRemove.parent.removeChild(toRemove);
+						}
+					}, onCompleteParams:[tempLetter]});
+				}
+			}
+		}
+	}
 	initGame() {
 		// this.started = true;
+		// this.addButtonHUD(this.changeBackgroundColor);
 		// this.addButtonHUD(this.crazyCurrentPieces);
-		// this.addButtonHUD(this.removeOneColum);
-		// this.addButtonHUD(this.addRandomBomb);
-		// this.addButtonHUD(this.fallForRandomSide);
+		// this.addButtonHUD(this.addInfoLabel);
+		// this.addButtonHUD(this.addCombo);
+		// // this.addButtonHUD(this.removeOneColum);
+		// // this.addButtonHUD(this.addRandomBomb);
+		// // this.addButtonHUD(this.fallForRandomSide);
 		// this.addButtonHUD(this.changeFilter);
+
+		this.comboTimer = 0;
+		this.comboMaxTimer = 5;
+		this.comboCounter = 0;
 		this.resetRotation();
 		this.rotatingCrazy = false;
 		this.gameCounter = 0;
@@ -834,20 +965,13 @@ export default class GameScreen extends Screen{
 			}
 			this.shapesOrder.push(tempId)
 		}
-		console.log(this.shapesOrder);
+
 		this.configGameMatrix(config.bounds.y,config.bounds.x);
 		this.drawMatrix(config.pieceSize);
-		
-		this.updateQueue();
-		// setTimeout(function(){
-		// 	this.started = true;
-		// 	this.downSpeedIncrease = 0;
-		// 	this.newEntity();
-		// }.bind(this), 300);
-		
 		this.gameContainer.addChild(this.filterDescription);
 		this.gameQueueContainer.alpha = 0;
 		this.started = true;
+		this.updateComboBar();
 		this.showMenu();
 
 	}
@@ -857,32 +981,49 @@ export default class GameScreen extends Screen{
 				this.menuContainer.removeChildAt(0);
 			}
 		}
-		TweenLite.to(this.gameContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
-		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
-
-		TweenLite.to(this.gameContainer, 0.5, {rotation:0});
-		TweenLite.to(this.gameBorderContainer, 0.5, {rotation:0});
-
-		TweenLite.to(this.gameQueueContainer, 1, {alpha:1});
-		TweenLite.to(this.labelTitle, 0.15, {alpha:0});
-		TweenLite.to(this.labelPoints, 0.3, {alpha:1});
-		TweenLite.to(this.filterDescription, 0.3, {alpha:1});
+		this.showGame();
 		// config.effectsLayer.updateRGBSplitter(1);
 		// TweenLite.to(this.labelPoints, 1, {alpha:1});
 		this.filterLabel = "JUST";
 		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
 		config.effectsLayer.fadeSplitter(1,1,0);
-		this.updateQueue();
+		//this.updateQueue();
 		setTimeout(function(){
 			this.started = true;
 			//this.showMenu();
 			this.downSpeedIncrease = 0;
 			this.newEntity();
+			TweenLite.to(this.gameQueueContainer, 1, {alpha:1});
+
 		}.bind(this), 500);
 
 		this.gameMode = "STANDARD";
 	}
-	//reset timer
+	showGame(){
+		console.log("showGame");
+		TweenLite.to(this.gameContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+
+		TweenLite.to(this.gameContainer, 0.5, {rotation:0});
+		TweenLite.to(this.gameBorderContainer, 0.5, {rotation:0});
+		TweenLite.to(this.gameBorderContainer, 0.5, {alpha:1});
+
+		TweenLite.to(this.labelTitle, 0.15, {alpha:0});
+		TweenLite.to(this.labelPoints, 0.3, {alpha:1});
+		TweenLite.to(this.filterDescription, 0.3, {alpha:1});
+		this.gameComboBarContainer.alpha = 1;
+	}
+	hideGame(){
+		console.log("hideGame");
+		TweenLite.to(this.gameContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameQueueContainer, 0.3, {alpha:0});
+		TweenLite.to(this.filterDescription, 0.15, {alpha:0});
+		TweenLite.to(this.labelPoints, 0.15, {alpha:0});
+		TweenLite.to(this.labelTitle, 0.3, {alpha:1});
+		this.gameComboBarContainer.alpha = 0;
+		this.gameBorderContainer.alpha = 0;
+	}
 	showMenu(){
 		this.gameMode = "MENU";
 
@@ -893,50 +1034,45 @@ export default class GameScreen extends Screen{
 		}
 		this.menuContainer = new PIXI.Container();
 		this.gameContainer.addChild(this.menuContainer);
-		this.menuList = ["PLAY", "?????????", "?????????", "?????????", "?????????", "?????????"];
+		this.menuList = ["PLAY", "??????", "??????", "??????", "??????", "??????"];
 		this.currentSelectedMenuItem = 0;
-		this.menuLabels = [];
-
-		for (var i = 0; i < this.menuList.length; i++) {
-
-			let menuLabel = new PIXI.Text(this.menuList[i],{font : '30px super_smash_tvregular', fill : 0xFFFFFF, align : 'center', wordWrap:true, wordWrapWidth:200});		
-
-			this.menuContainer.addChild(menuLabel)
-			menuLabel.position.y = i * 40 + 100;
-			menuLabel.position.x = this.gameContainer.width / 2 - menuLabel.width / 2;
-			this.menuLabels.push(menuLabel);
-		}
-
-		this.starterEffect();
-		// config.effectsLayer.removeBloom();
-		//config.effectsLayer.fadeSplitter(4,1,0);
-		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 2, 2, 0.5, false);
-		TweenLite.to(this.gameContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
-		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
-		TweenLite.to(this.gameQueueContainer, 0.3, {alpha:0});
-		TweenLite.to(this.filterDescription, 0.15, {alpha:0});
-		TweenLite.to(this.labelPoints, 0.15, {alpha:0});
-		TweenLite.to(this.labelTitle, 0.3, {alpha:1});
 		
+		this.starterEffect();
+		
+		this.hideGame();
+
+		this.updateMenu();
+		
+	}
+	updateTitle(){
+		this.labelTitle.text = this.shuffleText(this.gameTitle);
+		this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
 	}
 	updateMenu(){
 
-		this.labelTitle.text = this.shuffleText('Just a simple\nBRICK GAME?');
+		
 
-		for (var i = this.menuLabels.length - 1; i >= 0; i--) {
-			if(this.currentSelectedMenuItem == i){
-				this.menuLabels[i].tint = this.currentColor;
-			}
-			else{
-				this.menuLabels[i].tint = 0xFFFFFF;
-			}
-		}
+		//console.log([this.menuList[this.currentSelectedMenuItem]]);
+		this.addInfoLabel([this.menuList[this.currentSelectedMenuItem]], false, true);
+
+		// for (var i = this.menuLabels.length - 1; i >= 0; i--) {
+		// 	if(this.currentSelectedMenuItem == i){
+		// 		this.menuLabels[i].tint = this.currentColor;
+		// 	}
+		// 	else{
+		// 		this.menuLabels[i].tint = 0xFFFFFF;
+		// 	}
+		// }
 	}
 	//end timer
 	selectMenu(){
 		switch(this.currentSelectedMenuItem)
 		{
-			case 0:this.setInGamePositions();
+			case 0:
+				this.setInGamePositions();
+				while(this.gameInfoContainer.children.length){
+					this.gameInfoContainer.removeChildAt(0);
+				}
 			break
 		}
 	}
@@ -948,17 +1084,23 @@ export default class GameScreen extends Screen{
 		}
 		// for (var i = this.gameContainer.chidren.length - 1; i >= 0; i--) {
 		// }
-		for (var i = this.shapeQueue.length - 1; i >= 0; i--) {
-			this.gameQueueContainer.removeChild(this.shapeQueue[i]);
+		while(this.gameQueueContainer.children.length){			
+			this.gameQueueContainer.removeChildAt(0);
 		}
+
+		while(this.gameInfoContainer.children.length){
+
+			this.gameInfoContainer.removeChildAt(0);
+		}
+
 		this.removeEvents();
 	}
 	changePieceStyle(element, char, color, shape){
 		if(element.name == "BOMB"){
 			return;
 		}
-		let tempLabel = new PIXI.Text(char,{font : '30px super_smash_tvregular', fill : color, align : 'right'});
-		tempLabel.position.x = element.position.x + element.width / 2 - tempLabel.width/2;
+		let tempLabel = this.drawSquare(0xBBBBBB, 4);//new PIXI.Text(char,{font : '30px super_smash_tvregular', fill : color, align : 'right'});
+		tempLabel.position.x = element.position.x;
 		tempLabel.position.y = element.position.y;
 		this.gameContainer.addChild(tempLabel);
 		this.gameContainer.removeChild(element);
@@ -991,6 +1133,13 @@ export default class GameScreen extends Screen{
 		TweenLite.to(this.gameContainer.scale, 0.5, {x: 0.8, y:0.8, ease:"easeOutBack"});
 		TweenLite.to(this.gameBorderContainer.scale, 0.5, {x: 0.8, y:0.8, ease:"easeOutBack"});
 
+	}
+	changeBackgroundColor(){
+		this.background.tint = utils.getRandomValue(config.palette.colors80);
+		TweenLite.killTweensOf(this.background);
+		this.background.alpha = 0.5;
+		TweenLite.to(this.background, 2, {alpha:1});
+		TweenLite.to(this.background, 4, {tint:this.backgroundStandardColor, delay: 2});
 	}
 	updateBombList(){
 		for (var i = 0; i < this.bombList.length; i++) {
@@ -1035,9 +1184,14 @@ export default class GameScreen extends Screen{
 		}
 		let tempi = Math.floor(Math.random() * this.gameMatrix.length);
 		let tempj = Math.floor(Math.random() * this.gameMatrix[0].length);
+		let tries = 500;
 		while(!this.gameMatrix[tempi][tempj] || this.gameMatrix[tempi][tempj].name == "BOMB"){
 			tempi = Math.floor(Math.random() * this.gameMatrix.length);
-			tempj = Math.floor(Math.random() * this.gameMatrix[0].length);			
+			tempj = Math.floor(Math.random() * this.gameMatrix[0].length);
+			tries --;
+			if(tries <= 0)		{
+				return;
+			}
 		}
 		this.gameMatrix[tempi][tempj] = this.setBomb(this.gameMatrix[tempi][tempj]);
 	}
@@ -1081,7 +1235,8 @@ export default class GameScreen extends Screen{
 					if(this.gameMatrix[i][j].name == "BOMB"){
 						addMore = this.gameMatrix[i][j].width / 2;
 					}
-					TweenLite.to(this.gameMatrix[i][j].position, 0.5, {delay:delayAcc, x:(i - 1) * config.pieceSize + addMore, ease:"easeOutElastic"});
+					// TweenLite.to(this.gameMatrix[i][j].position, 0.5, {delay:delayAcc, x:(i - 1) * config.pieceSize + addMore, ease:"easeOutElastic"});
+					this.gameMatrix[i][j].position.x = (i - 1) * config.pieceSize;
 					this.gameMatrix[i - currentSide][j] = this.gameMatrix[i][j];
 					this.gameMatrix[i][j] = 0;
 				}
@@ -1138,6 +1293,9 @@ export default class GameScreen extends Screen{
 	}
 	//draw dots on screen
 	drawMatrix(size) {
+		if(this.border){
+			return;
+		}
 		this.border = new PIXI.Graphics();
 		this.border.lineStyle(config.pixelSize*2,0xFFFFFF);
 		this.border.alpha = 0.8;
@@ -1149,28 +1307,35 @@ export default class GameScreen extends Screen{
 	//
 	stopAction(type){
 		if(!this.started){
+			if (type == "space"){
+				this.initGame();
+				return;
+			}
+		}
+		if(!this.started || this.gameOvering){
 			return;
 		}
 		if(this.gameMode == "MENU"){
-			if(!this.inMenuKeyPressed){
-				return;
-			}
-			if(type == "up"){
+			// if(!this.inMenuKeyPressed){
+				//return;
+			//}
+			if(type == "left"){
 				this.currentSelectedMenuItem --;
 				if(this.currentSelectedMenuItem < 0){
-					this.currentSelectedMenuItem = this.menuLabels.length - 1;
+					this.currentSelectedMenuItem = this.menuList.length - 1;
 				}
 				config.effectsLayer.fadeSplitter(this.currentSelectedMenuItem,1,0);
-			}else if(type == "down"){
+				this.updateMenu();
+			}else if(type == "right"){
 				this.currentSelectedMenuItem ++;
-				if(this.currentSelectedMenuItem >= this.menuLabels.length){
+				if(this.currentSelectedMenuItem >= this.menuList.length){
 					this.currentSelectedMenuItem = 0;
 				}
 				config.effectsLayer.fadeSplitter(this.currentSelectedMenuItem,1,0);
+				this.updateMenu();
 			}else if (type == "space"){
 				this.selectMenu();
 			}
-			this.updateMenu();
 			return;
 		}
 		if(type == "down" || type == "space"){
@@ -1191,11 +1356,12 @@ export default class GameScreen extends Screen{
 		return haveOne;
 	}
 	updateAction(type){
-		if(!this.started){
+
+		if(!this.started || this.gameOvering){
 			return;
 		}
 		if(this.gameMode == "MENU"){
-			this.inMenuKeyPressed = true;
+			// this.inMenuKeyPressed = true;
 			return;
 		}
 		if(!this.canMove(type)){
@@ -1213,8 +1379,7 @@ export default class GameScreen extends Screen{
 				}
 			}
 		}
-		this.inMenuKeyPressed = false;
-		this.verifyPosition();
+		// this.inMenuKeyPressed = false;
 	}
 	updateMove(){
 		if(!this.canMove("down")){
@@ -1222,7 +1387,6 @@ export default class GameScreen extends Screen{
 		}		
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
 			this.currentEntityList[i].position.y += config.pieceSize / 2;
-			this.verifyPosition();
 		}
 		this.updateVisibleParts();
 	}
@@ -1315,26 +1479,29 @@ export default class GameScreen extends Screen{
 		}
 		if(linesToRemove.length >= 3){
 			this.addRandomBomb();
-			this.addRandomBomb();
+			//this.addRandomBomb();
 		}
 		if(linesToRemove.length >= 4){
 			this.addRandomBomb();
 			this.addRandomBomb();
-			this.addRandomBomb();
+			//this.addRandomBomb();
 		}
 	}
 	addPoints(toRemove) {
+		let toAdd = this.rotatingCrazy ? 20 : 10 * (this.comboCounter?this.comboCounter:1);
+		console.log(toAdd);
 		if(toRemove){
-			this.pointsParticle(this.rotatingCrazy ? 20 : 10, toRemove);
+			this.pointsParticle(toAdd, toRemove);
 		}
-		this.points += this.rotatingCrazy ? 20 : 10;
+		this.points += toAdd;
 	}
 	removeLine(line) {
 		
+		this.addCombo();
+
 		let lineCounter = 0;
 		
-		this.pointsParticle(100, this.gameMatrix[Math.floor(this.gameMatrix.length / 2)][line]);
-
+		this.pointsParticle(100 * (this.comboCounter?this.comboCounter:1), this.gameMatrix[Math.floor(this.gameMatrix.length / 2)][line]);
 		let timeline = new TimelineLite();
 		for (var j = this.gameMatrix.length - 1; j >= 0; j--) {
 			if(this.gameMatrix[j][line]){
@@ -1343,7 +1510,7 @@ export default class GameScreen extends Screen{
 					this.removeOneColum(j);
 				}
 				this.gameContainer.removeChild(this.gameMatrix[j][line]);
-				timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
+				// timeline.add(TweenLite.to(this, 0.1, {onComplete: this.addPoints, onCompleteScope: this}));
 				this.gameMatrix[j][line] = 0;
 			}				
 		}
@@ -1481,14 +1648,18 @@ export default class GameScreen extends Screen{
 	gameOver() {
 		this.downSpeedIncrease = 0;
 		this.started = false;
-		this.destroyGame();
+		this.gameOvering = true;
+		this.hideGame();
 
 		setTimeout(function(){
-			this.initGame();	
-		}.bind(this), 1000);	
+			this.destroyGame();
+			this.showGameOverInfo();	
+		}.bind(this), 500);	
 	}
 	//SCREEN
-	verifyPosition() {
+	showGameOverInfo() {
+		this.gameOvering = false;
+		this.addInfoLabel(["new","record",this.labelPoints.text], false, true);
 	}
 	onBackCallback() {
 		
@@ -1605,19 +1776,25 @@ export default class GameScreen extends Screen{
 		delta *= (this.normalizedDelta + this.downSpeedIncrease);
 		
 		super.update(delta);
-		if(!this.started){
-			return;
-		}
-		
 		this.updateParticles(delta);
 		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
 
-		if(this.gameMode == "MENU"){
-			this.updateMenu();
+
+		
+
+		
+		if(this.gameMode == "MENU" || this.gameOvering){
+			this.updateTitle();
+			//this.updateMenu();
 			return;
 		}
 
-		this.filterDescription.text = this.shuffleText(this.filterLabel);
+
+		if(!this.started){
+			return;
+		}
+
+		this.filterDescription.text = this.shuffleText(this.filterLabel, false, true);
 		this.filterDescription.position.x = (this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2) ;
 		this.filterDescription.position.y = this.gameBorderContainer.height * this.gameContainer.scale.y / 2 - this.filterDescription.height;
 		if(this.filterDescription.tint != this.currentColor){
@@ -1642,6 +1819,12 @@ export default class GameScreen extends Screen{
 			this.updateBrickBreaker(this.rawDelta);
 			return;
 		}
+
+		this.comboTimer -= this.rawDelta;
+		if(this.comboTimer < 0){
+			this.comboTimer = 0;
+		}
+		this.updateComboBar();
 		if(this.gameCounter >  (this.rotatingCrazy ? 0.5 : this.gameLevelSpeed)){
 			this.updateMove();
 			this.gameCounter = 0;
