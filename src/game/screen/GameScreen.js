@@ -279,9 +279,9 @@ export default class GameScreen extends Screen{
 		// 	this.crazyCurrentPieces();
 		// }
 
-		if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
-			this.removeOneColum();
-		}
+		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+		// 	this.removeOneColum();
+		// }
 
 		// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
 		// 	this.addRandomBomb();
@@ -1427,10 +1427,6 @@ export default class GameScreen extends Screen{
 		let tempX = (piece.position.x / config.pieceSize);
 		let tempY = (piece.position.y / config.pieceSize);
 		let roundedY = Math.ceil(tempY)
-		// if(this.gameMatrix[tempX][roundedY] && this.gameMatrix[tempX][roundedY].name == "BOMB"){
-		// 	this.removeBomb(this.gameMatrix[tempX][line]);
-		// 	this.removeOneColum(tempX);
-		// }
 		this.gameMatrix[tempX][roundedY] = 0;
 		if(piece.parent)
 			piece.parent.removeChild(piece);
@@ -1438,11 +1434,6 @@ export default class GameScreen extends Screen{
 	addOnMatrix(isColided, piece) {
 		if(this.currentShapeData.type == "SHOOTER" && !piece){
 			this.removeCurrentPiece();
-			// for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-			// 	if(this.currentEntityList[i] && this.currentEntityList[i].parent){
-			// 		this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
-			// 	}
-			// }
 			this.addShockwaveByPiece(this.currentEntityList[this.currentEntityList.length - 1]);
 			config.effectsLayer.shakeX(0.5,5,0.5);
 			config.effectsLayer.shakeY(0.5,5,0.5);
@@ -1611,7 +1602,7 @@ export default class GameScreen extends Screen{
 	}
 	update(delta){
 		this.rawDelta = delta;
-		delta *= (this.normalizedDelta + (this.rotatingCrazy ? 0 : this.downSpeedIncrease));
+		delta *= (this.normalizedDelta + this.downSpeedIncrease);
 		
 		super.update(delta);
 		if(!this.started){
@@ -1651,7 +1642,7 @@ export default class GameScreen extends Screen{
 			this.updateBrickBreaker(this.rawDelta);
 			return;
 		}
-		if(this.gameCounter > this.gameLevelSpeed){
+		if(this.gameCounter >  (this.rotatingCrazy ? 0.5 : this.gameLevelSpeed)){
 			this.updateMove();
 			this.gameCounter = 0;
 		}

@@ -38492,9 +38492,9 @@
 				// 	this.crazyCurrentPieces();
 				// }
 	
-				if (Math.random() < this.rotatingCrazy ? 0.1 : 0.05) {
-					this.removeOneColum();
-				}
+				// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
+				// 	this.removeOneColum();
+				// }
 	
 				// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
 				// 	this.addRandomBomb();
@@ -39726,10 +39726,6 @@
 				var tempX = piece.position.x / _config2.default.pieceSize;
 				var tempY = piece.position.y / _config2.default.pieceSize;
 				var roundedY = Math.ceil(tempY);
-				// if(this.gameMatrix[tempX][roundedY] && this.gameMatrix[tempX][roundedY].name == "BOMB"){
-				// 	this.removeBomb(this.gameMatrix[tempX][line]);
-				// 	this.removeOneColum(tempX);
-				// }
 				this.gameMatrix[tempX][roundedY] = 0;
 				if (piece.parent) piece.parent.removeChild(piece);
 			}
@@ -39738,11 +39734,6 @@
 			value: function addOnMatrix(isColided, piece) {
 				if (this.currentShapeData.type == "SHOOTER" && !piece) {
 					this.removeCurrentPiece();
-					// for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-					// 	if(this.currentEntityList[i] && this.currentEntityList[i].parent){
-					// 		this.currentEntityList[i].parent.removeChild(this.currentEntityList[i]);
-					// 	}
-					// }
 					this.addShockwaveByPiece(this.currentEntityList[this.currentEntityList.length - 1]);
 					_config2.default.effectsLayer.shakeX(0.5, 5, 0.5);
 					_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
@@ -39925,7 +39916,7 @@
 			key: 'update',
 			value: function update(delta) {
 				this.rawDelta = delta;
-				delta *= this.normalizedDelta + (this.rotatingCrazy ? 0 : this.downSpeedIncrease);
+				delta *= this.normalizedDelta + this.downSpeedIncrease;
 	
 				_get(Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
 				if (!this.started) {
@@ -39965,7 +39956,7 @@
 					this.updateBrickBreaker(this.rawDelta);
 					return;
 				}
-				if (this.gameCounter > this.gameLevelSpeed) {
+				if (this.gameCounter > (this.rotatingCrazy ? 0.5 : this.gameLevelSpeed)) {
 					this.updateMove();
 					this.gameCounter = 0;
 				}
