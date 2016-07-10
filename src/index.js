@@ -5,6 +5,8 @@ import EffectLayer from './game/EffectLayer';
 import GameScreen from './game/screen/GameScreen';
 import InitScreen from './game/screen/InitScreen';
 import ScreenManager from './screenManager/ScreenManager';
+import CookieManager  from './game/CookieManager';
+
 
 
 PIXI.loader
@@ -25,7 +27,12 @@ function configGame(){
 	}
 
 	let game = new Game(config);
+	let cookieManager = new CookieManager();
+	config.cookieManager = cookieManager;
 
+	if(!config.cookieManager.getCookie("bestPoints")){
+		config.cookieManager.createCookie("bestPoints",0,365)
+	}
 	//create screen manager
 	let screenManager = new ScreenManager();
 	//add screens

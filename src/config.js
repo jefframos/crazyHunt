@@ -1,4 +1,5 @@
 	export default {
+	cookieManager: null,
 	width: 414,
 	height: 736,
 	bounds: {x:10, y:20},

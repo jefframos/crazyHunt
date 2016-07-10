@@ -2,11 +2,9 @@ import PIXI from 'pixi.js';
 import TweenLite from 'gsap';
 import config  from '../../config';
 import InputManager  from '../InputManager';
+import CookieManager  from '../CookieManager';
 import utils  from '../../utils';
-import Screen from '../../screenManager/Screen'
-import Line from '../entity/Line'
-import PauseContainer from '../container/PauseContainer'
-import EndContainer from '../container/EndContainer'
+import Screen from '../../screenManager/Screen';
 
 export default class GameScreen extends Screen{
 	constructor(label){
@@ -85,6 +83,7 @@ export default class GameScreen extends Screen{
 			[0,0,1,0,0],			
 		], type:"WHAT"}
 
+		this.bestScore = config.cookieManager.getCookie("bestPoints");
 		this.gameTitle = "Simple\nBRICK GAME";
 		this.addEvents();
 
@@ -136,6 +135,7 @@ export default class GameScreen extends Screen{
 		this.gameBorderContainer = new PIXI.Container();
 		this.gameInfoContainer = new PIXI.Container();
 		this.gameComboBarContainer = new PIXI.Container();
+		this.inGameButtons = new PIXI.Container();
 		this.gameMatrix = [];
 		
 
@@ -155,11 +155,24 @@ export default class GameScreen extends Screen{
 		// config.effectsLayer.shake(1,15,1);
 		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 		// config.effectsLayer.shakeSplitter(1,10,1.8);
-		this.labelPoints = new PIXI.Text('000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.labelPoints = new PIXI.Text('0000000',{font : '70px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
 		this.addChild(this.labelPoints);
 		this.labelPoints.position.x = config.width - this.labelPoints.width;
 		this.labelPoints.position.y = 80;
 		this.labelPoints.alpha = 0;
+
+		this.currentLevel = 1;
+		this.labelLevel = new PIXI.Text('Level: '+this.currentLevel,{font : '40px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.addChild(this.labelLevel);
+		this.labelLevel.position.x = 5;
+		this.labelLevel.position.y = 90;
+		this.labelLevel.alpha = 0;
+
+		this.labelBestScore = new PIXI.Text("BEST SCORE: "+this.bestScore,{font : '20px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
+		this.addChild(this.labelBestScore);
+		this.labelBestScore.position.x = config.width - this.labelBestScore.width - 5;
+		this.labelBestScore.position.y = 60;
+		this.labelBestScore.alpha = 0;
 
 		this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?',{font : '45px super_smash_tvregular', fill : 0xFFFFFF, align : 'center'});
 		this.addChild(this.labelTitle);
@@ -174,6 +187,7 @@ export default class GameScreen extends Screen{
 		this.addChild(this.gameBorderContainer);
 		this.addChild(this.gameInfoContainer);
 		this.addChild(this.gameComboBarContainer);
+		this.addChild(this.inGameButtons);
 		this.drawComboContainer();
 
 		this.gameComboBarContainer.position.x = 0;
@@ -220,6 +234,23 @@ export default class GameScreen extends Screen{
 		// 	config.effectsLayer.addRGBSplitter();
 		// }.bind(this), 300);
 		
+	}
+	updateCurrentLevel(){
+
+		if(this.currentLevel > 20){
+			this.currentLevel = 20;
+		}
+		this.labelLevel.text = 'Level: '+this.currentLevel;
+
+		if(this.points > 0){
+			this.gameLevelSpeed = this.gameLevelSpeedMax - this.currentLevel * 0.1;
+		}
+
+		if(this.gameLevelSpeed < 0.09){
+			this.gameLevelSpeed = 0.09;
+		}
+
+
 	}
 	updateComboBar(){
 		this.comboBar.scale.x = this.comboTimer / this.comboMaxTimer;
@@ -287,7 +318,7 @@ export default class GameScreen extends Screen{
 			// break
 			case 2:
 				//this.currentEffect = "ASCII";
-				config.effectsLayer.removeAllFilters();
+				//config.effectsLayer.removeAllFilters();
 			break
 			case 3:
 				this.gameContainer.scale.y = 1;
@@ -327,7 +358,7 @@ export default class GameScreen extends Screen{
 			// }
 
 
-			if(Math.random() < 0.05){
+			if(Math.random() < (0.05 + this.currentLevel * 0.01)){
 				this.changeBackgroundColor();
 			}
 			// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
@@ -338,7 +369,7 @@ export default class GameScreen extends Screen{
 			// 	this.addRandomBomb();
 			// }
 
-			if(!this.rotatingCrazy && Math.random() < 0.01){
+			if(!this.rotatingCrazy && Math.random() < (0.01 + this.currentLevel * 0.01)){
 				this.fallForRandomSide();
 			}
 		}
@@ -358,12 +389,13 @@ export default class GameScreen extends Screen{
 				config.effectsLayer.shakeSplitter(1,6,0.3);
 				this.addInfoLabel(["INVERT",["COLOR"]])
 			break
-			// case 1:
-			// 	//this.currentEffect = "CROSS";
-			// 	config.effectsLayer.removeAllFilters();
-			// 	config.effectsLayer.addCrossHatch();
-			// 	this.addInfoLabel(["CROSS"])
-			// break
+			case 1:
+				config.effectsLayer.fadeSplitter(-5, 3, 0);
+				//this.currentEffect = "CROSS";
+				config.effectsLayer.removeAllFilters();
+				config.effectsLayer.addCrossHatch();
+				this.addInfoLabel(["CROSS"])
+			break
 			case 2:
 				config.effectsLayer.shakeSplitter(1,80,5);
 				this.addInfoLabel(["EARTHQUAKE"])
@@ -375,21 +407,25 @@ export default class GameScreen extends Screen{
 				// this.addInfoLabel(["OLD\nTIMES"])
 			break
 			case 3:
-				this.gameContainer.scale.y = -1;
-				this.gameBorderContainer.scale.y = -1;
-				config.effectsLayer.removeAllFilters();
-			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
-				config.effectsLayer.shakeSplitter(1,6,0.3);
-				this.addInfoLabel(["INVERT Y"])
+				if(this.currentLevel > 2){
+					this.gameContainer.scale.y = -1;
+					this.gameBorderContainer.scale.y = -1;
+					config.effectsLayer.removeAllFilters();
+				 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
+					config.effectsLayer.shakeSplitter(1,6,0.3);
+					this.addInfoLabel(["INVERT Y"])
+				}
 			break
 			case 4:
-				this.gameContainer.scale.x = -1;
-				this.gameBorderContainer.scale.x = -1;
-				config.effectsLayer.removeAllFilters();
-			 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
-				config.effectsLayer.shakeSplitter(1,6,0.3);
-				this.addInfoLabel(["X TREVNI"]);
-				this.gameQueueContainer.alpha = 0;
+				if(this.currentLevel > 3){
+					this.gameContainer.scale.x = -1;
+					this.gameBorderContainer.scale.x = -1;
+					config.effectsLayer.removeAllFilters();
+				 	config.effectsLayer.fadeBloom(20,0,0.5,0, true);
+					config.effectsLayer.shakeSplitter(1,6,0.3);
+					this.addInfoLabel(["X TREVNI"]);
+					this.gameQueueContainer.alpha = 0;
+				}
 
 			break
 			case 5:
@@ -404,9 +440,11 @@ export default class GameScreen extends Screen{
 				//config.effectsLayer.addBloom();
 			break
 			case 7:
-				this.randomizeCrazy = true;
-				this.randomParticles();
-				this.addInfoLabel(["SHUFFLE"])
+				if(this.currentLevel > 4){
+					this.randomizeCrazy = true;
+					this.randomParticles();
+					this.addInfoLabel(["SHUFFLE"])
+				}
 			break
 			default:
 				
@@ -566,13 +604,22 @@ export default class GameScreen extends Screen{
 		this.bulletList.push(tempBullet);
 
 	}
-	pointsParticle(value, entity){
+	pointsParticle(value, entity, _delay, _toRemove){
+		let delay = 0;
+		let toRemove = _toRemove;
+		if(_delay){
+			delay = _delay;
+		}
 		this.points += value;
 		let tempLabel = new PIXI.Text(value,{font : '40px super_smash_tvregular', fill : 0xFFFFFF, align : 'right'});
 		tempLabel.position.x = entity.position.x + entity.width / 2 - tempLabel.width/2;
-		tempLabel.position.y = entity.position.y;
-		this.gameContainer.addChild(tempLabel);
-		TweenLite.to(tempLabel, 1, {y: entity.position.y - config.pieceSize, onComplete:function(toRemove){
+		tempLabel.position.y = entity.position.y;		
+		TweenLite.to(tempLabel, 1, {onStart:function(element, parent, toRemove){
+			parent.addChild(element);
+			if(toRemove && toRemove.parent){
+				toRemove.parent.removeChild(toRemove);
+			}
+		}, onStartParams:[tempLabel, this.gameContainer, toRemove], delay:delay, y: entity.position.y - config.pieceSize, onComplete:function(toRemove){
 			toRemove.parent.removeChild(toRemove);
 		},onCompleteScope:this, onCompleteParams:[tempLabel]})
 	}
@@ -651,7 +698,7 @@ export default class GameScreen extends Screen{
 			tempShape.position.y = 130 * (i + 1);
 		}
 
-		this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
+		//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
 	}
 	getShape(){
 		this.shapeStep ++;
@@ -664,6 +711,11 @@ export default class GameScreen extends Screen{
 
 		this.currentEntityList = [];
 		if(!shapeArray){
+			this.round ++;
+
+			this.currentLevel = Math.floor(this.round / this.roundLevelAccum) + 1;
+			this.updateCurrentLevel();
+
 			this.currentShapeData = this.getShape();
 			this.currentShape = this.currentShapeData.shape;
 			if(this.currentShapeData.type == "SHOOTER"){
@@ -827,12 +879,18 @@ export default class GameScreen extends Screen{
 		let tempId;
 		for (var i = 0; i < 200; i++) {
 			tempId = Math.floor(this.shapes.length * Math.random());
-			if(this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.3){
+			if(this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.2 || i < 35){
 				// console.log("RECALC BRICK");
 				tempId = Math.floor(this.shapes.length * Math.random());
 			}
-			if(i > 1){
-				while(tempId == tempArray[i - 1] || tempId == tempArray[i - 2]){
+
+			if(this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.5 || i < 20){
+				// console.log("RECALC BRICK");
+				tempId = Math.floor(this.shapes.length * Math.random());
+			}
+
+			if(i > 3){
+				while(tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3] || tempId == tempArray[i - 4]){
 					tempId = Math.floor(this.shapes.length * Math.random());
 				}
 			}
@@ -857,7 +915,21 @@ export default class GameScreen extends Screen{
 		tempButton.position.y = tempButton.height / 2;
 		this.buttonList.push(tempButton);
 	}
-	addInfoLabel(label, addEffects, dontRemove) {
+	hideBlinkingLabel() {
+		if(this.blinkLetter && this.blinkLetter.parent){
+			this.blinkLetter.parent.removeChild(this.blinkLetter)
+		}
+	}
+	addBlinkingLabel(label) {
+		if(this.blinkLetter && this.blinkLetter.parent){
+			this.blinkLetter.parent.removeChild(this.blinkLetter);
+		}
+		this.blinkLetter = new PIXI.Text(label,{font : '40px super_smash_tvregular', fill: 0xFFFFFF , align : 'center'});
+		this.addChild(this.blinkLetter);
+		this.blinkLetter.position.x = config.width / 2 - this.blinkLetter.width / 2;
+		this.blinkLetter.position.y = config.height - this.blinkLetter.height * 1.5;
+	}
+	addInfoLabel(label, addEffects, dontRemove, grey) {
 		let tempLabel = label;
 		if(!addEffects){
 			config.effectsLayer.updateRGBSplitter(-4);
@@ -874,12 +946,21 @@ export default class GameScreen extends Screen{
 
 			TweenLite.killTweensOf(this.gameInfoContainer.removeChildAt(0));
 		}
+
 		let rainbowColors = ["#FF110C",
 		"#FCA40A",
 		"#FCFD01",
 		"#3DFD0B",
 		"#0CACFA",
 		"#7442FD"]
+		if(grey){
+			rainbowColors = ["#444444",
+		"#555555",
+		"#666666",
+		"#777777",
+		"#888888",
+		"#999999"]
+		}
 		let fontColor = 0xFFFFFF;
 		let rainbowColorsID = Math.floor(Math.random()*rainbowColors.length);
 		for (var i = 0; i < tempLabel.length; i++) {
@@ -930,7 +1011,7 @@ export default class GameScreen extends Screen{
 		// // this.addButtonHUD(this.addRandomBomb);
 		// // this.addButtonHUD(this.fallForRandomSide);
 		// this.addButtonHUD(this.changeFilter);
-
+		//this.bestScore = 0;// get best
 		this.comboTimer = 0;
 		this.comboMaxTimer = 5;
 		this.comboCounter = 0;
@@ -943,10 +1024,14 @@ export default class GameScreen extends Screen{
 		this.shapesOrder = [];
 		this.bombList = [];
 		this.shapeStep = 0;
+		this.round = 0;
+		this.roundLevelAccum = 10;
 		this.shapeQueue = [];
 		this.points = 0;
 		this.gameLevelSpeedMax = 1;
 		this.gameLevelSpeed = this.gameLevelSpeedMax;
+		this.currentLevel = 1;
+		this.updateCurrentLevel();
 		this.scoring = 0;
 		//force to reset filter
 		this.removeFilter();
@@ -1001,8 +1086,9 @@ export default class GameScreen extends Screen{
 	}
 	showGame(){
 		console.log("showGame");
+		this.hideBlinkingLabel();
 		TweenLite.to(this.gameContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
-		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x});
+		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:50 + this.gameContainer.pivot.x, onComplete:this.adjustQueuePosition, onCompleteScope:this});
 
 		TweenLite.to(this.gameContainer, 0.5, {rotation:0});
 		TweenLite.to(this.gameBorderContainer, 0.5, {rotation:0});
@@ -1010,23 +1096,32 @@ export default class GameScreen extends Screen{
 
 		TweenLite.to(this.labelTitle, 0.15, {alpha:0});
 		TweenLite.to(this.labelPoints, 0.3, {alpha:1});
+		TweenLite.to(this.labelLevel, 0.3, {alpha:1});
+		TweenLite.to(this.labelBestScore, 0.3, {alpha:1});
 		TweenLite.to(this.filterDescription, 0.3, {alpha:1});
+
+
 		this.gameComboBarContainer.alpha = 1;
 	}
+	adjustQueuePosition(){
+		this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5);
+
+	}
 	hideGame(){
-		console.log("hideGame");
 		TweenLite.to(this.gameContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
 		TweenLite.to(this.gameBorderContainer.position, 0.5, {x:config.width / 2 - this.gameBorderContainer.width / 2 + this.gameContainer.pivot.x});
 		TweenLite.to(this.gameQueueContainer, 0.3, {alpha:0});
 		TweenLite.to(this.filterDescription, 0.15, {alpha:0});
 		TweenLite.to(this.labelPoints, 0.15, {alpha:0});
+		TweenLite.to(this.labelLevel, 0.15, {alpha:0});
+		TweenLite.to(this.labelBestScore, 0.15, {alpha:0});
 		TweenLite.to(this.labelTitle, 0.3, {alpha:1});
 		this.gameComboBarContainer.alpha = 0;
 		this.gameBorderContainer.alpha = 0;
 	}
 	showMenu(){
 		this.gameMode = "MENU";
-
+		this.addBlinkingLabel("TAP TO CONTINUE");
 		if(this.menuContainer){
 			while(this.menuContainer.children.length){
 				this.menuContainer.removeChildAt(0);
@@ -1092,6 +1187,12 @@ export default class GameScreen extends Screen{
 
 			this.gameInfoContainer.removeChildAt(0);
 		}
+		for (var i = 0; i < this.bulletList.length; i++) {
+			if(this.bulletList[i] && this.bulletList[i].parent){
+				this.bulletList[i].parent.removeChild(this.bulletList[i]);
+			}
+		}
+		this.bulletList = [];
 
 		this.removeEvents();
 	}
@@ -1489,7 +1590,7 @@ export default class GameScreen extends Screen{
 	}
 	addPoints(toRemove) {
 		let toAdd = this.rotatingCrazy ? 20 : 10 * (this.comboCounter?this.comboCounter:1);
-		console.log(toAdd);
+		// console.log(toAdd);
 		if(toRemove){
 			this.pointsParticle(toAdd, toRemove);
 		}
@@ -1651,15 +1752,42 @@ export default class GameScreen extends Screen{
 		this.gameOvering = true;
 		this.hideGame();
 
+
+		console.log(this.points);
+
+
+		let accum = 1;
+		for (var i = 0; i < this.gameMatrix.length; i++) {
+			for (var j = 0; j < this.gameMatrix[i].length; j++) {
+				if(this.gameMatrix[i][j]){
+					this.pointsParticle(accum, this.gameMatrix[i][j], accum * 0.05 + 0.1, this.gameMatrix[i][j]);
+					accum++;
+				}
+			}
+		}
 		setTimeout(function(){
 			this.destroyGame();
 			this.showGameOverInfo();	
-		}.bind(this), 500);	
+		}.bind(this), ((accum * 0.05 + 0.1) * 1000 + 1000));	
 	}
 	//SCREEN
 	showGameOverInfo() {
 		this.gameOvering = false;
-		this.addInfoLabel(["new","record",this.labelPoints.text], false, true);
+
+		if(this.bestScore < this.points){
+			this.addInfoLabel(["new","record",this.updatePoints()], false, true);
+			this.bestScore = this.points;
+
+			this.labelBestScore.text = "BEST SCORE: "+this.bestScore;
+			this.labelBestScore.position.x = config.width - this.labelBestScore.width - 5;
+
+			config.cookieManager.createCookie("bestPoints",this.bestScore,365);
+			//save best score
+		}else{
+			this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
+			this.addBlinkingLabel("BEST SCORE: "+this.bestScore);
+		}
+
 	}
 	onBackCallback() {
 		
@@ -1749,27 +1877,25 @@ export default class GameScreen extends Screen{
 	}
 	//game update
 	updatePoints(){
-		let str = '000000';
-		if(this.points < 10){
-			str = '00000'+this.points
+		let str = '0000000';
+		if(this.points < 100){
+			str = '000000'+this.points
 		}else if(this.points < 100){
-			str = '0000'+this.points
+			str = '00000'+this.points
 		}else if(this.points < 1000){
-			str = '000'+this.points
+			str = '0000'+this.points
 		}else if(this.points < 10000){
-			str = '00'+this.points
+			str = '000'+this.points
 		}else if(this.points < 100000){
+			str = '00'+this.points
+		}else if(this.points < 1000000){
 			str = '0'+this.points
 		}else{
 			str = this.points
 		}
-		if(this.points > 0){
-			this.gameLevelSpeed = this.gameLevelSpeedMax - Math.floor(this.points / 400) * 0.05;
-		}
-		if(this.gameLevelSpeed < 0.08){
-			this.gameLevelSpeed = 0.08;
-		}
+		
 		this.labelPoints.text = str;
+		return str;
 	}
 	update(delta){
 		this.rawDelta = delta;
