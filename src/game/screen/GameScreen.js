@@ -389,13 +389,13 @@ export default class GameScreen extends Screen{
 				config.effectsLayer.shakeSplitter(1,6,0.3);
 				this.addInfoLabel(["INVERT",["COLOR"]])
 			break
-			case 1:
-				config.effectsLayer.fadeSplitter(-5, 3, 0);
-				//this.currentEffect = "CROSS";
-				config.effectsLayer.removeAllFilters();
-				config.effectsLayer.addCrossHatch();
-				this.addInfoLabel(["CROSS"])
-			break
+			// case 1:
+			// 	config.effectsLayer.fadeSplitter(-5, 3, 0);
+			// 	//this.currentEffect = "CROSS";
+			// 	config.effectsLayer.removeAllFilters();
+			// 	config.effectsLayer.addCrossHatch();
+			// 	this.addInfoLabel(["CROSS"])
+			// break
 			case 2:
 				config.effectsLayer.shakeSplitter(1,80,5);
 				this.addInfoLabel(["EARTHQUAKE"])

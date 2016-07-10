@@ -38602,13 +38602,13 @@
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
 						this.addInfoLabel(["INVERT", ["COLOR"]]);
 						break;
-					case 1:
-						_config2.default.effectsLayer.fadeSplitter(-5, 3, 0);
-						//this.currentEffect = "CROSS";
-						_config2.default.effectsLayer.removeAllFilters();
-						_config2.default.effectsLayer.addCrossHatch();
-						this.addInfoLabel(["CROSS"]);
-						break;
+					// case 1:
+					// 	config.effectsLayer.fadeSplitter(-5, 3, 0);
+					// 	//this.currentEffect = "CROSS";
+					// 	config.effectsLayer.removeAllFilters();
+					// 	config.effectsLayer.addCrossHatch();
+					// 	this.addInfoLabel(["CROSS"])
+					// break
 					case 2:
 						_config2.default.effectsLayer.shakeSplitter(1, 80, 5);
 						this.addInfoLabel(["EARTHQUAKE"]);
