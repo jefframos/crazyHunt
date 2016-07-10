@@ -1121,7 +1121,7 @@ export default class GameScreen extends Screen{
 	}
 	showMenu(){
 		this.gameMode = "MENU";
-		this.addBlinkingLabel("TAP TO CONTINUE");
+		this.addBlinkingLabel("PESS SPACE");
 		if(this.menuContainer){
 			while(this.menuContainer.children.length){
 				this.menuContainer.removeChildAt(0);
