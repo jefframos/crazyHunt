@@ -741,6 +741,7 @@ export default class GameScreen extends Screen {
 		//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
 	}
 	getShape() {
+		this.stopAction("space");
 		this.shapeStep++;
 		if (this.shapeStep >= this.shapesOrder.length) {
 			this.shapeStep = 0;
@@ -825,6 +826,8 @@ export default class GameScreen extends Screen {
 				this.currentEntityList[i].position.x += config.pieceSize * shouldMove;
 			}
 		}
+
+		this.stopAction("space");
 	}
 	drawSquare(color, padding) {
 		let newPadding = padding;
@@ -1053,6 +1056,8 @@ export default class GameScreen extends Screen {
 		// // this.addButtonHUD(this.fallForRandomSide);
 		// this.addButtonHUD(this.changeFilter);
 		//this.bestScore = 0;// get best
+		this.interactive = false;
+
 		this.comboTimer = 0;
 		this.comboMaxTimer = 5;
 		this.comboCounter = 0;
@@ -1165,7 +1170,18 @@ export default class GameScreen extends Screen {
 	}
 	showMenu() {
 		this.gameMode = "MENU";
-		this.addBlinkingLabel("PESS SPACE");
+
+		if(window.isMobile){
+			this.addBlinkingLabel("TAP TO START");
+
+			this.interactive = true;
+			this.currentSelectedMenuItem = 0;
+			this.on('touchstart', this.selectMenu.bind(this)).on('mousedown', this.selectMenu.bind(this))
+
+		}else{
+
+			this.addBlinkingLabel("PESS SPACE");
+		}
 		if (this.menuContainer) {
 			while (this.menuContainer.children.length) {
 				this.menuContainer.removeChildAt(0);
@@ -1207,6 +1223,7 @@ export default class GameScreen extends Screen {
 	selectMenu() {
 		switch (this.currentSelectedMenuItem) {
 			case 0:
+				this.interactive = false;
 				this.setInGamePositions();
 				while (this.gameInfoContainer.children.length) {
 					this.gameInfoContainer.removeChildAt(0);

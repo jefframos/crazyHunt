@@ -28318,6 +28318,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	window.isMobile = true; //navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+	
 	PIXI.loader.add('./assets/tvlines.png').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
 	
 	function configGame() {
@@ -37803,6 +37805,7 @@
 		}, {
 			key: 'getShape',
 			value: function getShape() {
+				this.stopAction("space");
 				this.shapeStep++;
 				if (this.shapeStep >= this.shapesOrder.length) {
 					this.shapeStep = 0;
@@ -37888,6 +37891,8 @@
 						this.currentEntityList[i].position.x += _config2.default.pieceSize * shouldMove;
 					}
 				}
+	
+				this.stopAction("space");
 			}
 		}, {
 			key: 'drawSquare',
@@ -38131,6 +38136,8 @@
 				// // this.addButtonHUD(this.fallForRandomSide);
 				// this.addButtonHUD(this.changeFilter);
 				//this.bestScore = 0;// get best
+				this.interactive = false;
+	
 				this.comboTimer = 0;
 				this.comboMaxTimer = 5;
 				this.comboCounter = 0;
@@ -38247,7 +38254,17 @@
 			key: 'showMenu',
 			value: function showMenu() {
 				this.gameMode = "MENU";
-				this.addBlinkingLabel("PESS SPACE");
+	
+				if (window.isMobile) {
+					this.addBlinkingLabel("TAP TO START");
+	
+					this.interactive = true;
+					this.currentSelectedMenuItem = 0;
+					this.on('touchstart', this.selectMenu.bind(this)).on('mousedown', this.selectMenu.bind(this));
+				} else {
+	
+					this.addBlinkingLabel("PESS SPACE");
+				}
 				if (this.menuContainer) {
 					while (this.menuContainer.children.length) {
 						this.menuContainer.removeChildAt(0);
@@ -38293,6 +38310,7 @@
 			value: function selectMenu() {
 				switch (this.currentSelectedMenuItem) {
 					case 0:
+						this.interactive = false;
 						this.setInGamePositions();
 						while (this.gameInfoContainer.children.length) {
 							this.gameInfoContainer.removeChildAt(0);
@@ -39148,7 +39166,7 @@
 
 /***/ }),
 /* 142 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -39157,6 +39175,12 @@
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _config = __webpack_require__(137);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -39176,13 +39200,99 @@
 				_this.getUpKey(event);
 				event.preventDefault();
 			});
-			//document.body.on('keydown', this.getKey.bind(this));		
+			//document.body.on('keydown', this.getKey.bind(this));
+			this.keysContainer = new PIXI.Container();
+			this.left = this.getSquare();
+			this.keysContainer.addChild(this.left);
+			this.left.interactive = true;
+			this.left.buttonMode = true;
+			this.left.on('touchstart', this.pressLeft.bind(this)).on('mousedown', this.pressLeft.bind(this));
+			this.left.on('touchend', this.stopLeft.bind(this)).on('mouseup', this.stopLeft.bind(this));
+	
+			this.right = this.getSquare();
+			this.keysContainer.addChild(this.right);
+			this.right.interactive = true;
+			this.right.buttonMode = true;
+			this.right.on('touchstart', this.pressRight.bind(this)).on('mousedown', this.pressRight.bind(this));
+			this.right.on('touchend', this.stopRight.bind(this)).on('mouseup', this.stopRight.bind(this));
+	
+			this.up = this.getSquare();
+			this.keysContainer.addChild(this.up);
+			this.up.interactive = true;
+			this.up.buttonMode = true;
+			this.up.on('touchstart', this.pressUp.bind(this)).on('mousedown', this.pressUp.bind(this));
+			this.up.on('touchend', this.stopUp.bind(this)).on('mouseup', this.stopUp.bind(this));
+	
+			this.down = this.getSquare();
+			this.keysContainer.addChild(this.down);
+			this.down.interactive = true;
+			this.down.buttonMode = true;
+			this.down.on('touchstart', this.pressSpace.bind(this)).on('mousedown', this.pressSpace.bind(this));
+			this.down.on('touchend', this.stopSpace.bind(this)).on('mouseup', this.stopSpace.bind(this));
+	
+			var size = 100;
+			this.right.x += size * 2;
+			this.up.x += size;
+			this.up.y -= size;
+			this.down.x += size;
+	
+			this.keysContainer.x = _config2.default.width / 2 - this.keysContainer.width / 2;
+			this.keysContainer.y = _config2.default.height - 100;
+			this.keysContainer.alpha = 0.2;
+	
+			if (window.isMobile) {
+				this.game.allContainer.addChild(this.keysContainer);
+			}
 		}
 	
-		//
-	
-	
 		_createClass(InputManager, [{
+			key: 'stopLeft',
+			value: function stopLeft() {
+				this.game.stopAction('left');
+			}
+		}, {
+			key: 'pressLeft',
+			value: function pressLeft() {
+				this.game.updateAction('left');
+			}
+		}, {
+			key: 'stopUp',
+			value: function stopUp() {
+				this.game.stopAction('up');
+			}
+		}, {
+			key: 'pressUp',
+			value: function pressUp() {
+				this.game.updateAction('up');
+			}
+		}, {
+			key: 'stopSpace',
+			value: function stopSpace() {
+				this.game.stopAction('space');
+			}
+		}, {
+			key: 'pressSpace',
+			value: function pressSpace() {
+				this.game.updateAction('space');
+			}
+		}, {
+			key: 'stopRight',
+			value: function stopRight() {
+				this.game.stopAction('right');
+			}
+		}, {
+			key: 'pressRight',
+			value: function pressRight() {
+				this.game.updateAction('right');
+			}
+		}, {
+			key: 'getSquare',
+			value: function getSquare() {
+				return new PIXI.Graphics().beginFill(0xffffff).drawRect(0, 0, 75, 75);
+			}
+			//
+	
+		}, {
 			key: 'getKey',
 			value: function getKey(e) {
 				//   	if(e.keyCode === 87 || e.keyCode === 38){
