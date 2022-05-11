@@ -37,9 +37,10 @@ export default class EffectLayer extends PIXI.Container{
 
 		//RGB SPLITTER
 		this.rgpSplit = new PIXI.filters.RGBSplitFilter();
-		this.rgpSplit.red = new PIXI.Point(1.5,1.5);
-		this.rgpSplit.green = new PIXI.Point(-1.5,-1.5);
-		this.rgpSplit.blue = new PIXI.Point(1.5,-1.5);
+		let dist = 0
+		this.rgpSplit.red = new PIXI.Point(dist,dist);
+		this.rgpSplit.green = new PIXI.Point(-dist,-dist);
+		this.rgpSplit.blue = new PIXI.Point(dist,-dist);
 
 
 		//crosshatch
@@ -104,7 +105,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.gray,
 		this.blur];
 
-		this.filtersActives = [false, true,false,false, false, false, false, false, false, false, false];
+		this.filtersActives = [false, false,false,false, false, false, false, false, false, false, false];
 
 		this.updateFilters();
 		
@@ -161,6 +162,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.updateFilters();
 	}
 	addGlitch2(){
+		return
 		this.filtersActives[this.ID_GLITCH2] = true;		
 		this.updateFilters();		
 	}
@@ -211,11 +213,11 @@ export default class EffectLayer extends PIXI.Container{
 	}
 
 	removePixelate(){
-		console.log(removePixelate);
 		this.filtersActives[this.ID_PIXELATE] = false;
 		this.updateFilters();
 	}
 	addPixelate(){
+		return
 		this.filtersActives[this.ID_PIXELATE] = true;		
 		this.updateFilters();		
 	}
@@ -236,6 +238,7 @@ export default class EffectLayer extends PIXI.Container{
 		this.updateFilters();	
 	}
 	addShockwave(x,y,time, delay){
+		return
 		this.filtersActives[this.ID_SHOCKWAVE] = true;
 		this.updateFilters();
 		this.shockwave.time = 0;
@@ -256,6 +259,7 @@ export default class EffectLayer extends PIXI.Container{
 		}
 	}
 	fadeSplitter(endValue, time, delay){
+		endValue *= 0
 		// this.addRGBSplitter();
 		TweenLite.killTweensOf(this.rgpSplit.red);
 		TweenLite.killTweensOf(this.rgpSplit.green);
@@ -282,19 +286,22 @@ export default class EffectLayer extends PIXI.Container{
 		let timelineSplitRed = new TimelineLite();
 		let timelineSplitGreen = new TimelineLite();
 		let timelineSplitBlue = new TimelineLite();
-		let spliterForce = (force * 20);
+		let spliterForce = (force * 2);
+		spliterForce = Math.min(spliterForce, 1)
 		let speed = time / steps;
 		for (var i = steps; i >= 0; i--) {
 			timelineSplitRed.append(TweenLite.to(this.rgpSplit.red, speed, {x:Math.random() * spliterForce - spliterForce/2, y: Math.random() * spliterForce - spliterForce/2, ease:"easeNoneLinear"}));
 			timelineSplitGreen.append(TweenLite.to(this.rgpSplit.green, speed, {x:Math.random() * spliterForce - spliterForce/2, y: Math.random() * spliterForce - spliterForce/2, ease:"easeNoneLinear"}));
 			timelineSplitBlue.append(TweenLite.to(this.rgpSplit.blue, speed, {x:Math.random() * spliterForce - spliterForce/2, y: Math.random() * spliterForce - spliterForce/2, ease:"easeNoneLinear"}));
 		};
-		timelineSplitRed.append(TweenLite.to(this.rgpSplit.red, speed, {x:1, y:1, ease:"easeNoneLinear"}));
-		timelineSplitGreen.append(TweenLite.to(this.rgpSplit.green, speed, {x:-1, y:-1, ease:"easeNoneLinear"}));
+
+		let dist = 0.5
+		timelineSplitRed.append(TweenLite.to(this.rgpSplit.red, speed, {x:dist, y:dist, ease:"easeNoneLinear"}));
+		timelineSplitGreen.append(TweenLite.to(this.rgpSplit.green, speed, {x:-dist, y:-dist, ease:"easeNoneLinear"}));
 		if(removeAfter){
-			timelineSplitBlue.append(TweenLite.to(this.rgpSplit.blue, speed, {x:1, y:-1, ease:"easeNoneLinear", onComplete:this.removeRGBSplitter, onCompleteScope: this}));
+			timelineSplitBlue.append(TweenLite.to(this.rgpSplit.blue, speed, {x:dist, y:-dist, ease:"easeNoneLinear", onComplete:this.removeRGBSplitter, onCompleteScope: this}));
 		}else{
-			timelineSplitBlue.append(TweenLite.to(this.rgpSplit.blue, speed, {x:1, y:-1, ease:"easeNoneLinear"}));
+			timelineSplitBlue.append(TweenLite.to(this.rgpSplit.blue, speed, {x:dist, y:-dist, ease:"easeNoneLinear"}));
 		}
 	}
 	shake(force, steps, time){
@@ -311,7 +318,7 @@ export default class EffectLayer extends PIXI.Container{
 			time = 1;
 		}
 		let timelinePosition = new TimelineLite();
-		let positionForce = (force * 50);
+		let positionForce = (force * 20);
 		let spliterForce = (force * 20);
 		let speed = time / steps;
 		for (var i = steps; i >= 0; i--) {
@@ -335,7 +342,7 @@ export default class EffectLayer extends PIXI.Container{
 			time = 1;
 		}
 		let timelinePosition = new TimelineLite();
-		let positionForce = (force * 50);
+		let positionForce = (force * 20);
 		let spliterForce = (force * 20);
 		let speed = time / steps;
 		for (var i = steps; i >= 0; i--) {
@@ -359,7 +366,7 @@ export default class EffectLayer extends PIXI.Container{
 			time = 1;
 		}
 		let timelinePosition = new TimelineLite();
-		let positionForce = (force * 50);
+		let positionForce = (force * 20);
 		let spliterForce = (force * 20);
 		let speed = time / steps;
 		for (var i = steps; i >= 0; i--) {
@@ -393,7 +400,7 @@ export default class EffectLayer extends PIXI.Container{
 	}
 
 	update(delta){
-		this.blackShape.alpha =  Math.random() * 0.3;
+		this.blackShape.alpha =  0//Math.random() * 0.3;
 		this.glitch1.tilePosition.y += 1;
 	}
 }

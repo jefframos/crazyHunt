@@ -55,6 +55,9 @@ export default class Screen extends PIXI.Container{
 		}
 		this.entityList = [];
 	}
+	resize(newSize){
+		
+	}
 	build(){
 		this.built = true;
 	}

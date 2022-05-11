@@ -24,6 +24,11 @@ export default class ScreenManager extends PIXI.Container{
 			this.currentScreen.transitionOut(tempScreen);
 		}
 	}
+	resize(newSize){
+		if(this.currentScreen.resize){
+			this.currentScreen.resize(newSize);
+		}
+	}
 	//change between screens
 	forceChange(screenLabel){
 		if(this.currentScreen && this.currentScreen.parent){

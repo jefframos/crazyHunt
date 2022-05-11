@@ -35,6 +35,8 @@ function configGame(){
 	}
 	//create screen manager
 	let screenManager = new ScreenManager();
+
+	game.screenManager = screenManager;
 	//add screens
 	let gameScreen = new GameScreen("GAME");
 	let initScreen = new InitScreen("INIT");

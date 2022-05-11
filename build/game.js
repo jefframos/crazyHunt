@@ -42,15 +42,15 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(137);
+	module.exports = __webpack_require__(134);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// run the polyfills
 	__webpack_require__(2);
@@ -58,12 +58,12 @@
 	var core = module.exports = __webpack_require__(7);
 	
 	// add core plugins.
-	core.extras         = __webpack_require__(69);
-	core.filters        = __webpack_require__(76);
-	core.interaction    = __webpack_require__(104);
-	core.loaders        = __webpack_require__(108);
-	core.mesh           = __webpack_require__(127);
-	core.accessibility  = __webpack_require__(133);
+	core.extras         = __webpack_require__(70);
+	core.filters        = __webpack_require__(77);
+	core.interaction    = __webpack_require__(105);
+	core.loaders        = __webpack_require__(109);
+	core.mesh           = __webpack_require__(124);
+	core.accessibility  = __webpack_require__(130);
 	
 	// export a premade loader instance
 	/**
@@ -76,25 +76,25 @@
 	core.loader = new core.loaders.Loader();
 	
 	// mixin the deprecation features.
-	Object.assign(core, __webpack_require__(136));
+	Object.assign(core, __webpack_require__(133));
 	
 	// Always export pixi globally.
 	global.PIXI = core;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(3);
 	__webpack_require__(5);
 	__webpack_require__(6);
 
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	// References:
 	// https://github.com/sindresorhus/object-assign
@@ -106,12 +106,19 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
+	/*
+	object-assign
+	(c) Sindre Sorhus
+	@license MIT
+	*/
+	
 	'use strict';
 	/* eslint-disable no-unused-vars */
+	var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 	var hasOwnProperty = Object.prototype.hasOwnProperty;
 	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 	
@@ -132,7 +139,7 @@
 			// Detect buggy property enumeration order in older V8 versions.
 	
 			// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-			var test1 = new String('abc');  // eslint-disable-line
+			var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
 			test1[5] = 'de';
 			if (Object.getOwnPropertyNames(test1)[0] === '5') {
 				return false;
@@ -161,7 +168,7 @@
 			}
 	
 			return true;
-		} catch (e) {
+		} catch (err) {
 			// We don't expect any of the above to throw, but better to be safe.
 			return false;
 		}
@@ -181,8 +188,8 @@
 				}
 			}
 	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
+			if (getOwnPropertySymbols) {
+				symbols = getOwnPropertySymbols(from);
 				for (var i = 0; i < symbols.length; i++) {
 					if (propIsEnumerable.call(from, symbols[i])) {
 						to[symbols[i]] = from[symbols[i]];
@@ -195,9 +202,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// References:
 	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -268,9 +275,9 @@
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// References:
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
@@ -288,9 +295,9 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI core library
@@ -306,53 +313,53 @@
 	var core = module.exports = Object.assign(__webpack_require__(8), __webpack_require__(9), {
 	    // utils
 	    utils: __webpack_require__(18),
-	    ticker: __webpack_require__(24),
+	    ticker: __webpack_require__(25),
 	
 	    // display
-	    DisplayObject:          __webpack_require__(26),
-	    Container:              __webpack_require__(38),
+	    DisplayObject:          __webpack_require__(27),
+	    Container:              __webpack_require__(39),
 	
 	    // sprites
-	    Sprite:                 __webpack_require__(39),
-	    ParticleContainer:      __webpack_require__(41),
-	    SpriteRenderer:         __webpack_require__(42),
-	    ParticleRenderer:       __webpack_require__(57),
+	    Sprite:                 __webpack_require__(40),
+	    ParticleContainer:      __webpack_require__(42),
+	    SpriteRenderer:         __webpack_require__(43),
+	    ParticleRenderer:       __webpack_require__(58),
 	
 	    // text
-	    Text:                   __webpack_require__(60),
+	    Text:                   __webpack_require__(61),
 	
 	    // primitives
-	    Graphics:               __webpack_require__(61),
-	    GraphicsData:           __webpack_require__(63),
-	    GraphicsRenderer:       __webpack_require__(64),
+	    Graphics:               __webpack_require__(62),
+	    GraphicsData:           __webpack_require__(64),
+	    GraphicsRenderer:       __webpack_require__(65),
 	
 	    // textures
-	    Texture:                __webpack_require__(29),
-	    BaseTexture:            __webpack_require__(28),
-	    RenderTexture:          __webpack_require__(27),
-	    VideoBaseTexture:       __webpack_require__(30),
-	    TextureUvs:             __webpack_require__(31),
+	    Texture:                __webpack_require__(30),
+	    BaseTexture:            __webpack_require__(29),
+	    RenderTexture:          __webpack_require__(28),
+	    VideoBaseTexture:       __webpack_require__(31),
+	    TextureUvs:             __webpack_require__(32),
 	
 	    // renderers - canvas
-	    CanvasRenderer:         __webpack_require__(67),
-	    CanvasGraphics:         __webpack_require__(62),
-	    CanvasBuffer:           __webpack_require__(37),
+	    CanvasRenderer:         __webpack_require__(68),
+	    CanvasGraphics:         __webpack_require__(63),
+	    CanvasBuffer:           __webpack_require__(38),
 	
 	    // renderers - webgl
-	    WebGLRenderer:          __webpack_require__(44),
-	    WebGLManager:           __webpack_require__(35),
-	    ShaderManager:          __webpack_require__(46),
-	    Shader:                 __webpack_require__(48),
-	    TextureShader:          __webpack_require__(47),
-	    PrimitiveShader:        __webpack_require__(50),
-	    ComplexPrimitiveShader: __webpack_require__(49),
-	    ObjectRenderer:         __webpack_require__(43),
-	    RenderTarget:           __webpack_require__(32),
+	    WebGLRenderer:          __webpack_require__(45),
+	    WebGLManager:           __webpack_require__(36),
+	    ShaderManager:          __webpack_require__(47),
+	    Shader:                 __webpack_require__(49),
+	    TextureShader:          __webpack_require__(48),
+	    PrimitiveShader:        __webpack_require__(51),
+	    ComplexPrimitiveShader: __webpack_require__(50),
+	    ObjectRenderer:         __webpack_require__(44),
+	    RenderTarget:           __webpack_require__(33),
 	
 	    // filters - webgl
-	    AbstractFilter:         __webpack_require__(53),
-	    FXAAFilter:             __webpack_require__(56),
-	    SpriteMaskFilter:       __webpack_require__(52),
+	    AbstractFilter:         __webpack_require__(54),
+	    FXAAFilter:             __webpack_require__(57),
+	    SpriteMaskFilter:       __webpack_require__(53),
 	
 	    /**
 	     * This helper function will automatically detect which renderer you should be using.
@@ -388,9 +395,9 @@
 	});
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Constant values used in pixi
@@ -615,9 +622,9 @@
 	module.exports = CONST;
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Math classes and utilities mixed into PIXI namespace.
@@ -642,9 +649,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * The Point object represents a location in a two-dimensional coordinate system, where x represents
@@ -716,9 +723,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	// @todo - ignore the too many parameters warning for now
 	// should either fix it or change the jshint config
@@ -1160,9 +1167,9 @@
 	Matrix.TEMP_MATRIX = new Matrix();
 
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	// Your friendly neighbour https://en.wikipedia.org/wiki/Dihedral_group of order 16
 	
@@ -1328,9 +1335,9 @@
 	module.exports = GroupD8;
 
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Rectangle = __webpack_require__(14),
 	    CONST = __webpack_require__(8);
@@ -1420,9 +1427,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var CONST = __webpack_require__(8);
 	
@@ -1518,9 +1525,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Rectangle = __webpack_require__(14),
 	    CONST = __webpack_require__(8);
@@ -1617,9 +1624,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Point = __webpack_require__(10),
 	    CONST = __webpack_require__(8);
@@ -1724,9 +1731,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var CONST = __webpack_require__(8);
 	
@@ -1820,9 +1827,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var CONST = __webpack_require__(8);
 	
@@ -2101,9 +2108,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -2396,9 +2403,9 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Mixins functionality to make an object have "plugins".
@@ -2470,9 +2477,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, setImmediate, process) {/*!
 	 * async
@@ -3740,28 +3747,31 @@
 	
 	}());
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(22).setImmediate, __webpack_require__(23)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(22).setImmediate, __webpack_require__(24)))
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(23).nextTick;
+	/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+	            (typeof self !== "undefined" && self) ||
+	            window;
 	var apply = Function.prototype.apply;
-	var slice = Array.prototype.slice;
-	var immediateIds = {};
-	var nextImmediateId = 0;
 	
 	// DOM APIs, for completeness
 	
 	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
 	};
 	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
 	};
 	exports.clearTimeout =
-	exports.clearInterval = function(timeout) { timeout.close(); };
+	exports.clearInterval = function(timeout) {
+	  if (timeout) {
+	    timeout.close();
+	  }
+	};
 	
 	function Timeout(id, clearFn) {
 	  this._id = id;
@@ -3769,7 +3779,7 @@
 	}
 	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
 	Timeout.prototype.close = function() {
-	  this._clearFn.call(window, this._id);
+	  this._clearFn.call(scope, this._id);
 	};
 	
 	// Does not start the time, just sets up the members needed.
@@ -3795,42 +3805,306 @@
 	  }
 	};
 	
-	// That's not how node.js implements it but the exposed api is the same.
-	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-	  var id = nextImmediateId++;
-	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+	// setimmediate attaches itself to the global object
+	__webpack_require__(23);
+	// On some exotic environments, it's not clear which object `setimmediate` was
+	// able to install onto.  Search each possibility in the same order as the
+	// `setimmediate` library.
+	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+	                       (typeof global !== "undefined" && global.setImmediate) ||
+	                       (this && this.setImmediate);
+	exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+	                         (typeof global !== "undefined" && global.clearImmediate) ||
+	                         (this && this.clearImmediate);
 	
-	  immediateIds[id] = true;
-	
-	  nextTick(function onNextTick() {
-	    if (immediateIds[id]) {
-	      // fn.call() is faster so we optimize for the common use-case
-	      // @see http://jsperf.com/call-apply-segu
-	      if (args) {
-	        fn.apply(null, args);
-	      } else {
-	        fn.call(null);
-	      }
-	      // Prevent ids from leaking
-	      exports.clearImmediate(id);
-	    }
-	  });
-	
-	  return id;
-	};
-	
-	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-	  delete immediateIds[id];
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22).setImmediate, __webpack_require__(22).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+	    "use strict";
+	
+	    if (global.setImmediate) {
+	        return;
+	    }
+	
+	    var nextHandle = 1; // Spec says greater than zero
+	    var tasksByHandle = {};
+	    var currentlyRunningATask = false;
+	    var doc = global.document;
+	    var registerImmediate;
+	
+	    function setImmediate(callback) {
+	      // Callback can either be a function or a string
+	      if (typeof callback !== "function") {
+	        callback = new Function("" + callback);
+	      }
+	      // Copy function arguments
+	      var args = new Array(arguments.length - 1);
+	      for (var i = 0; i < args.length; i++) {
+	          args[i] = arguments[i + 1];
+	      }
+	      // Store and register the task
+	      var task = { callback: callback, args: args };
+	      tasksByHandle[nextHandle] = task;
+	      registerImmediate(nextHandle);
+	      return nextHandle++;
+	    }
+	
+	    function clearImmediate(handle) {
+	        delete tasksByHandle[handle];
+	    }
+	
+	    function run(task) {
+	        var callback = task.callback;
+	        var args = task.args;
+	        switch (args.length) {
+	        case 0:
+	            callback();
+	            break;
+	        case 1:
+	            callback(args[0]);
+	            break;
+	        case 2:
+	            callback(args[0], args[1]);
+	            break;
+	        case 3:
+	            callback(args[0], args[1], args[2]);
+	            break;
+	        default:
+	            callback.apply(undefined, args);
+	            break;
+	        }
+	    }
+	
+	    function runIfPresent(handle) {
+	        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+	        // So if we're currently running a task, we'll need to delay this invocation.
+	        if (currentlyRunningATask) {
+	            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+	            // "too much recursion" error.
+	            setTimeout(runIfPresent, 0, handle);
+	        } else {
+	            var task = tasksByHandle[handle];
+	            if (task) {
+	                currentlyRunningATask = true;
+	                try {
+	                    run(task);
+	                } finally {
+	                    clearImmediate(handle);
+	                    currentlyRunningATask = false;
+	                }
+	            }
+	        }
+	    }
+	
+	    function installNextTickImplementation() {
+	        registerImmediate = function(handle) {
+	            process.nextTick(function () { runIfPresent(handle); });
+	        };
+	    }
+	
+	    function canUsePostMessage() {
+	        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+	        // where `global.postMessage` means something completely different and can't be used for this purpose.
+	        if (global.postMessage && !global.importScripts) {
+	            var postMessageIsAsynchronous = true;
+	            var oldOnMessage = global.onmessage;
+	            global.onmessage = function() {
+	                postMessageIsAsynchronous = false;
+	            };
+	            global.postMessage("", "*");
+	            global.onmessage = oldOnMessage;
+	            return postMessageIsAsynchronous;
+	        }
+	    }
+	
+	    function installPostMessageImplementation() {
+	        // Installs an event handler on `global` for the `message` event: see
+	        // * https://developer.mozilla.org/en/DOM/window.postMessage
+	        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+	
+	        var messagePrefix = "setImmediate$" + Math.random() + "$";
+	        var onGlobalMessage = function(event) {
+	            if (event.source === global &&
+	                typeof event.data === "string" &&
+	                event.data.indexOf(messagePrefix) === 0) {
+	                runIfPresent(+event.data.slice(messagePrefix.length));
+	            }
+	        };
+	
+	        if (global.addEventListener) {
+	            global.addEventListener("message", onGlobalMessage, false);
+	        } else {
+	            global.attachEvent("onmessage", onGlobalMessage);
+	        }
+	
+	        registerImmediate = function(handle) {
+	            global.postMessage(messagePrefix + handle, "*");
+	        };
+	    }
+	
+	    function installMessageChannelImplementation() {
+	        var channel = new MessageChannel();
+	        channel.port1.onmessage = function(event) {
+	            var handle = event.data;
+	            runIfPresent(handle);
+	        };
+	
+	        registerImmediate = function(handle) {
+	            channel.port2.postMessage(handle);
+	        };
+	    }
+	
+	    function installReadyStateChangeImplementation() {
+	        var html = doc.documentElement;
+	        registerImmediate = function(handle) {
+	            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+	            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+	            var script = doc.createElement("script");
+	            script.onreadystatechange = function () {
+	                runIfPresent(handle);
+	                script.onreadystatechange = null;
+	                html.removeChild(script);
+	                script = null;
+	            };
+	            html.appendChild(script);
+	        };
+	    }
+	
+	    function installSetTimeoutImplementation() {
+	        registerImmediate = function(handle) {
+	            setTimeout(runIfPresent, 0, handle);
+	        };
+	    }
+	
+	    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+	    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+	    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+	
+	    // Don't get fooled by e.g. browserify environments.
+	    if ({}.toString.call(global.process) === "[object process]") {
+	        // For Node.js before 0.9
+	        installNextTickImplementation();
+	
+	    } else if (canUsePostMessage()) {
+	        // For non-IE10 modern browsers
+	        installPostMessageImplementation();
+	
+	    } else if (global.MessageChannel) {
+	        // For web workers, where supported
+	        installMessageChannelImplementation();
+	
+	    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+	        // For IE 6–8
+	        installReadyStateChangeImplementation();
+	
+	    } else {
+	        // For older browsers
+	        installSetTimeoutImplementation();
+	    }
+	
+	    attachTo.setImmediate = setImmediate;
+	    attachTo.clearImmediate = clearImmediate;
+	}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(24)))
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
 
 	// shim for using process in browser
-	
 	var process = module.exports = {};
+	
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+	
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
+	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
@@ -3855,7 +4129,7 @@
 	    if (draining) {
 	        return;
 	    }
-	    var timeout = setTimeout(cleanUpNextTick);
+	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
 	
 	    var len = queue.length;
@@ -3872,7 +4146,7 @@
 	    }
 	    currentQueue = null;
 	    draining = false;
-	    clearTimeout(timeout);
+	    runClearTimeout(timeout);
 	}
 	
 	process.nextTick = function (fun) {
@@ -3884,7 +4158,7 @@
 	    }
 	    queue.push(new Item(fun, args));
 	    if (queue.length === 1 && !draining) {
-	        setTimeout(drainQueue, 0);
+	        runTimeout(drainQueue);
 	    }
 	};
 	
@@ -3912,6 +4186,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+	
+	process.listeners = function (name) { return [] }
 	
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -3924,11 +4202,11 @@
 	process.umask = function() { return 0; };
 
 
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Ticker = __webpack_require__(25);
+	var Ticker = __webpack_require__(26);
 	
 	/**
 	 * The shared ticker instance used by {@link PIXI.extras.MovieClip}.
@@ -3984,9 +4262,9 @@
 	};
 
 
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var CONST = __webpack_require__(8),
 	    EventEmitter = __webpack_require__(19),
@@ -4343,12 +4621,12 @@
 	module.exports = Ticker;
 
 
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var math = __webpack_require__(9),
-	    RenderTexture = __webpack_require__(27),
+	    RenderTexture = __webpack_require__(28),
 	    EventEmitter = __webpack_require__(19),
 	    CONST = __webpack_require__(8),
 	    _tempMatrix = new math.Matrix(),
@@ -4913,15 +5191,15 @@
 	};
 
 
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var BaseTexture = __webpack_require__(28),
-	    Texture = __webpack_require__(29),
-	    RenderTarget = __webpack_require__(32),
-	    FilterManager = __webpack_require__(34),
-	    CanvasBuffer = __webpack_require__(37),
+	var BaseTexture = __webpack_require__(29),
+	    Texture = __webpack_require__(30),
+	    RenderTarget = __webpack_require__(33),
+	    FilterManager = __webpack_require__(35),
+	    CanvasBuffer = __webpack_require__(38),
 	    math = __webpack_require__(9),
 	    CONST = __webpack_require__(8),
 	    tempMatrix = new math.Matrix();
@@ -5396,9 +5674,9 @@
 	};
 
 
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(18),
 	    CONST = __webpack_require__(8),
@@ -5836,13 +6114,13 @@
 	};
 
 
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var BaseTexture = __webpack_require__(28),
-	    VideoBaseTexture = __webpack_require__(30),
-	    TextureUvs = __webpack_require__(31),
+	var BaseTexture = __webpack_require__(29),
+	    VideoBaseTexture = __webpack_require__(31),
+	    TextureUvs = __webpack_require__(32),
 	    EventEmitter = __webpack_require__(19),
 	    math = __webpack_require__(9),
 	    utils = __webpack_require__(18);
@@ -6292,11 +6570,11 @@
 	Texture.EMPTY = new Texture(new BaseTexture());
 
 
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var BaseTexture = __webpack_require__(28),
+	var BaseTexture = __webpack_require__(29),
 	    utils = __webpack_require__(18);
 	
 	/**
@@ -6533,9 +6811,9 @@
 	}
 
 
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/**
@@ -6616,15 +6894,15 @@
 	};
 
 
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var math = __webpack_require__(9),
 	    utils = __webpack_require__(18),
 	    CONST = __webpack_require__(8),
 	    //StencilManager = require('../managers/StencilManager'),
-	    StencilMaskStack = __webpack_require__(33);
+	    StencilMaskStack = __webpack_require__(34);
 	
 	/**
 	 * @author Mat Groves http://matgroves.com/ @Doormat23
@@ -6942,9 +7220,9 @@
 	};
 
 
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Generic Mask Stack data structure
@@ -6979,14 +7257,14 @@
 	module.exports = StencilMaskStack;
 
 
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35),
-	    RenderTarget = __webpack_require__(32),
+	var WebGLManager = __webpack_require__(36),
+	    RenderTarget = __webpack_require__(33),
 	    CONST = __webpack_require__(8),
-	    Quad = __webpack_require__(36),
+	    Quad = __webpack_require__(37),
 	    math =  __webpack_require__(9);
 	
 	/**
@@ -7435,9 +7713,9 @@
 	};
 
 
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
 
 	/**
 	 * @class
@@ -7480,9 +7758,9 @@
 	};
 
 
-/***/ },
-/* 36 */
-/***/ function(module, exports) {
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Helper class to create a quad
@@ -7639,9 +7917,9 @@
 	
 
 
-/***/ },
-/* 37 */
-/***/ function(module, exports) {
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Creates a Canvas element of the given size.
@@ -7743,14 +8021,14 @@
 	};
 
 
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var math = __webpack_require__(9),
 	    utils = __webpack_require__(18),
-	    DisplayObject = __webpack_require__(26),
-	    RenderTexture = __webpack_require__(27),
+	    DisplayObject = __webpack_require__(27),
+	    RenderTexture = __webpack_require__(28),
 	    _tempMatrix = new math.Matrix();
 	
 	/**
@@ -8391,14 +8669,14 @@
 	};
 
 
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var math = __webpack_require__(9),
-	    Texture = __webpack_require__(29),
-	    Container = __webpack_require__(38),
-	    CanvasTinter = __webpack_require__(40),
+	    Texture = __webpack_require__(30),
+	    Container = __webpack_require__(39),
+	    CanvasTinter = __webpack_require__(41),
 	    utils = __webpack_require__(18),
 	    CONST = __webpack_require__(8),
 	    tempPoint = new math.Point(),
@@ -8963,9 +9241,9 @@
 	};
 
 
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(18);
 	
@@ -9219,11 +9497,11 @@
 	CanvasTinter.tintMethod = CanvasTinter.canUseMultiply ? CanvasTinter.tintWithMultiply :  CanvasTinter.tintWithPerPixel;
 
 
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Container = __webpack_require__(38),
+	var Container = __webpack_require__(39),
 	    CONST = __webpack_require__(8);
 	
 	/**
@@ -9542,12 +9820,12 @@
 	};
 
 
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var ObjectRenderer = __webpack_require__(43),
-	    WebGLRenderer = __webpack_require__(44),
+	var ObjectRenderer = __webpack_require__(44),
+	    WebGLRenderer = __webpack_require__(45),
 	    CONST = __webpack_require__(8);
 	
 	/**
@@ -10019,11 +10297,11 @@
 	};
 
 
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35);
+	var WebGLManager = __webpack_require__(36);
 	
 	/**
 	 * Base for a common object renderer that can be used as a system renderer plugin.
@@ -10081,19 +10359,19 @@
 	};
 
 
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var SystemRenderer = __webpack_require__(45),
-	    ShaderManager = __webpack_require__(46),
-	    MaskManager = __webpack_require__(51),
-	    StencilManager = __webpack_require__(54),
-	    FilterManager = __webpack_require__(34),
-	    BlendModeManager = __webpack_require__(55),
-	    RenderTarget = __webpack_require__(32),
-	    ObjectRenderer = __webpack_require__(43),
-	    FXAAFilter = __webpack_require__(56),
+	var SystemRenderer = __webpack_require__(46),
+	    ShaderManager = __webpack_require__(47),
+	    MaskManager = __webpack_require__(52),
+	    StencilManager = __webpack_require__(55),
+	    FilterManager = __webpack_require__(35),
+	    BlendModeManager = __webpack_require__(56),
+	    RenderTarget = __webpack_require__(33),
+	    ObjectRenderer = __webpack_require__(44),
+	    FXAAFilter = __webpack_require__(57),
 	    utils = __webpack_require__(18),
 	    CONST = __webpack_require__(8);
 	
@@ -10675,9 +10953,9 @@
 	};
 
 
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(18),
 	    math = __webpack_require__(9),
@@ -10940,14 +11218,14 @@
 	};
 
 
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35),
-	    TextureShader = __webpack_require__(47),
-	    ComplexPrimitiveShader = __webpack_require__(49),
-	    PrimitiveShader = __webpack_require__(50),
+	var WebGLManager = __webpack_require__(36),
+	    TextureShader = __webpack_require__(48),
+	    ComplexPrimitiveShader = __webpack_require__(50),
+	    PrimitiveShader = __webpack_require__(51),
 	    utils = __webpack_require__(18);
 	
 	/**
@@ -11113,11 +11391,11 @@
 	};
 
 
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Shader = __webpack_require__(48);
+	var Shader = __webpack_require__(49);
 	
 	/**
 	 * @class
@@ -11228,9 +11506,9 @@
 	].join('\n');
 
 
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*global console */
 	var utils = __webpack_require__(18);
@@ -11796,11 +12074,11 @@
 	};
 
 
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Shader = __webpack_require__(48);
+	var Shader = __webpack_require__(49);
 	
 	/**
 	 * This shader is used to draw complex primitive shapes for {@link PIXI.Graphics}.
@@ -11862,11 +12140,11 @@
 	module.exports = ComplexPrimitiveShader;
 
 
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Shader = __webpack_require__(48);
+	var Shader = __webpack_require__(49);
 	
 	/**
 	 * This shader is used to draw simple primitive shapes for {@link PIXI.Graphics}.
@@ -11929,12 +12207,12 @@
 	module.exports = PrimitiveShader;
 
 
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35),
-	    AlphaMaskFilter = __webpack_require__(52);
+	var WebGLManager = __webpack_require__(36),
+	    AlphaMaskFilter = __webpack_require__(53);
 	
 	/**
 	 * @class
@@ -12048,11 +12326,11 @@
 	
 
 
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var AbstractFilter = __webpack_require__(53),
+	var AbstractFilter = __webpack_require__(54),
 	    math =  __webpack_require__(9);
 	
 	// @see https://github.com/substack/brfs/issues/25
@@ -12149,11 +12427,11 @@
 	});
 
 
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var DefaultShader = __webpack_require__(47);
+	var DefaultShader = __webpack_require__(48);
 	
 	/**
 	 * This is the base class for creating a PIXI filter. Currently only WebGL supports filters.
@@ -12265,11 +12543,11 @@
 	};
 
 
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35),
+	var WebGLManager = __webpack_require__(36),
 	    utils = __webpack_require__(18);
 	
 	/**
@@ -12615,11 +12893,11 @@
 	
 
 
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var WebGLManager = __webpack_require__(35);
+	var WebGLManager = __webpack_require__(36);
 	
 	/**
 	 * @class
@@ -12663,11 +12941,11 @@
 	};
 
 
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var AbstractFilter = __webpack_require__(53);
+	var AbstractFilter = __webpack_require__(54);
 	// @see https://github.com/substack/brfs/issues/25
 	
 	
@@ -12722,14 +13000,14 @@
 	};
 
 
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var ObjectRenderer = __webpack_require__(43),
-	    WebGLRenderer = __webpack_require__(44),
-	    ParticleShader = __webpack_require__(58),
-	    ParticleBuffer = __webpack_require__(59),
+	var ObjectRenderer = __webpack_require__(44),
+	    WebGLRenderer = __webpack_require__(45),
+	    ParticleShader = __webpack_require__(59),
+	    ParticleBuffer = __webpack_require__(60),
 	    math            = __webpack_require__(9);
 	
 	/**
@@ -13202,11 +13480,11 @@
 	};
 
 
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var TextureShader = __webpack_require__(47);
+	var TextureShader = __webpack_require__(48);
 	
 	/**
 	 * @class
@@ -13284,9 +13562,9 @@
 	module.exports = ParticleShader;
 
 
-/***/ },
-/* 59 */
-/***/ function(module, exports) {
+/***/ }),
+/* 60 */
+/***/ (function(module, exports) {
 
 	
 	/**
@@ -13508,12 +13786,12 @@
 	};
 
 
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Sprite = __webpack_require__(39),
-	    Texture = __webpack_require__(29),
+	var Sprite = __webpack_require__(40),
+	    Texture = __webpack_require__(30),
 	    math = __webpack_require__(9),
 	    utils = __webpack_require__(18),
 	    CONST = __webpack_require__(8);
@@ -14209,15 +14487,15 @@
 	};
 
 
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Container = __webpack_require__(38),
-	    Texture = __webpack_require__(29),
-	    CanvasBuffer = __webpack_require__(37),
-	    CanvasGraphics = __webpack_require__(62),
-	    GraphicsData = __webpack_require__(63),
+	var Container = __webpack_require__(39),
+	    Texture = __webpack_require__(30),
+	    CanvasBuffer = __webpack_require__(38),
+	    CanvasGraphics = __webpack_require__(63),
+	    GraphicsData = __webpack_require__(64),
 	    math = __webpack_require__(9),
 	    CONST = __webpack_require__(8),
 	    tempPoint = new math.Point();
@@ -15398,9 +15676,9 @@
 	};
 
 
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var CONST = __webpack_require__(8);
 	
@@ -15756,9 +16034,9 @@
 	
 
 
-/***/ },
-/* 63 */
-/***/ function(module, exports) {
+/***/ }),
+/* 64 */
+/***/ (function(module, exports) {
 
 	/**
 	 * A GraphicsData object.
@@ -15853,17 +16131,17 @@
 	};
 
 
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(18),
 	    math = __webpack_require__(9),
 	    CONST = __webpack_require__(8),
-	    ObjectRenderer = __webpack_require__(43),
-	    WebGLRenderer = __webpack_require__(44),
-	    WebGLGraphicsData = __webpack_require__(65),
-	    earcut = __webpack_require__(66);
+	    ObjectRenderer = __webpack_require__(44),
+	    WebGLRenderer = __webpack_require__(45),
+	    WebGLGraphicsData = __webpack_require__(66),
+	    earcut = __webpack_require__(67);
 	
 	/**
 	 * Renders the graphics object.
@@ -16762,9 +17040,9 @@
 	};
 
 
-/***/ },
-/* 65 */
-/***/ function(module, exports) {
+/***/ }),
+/* 66 */
+/***/ (function(module, exports) {
 
 	/**
 	 * An object containing WebGL specific properties to be used by the WebGL renderer
@@ -16884,13 +17162,14 @@
 	};
 
 
-/***/ },
-/* 66 */
-/***/ function(module, exports) {
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
 
 	'use strict';
 	
 	module.exports = earcut;
+	module.exports.default = earcut;
 	
 	function earcut(data, holeIndices, dim) {
 	
@@ -16901,9 +17180,9 @@
 	        outerNode = linkedList(data, 0, outerLen, dim, true),
 	        triangles = [];
 	
-	    if (!outerNode) return triangles;
+	    if (!outerNode || outerNode.next === outerNode.prev) return triangles;
 	
-	    var minX, minY, maxX, maxY, x, y, size;
+	    var minX, minY, maxX, maxY, x, y, invSize;
 	
 	    if (hasHoles) outerNode = eliminateHoles(data, holeIndices, outerNode, dim);
 	
@@ -16921,11 +17200,12 @@
 	            if (y > maxY) maxY = y;
 	        }
 	
-	        // minX, minY and size are later used to transform coords into integers for z-order calculation
-	        size = Math.max(maxX - minX, maxY - minY);
+	        // minX, minY and invSize are later used to transform coords into integers for z-order calculation
+	        invSize = Math.max(maxX - minX, maxY - minY);
+	        invSize = invSize !== 0 ? 1 / invSize : 0;
 	    }
 	
-	    earcutLinked(outerNode, triangles, dim, minX, minY, size);
+	    earcutLinked(outerNode, triangles, dim, minX, minY, invSize);
 	
 	    return triangles;
 	}
@@ -16961,7 +17241,7 @@
 	        if (!p.steiner && (equals(p, p.next) || area(p.prev, p, p.next) === 0)) {
 	            removeNode(p);
 	            p = end = p.prev;
-	            if (p === p.next) return null;
+	            if (p === p.next) break;
 	            again = true;
 	
 	        } else {
@@ -16973,11 +17253,11 @@
 	}
 	
 	// main ear slicing loop which triangulates a polygon (given as a linked list)
-	function earcutLinked(ear, triangles, dim, minX, minY, size, pass) {
+	function earcutLinked(ear, triangles, dim, minX, minY, invSize, pass) {
 	    if (!ear) return;
 	
 	    // interlink polygon nodes in z-order
-	    if (!pass && size) indexCurve(ear, minX, minY, size);
+	    if (!pass && invSize) indexCurve(ear, minX, minY, invSize);
 	
 	    var stop = ear,
 	        prev, next;
@@ -16987,7 +17267,7 @@
 	        prev = ear.prev;
 	        next = ear.next;
 	
-	        if (size ? isEarHashed(ear, minX, minY, size) : isEar(ear)) {
+	        if (invSize ? isEarHashed(ear, minX, minY, invSize) : isEar(ear)) {
 	            // cut off the triangle
 	            triangles.push(prev.i / dim);
 	            triangles.push(ear.i / dim);
@@ -16995,7 +17275,7 @@
 	
 	            removeNode(ear);
 	
-	            // skipping the next vertice leads to less sliver triangles
+	            // skipping the next vertex leads to less sliver triangles
 	            ear = next.next;
 	            stop = next.next;
 	
@@ -17008,16 +17288,16 @@
 	        if (ear === stop) {
 	            // try filtering points and slicing again
 	            if (!pass) {
-	                earcutLinked(filterPoints(ear), triangles, dim, minX, minY, size, 1);
+	                earcutLinked(filterPoints(ear), triangles, dim, minX, minY, invSize, 1);
 	
 	            // if this didn't work, try curing all small self-intersections locally
 	            } else if (pass === 1) {
-	                ear = cureLocalIntersections(ear, triangles, dim);
-	                earcutLinked(ear, triangles, dim, minX, minY, size, 2);
+	                ear = cureLocalIntersections(filterPoints(ear), triangles, dim);
+	                earcutLinked(ear, triangles, dim, minX, minY, invSize, 2);
 	
 	            // as a last resort, try splitting the remaining polygon into two
 	            } else if (pass === 2) {
-	                splitEarcut(ear, triangles, dim, minX, minY, size);
+	                splitEarcut(ear, triangles, dim, minX, minY, invSize);
 	            }
 	
 	            break;
@@ -17045,7 +17325,7 @@
 	    return true;
 	}
 	
-	function isEarHashed(ear, minX, minY, size) {
+	function isEarHashed(ear, minX, minY, invSize) {
 	    var a = ear.prev,
 	        b = ear,
 	        c = ear.next;
@@ -17059,27 +17339,39 @@
 	        maxTY = a.y > b.y ? (a.y > c.y ? a.y : c.y) : (b.y > c.y ? b.y : c.y);
 	
 	    // z-order range for the current triangle bbox;
-	    var minZ = zOrder(minTX, minTY, minX, minY, size),
-	        maxZ = zOrder(maxTX, maxTY, minX, minY, size);
+	    var minZ = zOrder(minTX, minTY, minX, minY, invSize),
+	        maxZ = zOrder(maxTX, maxTY, minX, minY, invSize);
 	
-	    // first look for points inside the triangle in increasing z-order
-	    var p = ear.nextZ;
+	    var p = ear.prevZ,
+	        n = ear.nextZ;
 	
-	    while (p && p.z <= maxZ) {
+	    // look for points inside the triangle in both directions
+	    while (p && p.z >= minZ && n && n.z <= maxZ) {
 	        if (p !== ear.prev && p !== ear.next &&
 	            pointInTriangle(a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y) &&
 	            area(p.prev, p, p.next) >= 0) return false;
-	        p = p.nextZ;
+	        p = p.prevZ;
+	
+	        if (n !== ear.prev && n !== ear.next &&
+	            pointInTriangle(a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y) &&
+	            area(n.prev, n, n.next) >= 0) return false;
+	        n = n.nextZ;
 	    }
 	
-	    // then look for points in decreasing z-order
-	    p = ear.prevZ;
-	
+	    // look for remaining points in decreasing z-order
 	    while (p && p.z >= minZ) {
 	        if (p !== ear.prev && p !== ear.next &&
 	            pointInTriangle(a.x, a.y, b.x, b.y, c.x, c.y, p.x, p.y) &&
 	            area(p.prev, p, p.next) >= 0) return false;
 	        p = p.prevZ;
+	    }
+	
+	    // look for remaining points in increasing z-order
+	    while (n && n.z <= maxZ) {
+	        if (n !== ear.prev && n !== ear.next &&
+	            pointInTriangle(a.x, a.y, b.x, b.y, c.x, c.y, n.x, n.y) &&
+	            area(n.prev, n, n.next) >= 0) return false;
+	        n = n.nextZ;
 	    }
 	
 	    return true;
@@ -17107,11 +17399,11 @@
 	        p = p.next;
 	    } while (p !== start);
 	
-	    return p;
+	    return filterPoints(p);
 	}
 	
 	// try splitting polygon into two and triangulate them independently
-	function splitEarcut(start, triangles, dim, minX, minY, size) {
+	function splitEarcut(start, triangles, dim, minX, minY, invSize) {
 	    // look for a valid diagonal that divides the polygon into two
 	    var a = start;
 	    do {
@@ -17126,8 +17418,8 @@
 	                c = filterPoints(c, c.next);
 	
 	                // run earcut on each half
-	                earcutLinked(a, triangles, dim, minX, minY, size);
-	                earcutLinked(c, triangles, dim, minX, minY, size);
+	                earcutLinked(a, triangles, dim, minX, minY, invSize);
+	                earcutLinked(c, triangles, dim, minX, minY, invSize);
 	                return;
 	            }
 	            b = b.next;
@@ -17153,7 +17445,7 @@
 	
 	    // process holes from left to right
 	    for (i = 0; i < queue.length; i++) {
-	        eliminateHole(queue[i], outerNode);
+	        outerNode = eliminateHole(queue[i], outerNode);
 	        outerNode = filterPoints(outerNode, outerNode.next);
 	    }
 	
@@ -17166,11 +17458,19 @@
 	
 	// find a bridge between vertices that connects hole with an outer ring and and link it
 	function eliminateHole(hole, outerNode) {
-	    outerNode = findHoleBridge(hole, outerNode);
-	    if (outerNode) {
-	        var b = splitPolygon(outerNode, hole);
-	        filterPoints(b, b.next);
+	    var bridge = findHoleBridge(hole, outerNode);
+	    if (!bridge) {
+	        return outerNode;
 	    }
+	
+	    var bridgeReverse = splitPolygon(bridge, hole);
+	
+	    // filter collinear points around the cuts
+	    var filteredBridge = filterPoints(bridge, bridge.next);
+	    filterPoints(bridgeReverse, bridgeReverse.next);
+	
+	    // Check if input node was removed by the filtering
+	    return outerNode === bridge ? filteredBridge : outerNode;
 	}
 	
 	// David Eberly's algorithm for finding a bridge between hole and outer polygon
@@ -17184,7 +17484,7 @@
 	    // find a segment intersected by a ray from the hole's leftmost point to the left;
 	    // segment's endpoint with lesser x will be potential connection point
 	    do {
-	        if (hy <= p.y && hy >= p.next.y) {
+	        if (hy <= p.y && hy >= p.next.y && p.next.y !== p.y) {
 	            var x = p.x + (hy - p.y) * (p.next.x - p.x) / (p.next.y - p.y);
 	            if (x <= hx && x > qx) {
 	                qx = x;
@@ -17200,7 +17500,7 @@
 	
 	    if (!m) return null;
 	
-	    if (hx === qx) return m.prev; // hole touches outer segment; pick lower endpoint
+	    if (hx === qx) return m; // hole touches outer segment; pick leftmost endpoint
 	
 	    // look for points inside the triangle of hole point, segment intersection and endpoint;
 	    // if there are no points found, we have a valid connection;
@@ -17212,31 +17512,37 @@
 	        tanMin = Infinity,
 	        tan;
 	
-	    p = m.next;
+	    p = m;
 	
-	    while (p !== stop) {
-	        if (hx >= p.x && p.x >= mx &&
+	    do {
+	        if (hx >= p.x && p.x >= mx && hx !== p.x &&
 	                pointInTriangle(hy < my ? hx : qx, hy, mx, my, hy < my ? qx : hx, hy, p.x, p.y)) {
 	
 	            tan = Math.abs(hy - p.y) / (hx - p.x); // tangential
 	
-	            if ((tan < tanMin || (tan === tanMin && p.x > m.x)) && locallyInside(p, hole)) {
+	            if (locallyInside(p, hole) &&
+	                (tan < tanMin || (tan === tanMin && (p.x > m.x || (p.x === m.x && sectorContainsSector(m, p)))))) {
 	                m = p;
 	                tanMin = tan;
 	            }
 	        }
 	
 	        p = p.next;
-	    }
+	    } while (p !== stop);
 	
 	    return m;
 	}
 	
+	// whether sector in vertex m contains sector in vertex p in the same coordinates
+	function sectorContainsSector(m, p) {
+	    return area(m.prev, m, p.prev) < 0 && area(p.next, m, m.next) < 0;
+	}
+	
 	// interlink polygon nodes in z-order
-	function indexCurve(start, minX, minY, size) {
+	function indexCurve(start, minX, minY, invSize) {
 	    var p = start;
 	    do {
-	        if (p.z === null) p.z = zOrder(p.x, p.y, minX, minY, size);
+	        if (p.z === null) p.z = zOrder(p.x, p.y, minX, minY, invSize);
 	        p.prevZ = p.prev;
 	        p.nextZ = p.next;
 	        p = p.next;
@@ -17269,20 +17575,11 @@
 	                q = q.nextZ;
 	                if (!q) break;
 	            }
-	
 	            qSize = inSize;
 	
 	            while (pSize > 0 || (qSize > 0 && q)) {
 	
-	                if (pSize === 0) {
-	                    e = q;
-	                    q = q.nextZ;
-	                    qSize--;
-	                } else if (qSize === 0 || !q) {
-	                    e = p;
-	                    p = p.nextZ;
-	                    pSize--;
-	                } else if (p.z <= q.z) {
+	                if (pSize !== 0 && (qSize === 0 || !q || p.z <= q.z)) {
 	                    e = p;
 	                    p = p.nextZ;
 	                    pSize--;
@@ -17310,11 +17607,11 @@
 	    return list;
 	}
 	
-	// z-order of a point given coords and size of the data bounding box
-	function zOrder(x, y, minX, minY, size) {
+	// z-order of a point given coords and inverse of the longer side of data bbox
+	function zOrder(x, y, minX, minY, invSize) {
 	    // coords are transformed into non-negative 15-bit integer range
-	    x = 32767 * (x - minX) / size;
-	    y = 32767 * (y - minY) / size;
+	    x = 32767 * (x - minX) * invSize;
+	    y = 32767 * (y - minY) * invSize;
 	
 	    x = (x | (x << 8)) & 0x00FF00FF;
 	    x = (x | (x << 4)) & 0x0F0F0F0F;
@@ -17334,7 +17631,7 @@
 	    var p = start,
 	        leftmost = start;
 	    do {
-	        if (p.x < leftmost.x) leftmost = p;
+	        if (p.x < leftmost.x || (p.x === leftmost.x && p.y < leftmost.y)) leftmost = p;
 	        p = p.next;
 	    } while (p !== start);
 	
@@ -17350,8 +17647,10 @@
 	
 	// check if a diagonal between two polygon nodes is valid (lies in polygon interior)
 	function isValidDiagonal(a, b) {
-	    return a.next.i !== b.i && a.prev.i !== b.i && !intersectsPolygon(a, b) &&
-	           locallyInside(a, b) && locallyInside(b, a) && middleInside(a, b);
+	    return a.next.i !== b.i && a.prev.i !== b.i && !intersectsPolygon(a, b) && // dones't intersect other edges
+	           (locallyInside(a, b) && locallyInside(b, a) && middleInside(a, b) && // locally visible
+	            (area(a.prev, a, b.prev) || area(a, b.prev, b)) || // does not create opposite-facing sectors
+	            equals(a, b) && area(a.prev, a, a.next) > 0 && area(b.prev, b, b.next) > 0); // special zero-length case
 	}
 	
 	// signed area of a triangle
@@ -17366,10 +17665,28 @@
 	
 	// check if two segments intersect
 	function intersects(p1, q1, p2, q2) {
-	    if ((equals(p1, q1) && equals(p2, q2)) ||
-	        (equals(p1, q2) && equals(p2, q1))) return true;
-	    return area(p1, q1, p2) > 0 !== area(p1, q1, q2) > 0 &&
-	           area(p2, q2, p1) > 0 !== area(p2, q2, q1) > 0;
+	    var o1 = sign(area(p1, q1, p2));
+	    var o2 = sign(area(p1, q1, q2));
+	    var o3 = sign(area(p2, q2, p1));
+	    var o4 = sign(area(p2, q2, q1));
+	
+	    if (o1 !== o2 && o3 !== o4) return true; // general case
+	
+	    if (o1 === 0 && onSegment(p1, p2, q1)) return true; // p1, q1 and p2 are collinear and p2 lies on p1q1
+	    if (o2 === 0 && onSegment(p1, q2, q1)) return true; // p1, q1 and q2 are collinear and q2 lies on p1q1
+	    if (o3 === 0 && onSegment(p2, p1, q2)) return true; // p2, q2 and p1 are collinear and p1 lies on p2q2
+	    if (o4 === 0 && onSegment(p2, q1, q2)) return true; // p2, q2 and q1 are collinear and q1 lies on p2q2
+	
+	    return false;
+	}
+	
+	// for collinear points p, q, r, check if point q lies on segment pr
+	function onSegment(p, q, r) {
+	    return q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y);
+	}
+	
+	function sign(num) {
+	    return num > 0 ? 1 : num < 0 ? -1 : 0;
 	}
 	
 	// check if a polygon diagonal intersects any polygon segments
@@ -17398,7 +17715,8 @@
 	        px = (a.x + b.x) / 2,
 	        py = (a.y + b.y) / 2;
 	    do {
-	        if (((p.y > py) !== (p.next.y > py)) && (px < (p.next.x - p.x) * (py - p.y) / (p.next.y - p.y) + p.x))
+	        if (((p.y > py) !== (p.next.y > py)) && p.next.y !== p.y &&
+	                (px < (p.next.x - p.x) * (py - p.y) / (p.next.y - p.y) + p.x))
 	            inside = !inside;
 	        p = p.next;
 	    } while (p !== a);
@@ -17455,14 +17773,14 @@
 	}
 	
 	function Node(i, x, y) {
-	    // vertice index in coordinates array
+	    // vertex index in coordinates array
 	    this.i = i;
 	
 	    // vertex coordinates
 	    this.x = x;
 	    this.y = y;
 	
-	    // previous and next vertice nodes in a polygon ring
+	    // previous and next vertex nodes in a polygon ring
 	    this.prev = null;
 	    this.next = null;
 	
@@ -17534,12 +17852,12 @@
 	};
 
 
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var SystemRenderer = __webpack_require__(45),
-	    CanvasMaskManager = __webpack_require__(68),
+	var SystemRenderer = __webpack_require__(46),
+	    CanvasMaskManager = __webpack_require__(69),
 	    utils = __webpack_require__(18),
 	    math = __webpack_require__(9),
 	    CONST = __webpack_require__(8);
@@ -17806,11 +18124,11 @@
 	};
 
 
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var CanvasGraphics = __webpack_require__(62);
+	var CanvasGraphics = __webpack_require__(63);
 	
 	/**
 	 * A set of functions used to handle masking.
@@ -17872,9 +18190,9 @@
 	CanvasMaskManager.prototype.destroy = function () {};
 
 
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI extras library
@@ -17883,23 +18201,23 @@
 	 * @license     {@link https://github.com/pixijs/pixi.js/blob/master/LICENSE|MIT License}
 	 */
 	
-	__webpack_require__(70);
 	__webpack_require__(71);
 	__webpack_require__(72);
+	__webpack_require__(73);
 	
 	/**
 	 * @namespace PIXI.extras
 	 */
 	module.exports = {
-	    MovieClip:      __webpack_require__(73),
-	    TilingSprite:   __webpack_require__(74),
-	    BitmapText:     __webpack_require__(75)
+	    MovieClip:      __webpack_require__(74),
+	    TilingSprite:   __webpack_require__(75),
+	    BitmapText:     __webpack_require__(76)
 	};
 
 
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
 	    DisplayObject = core.DisplayObject,
@@ -18173,9 +18491,9 @@
 	};
 
 
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -18207,9 +18525,9 @@
 	};
 
 
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -18241,9 +18559,9 @@
 	};
 
 
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -18565,14 +18883,14 @@
 	    return new MovieClip(textures);
 	};
 
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
 	    // a sprite use dfor rendering textures..
 	    tempPoint = new core.Point(),
-	    CanvasTinter = __webpack_require__(40);
+	    CanvasTinter = __webpack_require__(41);
 	
 	/**
 	 * A tiling sprite is a fast way of rendering a tiling image
@@ -19021,9 +19339,9 @@
 	};
 
 
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -19413,9 +19731,9 @@
 	BitmapText.fonts = {};
 
 
-/***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI filters library
@@ -19428,37 +19746,37 @@
 	 * @namespace PIXI.filters
 	 */
 	module.exports = {
-	    AsciiFilter:        __webpack_require__(77),
-	    BloomFilter:        __webpack_require__(78),
-	    BlurFilter:         __webpack_require__(81),
-	    BlurXFilter:        __webpack_require__(79),
-	    BlurYFilter:        __webpack_require__(80),
-	    BlurDirFilter:      __webpack_require__(82),
-	    ColorMatrixFilter:  __webpack_require__(83),
-	    ColorStepFilter:    __webpack_require__(84),
-	    ConvolutionFilter:  __webpack_require__(85),
-	    CrossHatchFilter:   __webpack_require__(86),
-	    DisplacementFilter: __webpack_require__(87),
-	    DotScreenFilter:    __webpack_require__(88),
-	    GrayFilter:         __webpack_require__(89),
-	    DropShadowFilter:   __webpack_require__(90),
-	    InvertFilter:       __webpack_require__(92),
-	    NoiseFilter:        __webpack_require__(93),
-	    PixelateFilter:     __webpack_require__(94),
-	    RGBSplitFilter:     __webpack_require__(95),
-	    ShockwaveFilter:    __webpack_require__(96),
-	    SepiaFilter:        __webpack_require__(97),
-	    SmartBlurFilter:    __webpack_require__(98),
-	    TiltShiftFilter:    __webpack_require__(99),
-	    TiltShiftXFilter:   __webpack_require__(100),
-	    TiltShiftYFilter:   __webpack_require__(102),
-	    TwistFilter:        __webpack_require__(103)
+	    AsciiFilter:        __webpack_require__(78),
+	    BloomFilter:        __webpack_require__(79),
+	    BlurFilter:         __webpack_require__(82),
+	    BlurXFilter:        __webpack_require__(80),
+	    BlurYFilter:        __webpack_require__(81),
+	    BlurDirFilter:      __webpack_require__(83),
+	    ColorMatrixFilter:  __webpack_require__(84),
+	    ColorStepFilter:    __webpack_require__(85),
+	    ConvolutionFilter:  __webpack_require__(86),
+	    CrossHatchFilter:   __webpack_require__(87),
+	    DisplacementFilter: __webpack_require__(88),
+	    DotScreenFilter:    __webpack_require__(89),
+	    GrayFilter:         __webpack_require__(90),
+	    DropShadowFilter:   __webpack_require__(91),
+	    InvertFilter:       __webpack_require__(93),
+	    NoiseFilter:        __webpack_require__(94),
+	    PixelateFilter:     __webpack_require__(95),
+	    RGBSplitFilter:     __webpack_require__(96),
+	    ShockwaveFilter:    __webpack_require__(97),
+	    SepiaFilter:        __webpack_require__(98),
+	    SmartBlurFilter:    __webpack_require__(99),
+	    TiltShiftFilter:    __webpack_require__(100),
+	    TiltShiftXFilter:   __webpack_require__(101),
+	    TiltShiftYFilter:   __webpack_require__(103),
+	    TwistFilter:        __webpack_require__(104)
 	};
 
 
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -19517,13 +19835,13 @@
 	});
 
 
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    BlurXFilter = __webpack_require__(79),
-	    BlurYFilter = __webpack_require__(80);
+	    BlurXFilter = __webpack_require__(80),
+	    BlurYFilter = __webpack_require__(81);
 	
 	/**
 	 * The BloomFilter applies a Gaussian blur to an object.
@@ -19622,9 +19940,9 @@
 	});
 
 
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -19719,9 +20037,9 @@
 	});
 
 
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -19809,13 +20127,13 @@
 	});
 
 
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    BlurXFilter = __webpack_require__(79),
-	    BlurYFilter = __webpack_require__(80);
+	    BlurXFilter = __webpack_require__(80),
+	    BlurYFilter = __webpack_require__(81);
 	
 	/**
 	 * The BlurFilter applies a Gaussian blur to an object.
@@ -19923,9 +20241,9 @@
 	});
 
 
-/***/ },
-/* 82 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -20069,9 +20387,9 @@
 	});
 
 
-/***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20609,9 +20927,9 @@
 	});
 
 
-/***/ },
-/* 84 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20662,9 +20980,9 @@
 	});
 
 
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20757,9 +21075,9 @@
 	});
 
 
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20787,9 +21105,9 @@
 	module.exports = CrossHatchFilter;
 
 
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20875,9 +21193,9 @@
 	});
 
 
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -20951,9 +21269,9 @@
 	});
 
 
-/***/ },
-/* 89 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21004,13 +21322,13 @@
 	});
 
 
-/***/ },
-/* 90 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    BlurXFilter = __webpack_require__(79),
-	    BlurYTintFilter = __webpack_require__(91);
+	    BlurXFilter = __webpack_require__(80),
+	    BlurYTintFilter = __webpack_require__(92);
 	
 	/**
 	 * The DropShadowFilter applies a Gaussian blur to an object.
@@ -21201,9 +21519,9 @@
 	});
 
 
-/***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -21296,9 +21614,9 @@
 	});
 
 
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21350,9 +21668,9 @@
 	});
 
 
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21409,9 +21727,9 @@
 	});
 
 
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21464,9 +21782,9 @@
 	});
 
 
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21554,9 +21872,9 @@
 	});
 
 
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21646,9 +21964,9 @@
 	});
 
 
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21700,9 +22018,9 @@
 	});
 
 
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -21734,13 +22052,13 @@
 	module.exports = SmartBlurFilter;
 
 
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    TiltShiftXFilter = __webpack_require__(100),
-	    TiltShiftYFilter = __webpack_require__(102);
+	    TiltShiftXFilter = __webpack_require__(101),
+	    TiltShiftYFilter = __webpack_require__(103);
 	
 	/**
 	 * @author Vico @vicocotea
@@ -21848,11 +22166,11 @@
 	});
 
 
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var TiltShiftAxisFilter = __webpack_require__(101);
+	var TiltShiftAxisFilter = __webpack_require__(102);
 	
 	/**
 	 * @author Vico @vicocotea
@@ -21890,9 +22208,9 @@
 	};
 
 
-/***/ },
-/* 101 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -22019,11 +22337,11 @@
 	});
 
 
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var TiltShiftAxisFilter = __webpack_require__(101);
+	var TiltShiftAxisFilter = __webpack_require__(102);
 	
 	/**
 	 * @author Vico @vicocotea
@@ -22061,9 +22379,9 @@
 	};
 
 
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	// @see https://github.com/substack/brfs/issues/25
@@ -22150,9 +22468,9 @@
 	});
 
 
-/***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI interactions library
@@ -22165,15 +22483,15 @@
 	 * @namespace PIXI.interaction
 	 */
 	module.exports = {
-	    InteractionData:    __webpack_require__(105),
-	    InteractionManager: __webpack_require__(106),
-	    interactiveTarget:  __webpack_require__(107)
+	    InteractionData:    __webpack_require__(106),
+	    InteractionManager: __webpack_require__(107),
+	    interactiveTarget:  __webpack_require__(108)
 	};
 
 
-/***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -22224,17 +22542,17 @@
 	};
 
 
-/***/ },
-/* 106 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    InteractionData = __webpack_require__(105);
+	    InteractionData = __webpack_require__(106);
 	
 	// Mix interactiveTarget into core.DisplayObject.prototype
 	Object.assign(
 	    core.DisplayObject.prototype,
-	    __webpack_require__(107)
+	    __webpack_require__(108)
 	);
 	
 	/**
@@ -23134,9 +23452,9 @@
 	core.CanvasRenderer.registerPlugin('interaction', InteractionManager);
 
 
-/***/ },
-/* 107 */
-/***/ function(module, exports) {
+/***/ }),
+/* 108 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Default property values of interactive objects
@@ -23187,9 +23505,9 @@
 	module.exports = interactiveTarget;
 
 
-/***/ },
-/* 108 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI loaders library
@@ -23202,24 +23520,24 @@
 	 * @namespace PIXI.loaders
 	 */
 	module.exports = {
-	    Loader:             __webpack_require__(109),
+	    Loader:             __webpack_require__(110),
 	
 	    // parsers
-	    bitmapFontParser:   __webpack_require__(126),
-	    spritesheetParser:  __webpack_require__(124),
-	    textureParser:      __webpack_require__(123),
-	    Resource:           __webpack_require__(110).Resource
+	    bitmapFontParser:   __webpack_require__(123),
+	    spritesheetParser:  __webpack_require__(121),
+	    textureParser:      __webpack_require__(120),
+	    Resource:           __webpack_require__(111).Resource
 	};
 
 
-/***/ },
-/* 109 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var ResourceLoader = __webpack_require__(110),
-	    textureParser = __webpack_require__(123),
-	    spritesheetParser = __webpack_require__(124),
-	    bitmapFontParser = __webpack_require__(126);
+	var ResourceLoader = __webpack_require__(111),
+	    textureParser = __webpack_require__(120),
+	    spritesheetParser = __webpack_require__(121),
+	    bitmapFontParser = __webpack_require__(123);
 	
 	/**
 	 *
@@ -23278,44 +23596,53 @@
 	Resource.setExtensionXhrType('fnt', Resource.XHR_RESPONSE_TYPE.DOCUMENT);
 
 
-/***/ },
-/* 110 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(111);
+	/* eslint global-require: 0 */
+	'use strict';
 	
-	module.exports.Resource = __webpack_require__(119);
-	
+	module.exports = __webpack_require__(112);
+	module.exports.Resource = __webpack_require__(115);
 	module.exports.middleware = {
 	    caching: {
-	        memory: __webpack_require__(120)
+	        memory: __webpack_require__(117)
 	    },
 	    parsing: {
-	        blob: __webpack_require__(121)
+	        blob: __webpack_require__(118)
 	    }
 	};
+	
+	module.exports.async = __webpack_require__(114);
 
 
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var async       = __webpack_require__(112),
-	    urlParser   = __webpack_require__(113),
-	    Resource    = __webpack_require__(119),
-	    EventEmitter = __webpack_require__(19);
+	'use strict';
+	
+	var parseUri        = __webpack_require__(113);
+	var async           = __webpack_require__(114);
+	var Resource        = __webpack_require__(115);
+	var EventEmitter    = __webpack_require__(116);
+	
+	// some constants
+	var DEFAULT_CONCURRENCY = 10;
+	var MAX_PROGRESS = 100;
 	
 	/**
 	 * Manages the state and loading of multiple resources to load.
 	 *
 	 * @class
-	 * @param [baseUrl=''] {string} The base url for all resources loaded by this loader.
-	 * @param [concurrency=10] {number} The number of resources to load concurrently.
+	 * @param {string} [baseUrl=''] - The base url for all resources loaded by this loader.
+	 * @param {number} [concurrency=10] - The number of resources to load concurrently.
 	 */
 	function Loader(baseUrl, concurrency) {
 	    EventEmitter.call(this);
 	
-	    concurrency = concurrency || 10;
+	    concurrency = concurrency || DEFAULT_CONCURRENCY;
 	
 	    /**
 	     * The base url for all resources loaded by this loader.
@@ -23366,14 +23693,6 @@
 	     * @member {function}
 	     */
 	    this._boundLoadResource = this._loadResource.bind(this);
-	
-	    /**
-	     * The `_onLoad` function bound with this object context.
-	     *
-	     * @private
-	     * @member {function}
-	     */
-	    this._boundOnLoad = this._onLoad.bind(this);
 	
 	    /**
 	     * The resource buffer that fills until `load` is called to start loading resources.
@@ -23483,19 +23802,23 @@
 	 *         { name: 'key4', url: 'http://...', onComplete: function () {} },
 	 *         { url: 'http://...', onComplete: function () {} },
 	 *         'http://...'
-	 *     ]);
+	 *     ])
+	 *
+	 *     // and you can use both params and options
+	 *     .add('key', 'http://...', { crossOrigin: true }, function () {})
+	 *     .add('http://...', { crossOrigin: true }, function () {});
 	 * ```
 	 *
 	 * @alias enqueue
-	 * @param [name] {string} The name of the resource to load, if not passed the url is used.
-	 * @param url {string} The url for this resource, relative to the baseUrl of this loader.
-	 * @param [options] {object} The options for the load.
-	 * @param [options.crossOrigin] {boolean} Is this request cross-origin? Default is to determine automatically.
-	 * @param [options.loadType=Resource.LOAD_TYPE.XHR] {Resource.XHR_LOAD_TYPE} How should this resource be loaded?
-	 * @param [options.xhrType=Resource.XHR_RESPONSE_TYPE.DEFAULT] {Resource.XHR_RESPONSE_TYPE} How should the data being
+	 * @param {string} [name] - The name of the resource to load, if not passed the url is used.
+	 * @param {string} [url] - The url for this resource, relative to the baseUrl of this loader.
+	 * @param {object} [options] - The options for the load.
+	 * @param {boolean} [options.crossOrigin] - Is this request cross-origin? Default is to determine automatically.
+	 * @param {Resource.XHR_LOAD_TYPE} [options.loadType=Resource.LOAD_TYPE.XHR] - How should this resource be loaded?
+	 * @param {Resource.XHR_RESPONSE_TYPE} [options.xhrType=Resource.XHR_RESPONSE_TYPE.DEFAULT] - How should the data being
 	 *      loaded be interpreted when using XHR?
-	 * @param [callback] {function} Function to call when this specific resource completes loading.
-	 * @return {Loader}
+	 * @param {function} [cb] - Function to call when this specific resource completes loading.
+	 * @return {Loader} Returns itself.
 	 */
 	Loader.prototype.add = Loader.prototype.enqueue = function (name, url, options, cb) {
 	    // special case of an array of objects or urls
@@ -23539,7 +23862,7 @@
 	    }
 	
 	    // add base url if this isn't an absolute url
-	    url = this._handleBaseUrl(url);
+	    url = this._prepareUrl(url);
 	
 	    // create the store the resource
 	    this.resources[name] = new Resource(name, url, options);
@@ -23553,46 +23876,25 @@
 	    // if already loading add it to the worker queue
 	    if (this._queue.started) {
 	        this._queue.push(this.resources[name]);
-	        this._progressChunk = (100 - this.progress) / (this._queue.length() + this._queue.running());
+	        this._progressChunk = (MAX_PROGRESS - this.progress) / (this._queue.length() + this._queue.running());
 	    }
 	    // otherwise buffer it to be added to the queue later
 	    else {
 	        this._buffer.push(this.resources[name]);
-	        this._progressChunk = 100 / this._buffer.length;
+	        this._progressChunk = MAX_PROGRESS / this._buffer.length;
 	    }
 	
 	    return this;
 	};
-	
-	Loader.prototype._handleBaseUrl = function (url) {
-	    var parsedUrl = urlParser.parse(url);
-	
-	    // absolute url, just use it as is.
-	    if (parsedUrl.protocol || !parsedUrl.pathname || parsedUrl.pathname.indexOf('//') === 0) {
-	        return url;
-	    }
-	
-	    // if baseUrl doesn't end in slash and url doesn't start with slash, then add a slash inbetween
-	    if (
-	        this.baseUrl.length &&
-	        this.baseUrl.lastIndexOf('/') !== this.baseUrl.length - 1 &&
-	        url.charAt(0) !== '/'
-	    ) {
-	        return this.baseUrl + '/' + url;
-	    }
-	    else {
-	        return this.baseUrl + url;
-	    }
-	};
-	
 	
 	/**
 	 * Sets up a middleware function that will run *before* the
 	 * resource is loaded.
 	 *
 	 * @alias pre
-	 * @param middleware {function} The middleware function to register.
-	 * @return {Loader}
+	 * @method before
+	 * @param {function} fn - The middleware function to register.
+	 * @return {Loader} Returns itself.
 	 */
 	Loader.prototype.before = Loader.prototype.pre = function (fn) {
 	    this._beforeMiddleware.push(fn);
@@ -23605,8 +23907,9 @@
 	 * resource is loaded.
 	 *
 	 * @alias use
-	 * @param middleware {function} The middleware function to register.
-	 * @return {Loader}
+	 * @method after
+	 * @param {function} fn - The middleware function to register.
+	 * @return {Loader} Returns itself.
 	 */
 	Loader.prototype.after = Loader.prototype.use = function (fn) {
 	    this._afterMiddleware.push(fn);
@@ -23617,7 +23920,7 @@
 	/**
 	 * Resets the queue of the loader to prepare for a new load.
 	 *
-	 * @return {Loader}
+	 * @return {Loader} Returns itself.
 	 */
 	Loader.prototype.reset = function () {
 	    // this.baseUrl = baseUrl || '';
@@ -23638,15 +23941,28 @@
 	    this._queue.kill();
 	    this._queue.started = false;
 	
+	    // abort all resource loads
+	    for (var k in this.resources) {
+	        var res = this.resources[k];
+	
+	        res.off('complete', this._onLoad, this);
+	
+	        if (res.isLoading) {
+	            res.abort();
+	        }
+	    }
+	
 	    this.resources = {};
+	
+	    return this;
 	};
 	
 	/**
 	 * Starts loading the queued resources.
 	 *
 	 * @fires start
-	 * @param [callback] {function} Optional callback that will be bound to the `complete` event.
-	 * @return {Loader}
+	 * @param {function} [cb] - Optional callback that will be bound to the `complete` event.
+	 * @return {Loader} Returns itself.
 	 */
 	Loader.prototype.load = function (cb) {
 	    // register complete callback if they pass one
@@ -23662,6 +23978,9 @@
 	    // notify of start
 	    this.emit('start', this);
 	
+	    // update loading state
+	    this.loading = true;
+	
 	    // start the internal queue
 	    for (var i = 0; i < this._buffer.length; ++i) {
 	        this._queue.push(this._buffer[i]);
@@ -23674,21 +23993,65 @@
 	};
 	
 	/**
+	 * Prepares a url for usage based on the configuration of this object
+	 *
+	 * @private
+	 * @param {string} url - The url to prepare.
+	 * @return {string} The prepared url.
+	 */
+	Loader.prototype._prepareUrl = function (url) {
+	    var parsedUrl = parseUri(url, { strictMode: true });
+	
+	    // absolute url, just use it as is.
+	    if (parsedUrl.protocol || !parsedUrl.path || parsedUrl.path.indexOf('//') === 0) {
+	        return url;
+	    }
+	
+	    // if baseUrl doesn't end in slash and url doesn't start with slash, then add a slash inbetween
+	    if (this.baseUrl.length
+	        && this.baseUrl.lastIndexOf('/') !== this.baseUrl.length - 1
+	        && url.charAt(0) !== '/'
+	    ) {
+	        return this.baseUrl + '/' + url;
+	    }
+	
+	    return this.baseUrl + url;
+	};
+	
+	/**
 	 * Loads a single resource.
 	 *
-	 * @fires progress
 	 * @private
+	 * @param {Resource} resource - The resource to load.
+	 * @param {function} dequeue - The function to call when we need to dequeue this item.
 	 */
 	Loader.prototype._loadResource = function (resource, dequeue) {
 	    var self = this;
 	
 	    resource._dequeue = dequeue;
 	
-	    this._runMiddleware(resource, this._beforeMiddleware, function () {
-	        // resource.on('progress', self.emit.bind(self, 'progress'));
+	    // run before middleware
+	    async.eachSeries(
+	        this._beforeMiddleware,
+	        function (fn, next) {
+	            fn.call(self, resource, function () {
+	                // if the before middleware marks the resource as complete,
+	                // break and don't process any more before middleware
+	                next(resource.isComplete ? {} : null);
+	            });
+	        },
+	        function () {
+	            // resource.on('progress', self.emit.bind(self, 'progress'));
 	
-	        resource.load(self._boundOnLoad);
-	    });
+	            if (resource.isComplete) {
+	                self._onLoad(resource);
+	            }
+	            else {
+	                resource.once('complete', self._onLoad, self);
+	                resource.load();
+	            }
+	        }
+	    );
 	};
 	
 	/**
@@ -23698,6 +24061,8 @@
 	 * @private
 	 */
 	Loader.prototype._onComplete = function () {
+	    this.loading = false;
+	
 	    this.emit('complete', this, this.resources);
 	};
 	
@@ -23708,2639 +24073,335 @@
 	 * @fires error
 	 * @fires load
 	 * @private
+	 * @param {Resource} resource - The resource that was loaded
 	 */
 	Loader.prototype._onLoad = function (resource) {
-	    this.progress += this._progressChunk;
-	
-	    this.emit('progress', this, resource);
+	    var self = this;
 	
 	    // run middleware, this *must* happen before dequeue so sub-assets get added properly
-	    this._runMiddleware(resource, this._afterMiddleware, function () {
-	        resource.emit('afterMiddleware', resource);
+	    async.eachSeries(
+	        this._afterMiddleware,
+	        function (fn, next) {
+	            fn.call(self, resource, next);
+	        },
+	        function () {
+	            resource.emit('afterMiddleware', resource);
 	
-	        this._numToLoad--;
+	            self._numToLoad--;
 	
-	        if (resource.error) {
-	            this.emit('error', resource.error, this, resource);
+	            self.progress += self._progressChunk;
+	            self.emit('progress', self, resource);
+	
+	            if (resource.error) {
+	                self.emit('error', resource.error, self, resource);
+	            }
+	            else {
+	                self.emit('load', self, resource);
+	            }
+	
+	            // do completion check
+	            if (self._numToLoad === 0) {
+	                self.progress = 100;
+	                self._onComplete();
+	            }
 	        }
-	        else {
-	            this.emit('load', this, resource);
-	        }
-	
-	        // do completion check
-	        if (this._numToLoad === 0) {
-	            this.progress = 100;
-	            this._onComplete();
-	        }
-	    });
-	    
-	
+	    );
 	
 	    // remove this resource from the async queue
 	    resource._dequeue();
 	};
 	
-	/**
-	 * Run middleware functions on a resource.
-	 *
-	 * @private
-	 */
-	Loader.prototype._runMiddleware = function (resource, fns, cb) {
-	    var self = this;
-	
-	    async.eachSeries(fns, function (fn, next) {
-	        fn.call(self, resource, next);
-	    }, cb.bind(this, resource));
-	};
-	
 	Loader.LOAD_TYPE = Resource.LOAD_TYPE;
-	Loader.XHR_READY_STATE = Resource.XHR_READY_STATE;
 	Loader.XHR_RESPONSE_TYPE = Resource.XHR_RESPONSE_TYPE;
 
 
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, setImmediate) {/*!
-	 * async
-	 * https://github.com/caolan/async
-	 *
-	 * Copyright 2010-2014 Caolan McMahon
-	 * Released under the MIT license
-	 */
-	/*jshint onevar: false, indent:4 */
-	/*global setImmediate: false, setTimeout: false, console: false */
-	(function () {
-	
-	    var async = {};
-	
-	    // global on the server, window in the browser
-	    var root, previous_async;
-	
-	    root = this;
-	    if (root != null) {
-	      previous_async = root.async;
-	    }
-	
-	    async.noConflict = function () {
-	        root.async = previous_async;
-	        return async;
-	    };
-	
-	    function only_once(fn) {
-	        var called = false;
-	        return function() {
-	            if (called) throw new Error("Callback was already called.");
-	            called = true;
-	            fn.apply(root, arguments);
-	        }
-	    }
-	
-	    //// cross-browser compatiblity functions ////
-	
-	    var _toString = Object.prototype.toString;
-	
-	    var _isArray = Array.isArray || function (obj) {
-	        return _toString.call(obj) === '[object Array]';
-	    };
-	
-	    var _each = function (arr, iterator) {
-	        for (var i = 0; i < arr.length; i += 1) {
-	            iterator(arr[i], i, arr);
-	        }
-	    };
-	
-	    var _map = function (arr, iterator) {
-	        if (arr.map) {
-	            return arr.map(iterator);
-	        }
-	        var results = [];
-	        _each(arr, function (x, i, a) {
-	            results.push(iterator(x, i, a));
-	        });
-	        return results;
-	    };
-	
-	    var _reduce = function (arr, iterator, memo) {
-	        if (arr.reduce) {
-	            return arr.reduce(iterator, memo);
-	        }
-	        _each(arr, function (x, i, a) {
-	            memo = iterator(memo, x, i, a);
-	        });
-	        return memo;
-	    };
-	
-	    var _keys = function (obj) {
-	        if (Object.keys) {
-	            return Object.keys(obj);
-	        }
-	        var keys = [];
-	        for (var k in obj) {
-	            if (obj.hasOwnProperty(k)) {
-	                keys.push(k);
-	            }
-	        }
-	        return keys;
-	    };
-	
-	    //// exported async module functions ////
-	
-	    //// nextTick implementation with browser-compatible fallback ////
-	    if (typeof process === 'undefined' || !(process.nextTick)) {
-	        if (typeof setImmediate === 'function') {
-	            async.nextTick = function (fn) {
-	                // not a direct alias for IE10 compatibility
-	                setImmediate(fn);
-	            };
-	            async.setImmediate = async.nextTick;
-	        }
-	        else {
-	            async.nextTick = function (fn) {
-	                setTimeout(fn, 0);
-	            };
-	            async.setImmediate = async.nextTick;
-	        }
-	    }
-	    else {
-	        async.nextTick = process.nextTick;
-	        if (typeof setImmediate !== 'undefined') {
-	            async.setImmediate = function (fn) {
-	              // not a direct alias for IE10 compatibility
-	              setImmediate(fn);
-	            };
-	        }
-	        else {
-	            async.setImmediate = async.nextTick;
-	        }
-	    }
-	
-	    async.each = function (arr, iterator, callback) {
-	        callback = callback || function () {};
-	        if (!arr.length) {
-	            return callback();
-	        }
-	        var completed = 0;
-	        _each(arr, function (x) {
-	            iterator(x, only_once(done) );
-	        });
-	        function done(err) {
-	          if (err) {
-	              callback(err);
-	              callback = function () {};
-	          }
-	          else {
-	              completed += 1;
-	              if (completed >= arr.length) {
-	                  callback();
-	              }
-	          }
-	        }
-	    };
-	    async.forEach = async.each;
-	
-	    async.eachSeries = function (arr, iterator, callback) {
-	        callback = callback || function () {};
-	        if (!arr.length) {
-	            return callback();
-	        }
-	        var completed = 0;
-	        var iterate = function () {
-	            iterator(arr[completed], function (err) {
-	                if (err) {
-	                    callback(err);
-	                    callback = function () {};
-	                }
-	                else {
-	                    completed += 1;
-	                    if (completed >= arr.length) {
-	                        callback();
-	                    }
-	                    else {
-	                        iterate();
-	                    }
-	                }
-	            });
-	        };
-	        iterate();
-	    };
-	    async.forEachSeries = async.eachSeries;
-	
-	    async.eachLimit = function (arr, limit, iterator, callback) {
-	        var fn = _eachLimit(limit);
-	        fn.apply(null, [arr, iterator, callback]);
-	    };
-	    async.forEachLimit = async.eachLimit;
-	
-	    var _eachLimit = function (limit) {
-	
-	        return function (arr, iterator, callback) {
-	            callback = callback || function () {};
-	            if (!arr.length || limit <= 0) {
-	                return callback();
-	            }
-	            var completed = 0;
-	            var started = 0;
-	            var running = 0;
-	
-	            (function replenish () {
-	                if (completed >= arr.length) {
-	                    return callback();
-	                }
-	
-	                while (running < limit && started < arr.length) {
-	                    started += 1;
-	                    running += 1;
-	                    iterator(arr[started - 1], function (err) {
-	                        if (err) {
-	                            callback(err);
-	                            callback = function () {};
-	                        }
-	                        else {
-	                            completed += 1;
-	                            running -= 1;
-	                            if (completed >= arr.length) {
-	                                callback();
-	                            }
-	                            else {
-	                                replenish();
-	                            }
-	                        }
-	                    });
-	                }
-	            })();
-	        };
-	    };
-	
-	
-	    var doParallel = function (fn) {
-	        return function () {
-	            var args = Array.prototype.slice.call(arguments);
-	            return fn.apply(null, [async.each].concat(args));
-	        };
-	    };
-	    var doParallelLimit = function(limit, fn) {
-	        return function () {
-	            var args = Array.prototype.slice.call(arguments);
-	            return fn.apply(null, [_eachLimit(limit)].concat(args));
-	        };
-	    };
-	    var doSeries = function (fn) {
-	        return function () {
-	            var args = Array.prototype.slice.call(arguments);
-	            return fn.apply(null, [async.eachSeries].concat(args));
-	        };
-	    };
-	
-	
-	    var _asyncMap = function (eachfn, arr, iterator, callback) {
-	        arr = _map(arr, function (x, i) {
-	            return {index: i, value: x};
-	        });
-	        if (!callback) {
-	            eachfn(arr, function (x, callback) {
-	                iterator(x.value, function (err) {
-	                    callback(err);
-	                });
-	            });
-	        } else {
-	            var results = [];
-	            eachfn(arr, function (x, callback) {
-	                iterator(x.value, function (err, v) {
-	                    results[x.index] = v;
-	                    callback(err);
-	                });
-	            }, function (err) {
-	                callback(err, results);
-	            });
-	        }
-	    };
-	    async.map = doParallel(_asyncMap);
-	    async.mapSeries = doSeries(_asyncMap);
-	    async.mapLimit = function (arr, limit, iterator, callback) {
-	        return _mapLimit(limit)(arr, iterator, callback);
-	    };
-	
-	    var _mapLimit = function(limit) {
-	        return doParallelLimit(limit, _asyncMap);
-	    };
-	
-	    // reduce only has a series version, as doing reduce in parallel won't
-	    // work in many situations.
-	    async.reduce = function (arr, memo, iterator, callback) {
-	        async.eachSeries(arr, function (x, callback) {
-	            iterator(memo, x, function (err, v) {
-	                memo = v;
-	                callback(err);
-	            });
-	        }, function (err) {
-	            callback(err, memo);
-	        });
-	    };
-	    // inject alias
-	    async.inject = async.reduce;
-	    // foldl alias
-	    async.foldl = async.reduce;
-	
-	    async.reduceRight = function (arr, memo, iterator, callback) {
-	        var reversed = _map(arr, function (x) {
-	            return x;
-	        }).reverse();
-	        async.reduce(reversed, memo, iterator, callback);
-	    };
-	    // foldr alias
-	    async.foldr = async.reduceRight;
-	
-	    var _filter = function (eachfn, arr, iterator, callback) {
-	        var results = [];
-	        arr = _map(arr, function (x, i) {
-	            return {index: i, value: x};
-	        });
-	        eachfn(arr, function (x, callback) {
-	            iterator(x.value, function (v) {
-	                if (v) {
-	                    results.push(x);
-	                }
-	                callback();
-	            });
-	        }, function (err) {
-	            callback(_map(results.sort(function (a, b) {
-	                return a.index - b.index;
-	            }), function (x) {
-	                return x.value;
-	            }));
-	        });
-	    };
-	    async.filter = doParallel(_filter);
-	    async.filterSeries = doSeries(_filter);
-	    // select alias
-	    async.select = async.filter;
-	    async.selectSeries = async.filterSeries;
-	
-	    var _reject = function (eachfn, arr, iterator, callback) {
-	        var results = [];
-	        arr = _map(arr, function (x, i) {
-	            return {index: i, value: x};
-	        });
-	        eachfn(arr, function (x, callback) {
-	            iterator(x.value, function (v) {
-	                if (!v) {
-	                    results.push(x);
-	                }
-	                callback();
-	            });
-	        }, function (err) {
-	            callback(_map(results.sort(function (a, b) {
-	                return a.index - b.index;
-	            }), function (x) {
-	                return x.value;
-	            }));
-	        });
-	    };
-	    async.reject = doParallel(_reject);
-	    async.rejectSeries = doSeries(_reject);
-	
-	    var _detect = function (eachfn, arr, iterator, main_callback) {
-	        eachfn(arr, function (x, callback) {
-	            iterator(x, function (result) {
-	                if (result) {
-	                    main_callback(x);
-	                    main_callback = function () {};
-	                }
-	                else {
-	                    callback();
-	                }
-	            });
-	        }, function (err) {
-	            main_callback();
-	        });
-	    };
-	    async.detect = doParallel(_detect);
-	    async.detectSeries = doSeries(_detect);
-	
-	    async.some = function (arr, iterator, main_callback) {
-	        async.each(arr, function (x, callback) {
-	            iterator(x, function (v) {
-	                if (v) {
-	                    main_callback(true);
-	                    main_callback = function () {};
-	                }
-	                callback();
-	            });
-	        }, function (err) {
-	            main_callback(false);
-	        });
-	    };
-	    // any alias
-	    async.any = async.some;
-	
-	    async.every = function (arr, iterator, main_callback) {
-	        async.each(arr, function (x, callback) {
-	            iterator(x, function (v) {
-	                if (!v) {
-	                    main_callback(false);
-	                    main_callback = function () {};
-	                }
-	                callback();
-	            });
-	        }, function (err) {
-	            main_callback(true);
-	        });
-	    };
-	    // all alias
-	    async.all = async.every;
-	
-	    async.sortBy = function (arr, iterator, callback) {
-	        async.map(arr, function (x, callback) {
-	            iterator(x, function (err, criteria) {
-	                if (err) {
-	                    callback(err);
-	                }
-	                else {
-	                    callback(null, {value: x, criteria: criteria});
-	                }
-	            });
-	        }, function (err, results) {
-	            if (err) {
-	                return callback(err);
-	            }
-	            else {
-	                var fn = function (left, right) {
-	                    var a = left.criteria, b = right.criteria;
-	                    return a < b ? -1 : a > b ? 1 : 0;
-	                };
-	                callback(null, _map(results.sort(fn), function (x) {
-	                    return x.value;
-	                }));
-	            }
-	        });
-	    };
-	
-	    async.auto = function (tasks, callback) {
-	        callback = callback || function () {};
-	        var keys = _keys(tasks);
-	        var remainingTasks = keys.length
-	        if (!remainingTasks) {
-	            return callback();
-	        }
-	
-	        var results = {};
-	
-	        var listeners = [];
-	        var addListener = function (fn) {
-	            listeners.unshift(fn);
-	        };
-	        var removeListener = function (fn) {
-	            for (var i = 0; i < listeners.length; i += 1) {
-	                if (listeners[i] === fn) {
-	                    listeners.splice(i, 1);
-	                    return;
-	                }
-	            }
-	        };
-	        var taskComplete = function () {
-	            remainingTasks--
-	            _each(listeners.slice(0), function (fn) {
-	                fn();
-	            });
-	        };
-	
-	        addListener(function () {
-	            if (!remainingTasks) {
-	                var theCallback = callback;
-	                // prevent final callback from calling itself if it errors
-	                callback = function () {};
-	
-	                theCallback(null, results);
-	            }
-	        });
-	
-	        _each(keys, function (k) {
-	            var task = _isArray(tasks[k]) ? tasks[k]: [tasks[k]];
-	            var taskCallback = function (err) {
-	                var args = Array.prototype.slice.call(arguments, 1);
-	                if (args.length <= 1) {
-	                    args = args[0];
-	                }
-	                if (err) {
-	                    var safeResults = {};
-	                    _each(_keys(results), function(rkey) {
-	                        safeResults[rkey] = results[rkey];
-	                    });
-	                    safeResults[k] = args;
-	                    callback(err, safeResults);
-	                    // stop subsequent errors hitting callback multiple times
-	                    callback = function () {};
-	                }
-	                else {
-	                    results[k] = args;
-	                    async.setImmediate(taskComplete);
-	                }
-	            };
-	            var requires = task.slice(0, Math.abs(task.length - 1)) || [];
-	            var ready = function () {
-	                return _reduce(requires, function (a, x) {
-	                    return (a && results.hasOwnProperty(x));
-	                }, true) && !results.hasOwnProperty(k);
-	            };
-	            if (ready()) {
-	                task[task.length - 1](taskCallback, results);
-	            }
-	            else {
-	                var listener = function () {
-	                    if (ready()) {
-	                        removeListener(listener);
-	                        task[task.length - 1](taskCallback, results);
-	                    }
-	                };
-	                addListener(listener);
-	            }
-	        });
-	    };
-	
-	    async.retry = function(times, task, callback) {
-	        var DEFAULT_TIMES = 5;
-	        var attempts = [];
-	        // Use defaults if times not passed
-	        if (typeof times === 'function') {
-	            callback = task;
-	            task = times;
-	            times = DEFAULT_TIMES;
-	        }
-	        // Make sure times is a number
-	        times = parseInt(times, 10) || DEFAULT_TIMES;
-	        var wrappedTask = function(wrappedCallback, wrappedResults) {
-	            var retryAttempt = function(task, finalAttempt) {
-	                return function(seriesCallback) {
-	                    task(function(err, result){
-	                        seriesCallback(!err || finalAttempt, {err: err, result: result});
-	                    }, wrappedResults);
-	                };
-	            };
-	            while (times) {
-	                attempts.push(retryAttempt(task, !(times-=1)));
-	            }
-	            async.series(attempts, function(done, data){
-	                data = data[data.length - 1];
-	                (wrappedCallback || callback)(data.err, data.result);
-	            });
-	        }
-	        // If a callback is passed, run this as a controll flow
-	        return callback ? wrappedTask() : wrappedTask
-	    };
-	
-	    async.waterfall = function (tasks, callback) {
-	        callback = callback || function () {};
-	        if (!_isArray(tasks)) {
-	          var err = new Error('First argument to waterfall must be an array of functions');
-	          return callback(err);
-	        }
-	        if (!tasks.length) {
-	            return callback();
-	        }
-	        var wrapIterator = function (iterator) {
-	            return function (err) {
-	                if (err) {
-	                    callback.apply(null, arguments);
-	                    callback = function () {};
-	                }
-	                else {
-	                    var args = Array.prototype.slice.call(arguments, 1);
-	                    var next = iterator.next();
-	                    if (next) {
-	                        args.push(wrapIterator(next));
-	                    }
-	                    else {
-	                        args.push(callback);
-	                    }
-	                    async.setImmediate(function () {
-	                        iterator.apply(null, args);
-	                    });
-	                }
-	            };
-	        };
-	        wrapIterator(async.iterator(tasks))();
-	    };
-	
-	    var _parallel = function(eachfn, tasks, callback) {
-	        callback = callback || function () {};
-	        if (_isArray(tasks)) {
-	            eachfn.map(tasks, function (fn, callback) {
-	                if (fn) {
-	                    fn(function (err) {
-	                        var args = Array.prototype.slice.call(arguments, 1);
-	                        if (args.length <= 1) {
-	                            args = args[0];
-	                        }
-	                        callback.call(null, err, args);
-	                    });
-	                }
-	            }, callback);
-	        }
-	        else {
-	            var results = {};
-	            eachfn.each(_keys(tasks), function (k, callback) {
-	                tasks[k](function (err) {
-	                    var args = Array.prototype.slice.call(arguments, 1);
-	                    if (args.length <= 1) {
-	                        args = args[0];
-	                    }
-	                    results[k] = args;
-	                    callback(err);
-	                });
-	            }, function (err) {
-	                callback(err, results);
-	            });
-	        }
-	    };
-	
-	    async.parallel = function (tasks, callback) {
-	        _parallel({ map: async.map, each: async.each }, tasks, callback);
-	    };
-	
-	    async.parallelLimit = function(tasks, limit, callback) {
-	        _parallel({ map: _mapLimit(limit), each: _eachLimit(limit) }, tasks, callback);
-	    };
-	
-	    async.series = function (tasks, callback) {
-	        callback = callback || function () {};
-	        if (_isArray(tasks)) {
-	            async.mapSeries(tasks, function (fn, callback) {
-	                if (fn) {
-	                    fn(function (err) {
-	                        var args = Array.prototype.slice.call(arguments, 1);
-	                        if (args.length <= 1) {
-	                            args = args[0];
-	                        }
-	                        callback.call(null, err, args);
-	                    });
-	                }
-	            }, callback);
-	        }
-	        else {
-	            var results = {};
-	            async.eachSeries(_keys(tasks), function (k, callback) {
-	                tasks[k](function (err) {
-	                    var args = Array.prototype.slice.call(arguments, 1);
-	                    if (args.length <= 1) {
-	                        args = args[0];
-	                    }
-	                    results[k] = args;
-	                    callback(err);
-	                });
-	            }, function (err) {
-	                callback(err, results);
-	            });
-	        }
-	    };
-	
-	    async.iterator = function (tasks) {
-	        var makeCallback = function (index) {
-	            var fn = function () {
-	                if (tasks.length) {
-	                    tasks[index].apply(null, arguments);
-	                }
-	                return fn.next();
-	            };
-	            fn.next = function () {
-	                return (index < tasks.length - 1) ? makeCallback(index + 1): null;
-	            };
-	            return fn;
-	        };
-	        return makeCallback(0);
-	    };
-	
-	    async.apply = function (fn) {
-	        var args = Array.prototype.slice.call(arguments, 1);
-	        return function () {
-	            return fn.apply(
-	                null, args.concat(Array.prototype.slice.call(arguments))
-	            );
-	        };
-	    };
-	
-	    var _concat = function (eachfn, arr, fn, callback) {
-	        var r = [];
-	        eachfn(arr, function (x, cb) {
-	            fn(x, function (err, y) {
-	                r = r.concat(y || []);
-	                cb(err);
-	            });
-	        }, function (err) {
-	            callback(err, r);
-	        });
-	    };
-	    async.concat = doParallel(_concat);
-	    async.concatSeries = doSeries(_concat);
-	
-	    async.whilst = function (test, iterator, callback) {
-	        if (test()) {
-	            iterator(function (err) {
-	                if (err) {
-	                    return callback(err);
-	                }
-	                async.whilst(test, iterator, callback);
-	            });
-	        }
-	        else {
-	            callback();
-	        }
-	    };
-	
-	    async.doWhilst = function (iterator, test, callback) {
-	        iterator(function (err) {
-	            if (err) {
-	                return callback(err);
-	            }
-	            var args = Array.prototype.slice.call(arguments, 1);
-	            if (test.apply(null, args)) {
-	                async.doWhilst(iterator, test, callback);
-	            }
-	            else {
-	                callback();
-	            }
-	        });
-	    };
-	
-	    async.until = function (test, iterator, callback) {
-	        if (!test()) {
-	            iterator(function (err) {
-	                if (err) {
-	                    return callback(err);
-	                }
-	                async.until(test, iterator, callback);
-	            });
-	        }
-	        else {
-	            callback();
-	        }
-	    };
-	
-	    async.doUntil = function (iterator, test, callback) {
-	        iterator(function (err) {
-	            if (err) {
-	                return callback(err);
-	            }
-	            var args = Array.prototype.slice.call(arguments, 1);
-	            if (!test.apply(null, args)) {
-	                async.doUntil(iterator, test, callback);
-	            }
-	            else {
-	                callback();
-	            }
-	        });
-	    };
-	
-	    async.queue = function (worker, concurrency) {
-	        if (concurrency === undefined) {
-	            concurrency = 1;
-	        }
-	        function _insert(q, data, pos, callback) {
-	          if (!q.started){
-	            q.started = true;
-	          }
-	          if (!_isArray(data)) {
-	              data = [data];
-	          }
-	          if(data.length == 0) {
-	             // call drain immediately if there are no tasks
-	             return async.setImmediate(function() {
-	                 if (q.drain) {
-	                     q.drain();
-	                 }
-	             });
-	          }
-	          _each(data, function(task) {
-	              var item = {
-	                  data: task,
-	                  callback: typeof callback === 'function' ? callback : null
-	              };
-	
-	              if (pos) {
-	                q.tasks.unshift(item);
-	              } else {
-	                q.tasks.push(item);
-	              }
-	
-	              if (q.saturated && q.tasks.length === q.concurrency) {
-	                  q.saturated();
-	              }
-	              async.setImmediate(q.process);
-	          });
-	        }
-	
-	        var workers = 0;
-	        var q = {
-	            tasks: [],
-	            concurrency: concurrency,
-	            saturated: null,
-	            empty: null,
-	            drain: null,
-	            started: false,
-	            paused: false,
-	            push: function (data, callback) {
-	              _insert(q, data, false, callback);
-	            },
-	            kill: function () {
-	              q.drain = null;
-	              q.tasks = [];
-	            },
-	            unshift: function (data, callback) {
-	              _insert(q, data, true, callback);
-	            },
-	            process: function () {
-	                if (!q.paused && workers < q.concurrency && q.tasks.length) {
-	                    var task = q.tasks.shift();
-	                    if (q.empty && q.tasks.length === 0) {
-	                        q.empty();
-	                    }
-	                    workers += 1;
-	                    var next = function () {
-	                        workers -= 1;
-	                        if (task.callback) {
-	                            task.callback.apply(task, arguments);
-	                        }
-	                        if (q.drain && q.tasks.length + workers === 0) {
-	                            q.drain();
-	                        }
-	                        q.process();
-	                    };
-	                    var cb = only_once(next);
-	                    worker(task.data, cb);
-	                }
-	            },
-	            length: function () {
-	                return q.tasks.length;
-	            },
-	            running: function () {
-	                return workers;
-	            },
-	            idle: function() {
-	                return q.tasks.length + workers === 0;
-	            },
-	            pause: function () {
-	                if (q.paused === true) { return; }
-	                q.paused = true;
-	            },
-	            resume: function () {
-	                if (q.paused === false) { return; }
-	                q.paused = false;
-	                // Need to call q.process once per concurrent
-	                // worker to preserve full concurrency after pause
-	                for (var w = 1; w <= q.concurrency; w++) {
-	                    async.setImmediate(q.process);
-	                }
-	            }
-	        };
-	        return q;
-	    };
-	
-	    async.priorityQueue = function (worker, concurrency) {
-	
-	        function _compareTasks(a, b){
-	          return a.priority - b.priority;
-	        };
-	
-	        function _binarySearch(sequence, item, compare) {
-	          var beg = -1,
-	              end = sequence.length - 1;
-	          while (beg < end) {
-	            var mid = beg + ((end - beg + 1) >>> 1);
-	            if (compare(item, sequence[mid]) >= 0) {
-	              beg = mid;
-	            } else {
-	              end = mid - 1;
-	            }
-	          }
-	          return beg;
-	        }
-	
-	        function _insert(q, data, priority, callback) {
-	          if (!q.started){
-	            q.started = true;
-	          }
-	          if (!_isArray(data)) {
-	              data = [data];
-	          }
-	          if(data.length == 0) {
-	             // call drain immediately if there are no tasks
-	             return async.setImmediate(function() {
-	                 if (q.drain) {
-	                     q.drain();
-	                 }
-	             });
-	          }
-	          _each(data, function(task) {
-	              var item = {
-	                  data: task,
-	                  priority: priority,
-	                  callback: typeof callback === 'function' ? callback : null
-	              };
-	
-	              q.tasks.splice(_binarySearch(q.tasks, item, _compareTasks) + 1, 0, item);
-	
-	              if (q.saturated && q.tasks.length === q.concurrency) {
-	                  q.saturated();
-	              }
-	              async.setImmediate(q.process);
-	          });
-	        }
-	
-	        // Start with a normal queue
-	        var q = async.queue(worker, concurrency);
-	
-	        // Override push to accept second parameter representing priority
-	        q.push = function (data, priority, callback) {
-	          _insert(q, data, priority, callback);
-	        };
-	
-	        // Remove unshift function
-	        delete q.unshift;
-	
-	        return q;
-	    };
-	
-	    async.cargo = function (worker, payload) {
-	        var working     = false,
-	            tasks       = [];
-	
-	        var cargo = {
-	            tasks: tasks,
-	            payload: payload,
-	            saturated: null,
-	            empty: null,
-	            drain: null,
-	            drained: true,
-	            push: function (data, callback) {
-	                if (!_isArray(data)) {
-	                    data = [data];
-	                }
-	                _each(data, function(task) {
-	                    tasks.push({
-	                        data: task,
-	                        callback: typeof callback === 'function' ? callback : null
-	                    });
-	                    cargo.drained = false;
-	                    if (cargo.saturated && tasks.length === payload) {
-	                        cargo.saturated();
-	                    }
-	                });
-	                async.setImmediate(cargo.process);
-	            },
-	            process: function process() {
-	                if (working) return;
-	                if (tasks.length === 0) {
-	                    if(cargo.drain && !cargo.drained) cargo.drain();
-	                    cargo.drained = true;
-	                    return;
-	                }
-	
-	                var ts = typeof payload === 'number'
-	                            ? tasks.splice(0, payload)
-	                            : tasks.splice(0, tasks.length);
-	
-	                var ds = _map(ts, function (task) {
-	                    return task.data;
-	                });
-	
-	                if(cargo.empty) cargo.empty();
-	                working = true;
-	                worker(ds, function () {
-	                    working = false;
-	
-	                    var args = arguments;
-	                    _each(ts, function (data) {
-	                        if (data.callback) {
-	                            data.callback.apply(null, args);
-	                        }
-	                    });
-	
-	                    process();
-	                });
-	            },
-	            length: function () {
-	                return tasks.length;
-	            },
-	            running: function () {
-	                return working;
-	            }
-	        };
-	        return cargo;
-	    };
-	
-	    var _console_fn = function (name) {
-	        return function (fn) {
-	            var args = Array.prototype.slice.call(arguments, 1);
-	            fn.apply(null, args.concat([function (err) {
-	                var args = Array.prototype.slice.call(arguments, 1);
-	                if (typeof console !== 'undefined') {
-	                    if (err) {
-	                        if (console.error) {
-	                            console.error(err);
-	                        }
-	                    }
-	                    else if (console[name]) {
-	                        _each(args, function (x) {
-	                            console[name](x);
-	                        });
-	                    }
-	                }
-	            }]));
-	        };
-	    };
-	    async.log = _console_fn('log');
-	    async.dir = _console_fn('dir');
-	    /*async.info = _console_fn('info');
-	    async.warn = _console_fn('warn');
-	    async.error = _console_fn('error');*/
-	
-	    async.memoize = function (fn, hasher) {
-	        var memo = {};
-	        var queues = {};
-	        hasher = hasher || function (x) {
-	            return x;
-	        };
-	        var memoized = function () {
-	            var args = Array.prototype.slice.call(arguments);
-	            var callback = args.pop();
-	            var key = hasher.apply(null, args);
-	            if (key in memo) {
-	                async.nextTick(function () {
-	                    callback.apply(null, memo[key]);
-	                });
-	            }
-	            else if (key in queues) {
-	                queues[key].push(callback);
-	            }
-	            else {
-	                queues[key] = [callback];
-	                fn.apply(null, args.concat([function () {
-	                    memo[key] = arguments;
-	                    var q = queues[key];
-	                    delete queues[key];
-	                    for (var i = 0, l = q.length; i < l; i++) {
-	                      q[i].apply(null, arguments);
-	                    }
-	                }]));
-	            }
-	        };
-	        memoized.memo = memo;
-	        memoized.unmemoized = fn;
-	        return memoized;
-	    };
-	
-	    async.unmemoize = function (fn) {
-	      return function () {
-	        return (fn.unmemoized || fn).apply(null, arguments);
-	      };
-	    };
-	
-	    async.times = function (count, iterator, callback) {
-	        var counter = [];
-	        for (var i = 0; i < count; i++) {
-	            counter.push(i);
-	        }
-	        return async.map(counter, iterator, callback);
-	    };
-	
-	    async.timesSeries = function (count, iterator, callback) {
-	        var counter = [];
-	        for (var i = 0; i < count; i++) {
-	            counter.push(i);
-	        }
-	        return async.mapSeries(counter, iterator, callback);
-	    };
-	
-	    async.seq = function (/* functions... */) {
-	        var fns = arguments;
-	        return function () {
-	            var that = this;
-	            var args = Array.prototype.slice.call(arguments);
-	            var callback = args.pop();
-	            async.reduce(fns, args, function (newargs, fn, cb) {
-	                fn.apply(that, newargs.concat([function () {
-	                    var err = arguments[0];
-	                    var nextargs = Array.prototype.slice.call(arguments, 1);
-	                    cb(err, nextargs);
-	                }]))
-	            },
-	            function (err, results) {
-	                callback.apply(that, [err].concat(results));
-	            });
-	        };
-	    };
-	
-	    async.compose = function (/* functions... */) {
-	      return async.seq.apply(null, Array.prototype.reverse.call(arguments));
-	    };
-	
-	    var _applyEach = function (eachfn, fns /*args...*/) {
-	        var go = function () {
-	            var that = this;
-	            var args = Array.prototype.slice.call(arguments);
-	            var callback = args.pop();
-	            return eachfn(fns, function (fn, cb) {
-	                fn.apply(that, args.concat([cb]));
-	            },
-	            callback);
-	        };
-	        if (arguments.length > 2) {
-	            var args = Array.prototype.slice.call(arguments, 2);
-	            return go.apply(this, args);
-	        }
-	        else {
-	            return go;
-	        }
-	    };
-	    async.applyEach = doParallel(_applyEach);
-	    async.applyEachSeries = doSeries(_applyEach);
-	
-	    async.forever = function (fn, callback) {
-	        function next(err) {
-	            if (err) {
-	                if (callback) {
-	                    return callback(err);
-	                }
-	                throw err;
-	            }
-	            fn(next);
-	        }
-	        next();
-	    };
-	
-	    // Node.js
-	    if (typeof module !== 'undefined' && module.exports) {
-	        module.exports = async;
-	    }
-	    // AMD / RequireJS
-	    else if (true) {
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	            return async;
-	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    }
-	    // included directly via <script> tag
-	    else {
-	        root.async = async;
-	    }
-	
-	}());
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23), __webpack_require__(22).setImmediate))
-
-/***/ },
+/***/ }),
 /* 113 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	'use strict'
 	
-	var punycode = __webpack_require__(114);
+	module.exports = (str, opts = {}) => {
+	  if (!str) return undefined
 	
-	exports.parse = urlParse;
-	exports.resolve = urlResolve;
-	exports.resolveObject = urlResolveObject;
-	exports.format = urlFormat;
-	
-	exports.Url = Url;
-	
-	function Url() {
-	  this.protocol = null;
-	  this.slashes = null;
-	  this.auth = null;
-	  this.host = null;
-	  this.port = null;
-	  this.hostname = null;
-	  this.hash = null;
-	  this.search = null;
-	  this.query = null;
-	  this.pathname = null;
-	  this.path = null;
-	  this.href = null;
-	}
-	
-	// Reference: RFC 3986, RFC 1808, RFC 2396
-	
-	// define these here so at least they only have to be
-	// compiled once on the first module load.
-	var protocolPattern = /^([a-z0-9.+-]+:)/i,
-	    portPattern = /:[0-9]*$/,
-	
-	    // RFC 2396: characters reserved for delimiting URLs.
-	    // We actually just auto-escape these.
-	    delims = ['<', '>', '"', '`', ' ', '\r', '\n', '\t'],
-	
-	    // RFC 2396: characters not allowed for various reasons.
-	    unwise = ['{', '}', '|', '\\', '^', '`'].concat(delims),
-	
-	    // Allowed by RFCs, but cause of XSS attacks.  Always escape these.
-	    autoEscape = ['\''].concat(unwise),
-	    // Characters that are never ever allowed in a hostname.
-	    // Note that any invalid chars are also handled, but these
-	    // are the ones that are *expected* to be seen, so we fast-path
-	    // them.
-	    nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),
-	    hostEndingChars = ['/', '?', '#'],
-	    hostnameMaxLen = 255,
-	    hostnamePartPattern = /^[a-z0-9A-Z_-]{0,63}$/,
-	    hostnamePartStart = /^([a-z0-9A-Z_-]{0,63})(.*)$/,
-	    // protocols that can allow "unsafe" and "unwise" chars.
-	    unsafeProtocol = {
-	      'javascript': true,
-	      'javascript:': true
+	  const o = {
+	    key: [
+	      'source',
+	      'protocol',
+	      'authority',
+	      'userInfo',
+	      'user',
+	      'password',
+	      'host',
+	      'port',
+	      'relative',
+	      'path',
+	      'directory',
+	      'file',
+	      'query',
+	      'anchor'
+	    ],
+	    q: {
+	      name: 'queryKey',
+	      parser: /(?:^|&)([^&=]*)=?([^&]*)/g
 	    },
-	    // protocols that never have a hostname.
-	    hostlessProtocol = {
-	      'javascript': true,
-	      'javascript:': true
-	    },
-	    // protocols that always contain a // bit.
-	    slashedProtocol = {
-	      'http': true,
-	      'https': true,
-	      'ftp': true,
-	      'gopher': true,
-	      'file': true,
-	      'http:': true,
-	      'https:': true,
-	      'ftp:': true,
-	      'gopher:': true,
-	      'file:': true
-	    },
-	    querystring = __webpack_require__(116);
-	
-	function urlParse(url, parseQueryString, slashesDenoteHost) {
-	  if (url && isObject(url) && url instanceof Url) return url;
-	
-	  var u = new Url;
-	  u.parse(url, parseQueryString, slashesDenoteHost);
-	  return u;
-	}
-	
-	Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
-	  if (!isString(url)) {
-	    throw new TypeError("Parameter 'url' must be a string, not " + typeof url);
-	  }
-	
-	  var rest = url;
-	
-	  // trim before proceeding.
-	  // This is to support parse stuff like "  http://foo.com  \n"
-	  rest = rest.trim();
-	
-	  var proto = protocolPattern.exec(rest);
-	  if (proto) {
-	    proto = proto[0];
-	    var lowerProto = proto.toLowerCase();
-	    this.protocol = lowerProto;
-	    rest = rest.substr(proto.length);
-	  }
-	
-	  // figure out if it's got a host
-	  // user@server is *always* interpreted as a hostname, and url
-	  // resolution will treat //foo/bar as host=foo,path=bar because that's
-	  // how the browser resolves relative URLs.
-	  if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
-	    var slashes = rest.substr(0, 2) === '//';
-	    if (slashes && !(proto && hostlessProtocol[proto])) {
-	      rest = rest.substr(2);
-	      this.slashes = true;
+	    parser: {
+	      strict: /^(?:([^:/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\d*))?))?((((?:[^?#/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+	      loose: /^(?:(?![^:@]+:[^:@/]*@)([^:/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#/]*\.[^?#/.]+(?:[?#]|$)))*\/?)?([^?#/]*))(?:\?([^#]*))?(?:#(.*))?)/
 	    }
 	  }
 	
-	  if (!hostlessProtocol[proto] &&
-	      (slashes || (proto && !slashedProtocol[proto]))) {
+	  const m = o.parser[opts.strictMode ? 'strict' : 'loose'].exec(str)
+	  const uri = {}
+	  let i = 14
 	
-	    // there's a hostname.
-	    // the first instance of /, ?, ;, or # ends the host.
-	    //
-	    // If there is an @ in the hostname, then non-host chars *are* allowed
-	    // to the left of the last @ sign, unless some host-ending character
-	    // comes *before* the @-sign.
-	    // URLs are obnoxious.
-	    //
-	    // ex:
-	    // http://a@b@c/ => user:a@b host:c
-	    // http://a@b?@c => user:a host:c path:/?@c
+	  while (i--) uri[o.key[i]] = m[i] || ''
 	
-	    // v0.12 TODO(isaacs): This is not quite how Chrome does things.
-	    // Review our test case against browsers more comprehensively.
+	  uri[o.q.name] = {}
+	  uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+	    if ($1) uri[o.q.name][$1] = $2
+	  })
 	
-	    // find the first instance of any hostEndingChars
-	    var hostEnd = -1;
-	    for (var i = 0; i < hostEndingChars.length; i++) {
-	      var hec = rest.indexOf(hostEndingChars[i]);
-	      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-	        hostEnd = hec;
-	    }
-	
-	    // at this point, either we have an explicit point where the
-	    // auth portion cannot go past, or the last @ char is the decider.
-	    var auth, atSign;
-	    if (hostEnd === -1) {
-	      // atSign can be anywhere.
-	      atSign = rest.lastIndexOf('@');
-	    } else {
-	      // atSign must be in auth portion.
-	      // http://a@b/c@d => host:b auth:a path:/c@d
-	      atSign = rest.lastIndexOf('@', hostEnd);
-	    }
-	
-	    // Now we have a portion which is definitely the auth.
-	    // Pull that off.
-	    if (atSign !== -1) {
-	      auth = rest.slice(0, atSign);
-	      rest = rest.slice(atSign + 1);
-	      this.auth = decodeURIComponent(auth);
-	    }
-	
-	    // the host is the remaining to the left of the first non-host char
-	    hostEnd = -1;
-	    for (var i = 0; i < nonHostChars.length; i++) {
-	      var hec = rest.indexOf(nonHostChars[i]);
-	      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))
-	        hostEnd = hec;
-	    }
-	    // if we still have not hit it, then the entire thing is a host.
-	    if (hostEnd === -1)
-	      hostEnd = rest.length;
-	
-	    this.host = rest.slice(0, hostEnd);
-	    rest = rest.slice(hostEnd);
-	
-	    // pull out port.
-	    this.parseHost();
-	
-	    // we've indicated that there is a hostname,
-	    // so even if it's empty, it has to be present.
-	    this.hostname = this.hostname || '';
-	
-	    // if hostname begins with [ and ends with ]
-	    // assume that it's an IPv6 address.
-	    var ipv6Hostname = this.hostname[0] === '[' &&
-	        this.hostname[this.hostname.length - 1] === ']';
-	
-	    // validate a little.
-	    if (!ipv6Hostname) {
-	      var hostparts = this.hostname.split(/\./);
-	      for (var i = 0, l = hostparts.length; i < l; i++) {
-	        var part = hostparts[i];
-	        if (!part) continue;
-	        if (!part.match(hostnamePartPattern)) {
-	          var newpart = '';
-	          for (var j = 0, k = part.length; j < k; j++) {
-	            if (part.charCodeAt(j) > 127) {
-	              // we replace non-ASCII char with a temporary placeholder
-	              // we need this to make sure size of hostname is not
-	              // broken by replacing non-ASCII by nothing
-	              newpart += 'x';
-	            } else {
-	              newpart += part[j];
-	            }
-	          }
-	          // we test again with ASCII char only
-	          if (!newpart.match(hostnamePartPattern)) {
-	            var validParts = hostparts.slice(0, i);
-	            var notHost = hostparts.slice(i + 1);
-	            var bit = part.match(hostnamePartStart);
-	            if (bit) {
-	              validParts.push(bit[1]);
-	              notHost.unshift(bit[2]);
-	            }
-	            if (notHost.length) {
-	              rest = '/' + notHost.join('.') + rest;
-	            }
-	            this.hostname = validParts.join('.');
-	            break;
-	          }
-	        }
-	      }
-	    }
-	
-	    if (this.hostname.length > hostnameMaxLen) {
-	      this.hostname = '';
-	    } else {
-	      // hostnames are always lower case.
-	      this.hostname = this.hostname.toLowerCase();
-	    }
-	
-	    if (!ipv6Hostname) {
-	      // IDNA Support: Returns a puny coded representation of "domain".
-	      // It only converts the part of the domain name that
-	      // has non ASCII characters. I.e. it dosent matter if
-	      // you call it with a domain that already is in ASCII.
-	      var domainArray = this.hostname.split('.');
-	      var newOut = [];
-	      for (var i = 0; i < domainArray.length; ++i) {
-	        var s = domainArray[i];
-	        newOut.push(s.match(/[^A-Za-z0-9_-]/) ?
-	            'xn--' + punycode.encode(s) : s);
-	      }
-	      this.hostname = newOut.join('.');
-	    }
-	
-	    var p = this.port ? ':' + this.port : '';
-	    var h = this.hostname || '';
-	    this.host = h + p;
-	    this.href += this.host;
-	
-	    // strip [ and ] from the hostname
-	    // the host field still retains them, though
-	    if (ipv6Hostname) {
-	      this.hostname = this.hostname.substr(1, this.hostname.length - 2);
-	      if (rest[0] !== '/') {
-	        rest = '/' + rest;
-	      }
-	    }
-	  }
-	
-	  // now rest is set to the post-host stuff.
-	  // chop off any delim chars.
-	  if (!unsafeProtocol[lowerProto]) {
-	
-	    // First, make 100% sure that any "autoEscape" chars get
-	    // escaped, even if encodeURIComponent doesn't think they
-	    // need to be.
-	    for (var i = 0, l = autoEscape.length; i < l; i++) {
-	      var ae = autoEscape[i];
-	      var esc = encodeURIComponent(ae);
-	      if (esc === ae) {
-	        esc = escape(ae);
-	      }
-	      rest = rest.split(ae).join(esc);
-	    }
-	  }
-	
-	
-	  // chop off from the tail first.
-	  var hash = rest.indexOf('#');
-	  if (hash !== -1) {
-	    // got a fragment string.
-	    this.hash = rest.substr(hash);
-	    rest = rest.slice(0, hash);
-	  }
-	  var qm = rest.indexOf('?');
-	  if (qm !== -1) {
-	    this.search = rest.substr(qm);
-	    this.query = rest.substr(qm + 1);
-	    if (parseQueryString) {
-	      this.query = querystring.parse(this.query);
-	    }
-	    rest = rest.slice(0, qm);
-	  } else if (parseQueryString) {
-	    // no query string, but parseQueryString still requested
-	    this.search = '';
-	    this.query = {};
-	  }
-	  if (rest) this.pathname = rest;
-	  if (slashedProtocol[lowerProto] &&
-	      this.hostname && !this.pathname) {
-	    this.pathname = '/';
-	  }
-	
-	  //to support http.request
-	  if (this.pathname || this.search) {
-	    var p = this.pathname || '';
-	    var s = this.search || '';
-	    this.path = p + s;
-	  }
-	
-	  // finally, reconstruct the href based on what has been validated.
-	  this.href = this.format();
-	  return this;
-	};
-	
-	// format a parsed object into a url string
-	function urlFormat(obj) {
-	  // ensure it's an object, and not a string url.
-	  // If it's an obj, this is a no-op.
-	  // this way, you can call url_format() on strings
-	  // to clean up potentially wonky urls.
-	  if (isString(obj)) obj = urlParse(obj);
-	  if (!(obj instanceof Url)) return Url.prototype.format.call(obj);
-	  return obj.format();
-	}
-	
-	Url.prototype.format = function() {
-	  var auth = this.auth || '';
-	  if (auth) {
-	    auth = encodeURIComponent(auth);
-	    auth = auth.replace(/%3A/i, ':');
-	    auth += '@';
-	  }
-	
-	  var protocol = this.protocol || '',
-	      pathname = this.pathname || '',
-	      hash = this.hash || '',
-	      host = false,
-	      query = '';
-	
-	  if (this.host) {
-	    host = auth + this.host;
-	  } else if (this.hostname) {
-	    host = auth + (this.hostname.indexOf(':') === -1 ?
-	        this.hostname :
-	        '[' + this.hostname + ']');
-	    if (this.port) {
-	      host += ':' + this.port;
-	    }
-	  }
-	
-	  if (this.query &&
-	      isObject(this.query) &&
-	      Object.keys(this.query).length) {
-	    query = querystring.stringify(this.query);
-	  }
-	
-	  var search = this.search || (query && ('?' + query)) || '';
-	
-	  if (protocol && protocol.substr(-1) !== ':') protocol += ':';
-	
-	  // only the slashedProtocols get the //.  Not mailto:, xmpp:, etc.
-	  // unless they had them to begin with.
-	  if (this.slashes ||
-	      (!protocol || slashedProtocol[protocol]) && host !== false) {
-	    host = '//' + (host || '');
-	    if (pathname && pathname.charAt(0) !== '/') pathname = '/' + pathname;
-	  } else if (!host) {
-	    host = '';
-	  }
-	
-	  if (hash && hash.charAt(0) !== '#') hash = '#' + hash;
-	  if (search && search.charAt(0) !== '?') search = '?' + search;
-	
-	  pathname = pathname.replace(/[?#]/g, function(match) {
-	    return encodeURIComponent(match);
-	  });
-	  search = search.replace('#', '%23');
-	
-	  return protocol + host + pathname + search + hash;
-	};
-	
-	function urlResolve(source, relative) {
-	  return urlParse(source, false, true).resolve(relative);
-	}
-	
-	Url.prototype.resolve = function(relative) {
-	  return this.resolveObject(urlParse(relative, false, true)).format();
-	};
-	
-	function urlResolveObject(source, relative) {
-	  if (!source) return relative;
-	  return urlParse(source, false, true).resolveObject(relative);
-	}
-	
-	Url.prototype.resolveObject = function(relative) {
-	  if (isString(relative)) {
-	    var rel = new Url();
-	    rel.parse(relative, false, true);
-	    relative = rel;
-	  }
-	
-	  var result = new Url();
-	  Object.keys(this).forEach(function(k) {
-	    result[k] = this[k];
-	  }, this);
-	
-	  // hash is always overridden, no matter what.
-	  // even href="" will remove it.
-	  result.hash = relative.hash;
-	
-	  // if the relative url is empty, then there's nothing left to do here.
-	  if (relative.href === '') {
-	    result.href = result.format();
-	    return result;
-	  }
-	
-	  // hrefs like //foo/bar always cut to the protocol.
-	  if (relative.slashes && !relative.protocol) {
-	    // take everything except the protocol from relative
-	    Object.keys(relative).forEach(function(k) {
-	      if (k !== 'protocol')
-	        result[k] = relative[k];
-	    });
-	
-	    //urlParse appends trailing / to urls like http://www.example.com
-	    if (slashedProtocol[result.protocol] &&
-	        result.hostname && !result.pathname) {
-	      result.path = result.pathname = '/';
-	    }
-	
-	    result.href = result.format();
-	    return result;
-	  }
-	
-	  if (relative.protocol && relative.protocol !== result.protocol) {
-	    // if it's a known url protocol, then changing
-	    // the protocol does weird things
-	    // first, if it's not file:, then we MUST have a host,
-	    // and if there was a path
-	    // to begin with, then we MUST have a path.
-	    // if it is file:, then the host is dropped,
-	    // because that's known to be hostless.
-	    // anything else is assumed to be absolute.
-	    if (!slashedProtocol[relative.protocol]) {
-	      Object.keys(relative).forEach(function(k) {
-	        result[k] = relative[k];
-	      });
-	      result.href = result.format();
-	      return result;
-	    }
-	
-	    result.protocol = relative.protocol;
-	    if (!relative.host && !hostlessProtocol[relative.protocol]) {
-	      var relPath = (relative.pathname || '').split('/');
-	      while (relPath.length && !(relative.host = relPath.shift()));
-	      if (!relative.host) relative.host = '';
-	      if (!relative.hostname) relative.hostname = '';
-	      if (relPath[0] !== '') relPath.unshift('');
-	      if (relPath.length < 2) relPath.unshift('');
-	      result.pathname = relPath.join('/');
-	    } else {
-	      result.pathname = relative.pathname;
-	    }
-	    result.search = relative.search;
-	    result.query = relative.query;
-	    result.host = relative.host || '';
-	    result.auth = relative.auth;
-	    result.hostname = relative.hostname || relative.host;
-	    result.port = relative.port;
-	    // to support http.request
-	    if (result.pathname || result.search) {
-	      var p = result.pathname || '';
-	      var s = result.search || '';
-	      result.path = p + s;
-	    }
-	    result.slashes = result.slashes || relative.slashes;
-	    result.href = result.format();
-	    return result;
-	  }
-	
-	  var isSourceAbs = (result.pathname && result.pathname.charAt(0) === '/'),
-	      isRelAbs = (
-	          relative.host ||
-	          relative.pathname && relative.pathname.charAt(0) === '/'
-	      ),
-	      mustEndAbs = (isRelAbs || isSourceAbs ||
-	                    (result.host && relative.pathname)),
-	      removeAllDots = mustEndAbs,
-	      srcPath = result.pathname && result.pathname.split('/') || [],
-	      relPath = relative.pathname && relative.pathname.split('/') || [],
-	      psychotic = result.protocol && !slashedProtocol[result.protocol];
-	
-	  // if the url is a non-slashed url, then relative
-	  // links like ../.. should be able
-	  // to crawl up to the hostname, as well.  This is strange.
-	  // result.protocol has already been set by now.
-	  // Later on, put the first path part into the host field.
-	  if (psychotic) {
-	    result.hostname = '';
-	    result.port = null;
-	    if (result.host) {
-	      if (srcPath[0] === '') srcPath[0] = result.host;
-	      else srcPath.unshift(result.host);
-	    }
-	    result.host = '';
-	    if (relative.protocol) {
-	      relative.hostname = null;
-	      relative.port = null;
-	      if (relative.host) {
-	        if (relPath[0] === '') relPath[0] = relative.host;
-	        else relPath.unshift(relative.host);
-	      }
-	      relative.host = null;
-	    }
-	    mustEndAbs = mustEndAbs && (relPath[0] === '' || srcPath[0] === '');
-	  }
-	
-	  if (isRelAbs) {
-	    // it's absolute.
-	    result.host = (relative.host || relative.host === '') ?
-	                  relative.host : result.host;
-	    result.hostname = (relative.hostname || relative.hostname === '') ?
-	                      relative.hostname : result.hostname;
-	    result.search = relative.search;
-	    result.query = relative.query;
-	    srcPath = relPath;
-	    // fall through to the dot-handling below.
-	  } else if (relPath.length) {
-	    // it's relative
-	    // throw away the existing file, and take the new path instead.
-	    if (!srcPath) srcPath = [];
-	    srcPath.pop();
-	    srcPath = srcPath.concat(relPath);
-	    result.search = relative.search;
-	    result.query = relative.query;
-	  } else if (!isNullOrUndefined(relative.search)) {
-	    // just pull out the search.
-	    // like href='?foo'.
-	    // Put this after the other two cases because it simplifies the booleans
-	    if (psychotic) {
-	      result.hostname = result.host = srcPath.shift();
-	      //occationaly the auth can get stuck only in host
-	      //this especialy happens in cases like
-	      //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
-	      var authInHost = result.host && result.host.indexOf('@') > 0 ?
-	                       result.host.split('@') : false;
-	      if (authInHost) {
-	        result.auth = authInHost.shift();
-	        result.host = result.hostname = authInHost.shift();
-	      }
-	    }
-	    result.search = relative.search;
-	    result.query = relative.query;
-	    //to support http.request
-	    if (!isNull(result.pathname) || !isNull(result.search)) {
-	      result.path = (result.pathname ? result.pathname : '') +
-	                    (result.search ? result.search : '');
-	    }
-	    result.href = result.format();
-	    return result;
-	  }
-	
-	  if (!srcPath.length) {
-	    // no path at all.  easy.
-	    // we've already handled the other stuff above.
-	    result.pathname = null;
-	    //to support http.request
-	    if (result.search) {
-	      result.path = '/' + result.search;
-	    } else {
-	      result.path = null;
-	    }
-	    result.href = result.format();
-	    return result;
-	  }
-	
-	  // if a url ENDs in . or .., then it must get a trailing slash.
-	  // however, if it ends in anything else non-slashy,
-	  // then it must NOT get a trailing slash.
-	  var last = srcPath.slice(-1)[0];
-	  var hasTrailingSlash = (
-	      (result.host || relative.host) && (last === '.' || last === '..') ||
-	      last === '');
-	
-	  // strip single dots, resolve double dots to parent dir
-	  // if the path tries to go above the root, `up` ends up > 0
-	  var up = 0;
-	  for (var i = srcPath.length; i >= 0; i--) {
-	    last = srcPath[i];
-	    if (last == '.') {
-	      srcPath.splice(i, 1);
-	    } else if (last === '..') {
-	      srcPath.splice(i, 1);
-	      up++;
-	    } else if (up) {
-	      srcPath.splice(i, 1);
-	      up--;
-	    }
-	  }
-	
-	  // if the path is allowed to go above the root, restore leading ..s
-	  if (!mustEndAbs && !removeAllDots) {
-	    for (; up--; up) {
-	      srcPath.unshift('..');
-	    }
-	  }
-	
-	  if (mustEndAbs && srcPath[0] !== '' &&
-	      (!srcPath[0] || srcPath[0].charAt(0) !== '/')) {
-	    srcPath.unshift('');
-	  }
-	
-	  if (hasTrailingSlash && (srcPath.join('/').substr(-1) !== '/')) {
-	    srcPath.push('');
-	  }
-	
-	  var isAbsolute = srcPath[0] === '' ||
-	      (srcPath[0] && srcPath[0].charAt(0) === '/');
-	
-	  // put the host back
-	  if (psychotic) {
-	    result.hostname = result.host = isAbsolute ? '' :
-	                                    srcPath.length ? srcPath.shift() : '';
-	    //occationaly the auth can get stuck only in host
-	    //this especialy happens in cases like
-	    //url.resolveObject('mailto:local1@domain1', 'local2@domain2')
-	    var authInHost = result.host && result.host.indexOf('@') > 0 ?
-	                     result.host.split('@') : false;
-	    if (authInHost) {
-	      result.auth = authInHost.shift();
-	      result.host = result.hostname = authInHost.shift();
-	    }
-	  }
-	
-	  mustEndAbs = mustEndAbs || (result.host && srcPath.length);
-	
-	  if (mustEndAbs && !isAbsolute) {
-	    srcPath.unshift('');
-	  }
-	
-	  if (!srcPath.length) {
-	    result.pathname = null;
-	    result.path = null;
-	  } else {
-	    result.pathname = srcPath.join('/');
-	  }
-	
-	  //to support request.http
-	  if (!isNull(result.pathname) || !isNull(result.search)) {
-	    result.path = (result.pathname ? result.pathname : '') +
-	                  (result.search ? result.search : '');
-	  }
-	  result.auth = relative.auth || result.auth;
-	  result.slashes = result.slashes || relative.slashes;
-	  result.href = result.format();
-	  return result;
-	};
-	
-	Url.prototype.parseHost = function() {
-	  var host = this.host;
-	  var port = portPattern.exec(host);
-	  if (port) {
-	    port = port[0];
-	    if (port !== ':') {
-	      this.port = port.substr(1);
-	    }
-	    host = host.substr(0, host.length - port.length);
-	  }
-	  if (host) this.hostname = host;
-	};
-	
-	function isString(arg) {
-	  return typeof arg === "string";
-	}
-	
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-	
-	function isNull(arg) {
-	  return arg === null;
-	}
-	function isNullOrUndefined(arg) {
-	  return  arg == null;
+	  return uri
 	}
 
 
-/***/ },
+/***/ }),
 /* 114 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/punycode v1.3.2 by @mathias */
-	;(function(root) {
+	'use strict';
 	
-		/** Detect free variables */
-		var freeExports = typeof exports == 'object' && exports &&
-			!exports.nodeType && exports;
-		var freeModule = typeof module == 'object' && module &&
-			!module.nodeType && module;
-		var freeGlobal = typeof global == 'object' && global;
-		if (
-			freeGlobal.global === freeGlobal ||
-			freeGlobal.window === freeGlobal ||
-			freeGlobal.self === freeGlobal
-		) {
-			root = freeGlobal;
-		}
+	/**
+	 * Smaller version of the async library constructs.
+	 *
+	 */
 	
-		/**
-		 * The `punycode` object.
-		 * @name punycode
-		 * @type Object
-		 */
-		var punycode,
+	module.exports = {
+	    eachSeries: asyncEachSeries,
+	    queue: asyncQueue
+	};
 	
-		/** Highest positive signed 32-bit float value */
-		maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+	function _noop() { /* empty */ }
 	
-		/** Bootstring parameters */
-		base = 36,
-		tMin = 1,
-		tMax = 26,
-		skew = 38,
-		damp = 700,
-		initialBias = 72,
-		initialN = 128, // 0x80
-		delimiter = '-', // '\x2D'
+	/**
+	 * Iterates an array in series.
+	 *
+	 * @param {*[]} array - Array to iterate.
+	 * @param {function} iterator - Function to call for each element.
+	 * @param {function} callback - Function to call when done, or on error.
+	 */
+	function asyncEachSeries(array, iterator, callback) {
+	    var i = 0;
+	    var len = array.length;
 	
-		/** Regular expressions */
-		regexPunycode = /^xn--/,
-		regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
-		regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
+	    (function next(err) {
+	        if (err || i === len) {
+	            if (callback) {
+	                callback(err);
+	            }
 	
-		/** Error messages */
-		errors = {
-			'overflow': 'Overflow: input needs wider integers to process',
-			'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-			'invalid-input': 'Invalid input'
-		},
+	            return;
+	        }
 	
-		/** Convenience shortcuts */
-		baseMinusTMin = base - tMin,
-		floor = Math.floor,
-		stringFromCharCode = String.fromCharCode,
+	        iterator(array[i++], next);
+	    })();
+	}
 	
-		/** Temporary variable */
-		key;
+	/**
+	 * Ensures a function is only called once.
+	 *
+	 * @param {function} fn - The function to wrap.
+	 * @return {function} The wrapping function.
+	 */
+	function onlyOnce(fn) {
+	    return function onceWrapper() {
+	        if (fn === null) {
+	            throw new Error('Callback was already called.');
+	        }
 	
-		/*--------------------------------------------------------------------------*/
+	        var callFn = fn;
 	
-		/**
-		 * A generic error utility function.
-		 * @private
-		 * @param {String} type The error type.
-		 * @returns {Error} Throws a `RangeError` with the applicable error message.
-		 */
-		function error(type) {
-			throw RangeError(errors[type]);
-		}
+	        fn = null;
+	        callFn.apply(this, arguments);
+	    };
+	}
 	
-		/**
-		 * A generic `Array#map` utility function.
-		 * @private
-		 * @param {Array} array The array to iterate over.
-		 * @param {Function} callback The function that gets called for every array
-		 * item.
-		 * @returns {Array} A new array of values returned by the callback function.
-		 */
-		function map(array, fn) {
-			var length = array.length;
-			var result = [];
-			while (length--) {
-				result[length] = fn(array[length]);
-			}
-			return result;
-		}
+	/**
+	 * Async queue implementation,
+	 *
+	 * @param {function} worker - The worker function to call for each task.
+	 * @param {number} concurrency - How many workers to run in parrallel.
+	 * @return {*} The async queue object.
+	 */
+	function asyncQueue(worker, concurrency) {
+	    if (concurrency == null) { // eslint-disable-line no-eq-null,eqeqeq
+	        concurrency = 1;
+	    }
+	    else if (concurrency === 0) {
+	        throw new Error('Concurrency must not be zero');
+	    }
 	
-		/**
-		 * A simple `Array#map`-like wrapper to work with domain name strings or email
-		 * addresses.
-		 * @private
-		 * @param {String} domain The domain name or email address.
-		 * @param {Function} callback The function that gets called for every
-		 * character.
-		 * @returns {Array} A new string of characters returned by the callback
-		 * function.
-		 */
-		function mapDomain(string, fn) {
-			var parts = string.split('@');
-			var result = '';
-			if (parts.length > 1) {
-				// In email addresses, only the domain name should be punycoded. Leave
-				// the local part (i.e. everything up to `@`) intact.
-				result = parts[0] + '@';
-				string = parts[1];
-			}
-			// Avoid `split(regex)` for IE8 compatibility. See #17.
-			string = string.replace(regexSeparators, '\x2E');
-			var labels = string.split('.');
-			var encoded = map(labels, fn).join('.');
-			return result + encoded;
-		}
+	    var workers = 0;
+	    var q = {
+	        _tasks: [],
+	        concurrency: concurrency,
+	        saturated: _noop,
+	        unsaturated: _noop,
+	        buffer: concurrency / 4,
+	        empty: _noop,
+	        drain: _noop,
+	        error: _noop,
+	        started: false,
+	        paused: false,
+	        push: function (data, callback) {
+	            _insert(data, false, callback);
+	        },
+	        kill: function () {
+	            q.drain = _noop;
+	            q._tasks = [];
+	        },
+	        unshift: function (data, callback) {
+	            _insert(data, true, callback);
+	        },
+	        process: function () {
+	            while (!q.paused && workers < q.concurrency && q._tasks.length) {
+	                var task = q._tasks.shift();
 	
-		/**
-		 * Creates an array containing the numeric code points of each Unicode
-		 * character in the string. While JavaScript uses UCS-2 internally,
-		 * this function will convert a pair of surrogate halves (each of which
-		 * UCS-2 exposes as separate characters) into a single code point,
-		 * matching UTF-16.
-		 * @see `punycode.ucs2.encode`
-		 * @see <https://mathiasbynens.be/notes/javascript-encoding>
-		 * @memberOf punycode.ucs2
-		 * @name decode
-		 * @param {String} string The Unicode input string (UCS-2).
-		 * @returns {Array} The new array of code points.
-		 */
-		function ucs2decode(string) {
-			var output = [],
-			    counter = 0,
-			    length = string.length,
-			    value,
-			    extra;
-			while (counter < length) {
-				value = string.charCodeAt(counter++);
-				if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-					// high surrogate, and there is a next character
-					extra = string.charCodeAt(counter++);
-					if ((extra & 0xFC00) == 0xDC00) { // low surrogate
-						output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-					} else {
-						// unmatched surrogate; only append this code unit, in case the next
-						// code unit is the high surrogate of a surrogate pair
-						output.push(value);
-						counter--;
-					}
-				} else {
-					output.push(value);
-				}
-			}
-			return output;
-		}
+	                if (q._tasks.length === 0) {
+	                    q.empty();
+	                }
 	
-		/**
-		 * Creates a string based on an array of numeric code points.
-		 * @see `punycode.ucs2.decode`
-		 * @memberOf punycode.ucs2
-		 * @name encode
-		 * @param {Array} codePoints The array of numeric code points.
-		 * @returns {String} The new Unicode string (UCS-2).
-		 */
-		function ucs2encode(array) {
-			return map(array, function(value) {
-				var output = '';
-				if (value > 0xFFFF) {
-					value -= 0x10000;
-					output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-					value = 0xDC00 | value & 0x3FF;
-				}
-				output += stringFromCharCode(value);
-				return output;
-			}).join('');
-		}
+	                workers += 1;
 	
-		/**
-		 * Converts a basic code point into a digit/integer.
-		 * @see `digitToBasic()`
-		 * @private
-		 * @param {Number} codePoint The basic numeric code point value.
-		 * @returns {Number} The numeric value of a basic code point (for use in
-		 * representing integers) in the range `0` to `base - 1`, or `base` if
-		 * the code point does not represent a value.
-		 */
-		function basicToDigit(codePoint) {
-			if (codePoint - 48 < 10) {
-				return codePoint - 22;
-			}
-			if (codePoint - 65 < 26) {
-				return codePoint - 65;
-			}
-			if (codePoint - 97 < 26) {
-				return codePoint - 97;
-			}
-			return base;
-		}
+	                if (workers === q.concurrency) {
+	                    q.saturated();
+	                }
 	
-		/**
-		 * Converts a digit/integer into a basic code point.
-		 * @see `basicToDigit()`
-		 * @private
-		 * @param {Number} digit The numeric value of a basic code point.
-		 * @returns {Number} The basic code point whose value (when used for
-		 * representing integers) is `digit`, which needs to be in the range
-		 * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
-		 * used; else, the lowercase form is used. The behavior is undefined
-		 * if `flag` is non-zero and `digit` has no uppercase form.
-		 */
-		function digitToBasic(digit, flag) {
-			//  0..25 map to ASCII a..z or A..Z
-			// 26..35 map to ASCII 0..9
-			return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
-		}
+	                worker(task.data, onlyOnce(_next(task)));
+	            }
+	        },
+	        length: function () {
+	            return q._tasks.length;
+	        },
+	        running: function () {
+	            return workers;
+	        },
+	        idle: function () {
+	            return q._tasks.length + workers === 0;
+	        },
+	        pause: function () {
+	            if (q.paused === true) {
+	                return;
+	            }
 	
-		/**
-		 * Bias adaptation function as per section 3.4 of RFC 3492.
-		 * http://tools.ietf.org/html/rfc3492#section-3.4
-		 * @private
-		 */
-		function adapt(delta, numPoints, firstTime) {
-			var k = 0;
-			delta = firstTime ? floor(delta / damp) : delta >> 1;
-			delta += floor(delta / numPoints);
-			for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
-				delta = floor(delta / baseMinusTMin);
-			}
-			return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-		}
+	            q.paused = true;
+	        },
+	        resume: function () {
+	            if (q.paused === false) {
+	                return;
+	            }
 	
-		/**
-		 * Converts a Punycode string of ASCII-only symbols to a string of Unicode
-		 * symbols.
-		 * @memberOf punycode
-		 * @param {String} input The Punycode string of ASCII-only symbols.
-		 * @returns {String} The resulting string of Unicode symbols.
-		 */
-		function decode(input) {
-			// Don't use UCS-2
-			var output = [],
-			    inputLength = input.length,
-			    out,
-			    i = 0,
-			    n = initialN,
-			    bias = initialBias,
-			    basic,
-			    j,
-			    index,
-			    oldi,
-			    w,
-			    k,
-			    digit,
-			    t,
-			    /** Cached calculation results */
-			    baseMinusT;
+	            q.paused = false;
 	
-			// Handle the basic code points: let `basic` be the number of input code
-			// points before the last delimiter, or `0` if there is none, then copy
-			// the first basic code points to the output.
+	            // Need to call q.process once per concurrent
+	            // worker to preserve full concurrency after pause
+	            for (var w = 1; w <= q.concurrency; w++) {
+	                q.process();
+	            }
+	        }
+	    };
 	
-			basic = input.lastIndexOf(delimiter);
-			if (basic < 0) {
-				basic = 0;
-			}
+	    function _insert(data, insertAtFront, callback) {
+	        if (callback != null && typeof callback !== 'function') { // eslint-disable-line no-eq-null,eqeqeq
+	            throw new Error('task callback must be a function');
+	        }
 	
-			for (j = 0; j < basic; ++j) {
-				// if it's not a basic code point
-				if (input.charCodeAt(j) >= 0x80) {
-					error('not-basic');
-				}
-				output.push(input.charCodeAt(j));
-			}
+	        q.started = true;
 	
-			// Main decoding loop: start just after the last delimiter if any basic code
-			// points were copied; start at the beginning otherwise.
+	        if (data == null && q.idle()) { // eslint-disable-line no-eq-null,eqeqeq
+	            // call drain immediately if there are no tasks
+	            setTimeout(function () {
+	                q.drain();
+	            }, 1);
 	
-			for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
+	            return;
+	        }
 	
-				// `index` is the index of the next character to be consumed.
-				// Decode a generalized variable-length integer into `delta`,
-				// which gets added to `i`. The overflow checking is easier
-				// if we increase `i` as we go, then subtract off its starting
-				// value at the end to obtain `delta`.
-				for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
+	        var item = {
+	            data: data,
+	            callback: typeof callback === 'function' ? callback : _noop
+	        };
 	
-					if (index >= inputLength) {
-						error('invalid-input');
-					}
+	        if (insertAtFront) {
+	            q._tasks.unshift(item);
+	        }
+	        else {
+	            q._tasks.push(item);
+	        }
 	
-					digit = basicToDigit(input.charCodeAt(index++));
+	        setTimeout(function () {
+	            q.process();
+	        }, 1);
+	    }
 	
-					if (digit >= base || digit > floor((maxInt - i) / w)) {
-						error('overflow');
-					}
+	    function _next(task) {
+	        return function () {
+	            workers -= 1;
 	
-					i += digit * w;
-					t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+	            task.callback.apply(task, arguments);
 	
-					if (digit < t) {
-						break;
-					}
+	            if (arguments[0] != null) { // eslint-disable-line no-eq-null,eqeqeq
+	                q.error(arguments[0], task.data);
+	            }
 	
-					baseMinusT = base - t;
-					if (w > floor(maxInt / baseMinusT)) {
-						error('overflow');
-					}
+	            if (workers <= (q.concurrency - q.buffer)) {
+	                q.unsaturated();
+	            }
 	
-					w *= baseMinusT;
+	            if (q.idle()) {
+	                q.drain();
+	            }
 	
-				}
+	            q.process();
+	        };
+	    }
 	
-				out = output.length + 1;
-				bias = adapt(i - oldi, out, oldi == 0);
-	
-				// `i` was supposed to wrap around from `out` to `0`,
-				// incrementing `n` each time, so we'll fix that now:
-				if (floor(i / out) > maxInt - n) {
-					error('overflow');
-				}
-	
-				n += floor(i / out);
-				i %= out;
-	
-				// Insert `n` at position `i` of the output
-				output.splice(i++, 0, n);
-	
-			}
-	
-			return ucs2encode(output);
-		}
-	
-		/**
-		 * Converts a string of Unicode symbols (e.g. a domain name label) to a
-		 * Punycode string of ASCII-only symbols.
-		 * @memberOf punycode
-		 * @param {String} input The string of Unicode symbols.
-		 * @returns {String} The resulting Punycode string of ASCII-only symbols.
-		 */
-		function encode(input) {
-			var n,
-			    delta,
-			    handledCPCount,
-			    basicLength,
-			    bias,
-			    j,
-			    m,
-			    q,
-			    k,
-			    t,
-			    currentValue,
-			    output = [],
-			    /** `inputLength` will hold the number of code points in `input`. */
-			    inputLength,
-			    /** Cached calculation results */
-			    handledCPCountPlusOne,
-			    baseMinusT,
-			    qMinusT;
-	
-			// Convert the input in UCS-2 to Unicode
-			input = ucs2decode(input);
-	
-			// Cache the length
-			inputLength = input.length;
-	
-			// Initialize the state
-			n = initialN;
-			delta = 0;
-			bias = initialBias;
-	
-			// Handle the basic code points
-			for (j = 0; j < inputLength; ++j) {
-				currentValue = input[j];
-				if (currentValue < 0x80) {
-					output.push(stringFromCharCode(currentValue));
-				}
-			}
-	
-			handledCPCount = basicLength = output.length;
-	
-			// `handledCPCount` is the number of code points that have been handled;
-			// `basicLength` is the number of basic code points.
-	
-			// Finish the basic string - if it is not empty - with a delimiter
-			if (basicLength) {
-				output.push(delimiter);
-			}
-	
-			// Main encoding loop:
-			while (handledCPCount < inputLength) {
-	
-				// All non-basic code points < n have been handled already. Find the next
-				// larger one:
-				for (m = maxInt, j = 0; j < inputLength; ++j) {
-					currentValue = input[j];
-					if (currentValue >= n && currentValue < m) {
-						m = currentValue;
-					}
-				}
-	
-				// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-				// but guard against overflow
-				handledCPCountPlusOne = handledCPCount + 1;
-				if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-					error('overflow');
-				}
-	
-				delta += (m - n) * handledCPCountPlusOne;
-				n = m;
-	
-				for (j = 0; j < inputLength; ++j) {
-					currentValue = input[j];
-	
-					if (currentValue < n && ++delta > maxInt) {
-						error('overflow');
-					}
-	
-					if (currentValue == n) {
-						// Represent delta as a generalized variable-length integer
-						for (q = delta, k = base; /* no condition */; k += base) {
-							t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-							if (q < t) {
-								break;
-							}
-							qMinusT = q - t;
-							baseMinusT = base - t;
-							output.push(
-								stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-							);
-							q = floor(qMinusT / baseMinusT);
-						}
-	
-						output.push(stringFromCharCode(digitToBasic(q, 0)));
-						bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-						delta = 0;
-						++handledCPCount;
-					}
-				}
-	
-				++delta;
-				++n;
-	
-			}
-			return output.join('');
-		}
-	
-		/**
-		 * Converts a Punycode string representing a domain name or an email address
-		 * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
-		 * it doesn't matter if you call it on a string that has already been
-		 * converted to Unicode.
-		 * @memberOf punycode
-		 * @param {String} input The Punycoded domain name or email address to
-		 * convert to Unicode.
-		 * @returns {String} The Unicode representation of the given Punycode
-		 * string.
-		 */
-		function toUnicode(input) {
-			return mapDomain(input, function(string) {
-				return regexPunycode.test(string)
-					? decode(string.slice(4).toLowerCase())
-					: string;
-			});
-		}
-	
-		/**
-		 * Converts a Unicode string representing a domain name or an email address to
-		 * Punycode. Only the non-ASCII parts of the domain name will be converted,
-		 * i.e. it doesn't matter if you call it with a domain that's already in
-		 * ASCII.
-		 * @memberOf punycode
-		 * @param {String} input The domain name or email address to convert, as a
-		 * Unicode string.
-		 * @returns {String} The Punycode representation of the given domain name or
-		 * email address.
-		 */
-		function toASCII(input) {
-			return mapDomain(input, function(string) {
-				return regexNonASCII.test(string)
-					? 'xn--' + encode(string)
-					: string;
-			});
-		}
-	
-		/*--------------------------------------------------------------------------*/
-	
-		/** Define the public API */
-		punycode = {
-			/**
-			 * A string representing the current Punycode.js version number.
-			 * @memberOf punycode
-			 * @type String
-			 */
-			'version': '1.3.2',
-			/**
-			 * An object of methods to convert from JavaScript's internal character
-			 * representation (UCS-2) to Unicode code points, and back.
-			 * @see <https://mathiasbynens.be/notes/javascript-encoding>
-			 * @memberOf punycode
-			 * @type Object
-			 */
-			'ucs2': {
-				'decode': ucs2decode,
-				'encode': ucs2encode
-			},
-			'decode': decode,
-			'encode': encode,
-			'toASCII': toASCII,
-			'toUnicode': toUnicode
-		};
-	
-		/** Expose `punycode` */
-		// Some AMD build optimizers, like r.js, check for specific condition patterns
-		// like the following:
-		if (
-			true
-		) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-				return punycode;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (freeExports && freeModule) {
-			if (module.exports == freeExports) { // in Node.js or RingoJS v0.8.0+
-				freeModule.exports = punycode;
-			} else { // in Narwhal or RingoJS v0.7.0-
-				for (key in punycode) {
-					punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
-				}
-			}
-		} else { // in Rhino or a web browser
-			root.punycode = punycode;
-		}
-	
-	}(this));
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115)(module), (function() { return this; }())))
+	    return q;
+	}
 
-/***/ },
+
+/***/ }),
 /* 115 */
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 116 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	exports.decode = exports.parse = __webpack_require__(117);
-	exports.encode = exports.stringify = __webpack_require__(118);
-
-
-/***/ },
-/* 117 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	var EventEmitter    = __webpack_require__(116);
+	var parseUri        = __webpack_require__(113);
 	
-	'use strict';
+	// tests is CORS is supported in XHR, if not we need to use XDR
+	var useXdr = !!(window.XDomainRequest && !('withCredentials' in (new XMLHttpRequest())));
+	var tempAnchor = null;
 	
-	// If obj.hasOwnProperty has been overridden, then calling
-	// obj.hasOwnProperty(prop) will break.
-	// See: https://github.com/joyent/node/issues/1707
-	function hasOwnProperty(obj, prop) {
-	  return Object.prototype.hasOwnProperty.call(obj, prop);
-	}
-	
-	module.exports = function(qs, sep, eq, options) {
-	  sep = sep || '&';
-	  eq = eq || '=';
-	  var obj = {};
-	
-	  if (typeof qs !== 'string' || qs.length === 0) {
-	    return obj;
-	  }
-	
-	  var regexp = /\+/g;
-	  qs = qs.split(sep);
-	
-	  var maxKeys = 1000;
-	  if (options && typeof options.maxKeys === 'number') {
-	    maxKeys = options.maxKeys;
-	  }
-	
-	  var len = qs.length;
-	  // maxKeys <= 0 means that we should not limit keys count
-	  if (maxKeys > 0 && len > maxKeys) {
-	    len = maxKeys;
-	  }
-	
-	  for (var i = 0; i < len; ++i) {
-	    var x = qs[i].replace(regexp, '%20'),
-	        idx = x.indexOf(eq),
-	        kstr, vstr, k, v;
-	
-	    if (idx >= 0) {
-	      kstr = x.substr(0, idx);
-	      vstr = x.substr(idx + 1);
-	    } else {
-	      kstr = x;
-	      vstr = '';
-	    }
-	
-	    k = decodeURIComponent(kstr);
-	    v = decodeURIComponent(vstr);
-	
-	    if (!hasOwnProperty(obj, k)) {
-	      obj[k] = v;
-	    } else if (Array.isArray(obj[k])) {
-	      obj[k].push(v);
-	    } else {
-	      obj[k] = [obj[k], v];
-	    }
-	  }
-	
-	  return obj;
-	};
-
-
-/***/ },
-/* 118 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-	
-	'use strict';
-	
-	var stringifyPrimitive = function(v) {
-	  switch (typeof v) {
-	    case 'string':
-	      return v;
-	
-	    case 'boolean':
-	      return v ? 'true' : 'false';
-	
-	    case 'number':
-	      return isFinite(v) ? v : '';
-	
-	    default:
-	      return '';
-	  }
-	};
-	
-	module.exports = function(obj, sep, eq, name) {
-	  sep = sep || '&';
-	  eq = eq || '=';
-	  if (obj === null) {
-	    obj = undefined;
-	  }
-	
-	  if (typeof obj === 'object') {
-	    return Object.keys(obj).map(function(k) {
-	      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-	      if (Array.isArray(obj[k])) {
-	        return obj[k].map(function(v) {
-	          return ks + encodeURIComponent(stringifyPrimitive(v));
-	        }).join(sep);
-	      } else {
-	        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
-	      }
-	    }).join(sep);
-	
-	  }
-	
-	  if (!name) return '';
-	  return encodeURIComponent(stringifyPrimitive(name)) + eq +
-	         encodeURIComponent(stringifyPrimitive(obj));
-	};
-
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var EventEmitter = __webpack_require__(19),
-	    _url = __webpack_require__(113),
-	    // tests is CORS is supported in XHR, if not we need to use XDR
-	    useXdr = !!(window.XDomainRequest && !('withCredentials' in (new XMLHttpRequest()))),
-	    tempAnchor = null;
+	// some status constants
+	var STATUS_NONE = 0;
+	var STATUS_OK = 200;
+	var STATUS_EMPTY = 204;
 	
 	/**
 	 * Manages the state and loading of a single resource represented by
 	 * a single URL.
 	 *
 	 * @class
-	 * @param name {string} The name of the resource to load.
-	 * @param url {string|string[]} The url for this resource, for audio/video loads you can pass an array of sources.
-	 * @param [options] {object} The options for the load.
-	 * @param [options.crossOrigin] {string|boolean} Is this request cross-origin? Default is to determine automatically.
-	 * @param [options.loadType=Resource.LOAD_TYPE.XHR] {Resource.LOAD_TYPE} How should this resource be loaded?
-	 * @param [options.xhrType=Resource.XHR_RESPONSE_TYPE.DEFAULT] {Resource.XHR_RESPONSE_TYPE} How should the data being
+	 * @param {string} name - The name of the resource to load.
+	 * @param {string|string[]} url - The url for this resource, for audio/video loads you can pass an array of sources.
+	 * @param {object} [options] - The options for the load.
+	 * @param {string|boolean} [options.crossOrigin] - Is this request cross-origin? Default is to determine automatically.
+	 * @param {Resource.LOAD_TYPE} [options.loadType=Resource.LOAD_TYPE.XHR] - How should this resource be loaded?
+	 * @param {Resource.XHR_RESPONSE_TYPE} [options.xhrType=Resource.XHR_RESPONSE_TYPE.DEFAULT] - How should the data being
 	 *      loaded be interpreted when using XHR?
-	 * @param [options.metadata] {object} Extra info for middleware.
+	 * @param {object} [options.metadata] - Extra info for middleware.
 	 */
 	function Resource(name, url, options) {
 	    EventEmitter.call(this);
@@ -26404,9 +24465,17 @@
 	    this.xhrType = options.xhrType;
 	
 	    /**
-	     * Extra info for middleware
+	     * Extra info for middleware, and controlling specifics about how the resource loads.
+	     *
+	     * Note that if you pass in a `loadElement`, the Resource class takes ownership of it.
+	     * Meaning it will modify it as it sees fit.
 	     *
 	     * @member {object}
+	     * @property {HTMLImageElement|HTMLAudioElement|HTMLVideoElement} [loadElement=null] - The
+	     *  element to use for loading, instead of creating one.
+	     * @property {boolean} [skipSource=false] - Skips adding source(s) to the load element. This
+	     *  is useful if you want to pass in a `loadElement` that you already added load sources
+	     *  to.
 	     */
 	    this.metadata = options.metadata || {};
 	
@@ -26467,35 +24536,51 @@
 	    this.isVideo = false;
 	
 	    /**
+	     * Describes if this resource has finished loading. Is true when the resource has completely
+	     * loaded.
+	     *
+	     * @member {boolean}
+	     */
+	    this.isComplete = false;
+	
+	    /**
+	     * Describes if this resource is currently loading. Is true when the resource starts loading,
+	     * and is false again when complete.
+	     *
+	     * @member {boolean}
+	     */
+	    this.isLoading = false;
+	
+	    /**
 	     * The `dequeue` method that will be used a storage place for the async queue dequeue method
 	     * used privately by the loader.
 	     *
-	     * @member {function}
 	     * @private
+	     * @member {function}
 	     */
 	    this._dequeue = null;
 	
 	    /**
 	     * The `complete` function bound to this resource's context.
 	     *
-	     * @member {function}
 	     * @private
+	     * @member {function}
 	     */
 	    this._boundComplete = this.complete.bind(this);
 	
 	    /**
 	     * The `_onError` function bound to this resource's context.
 	     *
-	     * @member {function}
 	     * @private
+	     * @member {function}
 	     */
 	    this._boundOnError = this._onError.bind(this);
 	
 	    /**
 	     * The `_onProgress` function bound to this resource's context.
 	     *
-	     * @member {function}
 	     * @private
+	     * @member {function}
 	     */
 	    this._boundOnProgress = this._onProgress.bind(this);
 	
@@ -26544,18 +24629,18 @@
 	Resource.prototype.complete = function () {
 	    // TODO: Clean this up in a wrapper or something...gross....
 	    if (this.data && this.data.removeEventListener) {
-	        this.data.removeEventListener('error', this._boundOnError);
-	        this.data.removeEventListener('load', this._boundComplete);
-	        this.data.removeEventListener('progress', this._boundOnProgress);
-	        this.data.removeEventListener('canplaythrough', this._boundComplete);
+	        this.data.removeEventListener('error', this._boundOnError, false);
+	        this.data.removeEventListener('load', this._boundComplete, false);
+	        this.data.removeEventListener('progress', this._boundOnProgress, false);
+	        this.data.removeEventListener('canplaythrough', this._boundComplete, false);
 	    }
 	
 	    if (this.xhr) {
 	        if (this.xhr.removeEventListener) {
-	            this.xhr.removeEventListener('error', this._boundXhrOnError);
-	            this.xhr.removeEventListener('abort', this._boundXhrOnAbort);
-	            this.xhr.removeEventListener('progress', this._boundOnProgress);
-	            this.xhr.removeEventListener('load', this._boundXhrOnLoad);
+	            this.xhr.removeEventListener('error', this._boundXhrOnError, false);
+	            this.xhr.removeEventListener('abort', this._boundXhrOnAbort, false);
+	            this.xhr.removeEventListener('progress', this._boundOnProgress, false);
+	            this.xhr.removeEventListener('load', this._boundXhrOnLoad, false);
 	        }
 	        else {
 	            this.xhr.onerror = null;
@@ -26565,39 +24650,100 @@
 	        }
 	    }
 	
+	    if (this.isComplete) {
+	        throw new Error('Complete called again for an already completed resource.');
+	    }
+	
+	    this.isComplete = true;
+	    this.isLoading = false;
+	
 	    this.emit('complete', this);
 	};
 	
 	/**
-	 * Kicks off loading of this resource.
+	 * Aborts the loading of this resource, with an optional message.
+	 *
+	 * @param {string} message - The message to use for the error
+	 */
+	Resource.prototype.abort = function (message) {
+	    // abort can be called multiple times, ignore subsequent calls.
+	    if (this.error) {
+	        return;
+	    }
+	
+	    // store error
+	    this.error = new Error(message);
+	
+	    // abort the actual loading
+	    if (this.xhr) {
+	        this.xhr.abort();
+	    }
+	    else if (this.xdr) {
+	        this.xdr.abort();
+	    }
+	    else if (this.data) {
+	        // single source
+	        if (typeof this.data.src !== 'undefined') {
+	            this.data.src = '';
+	        }
+	        // multi-source
+	        else {
+	            while (this.data.firstChild) {
+	                this.data.removeChild(this.data.firstChild);
+	            }
+	        }
+	    }
+	
+	    // done now.
+	    this.complete();
+	};
+	
+	/**
+	 * Kicks off loading of this resource. This method is asynchronous.
 	 *
 	 * @fires start
-	 * @param [callback] {function} Optional callback to call once the resource is loaded.
+	 * @param {function} [cb] - Optional callback to call once the resource is loaded.
 	 */
 	Resource.prototype.load = function (cb) {
-	    this.emit('start', this);
+	    if (this.isLoading) {
+	        return;
+	    }
 	
-	    // if a callback is set, listen for complete event
-	    if (cb) {
+	    if (this.isComplete) {
+	        if (cb) {
+	            var self = this;
+	
+	            setTimeout(function () {
+	                cb(self);
+	            }, 1);
+	        }
+	
+	        return;
+	    }
+	    else if (cb) {
 	        this.once('complete', cb);
 	    }
+	
+	    this.isLoading = true;
+	
+	    this.emit('start', this);
 	
 	    // if unset, determine the value
 	    if (this.crossOrigin === false || typeof this.crossOrigin !== 'string') {
 	        this.crossOrigin = this._determineCrossOrigin(this.url);
 	    }
 	
-	    switch(this.loadType) {
+	    switch (this.loadType) {
 	        case Resource.LOAD_TYPE.IMAGE:
-	            this._loadImage();
+	            this._loadElement('image');
 	            break;
 	
 	        case Resource.LOAD_TYPE.AUDIO:
-	            this._loadElement('audio');
+	            this._loadSourceElement('audio');
 	            break;
 	
 	        case Resource.LOAD_TYPE.VIDEO:
-	            this._loadElement('video');
+	            this._loadSourceElement('video');
 	            break;
 	
 	        case Resource.LOAD_TYPE.XHR:
@@ -26614,20 +24760,36 @@
 	};
 	
 	/**
-	 * Loads this resources using an Image object.
+	 * Loads this resources using an element that has a single source,
+	 * like an HTMLImageElement.
 	 *
 	 * @private
+	 * @param {string} type - The type of element to use.
 	 */
-	Resource.prototype._loadImage = function () {
-	    this.data = new Image();
+	Resource.prototype._loadElement = function (type) {
+	    if (this.metadata.loadElement) {
+	        this.data = this.metadata.loadElement;
+	    }
+	    else if (type === 'image' && typeof window.Image !== 'undefined') {
+	        this.data = new Image();
+	    }
+	    else {
+	        this.data = document.createElement(type);
+	    }
 	
 	    if (this.crossOrigin) {
 	        this.data.crossOrigin = this.crossOrigin;
 	    }
 	
-	    this.data.src = this.url;
+	    if (!this.metadata.skipSource) {
+	        this.data.src = this.url;
+	    }
 	
-	    this.isImage = true;
+	    var typeName = 'is' + type[0].toUpperCase() + type.substring(1);
+	
+	    if (this[typeName] === false) {
+	        this[typeName] = true;
+	    }
 	
 	    this.data.addEventListener('error', this._boundOnError, false);
 	    this.data.addEventListener('load', this._boundComplete, false);
@@ -26635,12 +24797,17 @@
 	};
 	
 	/**
-	 * Loads this resources using an HTMLAudioElement or HTMLVideoElement.
+	 * Loads this resources using an element that has multiple sources,
+	 * like an HTMLAudioElement or HTMLVideoElement.
 	 *
 	 * @private
+	 * @param {string} type - The type of element to use.
 	 */
-	Resource.prototype._loadElement = function (type) {
-	    if (type === 'audio' && typeof Audio !== 'undefined') {
+	Resource.prototype._loadSourceElement = function (type) {
+	    if (this.metadata.loadElement) {
+	        this.data = this.metadata.loadElement;
+	    }
+	    else if (type === 'audio' && typeof window.Audio !== 'undefined') {
 	        this.data = new Audio();
 	    }
 	    else {
@@ -26648,17 +24815,17 @@
 	    }
 	
 	    if (this.data === null) {
-	        this.error = new Error('Unsupported element ' + type);
-	        this.complete();
+	        this.abort('Unsupported element ' + type);
+	
 	        return;
 	    }
 	
-	    // support for CocoonJS Canvas+ runtime, lacks document.createElement('source')
-	    if (navigator.isCocoonJS) {
-	        this.data.src = Array.isArray(this.url) ? this.url[0] : this.url;
-	    }
-	    else {
-	        if (Array.isArray(this.url)) {
+	    if (!this.metadata.skipSource) {
+	        // support for CocoonJS Canvas+ runtime, lacks document.createElement('source')
+	        if (navigator.isCocoonJS) {
+	            this.data.src = Array.isArray(this.url) ? this.url[0] : this.url;
+	        }
+	        else if (Array.isArray(this.url)) {
 	            for (var i = 0; i < this.url.length; ++i) {
 	                this.data.appendChild(this._createSource(type, this.url[i]));
 	            }
@@ -26736,8 +24903,9 @@
 	
 	    xdr.open('GET', this.url, true);
 	
-	    //  Note: The xdr.send() call is wrapped in a timeout to prevent an issue with the interface where some requests are lost
-	    //  if multiple XDomainRequests are being sent at the same time.
+	    // Note: The xdr.send() call is wrapped in a timeout to prevent an
+	    // issue with the interface where some requests are lost if multiple
+	    // XDomainRequests are being sent at the same time.
 	    // Some info here: https://github.com/photonstorm/phaser/issues/1248
 	    setTimeout(function () {
 	        xdr.send();
@@ -26747,10 +24915,11 @@
 	/**
 	 * Creates a source used in loading via an element.
 	 *
-	 * @param type {string} The element type (video or audio).
-	 * @param url {string} The source URL to load from.
-	 * @param [mime] {string} The mime type of the video
 	 * @private
+	 * @param {string} type - The element type (video or audio).
+	 * @param {string} url - The source URL to load from.
+	 * @param {string} [mime] - The mime type of the video
+	 * @return {HTMLSourceElement} The source element.
 	 */
 	Resource.prototype._createSource = function (type, url, mime) {
 	    if (!mime) {
@@ -26768,22 +24937,21 @@
 	/**
 	 * Called if a load errors out.
 	 *
-	 * @param event {Event} The error event from the element that emits it.
+	 * @param {Event} event - The error event from the element that emits it.
 	 * @private
 	 */
 	Resource.prototype._onError = function (event) {
-	    this.error = new Error('Failed to load element using ' + event.target.nodeName);
-	    this.complete();
+	    this.abort('Failed to load element using ' + event.target.nodeName);
 	};
 	
 	/**
 	 * Called if a load progress event fires for xhr/xdr.
 	 *
 	 * @fires progress
-	 * @param event {XMLHttpRequestProgressEvent|Event}
 	 * @private
+	 * @param {XMLHttpRequestProgressEvent|Event} event - Progress event.
 	 */
-	Resource.prototype._onProgress =  function (event) {
+	Resource.prototype._onProgress = function (event) {
 	    if (event && event.lengthComputable) {
 	        this.emit('progress', this, event.loaded / event.total);
 	    }
@@ -26792,52 +24960,47 @@
 	/**
 	 * Called if an error event fires for xhr/xdr.
 	 *
-	 * @param event {XMLHttpRequestErrorEvent|Event}
 	 * @private
+	 * @param {XMLHttpRequestErrorEvent|Event} event - Error event.
 	 */
 	Resource.prototype._xhrOnError = function () {
-	    this.error = new Error(
-	        reqType(this.xhr) + ' Request failed. ' +
-	        'Status: ' + this.xhr.status + ', text: "' + this.xhr.statusText + '"'
-	    );
+	    var xhr = this.xhr;
 	
-	    this.complete();
+	    this.abort(reqType(xhr) + ' Request failed. Status: ' + xhr.status + ', text: "' + xhr.statusText + '"');
 	};
 	
 	/**
 	 * Called if an abort event fires for xhr.
 	 *
-	 * @param event {XMLHttpRequestAbortEvent}
 	 * @private
+	 * @param {XMLHttpRequestAbortEvent} event - Abort Event
 	 */
 	Resource.prototype._xhrOnAbort = function () {
-	    this.error = new Error(reqType(this.xhr) + ' Request was aborted by the user.');
-	    this.complete();
+	    this.abort(reqType(this.xhr) + ' Request was aborted by the user.');
 	};
 	
 	/**
 	 * Called if a timeout event fires for xdr.
 	 *
-	 * @param event {Event}
 	 * @private
+	 * @param {Event} event - Timeout event.
 	 */
 	Resource.prototype._xdrOnTimeout = function () {
-	    this.error = new Error(reqType(this.xhr) + ' Request timed out.');
-	    this.complete();
+	    this.abort(reqType(this.xhr) + ' Request timed out.');
 	};
 	
 	/**
 	 * Called when data successfully loads from an xhr/xdr request.
 	 *
-	 * @param event {XMLHttpRequestLoadEvent|Event}
 	 * @private
+	 * @param {XMLHttpRequestLoadEvent|Event} event - Load event
 	 */
 	Resource.prototype._xhrOnLoad = function () {
-	    var xhr = this.xhr,
-	        status = xhr.status !== undefined ? xhr.status : 200; //XDR has no `.status`, assume 200.
+	    var xhr = this.xhr;
+	    var status = typeof xhr.status === 'undefined' ? xhr.status : STATUS_OK; // XDR has no `.status`, assume 200.
 	
 	    // status can be 0 when using the file:// protocol, also check if a response was found
-	    if (status === 200 || status === 204 || (status === 0 && xhr.responseText.length > 0)) {
+	    if (status === STATUS_OK || status === STATUS_EMPTY || (status === STATUS_NONE && xhr.responseText.length > 0)) {
 	        // if text, just return it
 	        if (this.xhrType === Resource.XHR_RESPONSE_TYPE.TEXT) {
 	            this.data = xhr.responseText;
@@ -26847,8 +25010,11 @@
 	            try {
 	                this.data = JSON.parse(xhr.responseText);
 	                this.isJson = true;
-	            } catch(e) {
-	                this.error = new Error('Error trying to parse loaded json:', e);
+	            }
+	            catch (e) {
+	                this.abort('Error trying to parse loaded json:', e);
+	
+	                return;
 	            }
 	        }
 	        // if xml, parse into an xml document or div element
@@ -26856,16 +25022,21 @@
 	            try {
 	                if (window.DOMParser) {
 	                    var domparser = new DOMParser();
+	
 	                    this.data = domparser.parseFromString(xhr.responseText, 'text/xml');
 	                }
 	                else {
 	                    var div = document.createElement('div');
+	
 	                    div.innerHTML = xhr.responseText;
 	                    this.data = div;
 	                }
 	                this.isXml = true;
-	            } catch (e) {
-	                this.error = new Error('Error trying to parse loaded xml:', e);
+	            }
+	            catch (e) {
+	                this.abort('Error trying to parse loaded xml:', e);
+	
+	                return;
 	            }
 	        }
 	        // other types just return the response
@@ -26874,15 +25045,13 @@
 	        }
 	    }
 	    else {
-	        this.error = new Error('[' + xhr.status + ']' + xhr.statusText + ':' + xhr.responseURL);
+	        this.abort('[' + xhr.status + ']' + xhr.statusText + ':' + xhr.responseURL);
+	
+	        return;
 	    }
 	
 	    this.complete();
 	};
-	
-	function reqType(xhr) {
-	    return xhr.toString().replace('object ', '');
-	}
 	
 	/**
 	 * Sets the `crossOrigin` property for this resource based on if the url
@@ -26890,8 +25059,8 @@
 	 * function does nothing.
 	 *
 	 * @private
-	 * @param url {string} The url to test.
-	 * @param [location=window.location] {object} The location object to test against.
+	 * @param {string} url - The url to test.
+	 * @param {object} [loc=window.location] - The location object to test against.
 	 * @return {string} The crossOrigin value to use (or empty string for none).
 	 */
 	Resource.prototype._determineCrossOrigin = function (url, loc) {
@@ -26911,12 +25080,13 @@
 	    // parse with the node url lib, we can't use the properties of the anchor element
 	    // because they don't work in IE9 :(
 	    tempAnchor.href = url;
-	    url = _url.parse(tempAnchor.href);
+	    url = parseUri(tempAnchor.href, { strictMode: true });
 	
 	    var samePort = (!url.port && loc.port === '') || (url.port === loc.port);
+	    var protocol = url.protocol ? url.protocol + ':' : '';
 	
 	    // if cross origin
-	    if (url.hostname !== loc.hostname || !samePort || url.protocol !== loc.protocol) {
+	    if (url.host !== loc.hostname || !samePort || protocol !== loc.protocol) {
 	        return 'anonymous';
 	    }
 	
@@ -26939,15 +25109,17 @@
 	};
 	
 	Resource.prototype._getExtension = function () {
-	    var url = this.url,
-	        ext;
+	    var url = this.url;
+	    var ext = '';
 	
 	    if (this.isDataUrl) {
 	        var slashIndex = url.indexOf('/');
+	
 	        ext = url.substring(slashIndex + 1, url.indexOf(';', slashIndex));
 	    }
 	    else {
 	        var queryStart = url.indexOf('?');
+	
 	        if (queryStart !== -1) {
 	            url = url.substring(0, queryStart);
 	        }
@@ -26963,10 +25135,11 @@
 	 * resource being loaded.
 	 *
 	 * @private
+	 * @param {Resource.XHR_RESPONSE_TYPE} type - The type to get a mime type for.
 	 * @return {string} The mime type to use.
 	 */
 	Resource.prototype._getMimeFromXhrType = function (type) {
-	    switch(type) {
+	    switch (type) {
 	        case Resource.XHR_RESPONSE_TYPE.BUFFER:
 	            return 'application/octet-binary';
 	
@@ -26989,20 +25162,31 @@
 	};
 	
 	/**
+	 * Quick helper to get string xhr type.
+	 *
+	 * @ignore
+	 * @param {XMLHttpRequest|XDomainRequest} xhr - The request to check.
+	 * @return {string} The type.
+	 */
+	function reqType(xhr) {
+	    return xhr.toString().replace('object ', '');
+	}
+	
+	/**
 	 * The types of loading a resource can use.
 	 *
 	 * @static
-	 * @constant
-	 * @property {object} LOAD_TYPE
-	 * @property {number} LOAD_TYPE.XHR - Uses XMLHttpRequest to load the resource.
-	 * @property {number} LOAD_TYPE.IMAGE - Uses an `Image` object to load the resource.
-	 * @property {number} LOAD_TYPE.AUDIO - Uses an `Audio` object to load the resource.
-	 * @property {number} LOAD_TYPE.VIDEO - Uses a `Video` object to load the resource.
+	 * @readonly
+	 * @enum {number}
 	 */
 	Resource.LOAD_TYPE = {
+	    /** Uses XMLHttpRequest to load the resource. */
 	    XHR:    1,
+	    /** Uses an `Image` object to load the resource. */
 	    IMAGE:  2,
+	    /** Uses an `Audio` object to load the resource. */
 	    AUDIO:  3,
+	    /** Uses a `Video` object to load the resource. */
 	    VIDEO:  4
 	};
 	
@@ -27010,92 +25194,72 @@
 	 * The XHR ready states, used internally.
 	 *
 	 * @static
-	 * @constant
-	 * @property {object} XHR_READY_STATE
-	 * @property {number} XHR_READY_STATE.UNSENT - open()has not been called yet.
-	 * @property {number} XHR_READY_STATE.OPENED - send()has not been called yet.
-	 * @property {number} XHR_READY_STATE.HEADERS_RECEIVED - send() has been called, and headers and status are available.
-	 * @property {number} XHR_READY_STATE.LOADING - Downloading; responseText holds partial data.
-	 * @property {number} XHR_READY_STATE.DONE - The operation is complete.
-	 */
-	Resource.XHR_READY_STATE = {
-	    UNSENT: 0,
-	    OPENED: 1,
-	    HEADERS_RECEIVED: 2,
-	    LOADING: 3,
-	    DONE: 4
-	};
-	
-	/**
-	 * The XHR ready states, used internally.
-	 *
-	 * @static
-	 * @constant
-	 * @property {object} XHR_RESPONSE_TYPE
-	 * @property {string} XHR_RESPONSE_TYPE.DEFAULT - defaults to text
-	 * @property {string} XHR_RESPONSE_TYPE.BUFFER - ArrayBuffer
-	 * @property {string} XHR_RESPONSE_TYPE.BLOB - Blob
-	 * @property {string} XHR_RESPONSE_TYPE.DOCUMENT - Document
-	 * @property {string} XHR_RESPONSE_TYPE.JSON - Object
-	 * @property {string} XHR_RESPONSE_TYPE.TEXT - String
+	 * @readonly
+	 * @enum {string}
 	 */
 	Resource.XHR_RESPONSE_TYPE = {
+	    /** defaults to text */
 	    DEFAULT:    'text',
+	    /** ArrayBuffer */
 	    BUFFER:     'arraybuffer',
+	    /** Blob */
 	    BLOB:       'blob',
+	    /** Document */
 	    DOCUMENT:   'document',
+	    /** Object */
 	    JSON:       'json',
+	    /** String */
 	    TEXT:       'text'
 	};
 	
 	Resource._loadTypeMap = {
-	    'gif':      Resource.LOAD_TYPE.IMAGE,
-	    'png':      Resource.LOAD_TYPE.IMAGE,
-	    'bmp':      Resource.LOAD_TYPE.IMAGE,
-	    'jpg':      Resource.LOAD_TYPE.IMAGE,
-	    'jpeg':     Resource.LOAD_TYPE.IMAGE,
-	    'tif':      Resource.LOAD_TYPE.IMAGE,
-	    'tiff':     Resource.LOAD_TYPE.IMAGE,
-	    'webp':     Resource.LOAD_TYPE.IMAGE,
-	    'tga':      Resource.LOAD_TYPE.IMAGE,
+	    gif:      Resource.LOAD_TYPE.IMAGE,
+	    png:      Resource.LOAD_TYPE.IMAGE,
+	    bmp:      Resource.LOAD_TYPE.IMAGE,
+	    jpg:      Resource.LOAD_TYPE.IMAGE,
+	    jpeg:     Resource.LOAD_TYPE.IMAGE,
+	    tif:      Resource.LOAD_TYPE.IMAGE,
+	    tiff:     Resource.LOAD_TYPE.IMAGE,
+	    webp:     Resource.LOAD_TYPE.IMAGE,
+	    tga:      Resource.LOAD_TYPE.IMAGE,
 	    'svg+xml':  Resource.LOAD_TYPE.IMAGE
 	};
 	
 	Resource._xhrTypeMap = {
 	    // xml
-	    'xhtml':    Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'html':     Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'htm':      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'xml':      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'tmx':      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'tsx':      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
-	    'svg':      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    xhtml:    Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    html:     Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    htm:      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    xml:      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    tmx:      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    tsx:      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
+	    svg:      Resource.XHR_RESPONSE_TYPE.DOCUMENT,
 	
 	    // images
-	    'gif':      Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'png':      Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'bmp':      Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'jpg':      Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'jpeg':     Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'tif':      Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'tiff':     Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'webp':     Resource.XHR_RESPONSE_TYPE.BLOB,
-	    'tga':      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    gif:      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    png:      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    bmp:      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    jpg:      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    jpeg:     Resource.XHR_RESPONSE_TYPE.BLOB,
+	    tif:      Resource.XHR_RESPONSE_TYPE.BLOB,
+	    tiff:     Resource.XHR_RESPONSE_TYPE.BLOB,
+	    webp:     Resource.XHR_RESPONSE_TYPE.BLOB,
+	    tga:      Resource.XHR_RESPONSE_TYPE.BLOB,
 	
 	    // json
-	    'json':     Resource.XHR_RESPONSE_TYPE.JSON,
+	    json:     Resource.XHR_RESPONSE_TYPE.JSON,
 	
 	    // text
-	    'text':     Resource.XHR_RESPONSE_TYPE.TEXT,
-	    'txt':      Resource.XHR_RESPONSE_TYPE.TEXT
+	    text:     Resource.XHR_RESPONSE_TYPE.TEXT,
+	    txt:      Resource.XHR_RESPONSE_TYPE.TEXT
 	};
 	
 	/**
 	 * Sets the load type to be used for a specific extension.
 	 *
 	 * @static
-	 * @param extname {string} The extension to set the type for, e.g. "png" or "fnt"
-	 * @param loadType {Resource.LOAD_TYPE} The load type to set it to.
+	 * @param {string} extname - The extension to set the type for, e.g. "png" or "fnt"
+	 * @param {Resource.LOAD_TYPE} loadType - The load type to set it to.
 	 */
 	Resource.setExtensionLoadType = function (extname, loadType) {
 	    setExtMap(Resource._loadTypeMap, extname, loadType);
@@ -27105,8 +25269,8 @@
 	 * Sets the load type to be used for a specific extension.
 	 *
 	 * @static
-	 * @param extname {string} The extension to set the type for, e.g. "png" or "fnt"
-	 * @param xhrType {Resource.XHR_RESPONSE_TYPE} The xhr type to set it to.
+	 * @param {string} extname - The extension to set the type for, e.g. "png" or "fnt"
+	 * @param {Resource.XHR_RESPONSE_TYPE} xhrType - The xhr type to set it to.
 	 */
 	Resource.setExtensionXhrType = function (extname, xhrType) {
 	    setExtMap(Resource._xhrTypeMap, extname, xhrType);
@@ -27125,10 +25289,329 @@
 	}
 
 
-/***/ },
-/* 120 */
-/***/ function(module, exports) {
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var has = Object.prototype.hasOwnProperty
+	  , prefix = '~';
+	
+	/**
+	 * Constructor to create a storage for our `EE` objects.
+	 * An `Events` instance is a plain object whose properties are event names.
+	 *
+	 * @constructor
+	 * @api private
+	 */
+	function Events() {}
+	
+	//
+	// We try to not inherit from `Object.prototype`. In some engines creating an
+	// instance in this way is faster than calling `Object.create(null)` directly.
+	// If `Object.create(null)` is not supported we prefix the event names with a
+	// character to make sure that the built-in object properties are not
+	// overridden or used as an attack vector.
+	//
+	if (Object.create) {
+	  Events.prototype = Object.create(null);
+	
+	  //
+	  // This hack is needed because the `__proto__` property is still inherited in
+	  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
+	  //
+	  if (!new Events().__proto__) prefix = false;
+	}
+	
+	/**
+	 * Representation of a single event listener.
+	 *
+	 * @param {Function} fn The listener function.
+	 * @param {Mixed} context The context to invoke the listener with.
+	 * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
+	 * @constructor
+	 * @api private
+	 */
+	function EE(fn, context, once) {
+	  this.fn = fn;
+	  this.context = context;
+	  this.once = once || false;
+	}
+	
+	/**
+	 * Minimal `EventEmitter` interface that is molded against the Node.js
+	 * `EventEmitter` interface.
+	 *
+	 * @constructor
+	 * @api public
+	 */
+	function EventEmitter() {
+	  this._events = new Events();
+	  this._eventsCount = 0;
+	}
+	
+	/**
+	 * Return an array listing the events for which the emitter has registered
+	 * listeners.
+	 *
+	 * @returns {Array}
+	 * @api public
+	 */
+	EventEmitter.prototype.eventNames = function eventNames() {
+	  var names = []
+	    , events
+	    , name;
+	
+	  if (this._eventsCount === 0) return names;
+	
+	  for (name in (events = this._events)) {
+	    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+	  }
+	
+	  if (Object.getOwnPropertySymbols) {
+	    return names.concat(Object.getOwnPropertySymbols(events));
+	  }
+	
+	  return names;
+	};
+	
+	/**
+	 * Return the listeners registered for a given event.
+	 *
+	 * @param {String|Symbol} event The event name.
+	 * @param {Boolean} exists Only check if there are listeners.
+	 * @returns {Array|Boolean}
+	 * @api public
+	 */
+	EventEmitter.prototype.listeners = function listeners(event, exists) {
+	  var evt = prefix ? prefix + event : event
+	    , available = this._events[evt];
+	
+	  if (exists) return !!available;
+	  if (!available) return [];
+	  if (available.fn) return [available.fn];
+	
+	  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
+	    ee[i] = available[i].fn;
+	  }
+	
+	  return ee;
+	};
+	
+	/**
+	 * Calls each of the listeners registered for a given event.
+	 *
+	 * @param {String|Symbol} event The event name.
+	 * @returns {Boolean} `true` if the event had listeners, else `false`.
+	 * @api public
+	 */
+	EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+	  var evt = prefix ? prefix + event : event;
+	
+	  if (!this._events[evt]) return false;
+	
+	  var listeners = this._events[evt]
+	    , len = arguments.length
+	    , args
+	    , i;
+	
+	  if (listeners.fn) {
+	    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+	
+	    switch (len) {
+	      case 1: return listeners.fn.call(listeners.context), true;
+	      case 2: return listeners.fn.call(listeners.context, a1), true;
+	      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
+	      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
+	      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+	      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+	    }
+	
+	    for (i = 1, args = new Array(len -1); i < len; i++) {
+	      args[i - 1] = arguments[i];
+	    }
+	
+	    listeners.fn.apply(listeners.context, args);
+	  } else {
+	    var length = listeners.length
+	      , j;
+	
+	    for (i = 0; i < length; i++) {
+	      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+	
+	      switch (len) {
+	        case 1: listeners[i].fn.call(listeners[i].context); break;
+	        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
+	        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+	        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
+	        default:
+	          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+	            args[j - 1] = arguments[j];
+	          }
+	
+	          listeners[i].fn.apply(listeners[i].context, args);
+	      }
+	    }
+	  }
+	
+	  return true;
+	};
+	
+	/**
+	 * Add a listener for a given event.
+	 *
+	 * @param {String|Symbol} event The event name.
+	 * @param {Function} fn The listener function.
+	 * @param {Mixed} [context=this] The context to invoke the listener with.
+	 * @returns {EventEmitter} `this`.
+	 * @api public
+	 */
+	EventEmitter.prototype.on = function on(event, fn, context) {
+	  var listener = new EE(fn, context || this)
+	    , evt = prefix ? prefix + event : event;
+	
+	  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
+	  else if (!this._events[evt].fn) this._events[evt].push(listener);
+	  else this._events[evt] = [this._events[evt], listener];
+	
+	  return this;
+	};
+	
+	/**
+	 * Add a one-time listener for a given event.
+	 *
+	 * @param {String|Symbol} event The event name.
+	 * @param {Function} fn The listener function.
+	 * @param {Mixed} [context=this] The context to invoke the listener with.
+	 * @returns {EventEmitter} `this`.
+	 * @api public
+	 */
+	EventEmitter.prototype.once = function once(event, fn, context) {
+	  var listener = new EE(fn, context || this, true)
+	    , evt = prefix ? prefix + event : event;
+	
+	  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
+	  else if (!this._events[evt].fn) this._events[evt].push(listener);
+	  else this._events[evt] = [this._events[evt], listener];
+	
+	  return this;
+	};
+	
+	/**
+	 * Remove the listeners of a given event.
+	 *
+	 * @param {String|Symbol} event The event name.
+	 * @param {Function} fn Only remove the listeners that match this function.
+	 * @param {Mixed} context Only remove the listeners that have this context.
+	 * @param {Boolean} once Only remove one-time listeners.
+	 * @returns {EventEmitter} `this`.
+	 * @api public
+	 */
+	EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
+	  var evt = prefix ? prefix + event : event;
+	
+	  if (!this._events[evt]) return this;
+	  if (!fn) {
+	    if (--this._eventsCount === 0) this._events = new Events();
+	    else delete this._events[evt];
+	    return this;
+	  }
+	
+	  var listeners = this._events[evt];
+	
+	  if (listeners.fn) {
+	    if (
+	         listeners.fn === fn
+	      && (!once || listeners.once)
+	      && (!context || listeners.context === context)
+	    ) {
+	      if (--this._eventsCount === 0) this._events = new Events();
+	      else delete this._events[evt];
+	    }
+	  } else {
+	    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
+	      if (
+	           listeners[i].fn !== fn
+	        || (once && !listeners[i].once)
+	        || (context && listeners[i].context !== context)
+	      ) {
+	        events.push(listeners[i]);
+	      }
+	    }
+	
+	    //
+	    // Reset the array, or remove it completely if we have no more listeners.
+	    //
+	    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
+	    else if (--this._eventsCount === 0) this._events = new Events();
+	    else delete this._events[evt];
+	  }
+	
+	  return this;
+	};
+	
+	/**
+	 * Remove all listeners, or those of the specified event.
+	 *
+	 * @param {String|Symbol} [event] The event name.
+	 * @returns {EventEmitter} `this`.
+	 * @api public
+	 */
+	EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
+	  var evt;
+	
+	  if (event) {
+	    evt = prefix ? prefix + event : event;
+	    if (this._events[evt]) {
+	      if (--this._eventsCount === 0) this._events = new Events();
+	      else delete this._events[evt];
+	    }
+	  } else {
+	    this._events = new Events();
+	    this._eventsCount = 0;
+	  }
+	
+	  return this;
+	};
+	
+	//
+	// Alias methods names because people roll like that.
+	//
+	EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+	EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+	
+	//
+	// This function doesn't apply anymore.
+	//
+	EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
+	  return this;
+	};
+	
+	//
+	// Expose the prefix.
+	//
+	EventEmitter.prefixed = prefix;
+	
+	//
+	// Allow `EventEmitter` to be imported as module namespace.
+	//
+	EventEmitter.EventEmitter = EventEmitter;
+	
+	//
+	// Expose the module.
+	//
+	if (true) {
+	  module.exports = EventEmitter;
+	}
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
 	// a simple in-memory cache for resources
 	var cache = {};
 	
@@ -27137,26 +25620,28 @@
 	        // if cached, then set data and complete the resource
 	        if (cache[resource.url]) {
 	            resource.data = cache[resource.url];
-	            resource.complete();
+	            resource.complete(); // marks resource load complete and stops processing before middlewares
 	        }
 	        // if not cached, wait for complete and store it in the cache.
 	        else {
 	            resource.once('complete', function () {
-	               cache[this.url] = this.data;
+	                cache[this.url] = this.data;
 	            });
 	        }
-	        
+	
 	        next();
 	    };
 	};
 
 
-/***/ },
-/* 121 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Resource = __webpack_require__(119),
-	    b64 = __webpack_require__(122);
+	'use strict';
+	
+	var Resource = __webpack_require__(115);
+	var b64 = __webpack_require__(119);
 	
 	var Url = window.URL || window.webkitURL;
 	
@@ -27165,7 +25650,9 @@
 	module.exports = function () {
 	    return function (resource, next) {
 	        if (!resource.data) {
-	            return next();
+	            next();
+	
+	            return;
 	        }
 	
 	        // if this was an XHR load of a blob
@@ -27187,6 +25674,9 @@
 	
 	                        next();
 	                    };
+	
+	                    // next will be called on load
+	                    return;
 	                }
 	            }
 	            // if content type says this is an image, then we should transform the blob into an Image object
@@ -27206,26 +25696,30 @@
 	
 	                    next();
 	                };
+	
+	                // next will be called on load.
+	                return;
 	            }
 	        }
-	        else {
-	            next();
-	        }
+	
+	        next();
 	    };
 	};
 
 
-/***/ },
-/* 122 */
-/***/ function(module, exports) {
+/***/ }),
+/* 119 */
+/***/ (function(module, exports) {
 
-	module.exports = {
+	/* eslint no-magic-numbers: 0 */
+	'use strict';
 	
+	module.exports = {
 	    // private property
-	    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+	    _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
 	
 	    encodeBinary: function (input) {
-	        var output = "";
+	        var output = '';
 	        var bytebuffer;
 	        var encodedCharIndexes = new Array(4);
 	        var inx = 0;
@@ -27235,6 +25729,7 @@
 	        while (inx < input.length) {
 	            // Fill byte buffer array
 	            bytebuffer = new Array(3);
+	
 	            for (jnx = 0; jnx < bytebuffer.length; jnx++) {
 	                if (inx < input.length) {
 	                    // throw away high-order byte, as documented at:
@@ -27280,14 +25775,15 @@
 	                output += this._keyStr.charAt(encodedCharIndexes[jnx]);
 	            }
 	        }
+	
 	        return output;
 	    }
 	};
 
 
-/***/ },
-/* 123 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -27311,12 +25807,12 @@
 	};
 
 
-/***/ },
-/* 124 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Resource = __webpack_require__(110).Resource,
-	    path = __webpack_require__(125),
+	var Resource = __webpack_require__(111).Resource,
+	    path = __webpack_require__(122),
 	    core = __webpack_require__(7),
 	    async = __webpack_require__(21);
 	
@@ -27434,9 +25930,9 @@
 	};
 
 
-/***/ },
-/* 125 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
 	//
@@ -27663,16 +26159,16 @@
 	    }
 	;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
 
-/***/ },
-/* 126 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Resource = __webpack_require__(110).Resource,
+	var Resource = __webpack_require__(111).Resource,
 	    core = __webpack_require__(7),
-	    extras = __webpack_require__(69),
-	    path = __webpack_require__(125);
+	    extras = __webpack_require__(70),
+	    path = __webpack_require__(122);
 	
 	
 	function parse(resource, texture) {
@@ -27793,9 +26289,9 @@
 	};
 
 
-/***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI extras library
@@ -27808,17 +26304,17 @@
 	 * @namespace PIXI.mesh
 	 */
 	module.exports = {
-	    Mesh:           __webpack_require__(128),
-	    Plane:           __webpack_require__(129),
-	    Rope:           __webpack_require__(130),
-	    MeshRenderer:   __webpack_require__(131),
-	    MeshShader:     __webpack_require__(132)
+	    Mesh:           __webpack_require__(125),
+	    Plane:           __webpack_require__(126),
+	    Rope:           __webpack_require__(127),
+	    MeshRenderer:   __webpack_require__(128),
+	    MeshShader:     __webpack_require__(129)
 	};
 
 
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
 	    tempPoint = new core.Point(),
@@ -28298,11 +26794,11 @@
 	};
 
 
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Mesh = __webpack_require__(128);
+	var Mesh = __webpack_require__(125);
 	
 	/**
 	 * The Plane allows you to draw a texture across several points and them manipulate these points
@@ -28428,11 +26924,11 @@
 	};
 
 
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var Mesh = __webpack_require__(128);
+	var Mesh = __webpack_require__(125);
 	var core = __webpack_require__(7);
 	
 	/**
@@ -28645,12 +27141,12 @@
 	};
 
 
-/***/ },
-/* 131 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7),
-	    Mesh = __webpack_require__(128);
+	    Mesh = __webpack_require__(125);
 	
 	/**
 	 * @author Mat Groves
@@ -28878,9 +27374,9 @@
 	};
 
 
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
@@ -28943,9 +27439,9 @@
 	core.ShaderManager.registerPlugin('meshShader', MeshShader);
 
 
-/***/ },
-/* 133 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @file        Main export of the PIXI accessibility library
@@ -28958,14 +27454,14 @@
 	 * @namespace PIXI.interaction
 	 */
 	module.exports = {
-	    accessibleTarget:     __webpack_require__(134),
-	    AccessibilityManager: __webpack_require__(135)
+	    accessibleTarget:     __webpack_require__(131),
+	    AccessibilityManager: __webpack_require__(132)
 	};
 
 
-/***/ },
-/* 134 */
-/***/ function(module, exports) {
+/***/ }),
+/* 131 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Default property values of accessible objects
@@ -29013,16 +27509,16 @@
 	module.exports = accessibleTarget;
 
 
-/***/ },
-/* 135 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(7);
 	
 	// add some extra variables to the container..
 	Object.assign(
 	    core.DisplayObject.prototype,
-	    __webpack_require__(134)
+	    __webpack_require__(131)
 	);
 	
 	
@@ -29427,15 +27923,15 @@
 	
 
 
-/***/ },
-/* 136 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*global console */
 	var core = __webpack_require__(7),
-	    mesh = __webpack_require__(127),
-	    extras = __webpack_require__(69),
-	    filters = __webpack_require__(76);
+	    mesh = __webpack_require__(124),
+	    extras = __webpack_require__(70),
+	    filters = __webpack_require__(77);
 	
 	/**
 	 * @class
@@ -29782,41 +28278,41 @@
 	};
 
 
-/***/ },
-/* 137 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _plugins = __webpack_require__(138);
+	var _plugins = __webpack_require__(135);
 	
 	var _plugins2 = _interopRequireDefault(_plugins);
 	
-	var _config = __webpack_require__(140);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _Game = __webpack_require__(141);
+	var _Game = __webpack_require__(138);
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	var _EffectLayer = __webpack_require__(142);
+	var _EffectLayer = __webpack_require__(139);
 	
 	var _EffectLayer2 = _interopRequireDefault(_EffectLayer);
 	
-	var _GameScreen = __webpack_require__(145);
+	var _GameScreen = __webpack_require__(141);
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(149);
+	var _InitScreen = __webpack_require__(146);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(150);
+	var _ScreenManager = __webpack_require__(147);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
-	var _CookieManager = __webpack_require__(151);
+	var _CookieManager = __webpack_require__(143);
 	
 	var _CookieManager2 = _interopRequireDefault(_CookieManager);
 	
@@ -29840,6 +28336,8 @@
 		}
 		//create screen manager
 		var screenManager = new _ScreenManager2.default();
+	
+		game.screenManager = screenManager;
 		//add screens
 		var gameScreen = new _GameScreen2.default("GAME");
 		var initScreen = new _InitScreen2.default("INIT");
@@ -29860,9 +28358,9 @@
 		game.start();
 	}
 
-/***/ },
-/* 138 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -29874,7 +28372,7 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _pixiAnimationloop = __webpack_require__(139);
+	var _pixiAnimationloop = __webpack_require__(136);
 	
 	var _pixiAnimationloop2 = _interopRequireDefault(_pixiAnimationloop);
 	
@@ -29885,16 +28383,16 @@
 	*/
 	exports.default = {};
 
-/***/ },
-/* 139 */
-/***/ function(module, exports) {
+/***/ }),
+/* 136 */
+/***/ (function(module, exports) {
 
-	!function(t){function e(n){if(i[n])return i[n].exports;var s=i[n]={exports:{},id:n,loaded:!1};return t[n].call(s.exports,s,s.exports,e),s.loaded=!0,s.exports}var i={};return e.m=t,e.c=i,e.p="",e(0)}([function(t,e,i){t.exports=i(3)},function(t,e){t.exports=PIXI},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}function s(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function r(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}function a(){return"undefined"!=typeof document.hidden?"visibilitychange":"undefined"!=typeof document.webkitHidden?"webkitvisibilitychange":"undefined"!=typeof document.mozHidden?"mozvisibilitychange":"undefined"!=typeof document.msHidden?"msvisibilitychange":void 0}var u=function(){function t(t,e){for(var i=0;i<e.length;i++){var n=e[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,i,n){return i&&t(e.prototype,i),n&&t(e,n),e}}();Object.defineProperty(e,"__esModule",{value:!0});var d=i(1),l=n(d),f=function(t){function e(t){var i=arguments.length<=1||void 0===arguments[1]?new l["default"].Container:arguments[1];s(this,e);var n=o(this,Object.getPrototypeOf(e).call(this));return n.renderer=t,n.stage=i,n.isRunning=!1,n._stopOnVisibilityChange=!1,n._firstDate=0,n.speed=1,n._last=0,n.delta=0,n.deltaMS=0,n.time=0,n._lastTime=0,n.maxFrame=.035,n.raf=null,n}return r(e,t),u(e,[{key:"_animate",value:function(){if(this.raf=window.requestAnimationFrame(this._animate.bind(this)),this.stage){var t=Date.now();this.time+=Math.min((t-this._last)/1e3,this.maxFrame)*this.speed,this.delta=this.time-this._lastTime,this.deltaMS=1e3*this.delta,this._lastTime=this.time,this._last=t,this.emit("prerender"),this.renderer.render(this.stage),this.emit("postrender")}}},{key:"start",value:function(){if(!this.isRunning){this.isRunning=!0;var t=Date.now();this._last=t,0===this._firstDate&&(this._firstDate=t),this.emit("start"),this._animate()}}},{key:"stop",value:function(){this.isRunning&&(this.isRunning=!1,window.cancelAnimationFrame(this.raf),this.emit("stop"))}},{key:"_onVisibilityChange",value:function(){var t=!!(document.hidden||document.webkitHidden||document.mozHidden||document.msHidden);t?this.stop():this.start(),this.emit("visibilitychange",t)}},{key:"realTime",get:function(){return this._firstDate>0?(Date.now()-this._firstDate)/1e3:0}},{key:"stopOnVisibilityChange",get:function(){return this._stopOnVisibilityChange},set:function(t){if(t!==this._stopOnVisibilityChange){this._stopOnVisibilityChange=t;var e=a();t?document.addEventListener(e,this._onVisibilityChange.bind(this)):document.removeEventListener(e,this._onVisibilityChange)}}}]),e}(l["default"].utils.EventEmitter);e["default"]=f},function(t,e,i){"use strict";function n(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var s=i(1),o=n(s),r=i(2),a=n(r);o["default"].AnimationLoop||(o["default"].AnimationLoop=a["default"]),e["default"]=o["default"].AnimationLoop}]);
+	!function(e){function t(i){if(n[i])return n[i].exports;var o=n[i]={exports:{},id:i,loaded:!1};return e[i].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){e.exports=n(3)},function(e,t){e.exports=PIXI},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function s(){return"undefined"!=typeof document.hidden?"visibilitychange":"undefined"!=typeof document.webkitHidden?"webkitvisibilitychange":"undefined"!=typeof document.mozHidden?"mozvisibilitychange":"undefined"!=typeof document.msHidden?"msvisibilitychange":void 0}var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(t,n,i){return n&&e(t.prototype,n),i&&e(t,i),t}}();Object.defineProperty(t,"__esModule",{value:!0});var d=n(1),f=i(d),l=function(e){function t(e){var n=arguments.length<=1||void 0===arguments[1]?new f["default"].Container:arguments[1];o(this,t);var i=r(this,Object.getPrototypeOf(t).call(this));return i._animate=function(){if(i.raf=window.requestAnimationFrame(i._animate),i.stage){var e=Date.now();i.time+=Math.min((e-i._last)/1e3,i.maxFrame)*i.speed,i.delta=i.time-i._lastTime,i.deltaMS=1e3*i.delta,i._lastTime=i.time,i._last=e,i.emit("prerender"),i.renderer.render(i.stage),i.emit("postrender")}},i._onVisibilityChange=function(){var e=!!(document.hidden||document.webkitHidden||document.mozHidden||document.msHidden);e?i.stop():i.start(),i.emit("visibilitychange",e)},i.renderer=e,i.stage=n,i.isRunning=!1,i._stopOnVisibilityChange=!1,i._firstDate=0,i.speed=1,i._last=0,i.delta=0,i.deltaMS=0,i.time=0,i._lastTime=0,i.maxFrame=.035,i.raf=null,i}return a(t,e),u(t,[{key:"start",value:function(){if(!this.isRunning){this.isRunning=!0;var e=Date.now();this._last=e,0===this._firstDate&&(this._firstDate=e),this.emit("start"),this._animate()}}},{key:"stop",value:function(){this.isRunning&&(this.isRunning=!1,window.cancelAnimationFrame(this.raf),this.emit("stop"))}},{key:"realTime",get:function(){return this._firstDate>0?(Date.now()-this._firstDate)/1e3:0}},{key:"stopOnVisibilityChange",get:function(){return this._stopOnVisibilityChange},set:function(e){if(e!==this._stopOnVisibilityChange){this._stopOnVisibilityChange=e;var t=s();e?document.addEventListener(t,this._onVisibilityChange):document.removeEventListener(t,this._onVisibilityChange)}}}]),t}(f["default"].utils.EventEmitter);t["default"]=l},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1),r=i(o),a=n(2),s=i(a);r["default"].AnimationLoop||(r["default"].AnimationLoop=s["default"]),t["default"]=r["default"].AnimationLoop}]);
 	//# sourceMappingURL=pixi-animationloop.js.map
 
-/***/ },
-/* 140 */
-/***/ function(module, exports) {
+/***/ }),
+/* 137 */
+/***/ (function(module, exports) {
 
 	"use strict";
 	
@@ -29945,9 +28443,9 @@
 		}
 	};
 
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -29969,12 +28467,20 @@
 		function Game(config) {
 			_classCallCheck(this, Game);
 	
+			this.config = config;
 			var Renderer = config.webgl ? _pixi2.default.autoDetectRenderer : _pixi2.default.CanvasRenderer;
+	
+			this.desktopResolution = {
+				width: config.width,
+				height: config.height
+			};
 			//config.width = window.screen.width;
 			//config.height = window.screen.height;
-			this.ratio = config.width / config.height;
-			this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
+			this.ratio = this.config.width / this.config.height;
+			this.renderer = new Renderer(this.config.width || 800, this.config.height || 600, this.config.rendererOptions);
 			document.body.appendChild(this.renderer.view);
+	
+			window.renderer = this.renderer;
 	
 			this.animationLoop = new _pixi2.default.AnimationLoop(this.renderer);
 			this.animationLoop.on('prerender', this.update.bind(this));
@@ -29986,13 +28492,38 @@
 			value: function resize() {
 				if (window.innerWidth / window.innerHeight >= this.ratio) {
 					var w = window.innerHeight * this.ratio;
-					var h = window.innerHeight;
 				} else {
-					var w = window.innerWidth;
 					var h = window.innerWidth / this.ratio;
 				}
-				this.renderer.view.style.width = w + 'px';
-				this.renderer.view.style.height = h + 'px';
+				var w = window.innerWidth;
+				var h = window.innerHeight;
+				this.renderer.view.style.position = 'absolute';
+				this.innerResolution = { width: window.innerWidth, height: window.innerHeight };
+	
+				var sclX = window.innerWidth < this.desktopResolution.width ? window.innerWidth / this.desktopResolution.width : 10;
+				var sclY = window.innerHeight / this.desktopResolution.height; // window.innerHeight < this.desktopResolution.height ? window.innerHeight / this.desktopResolution.height : 1;
+	
+				var scl = Math.min(sclX, sclY);
+	
+				this.renderer.view.style.position = 'absolute';
+	
+				var newSize = {
+					width: window.innerWidth, //* scl,
+					height: this.desktopResolution.height * scl
+				};
+	
+				this.renderer.view.style.width = newSize.width + 'px';
+				this.renderer.view.style.height = newSize.height + 'px';
+	
+				if (newSize.height < window.innerHeight) {
+					this.renderer.view.style.top = window.innerHeight / 2 - newSize.height / 2 + 'px';
+				}
+				if (newSize.width < window.innerWidth) {}
+				this.renderer.view.style.left = window.innerWidth / 2 - newSize.width / 2 + 'px';
+	
+				if (this.screenManager) {
+					this.screenManager.resize(newSize);
+				}
 			}
 		}, {
 			key: 'update',
@@ -30002,6 +28533,7 @@
 						this.stage.children[i].update(this.animationLoop.delta);
 					}
 				}
+				this.resize();
 			}
 		}, {
 			key: 'start',
@@ -30028,9 +28560,9 @@
 	
 	exports.default = Game;
 
-/***/ },
-/* 142 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -30044,11 +28576,11 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _config = __webpack_require__(140);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _gsap = __webpack_require__(143);
+	var _gsap = __webpack_require__(140);
 	
 	var _gsap2 = _interopRequireDefault(_gsap);
 	
@@ -30066,7 +28598,7 @@
 		function EffectLayer(screenManager) {
 			_classCallCheck(this, EffectLayer);
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EffectLayer).call(this));
+			var _this = _possibleConstructorReturn(this, (EffectLayer.__proto__ || Object.getPrototypeOf(EffectLayer)).call(this));
 	
 			_this.screenManager = screenManager;
 	
@@ -30095,11 +28627,13 @@
 	
 			// this.tvShape.blendMode = PIXI.BLEND_MODES.OVERLAY;
 	
+	
 			//RGB SPLITTER
 			_this.rgpSplit = new _pixi2.default.filters.RGBSplitFilter();
-			_this.rgpSplit.red = new _pixi2.default.Point(1.5, 1.5);
-			_this.rgpSplit.green = new _pixi2.default.Point(-1.5, -1.5);
-			_this.rgpSplit.blue = new _pixi2.default.Point(1.5, -1.5);
+			var dist = 0;
+			_this.rgpSplit.red = new _pixi2.default.Point(dist, dist);
+			_this.rgpSplit.green = new _pixi2.default.Point(-dist, -dist);
+			_this.rgpSplit.blue = new _pixi2.default.Point(dist, -dist);
 	
 			//crosshatch
 			_this.crossHatch = new _pixi2.default.filters.CrossHatchFilter();
@@ -30151,7 +28685,7 @@
 	
 			_this.filtersList = [_this.rgpSplit, _this.pixelate, _this.displacementFilterGlitch2, _this.displacementFilterGlitch1, _this.bloom, _this.shockwave, _this.crossHatch, _this.invertFilter, _this.ascii, _this.gray, _this.blur];
 	
-			_this.filtersActives = [false, true, false, false, false, false, false, false, false, false, false];
+			_this.filtersActives = [false, false, false, false, false, false, false, false, false, false, false];
 	
 			_this.updateFilters();
 	
@@ -30226,6 +28760,7 @@
 		}, {
 			key: 'addGlitch2',
 			value: function addGlitch2() {
+				return;
 				this.filtersActives[this.ID_GLITCH2] = true;
 				this.updateFilters();
 			}
@@ -30291,24 +28826,14 @@
 			}
 		}, {
 			key: 'removePixelate',
-			value: function (_removePixelate) {
-				function removePixelate() {
-					return _removePixelate.apply(this, arguments);
-				}
-	
-				removePixelate.toString = function () {
-					return _removePixelate.toString();
-				};
-	
-				return removePixelate;
-			}(function () {
-				console.log(removePixelate);
+			value: function removePixelate() {
 				this.filtersActives[this.ID_PIXELATE] = false;
 				this.updateFilters();
-			})
+			}
 		}, {
 			key: 'addPixelate',
 			value: function addPixelate() {
+				return;
 				this.filtersActives[this.ID_PIXELATE] = true;
 				this.updateFilters();
 			}
@@ -30339,6 +28864,7 @@
 		}, {
 			key: 'addShockwave',
 			value: function addShockwave(x, y, time, delay) {
+				return;
 				this.filtersActives[this.ID_SHOCKWAVE] = true;
 				this.updateFilters();
 				this.shockwave.time = 0;
@@ -30362,6 +28888,7 @@
 		}, {
 			key: 'fadeSplitter',
 			value: function fadeSplitter(endValue, time, delay) {
+				endValue *= 0;
 				// this.addRGBSplitter();
 				_gsap2.default.killTweensOf(this.rgpSplit.red);
 				_gsap2.default.killTweensOf(this.rgpSplit.green);
@@ -30390,19 +28917,22 @@
 				var timelineSplitRed = new TimelineLite();
 				var timelineSplitGreen = new TimelineLite();
 				var timelineSplitBlue = new TimelineLite();
-				var spliterForce = force * 20;
+				var spliterForce = force * 2;
+				spliterForce = Math.min(spliterForce, 1);
 				var speed = time / steps;
 				for (var i = steps; i >= 0; i--) {
 					timelineSplitRed.append(_gsap2.default.to(this.rgpSplit.red, speed, { x: Math.random() * spliterForce - spliterForce / 2, y: Math.random() * spliterForce - spliterForce / 2, ease: "easeNoneLinear" }));
 					timelineSplitGreen.append(_gsap2.default.to(this.rgpSplit.green, speed, { x: Math.random() * spliterForce - spliterForce / 2, y: Math.random() * spliterForce - spliterForce / 2, ease: "easeNoneLinear" }));
 					timelineSplitBlue.append(_gsap2.default.to(this.rgpSplit.blue, speed, { x: Math.random() * spliterForce - spliterForce / 2, y: Math.random() * spliterForce - spliterForce / 2, ease: "easeNoneLinear" }));
 				};
-				timelineSplitRed.append(_gsap2.default.to(this.rgpSplit.red, speed, { x: 1, y: 1, ease: "easeNoneLinear" }));
-				timelineSplitGreen.append(_gsap2.default.to(this.rgpSplit.green, speed, { x: -1, y: -1, ease: "easeNoneLinear" }));
+	
+				var dist = 0.5;
+				timelineSplitRed.append(_gsap2.default.to(this.rgpSplit.red, speed, { x: dist, y: dist, ease: "easeNoneLinear" }));
+				timelineSplitGreen.append(_gsap2.default.to(this.rgpSplit.green, speed, { x: -dist, y: -dist, ease: "easeNoneLinear" }));
 				if (removeAfter) {
-					timelineSplitBlue.append(_gsap2.default.to(this.rgpSplit.blue, speed, { x: 1, y: -1, ease: "easeNoneLinear", onComplete: this.removeRGBSplitter, onCompleteScope: this }));
+					timelineSplitBlue.append(_gsap2.default.to(this.rgpSplit.blue, speed, { x: dist, y: -dist, ease: "easeNoneLinear", onComplete: this.removeRGBSplitter, onCompleteScope: this }));
 				} else {
-					timelineSplitBlue.append(_gsap2.default.to(this.rgpSplit.blue, speed, { x: 1, y: -1, ease: "easeNoneLinear" }));
+					timelineSplitBlue.append(_gsap2.default.to(this.rgpSplit.blue, speed, { x: dist, y: -dist, ease: "easeNoneLinear" }));
 				}
 			}
 		}, {
@@ -30421,7 +28951,7 @@
 					time = 1;
 				}
 				var timelinePosition = new TimelineLite();
-				var positionForce = force * 50;
+				var positionForce = force * 20;
 				var spliterForce = force * 20;
 				var speed = time / steps;
 				for (var i = steps; i >= 0; i--) {
@@ -30446,7 +28976,7 @@
 					time = 1;
 				}
 				var timelinePosition = new TimelineLite();
-				var positionForce = force * 50;
+				var positionForce = force * 20;
 				var spliterForce = force * 20;
 				var speed = time / steps;
 				for (var i = steps; i >= 0; i--) {
@@ -30471,7 +29001,7 @@
 					time = 1;
 				}
 				var timelinePosition = new TimelineLite();
-				var positionForce = force * 50;
+				var positionForce = force * 20;
 				var spliterForce = force * 20;
 				var speed = time / steps;
 				for (var i = steps; i >= 0; i--) {
@@ -30507,7 +29037,7 @@
 		}, {
 			key: 'update',
 			value: function update(delta) {
-				this.blackShape.alpha = Math.random() * 0.3;
+				this.blackShape.alpha = 0; //Math.random() * 0.3;
 				this.glitch1.tilePosition.y += 1;
 			}
 		}]);
@@ -30517,18 +29047,18 @@
 	
 	exports.default = EffectLayer;
 
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
-	 * VERSION: 1.18.5
-	 * DATE: 2016-05-24
+	 * VERSION: 1.20.5
+	 * DATE: 2018-05-21
 	 * UPDATES AND DOCS AT: http://greensock.com
 	 * 
 	 * Includes all of the following: TweenLite, TweenMax, TimelineLite, TimelineMax, EasePack, CSSPlugin, RoundPropsPlugin, BezierPlugin, AttrPlugin, DirectionalRotationPlugin
 	 *
-	 * @license Copyright (c) 2008-2016, GreenSock. All rights reserved.
+	 * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
 	 * This work is subject to the terms at http://greensock.com/standard-license or for
 	 * Club GreenSock members, the software agreement that was issued with your membership.
 	 * 
@@ -30553,17 +29083,19 @@
 						p, val;
 					for (p in alt) {
 						val = alt[p];
-						vars[p] = (typeof(val) === "function") ? val.call(targets[i], i) : val[i % val.length];
+						vars[p] = (typeof(val) === "function") ? val(i, targets[i]) : val[i % val.length];
 					}
 					delete vars.cycle;
 				},
 				TweenMax = function(target, duration, vars) {
 					TweenLite.call(this, target, duration, vars);
 					this._cycle = 0;
-					this._yoyo = (this.vars.yoyo === true);
+					this._yoyo = (this.vars.yoyo === true || !!this.vars.yoyoEase);
 					this._repeat = this.vars.repeat || 0;
 					this._repeatDelay = this.vars.repeatDelay || 0;
-					this._dirty = true; //ensures that if there is any repeat, the totalDuration will get recalculated to accurately report it.
+					if (this._repeat) {
+						this._uncache(true); //ensures that if there is any repeat, the totalDuration will get recalculated to accurately report it.
+					}
 					this.render = TweenMax.prototype.render; //speed optimization (avoid prototype lookup on this "hot" method)
 				},
 				_tinyNum = 0.0000000001,
@@ -30573,7 +29105,7 @@
 				p = TweenMax.prototype = TweenLite.to({}, 0.1, {}),
 				_blankArray = [];
 	
-			TweenMax.version = "1.18.5";
+			TweenMax.version = "1.20.5";
 			p.constructor = TweenMax;
 			p.kill()._gc = false;
 			TweenMax.killTweensOf = TweenMax.killDelayedCallsTo = TweenLite.killTweensOf;
@@ -30583,9 +29115,10 @@
 			TweenMax.render = TweenLite.render;
 	
 			p.invalidate = function() {
-				this._yoyo = (this.vars.yoyo === true);
+				this._yoyo = (this.vars.yoyo === true || !!this.vars.yoyoEase);
 				this._repeat = this.vars.repeat || 0;
 				this._repeatDelay = this.vars.repeatDelay || 0;
+				this._yoyoEase = null;
 				this._uncache(true);
 				return TweenLite.prototype.invalidate.call(this);
 			};
@@ -30653,8 +29186,8 @@
 					prevCycle = this._cycle,
 					duration = this._duration,
 					prevRawPrevTime = this._rawPrevTime,
-					isComplete, callback, pt, cycleDuration, r, type, pow, rawPrevTime;
-				if (time >= totalDur - 0.0000001) { //to work around occasional floating point math artifacts.
+					isComplete, callback, pt, cycleDuration, r, type, pow, rawPrevTime, yoyoEase;
+				if (time >= totalDur - 0.0000001 && time >= 0) { //to work around occasional floating point math artifacts.
 					this._totalTime = totalDur;
 					this._cycle = this._repeat;
 					if (this._yoyo && (this._cycle & 1) !== 0) {
@@ -30712,6 +29245,18 @@
 						this._time = this._totalTime - (this._cycle * cycleDuration);
 						if (this._yoyo) if ((this._cycle & 1) !== 0) {
 							this._time = duration - this._time;
+							yoyoEase = this._yoyoEase || this.vars.yoyoEase; //note: we don't set this._yoyoEase in _init() like we do other properties because it's TweenMax-specific and doing it here allows us to optimize performance (most tweens don't have a yoyoEase). Note that we also must skip the this.ratio calculation further down right after we _init() in this function, because we're doing it here.
+							if (yoyoEase) {
+								if (!this._yoyoEase) {
+									if (yoyoEase === true && !this._initted) { //if it's not initted and yoyoEase is true, this._ease won't have been populated yet so we must discern it here.
+										yoyoEase = this.vars.ease;
+										this._yoyoEase = yoyoEase = !yoyoEase ? TweenLite.defaultEase : (yoyoEase instanceof Ease) ? yoyoEase : (typeof(yoyoEase) === "function") ? new Ease(yoyoEase, this.vars.easeParams) : Ease.map[yoyoEase] || TweenLite.defaultEase;
+									} else {
+										this._yoyoEase = yoyoEase = (yoyoEase === true) ? this._ease : (yoyoEase instanceof Ease) ? yoyoEase : Ease.map[yoyoEase];
+									}
+								}
+								this.ratio = yoyoEase ? 1 - yoyoEase.getRatio((duration - this._time) / duration) : 0;
+							}
 						}
 						if (this._time > duration) {
 							this._time = duration;
@@ -30719,8 +29264,7 @@
 							this._time = 0;
 						}
 					}
-	
-					if (this._easeType) {
+					if (this._easeType && !yoyoEase) {
 						r = this._time / duration;
 						type = this._easeType;
 						pow = this._easePower;
@@ -30750,7 +29294,7 @@
 							this.ratio = 1 - (r / 2);
 						}
 	
-					} else {
+					} else if (!yoyoEase) {
 						this.ratio = this._ease.getRatio(this._time / duration);
 					}
 					
@@ -30775,9 +29319,9 @@
 						return;
 					}
 					//_ease is initially set to defaultEase, so now that init() has run, _ease is set properly and we need to recalculate the ratio. Overall this is faster than using conditional logic earlier in the method to avoid having to set ratio twice because we only init() once but renderTime() gets called VERY frequently.
-					if (this._time && !isComplete) {
+					if (this._time && !isComplete && !yoyoEase) {
 						this.ratio = this._ease.getRatio(this._time / duration);
-					} else if (isComplete && this._ease._calcEnd) {
+					} else if (isComplete && this._ease._calcEnd && !yoyoEase) {
 						this.ratio = this._ease.getRatio((this._time === 0) ? 0 : 1);
 					}
 				}
@@ -30795,7 +29339,7 @@
 					}
 					if (this._startAt) {
 						if (time >= 0) {
-							this._startAt.render(time, suppressEvents, force);
+							this._startAt.render(time, true, force);
 						} else if (!callback) {
 							callback = "_dummyGS"; //if no callback is defined, use a dummy value just so that the condition at the end evaluates as true because _startAt should render AFTER the normal render loop when the time is negative. We could handle this in a more intuitive way, of course, but the render loop is the MOST important thing to optimize, so this technique allows us to avoid adding extra conditional logic in a high-frequency area.
 						}
@@ -30817,7 +29361,7 @@
 				
 				if (this._onUpdate) {
 					if (time < 0) if (this._startAt && this._startTime) { //if the tween is positioned at the VERY beginning (_startTime 0) of its parent timeline, it's illegal for the playhead to go back further, so we should not render the recorded startAt values.
-						this._startAt.render(time, suppressEvents, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
+						this._startAt.render(time, true, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
 					}
 					if (!suppressEvents) if (this._totalTime !== prevTotalTime || callback) {
 						this._callback("onUpdate");
@@ -30828,7 +29372,7 @@
 				}
 				if (callback) if (!this._gc || force) { //check gc because there's a chance that kill() could be called in an onUpdate
 					if (time < 0 && this._startAt && !this._onUpdate && this._startTime) { //if the tween is positioned at the VERY beginning (_startTime 0) of its parent timeline, it's illegal for the playhead to go back further, so we should not render the recorded startAt values.
-						this._startAt.render(time, suppressEvents, force);
+						this._startAt.render(time, true, force);
 					}
 					if (isComplete) {
 						if (this._timeline.autoRemoveChildren) {
@@ -31196,7 +29740,7 @@
 						p, val;
 					for (p in alt) {
 						val = alt[p];
-						vars[p] = (typeof(val) === "function") ? val.call(targets[i], i) : val[i % val.length];
+						vars[p] = (typeof(val) === "function") ? val(i, targets[i]) : val[i % val.length];
 					}
 					delete vars.cycle;
 				},
@@ -31210,7 +29754,7 @@
 				},
 				p = TimelineLite.prototype = new SimpleTimeline();
 	
-			TimelineLite.version = "1.18.5";
+			TimelineLite.version = "1.20.4";
 			p.constructor = TimelineLite;
 			p.kill()._gc = p._forcingPlayhead = p._hasPause = false;
 	
@@ -31318,7 +29862,7 @@
 				}
 				var tl = new TimelineLite(vars),
 					root = tl._timeline,
-					tween, next;
+					hasNegativeStart, time,	tween, next;
 				if (ignoreDelayedCalls == null) {
 					ignoreDelayedCalls = true;
 				}
@@ -31329,11 +29873,18 @@
 				while (tween) {
 					next = tween._next;
 					if (!ignoreDelayedCalls || !(tween instanceof TweenLite && tween.target === tween.vars.onComplete)) {
-						tl.add(tween, tween._startTime - tween._delay);
+						time = tween._startTime - tween._delay;
+						if (time < 0) {
+							hasNegativeStart = 1;
+						}
+						tl.add(tween, time);
 					}
 					tween = next;
 				}
 				root.add(tl, 0);
+				if (hasNegativeStart) { //calling totalDuration() will force the adjustment necessary to shift the children forward so none of them start before zero, and moves the timeline backwards the same amount, so the playhead is still aligned where it should be globally, but the timeline doesn't have illegal children that start before zero.
+					tl.totalDuration();
+				}
 				return tl;
 			};
 	
@@ -31373,6 +29924,10 @@
 				}
 	
 				SimpleTimeline.prototype.add.call(this, value, position);
+	
+				if (value._time) { //in case, for example, the _startTime is moved on a tween that has already rendered. Imagine it's at its end state, then the startTime is moved WAY later (after the end of this timeline), it should render at its beginning.
+					value.render((this.rawTime() - value._startTime) * value._timeScale, false, false);
+				}
 	
 				//if the timeline has already ended but the inserted tween/timeline extends the duration, we should enable this timeline again so that it renders properly. We should also align the playhead with the parent timeline's when appropriate.
 				if (this._gc || this._time === this._duration) if (!this._paused) if (this._duration < this.duration()) {
@@ -31415,8 +29970,8 @@
 				var last = this._last;
 				if (!last) {
 					this._time = this._totalTime = this._duration = this._totalDuration = 0;
-				} else if (this._time > last._startTime + last._totalDuration / last._timeScale) {
-					this._time = this.duration();
+				} else if (this._time > this.duration()) {
+					this._time = this._duration;
 					this._totalTime = this._totalDuration;
 				}
 				return this;
@@ -31457,7 +30012,7 @@
 			};
 	
 			p._parseTimeOrLabel = function(timeOrLabel, offsetOrLabel, appendIfAbsent, ignore) {
-				var i;
+				var clippedDuration, i;
 				//if we're about to add a tween/timeline (or an array of them) that's already a child of this timeline, we should remove it first so that it doesn't contaminate the duration().
 				if (ignore instanceof Animation && ignore.timeline === this) {
 					this.remove(ignore);
@@ -31469,22 +30024,23 @@
 						}
 					}
 				}
+				clippedDuration = (typeof(timeOrLabel) === "number" && !offsetOrLabel) ? 0 : (this.duration() > 99999999999) ? this.recent().endTime(false) : this._duration; //in case there's a child that infinitely repeats, users almost never intend for the insertion point of a new child to be based on a SUPER long value like that so we clip it and assume the most recently-added child's endTime should be used instead.
 				if (typeof(offsetOrLabel) === "string") {
-					return this._parseTimeOrLabel(offsetOrLabel, (appendIfAbsent && typeof(timeOrLabel) === "number" && this._labels[offsetOrLabel] == null) ? timeOrLabel - this.duration() : 0, appendIfAbsent);
+					return this._parseTimeOrLabel(offsetOrLabel, (appendIfAbsent && typeof(timeOrLabel) === "number" && this._labels[offsetOrLabel] == null) ? timeOrLabel - clippedDuration : 0, appendIfAbsent);
 				}
 				offsetOrLabel = offsetOrLabel || 0;
 				if (typeof(timeOrLabel) === "string" && (isNaN(timeOrLabel) || this._labels[timeOrLabel] != null)) { //if the string is a number like "1", check to see if there's a label with that name, otherwise interpret it as a number (absolute value).
 					i = timeOrLabel.indexOf("=");
 					if (i === -1) {
 						if (this._labels[timeOrLabel] == null) {
-							return appendIfAbsent ? (this._labels[timeOrLabel] = this.duration() + offsetOrLabel) : offsetOrLabel;
+							return appendIfAbsent ? (this._labels[timeOrLabel] = clippedDuration + offsetOrLabel) : offsetOrLabel;
 						}
 						return this._labels[timeOrLabel] + offsetOrLabel;
 					}
 					offsetOrLabel = parseInt(timeOrLabel.charAt(i-1) + "1", 10) * Number(timeOrLabel.substr(i+1));
-					timeOrLabel = (i > 1) ? this._parseTimeOrLabel(timeOrLabel.substr(0, i-1), 0, appendIfAbsent) : this.duration();
+					timeOrLabel = (i > 1) ? this._parseTimeOrLabel(timeOrLabel.substr(0, i-1), 0, appendIfAbsent) : clippedDuration;
 				} else if (timeOrLabel == null) {
-					timeOrLabel = this.duration();
+					timeOrLabel = clippedDuration;
 				}
 				return Number(timeOrLabel) + offsetOrLabel;
 			};
@@ -31509,13 +30065,16 @@
 				if (this._gc) {
 					this._enabled(true, false);
 				}
-				var totalDur = (!this._dirty) ? this._totalDuration : this.totalDuration(),
-					prevTime = this._time,
+				var prevTime = this._time,
+					totalDur = (!this._dirty) ? this._totalDuration : this.totalDuration(),
 					prevStart = this._startTime,
 					prevTimeScale = this._timeScale,
 					prevPaused = this._paused,
 					tween, isComplete, next, callback, internalForce, pauseTween, curTime;
-				if (time >= totalDur - 0.0000001) { //to work around occasional floating point math artifacts.
+				if (prevTime !== this._time) { //if totalDuration() finds a child with a negative startTime and smoothChildTiming is true, things get shifted around internally so we need to adjust the time accordingly. For example, if a tween starts at -30 we must shift EVERYTHING forward 30 seconds and move this timeline's startTime backward by 30 seconds so that things align with the playhead (no jump).
+					time += this._time - prevTime;
+				}
+				if (time >= totalDur - 0.0000001 && time >= 0) { //to work around occasional floating point math artifacts.
 					this._totalTime = this._time = totalDur;
 					if (!this._reversed) if (!this._hasPausedChild()) {
 						isComplete = true;
@@ -31847,8 +30406,10 @@
 							if (tween._dirty) {
 								tween.totalDuration(); //could change the tween._startTime, so make sure the tween's cache is clean before analyzing it.
 							}
-							if (tween._startTime > prevStart && this._sortChildren && !tween._paused) { //in case one of the tweens shifted out of order, it needs to be re-inserted into the correct position in the sequence
+							if (tween._startTime > prevStart && this._sortChildren && !tween._paused && !this._calculatingDuration) { //in case one of the tweens shifted out of order, it needs to be re-inserted into the correct position in the sequence
+								this._calculatingDuration = 1; //prevent endless recursive calls - there are methods that get triggered that check duration/totalDuration when we add(), like _parseTimeOrLabel().
 								this.add(tween, tween._startTime - tween._delay);
+								this._calculatingDuration = 0;
 							} else {
 								prevStart = tween._startTime;
 							}
@@ -31856,6 +30417,9 @@
 								max -= tween._startTime;
 								if (this._timeline.smoothChildTiming) {
 									this._startTime += tween._startTime / this._timeScale;
+									this._time -= tween._startTime;
+									this._totalTime -= tween._startTime;
+									this._rawPrevTime -= tween._startTime;
 								}
 								this.shiftChildren(-tween._startTime, false, -9999999999);
 								prevStart = 0;
@@ -31896,8 +30460,8 @@
 				return (tl === Animation._rootFramesTimeline);
 			};
 	
-			p.rawTime = function() {
-				return this._paused ? this._totalTime : (this._timeline.rawTime() - this._startTime) * this._timeScale;
+			p.rawTime = function(wrapRepeats) {
+				return (wrapRepeats && (this._paused || (this._repeat && this.time() > 0 && this.totalProgress() < 1))) ? this._totalTime % (this._duration + this._repeatDelay) : this._paused ? this._totalTime : (this._timeline.rawTime(wrapRepeats) - this._startTime) * this._timeScale;
 			};
 	
 			return TimelineLite;
@@ -31935,12 +30499,13 @@
 				TweenLiteInternals = TweenLite._internals,
 				_lazyTweens = TweenLiteInternals.lazyTweens,
 				_lazyRender = TweenLiteInternals.lazyRender,
+				_globals = _gsScope._gsDefine.globals,
 				_easeNone = new Ease(null, null, 1, 0),
 				p = TimelineMax.prototype = new TimelineLite();
 	
 			p.constructor = TimelineMax;
 			p.kill()._gc = false;
-			TimelineMax.version = "1.18.5";
+			TimelineMax.version = "1.20.4";
 	
 			p.invalidate = function() {
 				this._yoyo = (this.vars.yoyo === true);
@@ -31978,21 +30543,22 @@
 	
 			p.tweenTo = function(position, vars) {
 				vars = vars || {};
-				var copy = {ease:_easeNone, useFrames:this.usesFrames(), immediateRender:false},
+				var copy = {ease:_easeNone, useFrames:this.usesFrames(), immediateRender:false, lazy:false},
+					Engine = (vars.repeat && _globals.TweenMax) || TweenLite,
 					duration, p, t;
 				for (p in vars) {
 					copy[p] = vars[p];
 				}
 				copy.time = this._parseTimeOrLabel(position);
 				duration = (Math.abs(Number(copy.time) - this._time) / this._timeScale) || 0.001;
-				t = new TweenLite(this, duration, copy);
+				t = new Engine(this, duration, copy);
 				copy.onStart = function() {
 					t.target.paused(true);
-					if (t.vars.time !== t.target.time() && duration === t.duration()) { //don't make the duration zero - if it's supposed to be zero, don't worry because it's already initting the tween and will complete immediately, effectively making the duration zero anyway. If we make duration zero, the tween won't run at all.
-						t.duration( Math.abs( t.vars.time - t.target.time()) / t.target._timeScale );
+					if (t.vars.time !== t.target.time() && duration === t.duration() && !t.isFromTo) { //don't make the duration zero - if it's supposed to be zero, don't worry because it's already initting the tween and will complete immediately, effectively making the duration zero anyway. If we make duration zero, the tween won't run at all.
+						t.duration( Math.abs( t.vars.time - t.target.time()) / t.target._timeScale ).render(t.time(), true, true); //render() right away to ensure that things look right, especially in the case of .tweenTo(0).
 					}
 					if (vars.onStart) { //in case the user had an onStart in the vars - we don't want to overwrite it.
-						t._callback("onStart");
+						vars.onStart.apply(vars.onStartScope || vars.callbackScope || t, vars.onStartParams || []); //don't use t._callback("onStart") or it'll point to the copy.onStart and we'll get a recursion error.
 					}
 				};
 				return t;
@@ -32004,6 +30570,7 @@
 				vars.startAt = {onComplete:this.seek, onCompleteParams:[fromPosition], callbackScope:this};
 				vars.immediateRender = (vars.immediateRender !== false);
 				var t = this.tweenTo(toPosition, vars);
+				t.isFromTo = 1; //to ensure we don't mess with the duration in the onStart (we've got the start and end values here, so lock it in)
 				return t.duration((Math.abs( t.vars.time - fromPosition) / this._timeScale) || 0.001);
 			};
 	
@@ -32011,9 +30578,9 @@
 				if (this._gc) {
 					this._enabled(true, false);
 				}
-				var totalDur = (!this._dirty) ? this._totalDuration : this.totalDuration(),
+				var prevTime = this._time,
+					totalDur = (!this._dirty) ? this._totalDuration : this.totalDuration(),
 					dur = this._duration,
-					prevTime = this._time,
 					prevTotalTime = this._totalTime,
 					prevStart = this._startTime,
 					prevTimeScale = this._timeScale,
@@ -32021,7 +30588,10 @@
 					prevPaused = this._paused,
 					prevCycle = this._cycle,
 					tween, isComplete, next, callback, internalForce, cycleDuration, pauseTween, curTime;
-				if (time >= totalDur - 0.0000001) { //to work around occasional floating point math artifacts.
+				if (prevTime !== this._time) { //if totalDuration() finds a child with a negative startTime and smoothChildTiming is true, things get shifted around internally so we need to adjust the time accordingly. For example, if a tween starts at -30 we must shift EVERYTHING forward 30 seconds and move this timeline's startTime backward by 30 seconds so that things align with the playhead (no jump).
+					time += this._time - prevTime;
+				}
+				if (time >= totalDur - 0.0000001 && time >= 0) { //to work around occasional floating point math artifacts.
 					if (!this._locked) {
 						this._totalTime = totalDur;
 						this._cycle = this._repeat;
@@ -32110,7 +30680,7 @@
 	
 					if (this._hasPause && !this._forcingPlayhead && !suppressEvents) {
 						time = this._time;
-						if (time >= prevTime) {
+						if (time >= prevTime || (this._repeat && prevCycle !== this._cycle)) {
 							tween = this._first;
 							while (tween && tween._startTime <= time && !pauseTween) {
 								if (!tween._duration) if (tween.data === "isPause" && !tween.ratio && !(tween._startTime === 0 && this._rawPrevTime === 0)) {
@@ -32127,7 +30697,7 @@
 								tween = tween._prev;
 							}
 						}
-						if (pauseTween) {
+						if (pauseTween && pauseTween._startTime < dur) {
 							this._time = time = pauseTween._startTime;
 							this._totalTime = time + (this._cycle * (this._totalDuration + this._repeatDelay));
 						}
@@ -32166,6 +30736,8 @@
 					this.render(prevTime, suppressEvents, (dur === 0));
 					if (!suppressEvents) if (!this._gc) {
 						if (this.vars.onRepeat) {
+							this._cycle = recCycle; //in case the onRepeat alters the playhead or invalidates(), we shouldn't stay locked or use the previous cycle.
+							this._locked = false;
 							this._callback("onRepeat");
 						}
 					}
@@ -32173,6 +30745,8 @@
 						return;
 					}
 					if (wrap) {
+						this._cycle = prevCycle; //if there's an onRepeat, we reverted this above, so make sure it's set properly again. We also unlocked in that scenario, so reset that too.
+						this._locked = true;
 						prevTime = (backwards) ? dur + 0.0001 : -0.0001;
 						this.render(prevTime, true, false);
 					}
@@ -32337,15 +30911,20 @@
 				return a;
 			};
 	
+			p.invalidate = function() {
+				this._locked = false; //unlock and set cycle in case invalidate() is called from inside an onRepeat
+				return TimelineLite.prototype.invalidate.call(this);
+			};
+	
 	
 	//---- GETTERS / SETTERS -------------------------------------------------------------------------------------------------------
 	
 			p.progress = function(value, suppressEvents) {
-				return (!arguments.length) ? this._time / this.duration() : this.totalTime( this.duration() * ((this._yoyo && (this._cycle & 1) !== 0) ? 1 - value : value) + (this._cycle * (this._duration + this._repeatDelay)), suppressEvents);
+				return (!arguments.length) ? (this._time / this.duration()) || 0 : this.totalTime( this.duration() * ((this._yoyo && (this._cycle & 1) !== 0) ? 1 - value : value) + (this._cycle * (this._duration + this._repeatDelay)), suppressEvents);
 			};
 	
 			p.totalProgress = function(value, suppressEvents) {
-				return (!arguments.length) ? this._totalTime / this.totalDuration() : this.totalTime( this.totalDuration() * value, suppressEvents);
+				return (!arguments.length) ? (this._totalTime / this.totalDuration()) || 0 : this.totalTime( this.totalDuration() * value, suppressEvents);
 			};
 	
 			p.totalDuration = function(value) {
@@ -32422,7 +31001,7 @@
 		
 		
 		
-		
+	
 		
 	/*
 	 * ----------------------------------------------------------------
@@ -32545,7 +31124,7 @@
 					}
 					l = values.length - 2;
 					if (l < 0) {
-						a[0] = new Segment(values[0][p], 0, 0, values[(l < -1) ? 0 : 1][p]);
+						a[0] = new Segment(values[0][p], 0, 0, values[0][p]);
 						return a;
 					}
 					for (i = 0; i < l; i++) {
@@ -32731,7 +31310,7 @@
 				BezierPlugin = _gsScope._gsDefine.plugin({
 						propName: "bezier",
 						priority: -1,
-						version: "1.3.6",
+						version: "1.3.8",
 						API: 2,
 						global:true,
 	
@@ -32742,7 +31321,7 @@
 								vars = {values:vars};
 							}
 							this._func = {};
-							this._round = {};
+							this._mod = {};
 							this._props = [];
 							this._timeRes = (vars.timeResolution == null) ? 6 : parseInt(vars.timeResolution, 10);
 							var values = vars.values || [],
@@ -32795,6 +31374,7 @@
 									}
 									p = autoRotate[i][2];
 									this._initialRotations[i] = (this._func[p] ? this._func[p].call(this._target) : this._target[p]) || 0;
+									this._overwriteProps.push(p);
 								}
 							}
 							this._startRatio = tween.vars.runBackwards ? 1 : 0; //we determine the starting ratio when the tween inits which is always 0 unless the tween has runBackwards:true (indicating it's a from() tween) in which case it's 1.
@@ -32865,8 +31445,8 @@
 								p = this._props[i];
 								b = this._beziers[p][curIndex];
 								val = (t * t * b.da + 3 * inv * (t * b.ca + inv * b.ba)) * t + b.a;
-								if (this._round[p]) {
-									val = Math.round(val);
+								if (this._mod[p]) {
+									val = this._mod[p](val, target);
 								}
 								if (func[p]) {
 									target[p](val);
@@ -32901,6 +31481,10 @@
 										y2 += ((b2.c + (b2.d - b2.c) * t) - y2) * t;
 	
 										val = notStart ? Math.atan2(y2 - y1, x2 - x1) * conv + add : this._initialRotations[i];
+	
+										if (this._mod[p]) {
+											val = this._mod[p](val, target); //for modProps
+										}
 	
 										if (func[p]) {
 											target[p](val);
@@ -32969,18 +31553,21 @@
 						}
 						data.autoRotate = cssp._target._gsTransform;
 						data.proxy.rotation = data.autoRotate.rotation || 0;
+						cssp._overwriteProps.push("rotation");
 					}
 					plugin._onInitTween(data.proxy, v, cssp._tween);
 					return pt;
 				}});
 			};
 	
-			p._roundProps = function(lookup, value) {
+			p._mod = function(lookup) {
 				var op = this._overwriteProps,
-					i = op.length;
+					i = op.length,
+					val;
 				while (--i > -1) {
-					if (lookup[op[i]] || lookup.bezier || lookup.bezierThrough) {
-						this._round[op[i]] = value;
+					val = lookup[op[i]];
+					if (val && typeof(val) === "function") {
+						this._mod[op[i]] = val;
 					}
 				}
 			};
@@ -32997,6 +31584,15 @@
 							if (a[i] === p) {
 								a.splice(i, 1);
 							}
+						}
+					}
+				}
+				a = this._autoRotate;
+				if (a) {
+					i = a.length;
+					while (--i > -1) {
+						if (lookup[a[i][2]]) {
+							a.splice(i, 1);
 						}
 					}
 				}
@@ -33040,7 +31636,7 @@
 				p = CSSPlugin.prototype = new TweenPlugin("css");
 	
 			p.constructor = CSSPlugin;
-			CSSPlugin.version = "1.18.5";
+			CSSPlugin.version = "1.20.5";
 			CSSPlugin.API = 2;
 			CSSPlugin.defaultTransformPerspective = 0;
 			CSSPlugin.defaultSkewType = "compensated";
@@ -33070,14 +31666,15 @@
 				_DEG2RAD = Math.PI / 180,
 				_RAD2DEG = 180 / Math.PI,
 				_forcePT = {},
-				_doc = document,
-				_createElement = function(type) {
-					return _doc.createElementNS ? _doc.createElementNS("http://www.w3.org/1999/xhtml", type) : _doc.createElement(type);
+				_dummyElement = {style:{}},
+				_doc = _gsScope.document || {createElement: function() {return _dummyElement;}},
+				_createElement = function(type, ns) {
+					return _doc.createElementNS ? _doc.createElementNS(ns || "http://www.w3.org/1999/xhtml", type) : _doc.createElement(type);
 				},
 				_tempDiv = _createElement("div"),
 				_tempImg = _createElement("img"),
 				_internals = CSSPlugin._internals = {_specialProps:_specialProps}, //provides a hook to a few internal methods that we need to access from inside other plugins
-				_agent = navigator.userAgent,
+				_agent = (_gsScope.navigator || {}).userAgent || "",
 				_autoRound,
 				_reqSafariFix, //we won't apply the Safari transform fix until we actually come across a tween that affects a transform property (to maintain best performance).
 	
@@ -33088,8 +31685,8 @@
 				_supportsOpacity = (function() { //we set _isSafari, _ieVers, _isFirefox, and _supportsOpacity all in one function here to reduce file size slightly, especially in the minified version.
 					var i = _agent.indexOf("Android"),
 						a = _createElement("a");
-					_isSafari = (_agent.indexOf("Safari") !== -1 && _agent.indexOf("Chrome") === -1 && (i === -1 || Number(_agent.substr(i+8, 1)) > 3));
-					_isSafariLT6 = (_isSafari && (Number(_agent.substr(_agent.indexOf("Version/")+8, 1)) < 6));
+					_isSafari = (_agent.indexOf("Safari") !== -1 && _agent.indexOf("Chrome") === -1 && (i === -1 || parseFloat(_agent.substr(i+8, 2)) > 3));
+					_isSafariLT6 = (_isSafari && (parseFloat(_agent.substr(_agent.indexOf("Version/")+8, 2)) < 6));
 					_isFirefox = (_agent.indexOf("Firefox") !== -1);
 					if ((/MSIE ([0-9]{1,}[\.0-9]{0,})/).exec(_agent) || (/Trident\/.*rv:([0-9]{1,}[\.0-9]{0,})/).exec(_agent)) {
 						_ieVers = parseFloat( RegExp.$1 );
@@ -33104,10 +31701,12 @@
 					return (_opacityExp.test( ((typeof(v) === "string") ? v : (v.currentStyle ? v.currentStyle.filter : v.style.filter) || "") ) ? ( parseFloat( RegExp.$1 ) / 100 ) : 1);
 				},
 				_log = function(s) {//for logging messages, but in a way that won't throw errors in old versions of IE.
-					if (window.console) {
+					if (_gsScope.console) {
 						console.log(s);
 					}
 				},
+				_target, //when initting a CSSPlugin, we set this variable so that we can access it from within many other functions without having to pass it around as params
+				_index, //when initting a CSSPlugin, we set this variable so that we can access it from within many other functions without having to pass it around as params
 	
 				_prefixCSS = "", //the non-camelCase vendor prefix like "-o-", "-moz-", "-ms-", or "-webkit-"
 				_prefix = "", //camelCase vendor prefix like "O", "ms", "Webkit", or "Moz".
@@ -33132,7 +31731,7 @@
 					return null;
 				},
 	
-				_getComputedStyle = _doc.defaultView ? _doc.defaultView.getComputedStyle : function() {},
+				_getComputedStyle = (typeof(window) !== "undefined" ? window : _doc.defaultView || {getComputedStyle:function() {}}).getComputedStyle,
 	
 				/**
 				 * @private Returns the css style for a particular property of an element. For example, to get whatever the current "left" css value for an element with an ID of "myElement", you could do:
@@ -33170,7 +31769,7 @@
 				 * @return {number} value in pixels
 				 */
 				_convertToPixels = _internals.convertToPixels = function(t, p, v, sfx, recurse) {
-					if (sfx === "px" || !sfx) { return v; }
+					if (sfx === "px" || (!sfx && p !== "lineHeight")) { return v; }
 					if (sfx === "auto" || !v) { return 0; }
 					var horiz = _horizExp.test(p),
 						node = t,
@@ -33184,12 +31783,20 @@
 					if (precise) {
 						v *= 100;
 					}
-					if (sfx === "%" && p.indexOf("border") !== -1) {
+					if (p === "lineHeight" && !sfx) { //special case of when a simple lineHeight (without a unit) is used. Set it to the value, read back the computed value, and then revert.
+						cache = _getComputedStyle(t).lineHeight;
+						t.style.lineHeight = v;
+						pix = parseFloat(_getComputedStyle(t).lineHeight);
+						t.style.lineHeight = cache;
+					} else if (sfx === "%" && p.indexOf("border") !== -1) {
 						pix = (v / 100) * (horiz ? t.clientWidth : t.clientHeight);
 					} else {
 						style.cssText = "border:0 solid red;position:" + _getStyle(t, "position") + ";line-height:0;";
 						if (sfx === "%" || !node.appendChild || sfx.charAt(0) === "v" || sfx === "rem") {
 							node = t.parentNode || _doc.body;
+							if (_getStyle(node, "display").indexOf("flex") !== -1) { //Edge and IE11 have a bug that causes offsetWidth to report as 0 if the container has display:flex and the child is position:relative. Switching to position: absolute solves it.
+								style.position = "absolute";
+							}
 							cache = node._gsCache;
 							time = TweenLite.ticker.frame;
 							if (cache && horiz && cache.time === time) { //performance optimization: we record the width of elements along with the ticker frame so that we can quickly get it again on the same tick (seems relatively safe to assume it wouldn't change on the same tick)
@@ -33306,7 +31913,7 @@
 				_getDimension = function(t, p, cs) {
 					if ((t.nodeName + "").toLowerCase() === "svg") { //Chrome no longer supports offsetWidth/offsetHeight on SVG elements.
 						return (cs || _getComputedStyle(t))[p] || 0;
-					} else if (t.getBBox && _isSVG(t)) {
+					} else if (t.getCTM && _isSVG(t)) {
 						return t.getBBox()[p] || 0;
 					}
 					var v = parseFloat((p === "width") ? t.offsetWidth : t.offsetHeight),
@@ -33322,10 +31929,10 @@
 	
 				// @private Parses position-related complex strings like "top left" or "50px 10px" or "70% 20%", etc. which are used for things like transformOrigin or backgroundPosition. Optionally decorates a supplied object (recObj) with the following properties: "ox" (offsetX), "oy" (offsetY), "oxp" (if true, "ox" is a percentage not a pixel value), and "oxy" (if true, "oy" is a percentage not a pixel value)
 				_parsePosition = function(v, recObj) {
-					if (v === "contain" || v === "auto" || v === "auto auto") {
+					if (v === "contain" || v === "auto" || v === "auto auto") { //note: Firefox uses "auto auto" as default whereas Chrome uses "auto".
 						return v + " ";
 					}
-					if (v == null || v === "") { //note: Firefox uses "auto auto" as default whereas Chrome uses "auto".
+					if (v == null || v === "") {
 						v = "0 0";
 					}
 					var a = v.split(" "),
@@ -33368,6 +31975,9 @@
 				 * @return {number} Amount of change between the beginning and ending values (relative values that have a "+=" or "-=" are recognized)
 				 */
 				_parseChange = function(e, b) {
+					if (typeof(e) === "function") {
+						e = e(_index, _target);
+					}
 					return (typeof(e) === "string" && e.charAt(1) === "=") ? parseInt(e.charAt(0) + "1", 10) * parseFloat(e.substr(2)) : (parseFloat(e) - parseFloat(b)) || 0;
 				},
 	
@@ -33378,6 +31988,9 @@
 				 * @return {number} Parsed value
 				 */
 				_parseVal = function(v, d) {
+					if (typeof(v) === "function") {
+						v = v(_index, _target);
+					}
 					return (v == null) ? d : (typeof(v) === "string" && v.charAt(1) === "=") ? parseInt(v.charAt(0) + "1", 10) * parseFloat(v.substr(2)) + d : parseFloat(v) || 0;
 				},
 	
@@ -33392,6 +32005,9 @@
 				_parseAngle = function(v, d, p, directionalEnd) {
 					var min = 0.000001,
 						cap, split, dif, result, isRelative;
+					if (typeof(v) === "function") {
+						v = v(_index, _target);
+					}
 					if (v == null) {
 						result = d;
 					} else if (typeof(v) === "number") {
@@ -33487,7 +32103,7 @@
 								g = (l <= 0.5) ? l * (s + 1) : l + s - l * s;
 								r = l * 2 - g;
 								if (a.length > 3) {
-									a[3] = Number(v[3]);
+									a[3] = Number(a[3]);
 								}
 								a[0] = _hue(h + 1 / 3, r, g);
 								a[1] = _hue(h, r, g);
@@ -33529,8 +32145,11 @@
 				_formatColors = function(s, toHSL) {
 					var colors = s.match(_colorExp) || [],
 						charIndex = 0,
-						parsed = colors.length ? "" : s,
+						parsed = "",
 						i, color, temp;
+					if (!colors.length) {
+						return s;
+					}
 					for (i = 0; i < colors.length; i++) {
 						color = colors[i];
 						temp = s.substr(charIndex, s.indexOf(color, charIndex)-charIndex);
@@ -33551,7 +32170,7 @@
 			_colorExp = new RegExp(_colorExp+")", "gi");
 	
 			CSSPlugin.colorStringFilter = function(a) {
-				var combined = a[0] + a[1],
+				var combined = a[0] + " " + a[1],
 					toHSL;
 				if (_colorExp.test(combined)) {
 					toHSL = (combined.indexOf("hsl(") !== -1 || combined.indexOf("hsla(") !== -1);
@@ -33653,7 +32272,7 @@
 					};
 				},
 	
-				// @private used when other plugins must tween values first, like BezierPlugin or ThrowPropsPlugin, etc. That plugin's setRatio() gets called first so that the values are updated, and then we loop through the MiniPropTweens  which handle copying the values into their appropriate slots so that they can then be applied correctly in the main CSSPlugin setRatio() method. Remember, we typically create a proxy object that has a bunch of uniquely-named properties that we feed to the sub-plugin and it does its magic normally, and then we must interpret those values and apply them to the css because often numbers must get combined/concatenated, suffixes added, etc. to work with css, like boxShadow could have 4 values plus a color.
+				// @private used when other plugins must tween values first, like BezierPlugin or ThrowPropsPlugin, etc. That plugin's setRatio() gets called first so that the values are updated, and then we loop through the MiniPropTweens which handle copying the values into their appropriate slots so that they can then be applied correctly in the main CSSPlugin setRatio() method. Remember, we typically create a proxy object that has a bunch of uniquely-named properties that we feed to the sub-plugin and it does its magic normally, and then we must interpret those values and apply them to the css because often numbers must get combined/concatenated, suffixes added, etc. to work with css, like boxShadow could have 4 values plus a color.
 				_setPluginRatio = _internals._setPluginRatio = function(v) {
 					this.plugin.setRatio(v);
 					var d = this.data,
@@ -33664,7 +32283,7 @@
 					while (mpt) {
 						val = proxy[mpt.v];
 						if (mpt.r) {
-							val = Math.round(val);
+							val = mpt.r(val);
 						} else if (val < min && val > -min) {
 							val = 0;
 						}
@@ -33672,7 +32291,7 @@
 						mpt = mpt._next;
 					}
 					if (d.autoRotate) {
-						d.autoRotate.rotation = proxy.rotation;
+						d.autoRotate.rotation = d.mod ? d.mod.call(this._tween, proxy.rotation, this.t, this._tween) : proxy.rotation; //special case for ModifyPlugin to hook into an auto-rotating bezier
 					}
 					//at the end, we must set the CSSPropTween's "e" (end) value dynamically here because that's what is used in the final setRatio() method. Same for "b" at the beginning.
 					if (v === 1 || v === 0) {
@@ -33807,7 +32426,7 @@
 					if (!(t instanceof CSSPropTween)) {
 						_overwriteProps.push(this.n);
 					}
-					this.r = r; //round (boolean)
+					this.r = !r ? r : (typeof(r) === "function") ? r : Math.round; //round (boolean)
 					this.type = type || 0; //0 = normal tween, -1 = non-tweening (in which case xs0 will be applied to the target's property, like tp.t[tp.p] = tp.xs0), 1 = complex-value SpecialProp, 2 = custom setRatio() that does all the work
 					if (pr) {
 						this.pr = pr;
@@ -33849,6 +32468,9 @@
 				_parseComplex = CSSPlugin.parseComplex = function(t, p, b, e, clrs, dflt, pt, pr, plugin, setRatio) {
 					//DEBUG: _log("parseComplex: "+p+", b: "+b+", e: "+e);
 					b = b || dflt || "";
+					if (typeof(e) === "function") {
+						e = e(_index, _target);
+					}
 					pt = new CSSPropTween(t, p, 0, 0, pt, (setRatio ? 2 : 1), null, false, pr, b, e);
 					e += ""; //ensures it's a string
 					if (clrs && _colorExp.test(e + b)) { //if colors are found, normalize the formatting to rgba() or hsla().
@@ -33863,8 +32485,13 @@
 						autoRound = (_autoRound !== false),
 						i, xi, ni, bv, ev, bnums, enums, bn, hasAlpha, temp, cv, str, useHSL;
 					if (e.indexOf(",") !== -1 || b.indexOf(",") !== -1) {
-						ba = ba.join(" ").replace(_commasOutsideParenExp, ", ").split(" ");
-						ea = ea.join(" ").replace(_commasOutsideParenExp, ", ").split(" ");
+						if ((e + b).indexOf("rgb") !== -1 || (e + b).indexOf("hsl") !== -1) { //keep rgb(), rgba(), hsl(), and hsla() values together! (remember, we're splitting on spaces)
+							ba = ba.join(" ").replace(_commasOutsideParenExp, ", ").split(" ");
+							ea = ea.join(" ").replace(_commasOutsideParenExp, ", ").split(" ");
+						} else {
+							ba = ba.join(" ").split(",").join(", ").split(" ");
+							ea = ea.join(" ").split(",").join(", ").split(" ");
+						}
 						l = ba.length;
 					}
 					if (l !== ea.length) {
@@ -33877,17 +32504,18 @@
 					_colorExp.lastIndex = 0;
 					for (i = 0; i < l; i++) {
 						bv = ba[i];
-						ev = ea[i];
+						ev = ea[i] + "";
 						bn = parseFloat(bv);
 						//if the value begins with a number (most common). It's fine if it has a suffix like px
 						if (bn || bn === 0) {
-							pt.appendXtra("", bn, _parseChange(ev, bn), ev.replace(_relNumExp, ""), (autoRound && ev.indexOf("px") !== -1), true);
+							pt.appendXtra("", bn, _parseChange(ev, bn), ev.replace(_relNumExp, ""), (autoRound && ev.indexOf("px") !== -1) ? Math.round : false, true);
 	
 						//if the value is a color
 						} else if (clrs && _colorExp.test(bv)) {
 							str = ev.indexOf(")") + 1;
 							str = ")" + (str ? ev.substr(str) : ""); //if there's a comma or ) at the end, retain it.
 							useHSL = (ev.indexOf("hsl") !== -1 && _supportsOpacity);
+							temp = ev; //original string value so we can look for any prefix later.
 							bv = _parseColor(bv, useHSL);
 							ev = _parseColor(ev, useHSL);
 							hasAlpha = (bv.length + ev.length > 6);
@@ -33899,13 +32527,13 @@
 									hasAlpha = false;
 								}
 								if (useHSL) {
-									pt.appendXtra((hasAlpha ? "hsla(" : "hsl("), bv[0], _parseChange(ev[0], bv[0]), ",", false, true)
+									pt.appendXtra(temp.substr(0, temp.indexOf("hsl")) + (hasAlpha ? "hsla(" : "hsl("), bv[0], _parseChange(ev[0], bv[0]), ",", false, true)
 										.appendXtra("", bv[1], _parseChange(ev[1], bv[1]), "%,", false)
 										.appendXtra("", bv[2], _parseChange(ev[2], bv[2]), (hasAlpha ? "%," : "%" + str), false);
 								} else {
-									pt.appendXtra((hasAlpha ? "rgba(" : "rgb("), bv[0], ev[0] - bv[0], ",", true, true)
-										.appendXtra("", bv[1], ev[1] - bv[1], ",", true)
-										.appendXtra("", bv[2], ev[2] - bv[2], (hasAlpha ? "," : str), true);
+									pt.appendXtra(temp.substr(0, temp.indexOf("rgb")) + (hasAlpha ? "rgba(" : "rgb("), bv[0], ev[0] - bv[0], ",", Math.round, true)
+										.appendXtra("", bv[1], ev[1] - bv[1], ",", Math.round)
+										.appendXtra("", bv[2], ev[2] - bv[2], (hasAlpha ? "," : str), Math.round);
 								}
 	
 								if (hasAlpha) {
@@ -33933,7 +32561,7 @@
 								for (xi = 0; xi < bnums.length; xi++) {
 									cv = bnums[xi];
 									temp = bv.indexOf(cv, ni);
-									pt.appendXtra(bv.substr(ni, temp - ni), Number(cv), _parseChange(enums[xi], cv), "", (autoRound && bv.substr(temp + cv.length, 2) === "px"), (xi === 0));
+									pt.appendXtra(bv.substr(ni, temp - ni), Number(cv), _parseChange(enums[xi], cv), "", (autoRound && bv.substr(temp + cv.length, 2) === "px") ? Math.round : false, (xi === 0));
 									ni = temp + cv.length;
 								}
 								pt["xs" + pt.l] += bv.substr(ni);
@@ -34054,7 +32682,7 @@
 				},
 	
 				//creates a placeholder special prop for a plugin so that the property gets caught the first time a tween of it is attempted, and at that time it makes the plugin register itself, thus taking over for all future tweens of that property. This allows us to not mandate that things load in a particular order and it also allows us to log() an error that informs the user when they attempt to tween an external plugin-related property without loading its .js file.
-				_registerPluginProp = function(p) {
+				_registerPluginProp = _internals._registerPluginProp = function(p) {
 					if (!_specialProps[p]) {
 						var pluginName = p.charAt(0).toUpperCase() + p.substr(1) + "Plugin";
 						_registerComplexSpecialProp(p, {parser:function(t, e, p, cssp, pt, plugin, vars) {
@@ -34174,7 +32802,7 @@
 	
 	
 			//transform-related methods and properties
-			CSSPlugin.useSVGTransformAttr = _isSafari || _isFirefox; //Safari and Firefox both have some rendering bugs when applying CSS transforms to SVG elements, so default to using the "transform" attribute instead (users can override this).
+			CSSPlugin.useSVGTransformAttr = true; //Safari and Firefox both have some rendering bugs when applying CSS transforms to SVG elements, so default to using the "transform" attribute instead (users can override this).
 			var _transformProps = ("scaleX,scaleY,scaleZ,x,y,z,skewX,skewY,rotation,rotationX,rotationY,perspective,xPercent,yPercent").split(","),
 				_transformProp = _checkPropPrefix("transform"), //the Javascript (camelCase) transform property, like msTransform, WebkitTransform, MozTransform, or OTransform.
 				_transformPropCSS = _prefixCSS + "transform",
@@ -34184,7 +32812,7 @@
 					this.perspective = parseFloat(CSSPlugin.defaultTransformPerspective) || 0;
 					this.force3D = (CSSPlugin.defaultForce3D === false || !_supports3D) ? false : CSSPlugin.defaultForce3D || "auto";
 				},
-				_SVGElement = window.SVGElement,
+				_SVGElement = _gsScope.SVGElement,
 				_useSVGTransformAttr,
 				//Some browsers (like Firefox and IE) don't honor transform-origin properly in SVG elements, so we need to manually adjust the matrix accordingly. We feature detect here rather than always doing the conversion for certain browsers because they may fix the problem at some point in the future.
 	
@@ -34198,10 +32826,10 @@
 					container.appendChild(element);
 					return element;
 				},
-				_docElement = _doc.documentElement,
+				_docElement = _doc.documentElement || {},
 				_forceSVGTransformAttr = (function() {
 					//IE and Android stock don't support CSS transforms on SVG elements, so we must write them to the "transform" attribute. We populate this variable in the _parseTransform() method, and only if/when we come across an SVG element
-					var force = _ieVers || (/Android/i.test(_agent) && !window.chrome),
+					var force = _ieVers || (/Android/i.test(_agent) && !_gsScope.chrome),
 						svg, rect, width;
 					if (_doc.createElementNS && !force) { //IE8 and earlier doesn't support SVG anyway
 						svg = _createSVG("svg", _docElement);
@@ -34224,6 +32852,9 @@
 					}
 					if (!absolute || (v = absolute.split(" ")).length < 2) {
 						b = e.getBBox();
+						if (b.x === 0 && b.y === 0 && b.width + b.height === 0) { //some browsers (like Firefox) misreport the bounds if the element has zero width and height (it just assumes it's at x:0, y:0), thus we need to manually grab the position in that case.
+							b = {x: parseFloat(e.hasAttribute("x") ? e.getAttribute("x") : e.hasAttribute("cx") ? e.getAttribute("cx") : 0) || 0, y: parseFloat(e.hasAttribute("y") ? e.getAttribute("y") : e.hasAttribute("cy") ? e.getAttribute("cy") : 0) || 0, width:0, height:0};
+						}
 						local = _parsePosition(local).split(" ");
 						v = [(local[0].indexOf("%") !== -1 ? parseFloat(local[0]) / 100 * b.width : parseFloat(local[0])) + b.x,
 							 (local[1].indexOf("%") !== -1 ? parseFloat(local[1]) / 100 * b.height : parseFloat(local[1])) + b.y];
@@ -34238,10 +32869,12 @@
 						tx = m[4];
 						ty = m[5];
 						determinant = (a * d - b * c);
-						x = xOrigin * (d / determinant) + yOrigin * (-c / determinant) + ((c * ty - d * tx) / determinant);
-						y = xOrigin * (-b / determinant) + yOrigin * (a / determinant) - ((a * ty - b * tx) / determinant);
-						xOrigin = decoratee.xOrigin = v[0] = x;
-						yOrigin = decoratee.yOrigin = v[1] = y;
+						if (determinant) { //if it's zero (like if scaleX and scaleY are zero), skip it to avoid errors with dividing by zero.
+							x = xOrigin * (d / determinant) + yOrigin * (-c / determinant) + ((c * ty - d * tx) / determinant);
+							y = xOrigin * (-b / determinant) + yOrigin * (a / determinant) - ((a * ty - b * tx) / determinant);
+							xOrigin = decoratee.xOrigin = v[0] = x;
+							yOrigin = decoratee.yOrigin = v[1] = y;
+						}
 					}
 					if (tm) { //avoid jump when transformOrigin is changed - adjust the x/y values accordingly
 						if (skipRecord) {
@@ -34265,13 +32898,42 @@
 						e.setAttribute("data-svg-origin", v.join(" "));
 					}
 				},
-				_canGetBBox = function(e) {
+				_getBBoxHack = function(swapIfPossible) { //works around issues in some browsers (like Firefox) that don't correctly report getBBox() on SVG elements inside a <defs> element and/or <mask>. We try creating an SVG, adding it to the documentElement and toss the element in there so that it's definitely part of the rendering tree, then grab the bbox and if it works, we actually swap out the original getBBox() method for our own that does these extra steps whenever getBBox is needed. This helps ensure that performance is optimal (only do all these extra steps when absolutely necessary...most elements don't need it).
+					var svg = _createElement("svg", (this.ownerSVGElement && this.ownerSVGElement.getAttribute("xmlns")) || "http://www.w3.org/2000/svg"),
+						oldParent = this.parentNode,
+						oldSibling = this.nextSibling,
+						oldCSS = this.style.cssText,
+						bbox;
+					_docElement.appendChild(svg);
+					svg.appendChild(this);
+					this.style.display = "block";
+					if (swapIfPossible) {
+						try {
+							bbox = this.getBBox();
+							this._originalGetBBox = this.getBBox;
+							this.getBBox = _getBBoxHack;
+						} catch (e) { }
+					} else if (this._originalGetBBox) {
+						bbox = this._originalGetBBox();
+					}
+					if (oldSibling) {
+						oldParent.insertBefore(this, oldSibling);
+					} else {
+						oldParent.appendChild(this);
+					}
+					_docElement.removeChild(svg);
+					this.style.cssText = oldCSS;
+					return bbox;
+				},
+				_getBBox = function(e) {
 					try {
 						return e.getBBox(); //Firefox throws errors if you try calling getBBox() on an SVG element that's not rendered (like in a <symbol> or <defs>). https://bugzilla.mozilla.org/show_bug.cgi?id=612118
-					} catch (e) {}
+					} catch (error) {
+						return _getBBoxHack.call(e, true);
+					}
 				},
 				_isSVG = function(e) { //reports if the element is an SVG on which getBBox() actually works
-					return !!(_SVGElement && e.getBBox && e.getCTM && _canGetBBox(e) && (!e.parentNode || (e.parentNode.getBBox && e.parentNode.getCTM)));
+					return !!(_SVGElement && e.getCTM && (!e.parentNode || e.ownerSVGElement) && _getBBox(e));
 				},
 				_identity2DMatrix = [1,0,0,1,0,0],
 				_getMatrix = function(e, force2D) {
@@ -34287,8 +32949,8 @@
 						s = (s && s.length === 4) ? [s[0].substr(4), Number(s[2].substr(4)), Number(s[1].substr(4)), s[3].substr(4), (tm.x || 0), (tm.y || 0)].join(",") : "";
 					}
 					isDefault = (!s || s === "none" || s === "matrix(1, 0, 0, 1, 0, 0)");
-					if (isDefault && _transformProp && ((none = (_getComputedStyle(e).display === "none")) || !e.parentNode)) {
-						if (none) { //browsers don't report transforms accurately unless the element is in the DOM and has a display value that's not "none".
+					if (_transformProp && ((none = (!_getComputedStyle(e) || _getComputedStyle(e).display === "none")) || !e.parentNode)) { //note: Firefox returns null for getComputedStyle() if the element is in an iframe that has display:none. https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+						if (none) { //browsers don't report transforms accurately unless the element is in the DOM and has a display value that's not "none". Firefox and Microsoft browsers have a partial bug where they'll report transforms even if display:none BUT not any percentage-based values like translate(-50%, 8px) will be reported as if it's translate(0, 8px).
 							n = style.display;
 							style.display = "block";
 						}
@@ -34307,20 +32969,16 @@
 							_docElement.removeChild(e);
 						}
 					}
-					if (tm.svg || (e.getBBox && _isSVG(e))) {
+					if (tm.svg || (e.getCTM && _isSVG(e))) {
 						if (isDefault && (style[_transformProp] + "").indexOf("matrix") !== -1) { //some browsers (like Chrome 40) don't correctly report transforms that are applied inline on an SVG element (they don't get included in the computed style), so we double-check here and accept matrix values
 							s = style[_transformProp];
 							isDefault = 0;
 						}
 						m = e.getAttribute("transform");
 						if (isDefault && m) {
-							if (m.indexOf("matrix") !== -1) { //just in case there's a "transform" value specified as an attribute instead of CSS style. Accept either a matrix() or simple translate() value though.
-								s = m;
-								isDefault = 0;
-							} else if (m.indexOf("translate") !== -1) {
-								s = "matrix(1,0,0,1," + m.match(/(?:\-|\b)[\d\-\.e]+\b/gi).join(",") + ")";
-								isDefault = 0;
-							}
+							m = e.transform.baseVal.consolidate().matrix; //ensures that even complex values like "translate(50,60) rotate(135,0,0)" are parsed because it mashes it into a matrix.
+							s = "matrix(" + m.a + "," + m.b + "," + m.c + "," + m.d + "," + m.e + "," + m.f + ")";
+							isDefault = 0;
 						}
 					}
 					if (isDefault) {
@@ -34356,7 +33014,7 @@
 						defaultTransformPerspective = parseFloat(CSSPlugin.defaultTransformPerspective) || 0,
 						m, i, scaleX, scaleY, rotation, skewX;
 	
-					tm.svg = !!(t.getBBox && _isSVG(t));
+					tm.svg = !!(t.getCTM && _isSVG(t));
 					if (tm.svg) {
 						_parseSVGOrigin(t, _getStyle(t, _transformOriginProp, cs, false, "50% 50%") + "", tm, t.getAttribute("data-svg-origin"));
 						_useSVGTransformAttr = CSSPlugin.useSVGTransformAttr || _forceSVGTransformAttr;
@@ -34373,7 +33031,6 @@
 								a43 = m[11],
 								angle = Math.atan2(a32, a33),
 								t1, t2, t3, t4, cos, sin;
-	
 							//we manually compensate for non-zero z component of transformOrigin to work around bugs in Safari
 							if (tm.zOrigin) {
 								a34 = -tm.zOrigin;
@@ -34381,6 +33038,7 @@
 								a24 = a23*a34-m[13];
 								a34 = a33*a34+tm.zOrigin-m[14];
 							}
+							//note for possible future consolidation: rotationX: Math.atan2(a32, a33), rotationY: Math.atan2(-a31, Math.sqrt(a33 * a33 + a32 * a32)), rotation: Math.atan2(a21, a11), skew: Math.atan2(a12, a22). However, it doesn't seem to be quite as reliable as the full-on backwards rotation procedure.
 							tm.rotationX = angle * _RAD2DEG;
 							//rotationX
 							if (angle) {
@@ -34417,13 +33075,17 @@
 							angle = Math.atan2(a21, a11);
 							tm.rotation = angle * _RAD2DEG;
 							if (angle) {
-								cos = Math.cos(-angle);
-								sin = Math.sin(-angle);
-								a11 = a11*cos+a12*sin;
-								t2 = a21*cos+a22*sin;
-								a22 = a21*-sin+a22*cos;
-								a32 = a31*-sin+a32*cos;
-								a21 = t2;
+								cos = Math.cos(angle);
+								sin = Math.sin(angle);
+								t1 = a11*cos+a21*sin;
+								t2 = a12*cos+a22*sin;
+								t3 = a13*cos+a23*sin;
+								a21 = a21*cos-a11*sin;
+								a22 = a22*cos-a12*sin;
+								a23 = a23*cos-a13*sin;
+								a11 = t1;
+								a12 = t2;
+								a13 = t3;
 							}
 	
 							if (tm.rotationX && Math.abs(tm.rotationX) + Math.abs(tm.rotation) > 359.9) { //when rotationY is set, it will often be parsed as 180 degrees different than it should be, and rotationX and rotation both being 180 (it looks the same), so we adjust for that here.
@@ -34431,24 +33093,46 @@
 								tm.rotationY = 180 - tm.rotationY;
 							}
 	
-							tm.scaleX = ((Math.sqrt(a11 * a11 + a21 * a21) * rnd + 0.5) | 0) / rnd;
-							tm.scaleY = ((Math.sqrt(a22 * a22 + a23 * a23) * rnd + 0.5) | 0) / rnd;
-							tm.scaleZ = ((Math.sqrt(a32 * a32 + a33 * a33) * rnd + 0.5) | 0) / rnd;
-							if (tm.rotationX || tm.rotationY) {
-								tm.skewX = 0;
-							} else {
-								tm.skewX = (a12 || a22) ? Math.atan2(a12, a22) * _RAD2DEG + tm.rotation : tm.skewX || 0;
-								if (Math.abs(tm.skewX) > 90 && Math.abs(tm.skewX) < 270) {
-									if (invX) {
-										tm.scaleX *= -1;
-										tm.skewX += (tm.rotation <= 0) ? 180 : -180;
-										tm.rotation += (tm.rotation <= 0) ? 180 : -180;
-									} else {
-										tm.scaleY *= -1;
-										tm.skewX += (tm.skewX <= 0) ? 180 : -180;
-									}
+							//skewX
+							angle = Math.atan2(a12, a22);
+	
+							//scales
+							tm.scaleX = ((Math.sqrt(a11 * a11 + a21 * a21 + a31 * a31) * rnd + 0.5) | 0) / rnd;
+							tm.scaleY = ((Math.sqrt(a22 * a22 + a32 * a32) * rnd + 0.5) | 0) / rnd;
+							tm.scaleZ = ((Math.sqrt(a13 * a13 + a23 * a23 + a33 * a33) * rnd + 0.5) | 0) / rnd;
+							a11 /= tm.scaleX;
+							a12 /= tm.scaleY;
+							a21 /= tm.scaleX;
+							a22 /= tm.scaleY;
+							if (Math.abs(angle) > min) {
+								tm.skewX = angle * _RAD2DEG;
+								a12 = 0; //unskews
+								if (tm.skewType !== "simple") {
+									tm.scaleY *= 1 / Math.cos(angle); //by default, we compensate the scale based on the skew so that the element maintains a similar proportion when skewed, so we have to alter the scaleY here accordingly to match the default (non-adjusted) skewing that CSS does (stretching more and more as it skews).
 								}
+	
+							} else {
+								tm.skewX = 0;
 							}
+	
+							/* //for testing purposes
+							var transform = "matrix3d(",
+								comma = ",",
+								zero = "0";
+							a13 /= tm.scaleZ;
+							a23 /= tm.scaleZ;
+							a31 /= tm.scaleX;
+							a32 /= tm.scaleY;
+							a33 /= tm.scaleZ;
+							transform += ((a11 < min && a11 > -min) ? zero : a11) + comma + ((a21 < min && a21 > -min) ? zero : a21) + comma + ((a31 < min && a31 > -min) ? zero : a31);
+							transform += comma + ((a41 < min && a41 > -min) ? zero : a41) + comma + ((a12 < min && a12 > -min) ? zero : a12) + comma + ((a22 < min && a22 > -min) ? zero : a22);
+							transform += comma + ((a32 < min && a32 > -min) ? zero : a32) + comma + ((a42 < min && a42 > -min) ? zero : a42) + comma + ((a13 < min && a13 > -min) ? zero : a13);
+							transform += comma + ((a23 < min && a23 > -min) ? zero : a23) + comma + ((a33 < min && a33 > -min) ? zero : a33) + comma + ((a43 < min && a43 > -min) ? zero : a43) + comma;
+							transform += a14 + comma + a24 + comma + a34 + comma + (tm.perspective ? (1 + (-a34 / tm.perspective)) : 1) + ")";
+							console.log(transform);
+							document.querySelector(".test").style[_transformProp] = transform;
+							*/
+	
 							tm.perspective = a43 ? 1 / ((a43 < 0) ? -a43 : a43) : 0;
 							tm.x = a14;
 							tm.y = a24;
@@ -34470,16 +33154,6 @@
 							scaleY = Math.sqrt(d * d + c * c);
 							rotation = (a || b) ? Math.atan2(b, a) * _RAD2DEG : tm.rotation || 0; //note: if scaleX is 0, we cannot accurately measure rotation. Same for skewX with a scaleY of 0. Therefore, we default to the previously recorded value (or zero if that doesn't exist).
 							skewX = (c || d) ? Math.atan2(c, d) * _RAD2DEG + rotation : tm.skewX || 0;
-							if (Math.abs(skewX) > 90 && Math.abs(skewX) < 270) {
-								if (invX) {
-									scaleX *= -1;
-									skewX += (rotation <= 0) ? 180 : -180;
-									rotation += (rotation <= 0) ? 180 : -180;
-								} else {
-									scaleY *= -1;
-									skewX += (skewX <= 0) ? 180 : -180;
-								}
-							}
 							tm.scaleX = scaleX;
 							tm.scaleY = scaleY;
 							tm.rotation = rotation;
@@ -34492,6 +33166,16 @@
 							if (tm.svg) {
 								tm.x -= tm.xOrigin - (tm.xOrigin * a + tm.yOrigin * c);
 								tm.y -= tm.yOrigin - (tm.xOrigin * b + tm.yOrigin * d);
+							}
+						}
+						if (Math.abs(tm.skewX) > 90 && Math.abs(tm.skewX) < 270) {
+							if (invX) {
+								tm.scaleX *= -1;
+								tm.skewX += (tm.rotation <= 0) ? 180 : -180;
+								tm.rotation += (tm.rotation <= 0) ? 180 : -180;
+							} else {
+								tm.scaleY *= -1;
+								tm.skewX += (tm.skewX <= 0) ? 180 : -180;
 							}
 						}
 						tm.zOrigin = zOrigin;
@@ -34622,26 +33306,35 @@
 						isSVG = t.svg,
 						perspective = t.perspective,
 						force3D = t.force3D,
-						a11, a12, a13, a21, a22, a23, a31, a32, a33, a41, a42, a43,
-						zOrigin, min, cos, sin, t1, t2, transform, comma, zero, skew, rnd;
+						skewY = t.skewY,
+						skewX = t.skewX,
+						t1,	a11, a12, a13, a21, a22, a23, a31, a32, a33, a41, a42, a43,
+						zOrigin, min, cos, sin, t2, transform, comma, zero, skew, rnd;
+					if (skewY) { //for performance reasons, we combine all skewing into the skewX and rotation values. Remember, a skewY of 10 degrees looks the same as a rotation of 10 degrees plus a skewX of 10 degrees.
+						skewX += skewY;
+						angle += skewY;
+					}
+	
 					//check to see if we should render as 2D (and SVGs must use 2D when _useSVGTransformAttr is true)
 					if (((((v === 1 || v === 0) && force3D === "auto" && (this.tween._totalTime === this.tween._totalDuration || !this.tween._totalTime)) || !force3D) && !z && !perspective && !rotationY && !rotationX && sz === 1) || (_useSVGTransformAttr && isSVG) || !_supports3D) { //on the final render (which could be 0 for a from tween), if there are no 3D aspects, render in 2D to free up memory and improve performance especially on mobile devices. Check the tween's totalTime/totalDuration too in order to make sure it doesn't happen between repeats if it's a repeating tween.
 	
 						//2D
-						if (angle || t.skewX || isSVG) {
+						if (angle || skewX || isSVG) {
 							angle *= _DEG2RAD;
-							skew = t.skewX * _DEG2RAD;
+							skew = skewX * _DEG2RAD;
 							rnd = 100000;
 							a11 = Math.cos(angle) * sx;
 							a21 = Math.sin(angle) * sx;
 							a12 = Math.sin(angle - skew) * -sy;
 							a22 = Math.cos(angle - skew) * sy;
 							if (skew && t.skewType === "simple") { //by default, we compensate skewing on the other axis to make it look more natural, but you can set the skewType to "simple" to use the uncompensated skewing that CSS does
-								t1 = Math.tan(skew);
+								t1 = Math.tan(skew - skewY * _DEG2RAD);
 								t1 = Math.sqrt(1 + t1 * t1);
 								a12 *= t1;
 								a22 *= t1;
-								if (t.skewY) {
+								if (skewY) {
+									t1 = Math.tan(skewY * _DEG2RAD);
+									t1 = Math.sqrt(1 + t1 * t1);
 									a11 *= t1;
 									a21 *= t1;
 								}
@@ -34687,20 +33380,22 @@
 							perspective = 0;
 						}
 					}
-					if (angle || t.skewX) {
+					if (angle || skewX) {
 						angle *= _DEG2RAD;
 						cos = a11 = Math.cos(angle);
 						sin = a21 = Math.sin(angle);
-						if (t.skewX) {
-							angle -= t.skewX * _DEG2RAD;
+						if (skewX) {
+							angle -= skewX * _DEG2RAD;
 							cos = Math.cos(angle);
 							sin = Math.sin(angle);
 							if (t.skewType === "simple") { //by default, we compensate skewing on the other axis to make it look more natural, but you can set the skewType to "simple" to use the uncompensated skewing that CSS does
-								t1 = Math.tan(t.skewX * _DEG2RAD);
+								t1 = Math.tan((skewX - skewY) * _DEG2RAD);
 								t1 = Math.sqrt(1 + t1 * t1);
 								cos *= t1;
 								sin *= t1;
 								if (t.skewY) {
+									t1 = Math.tan(skewY * _DEG2RAD);
+									t1 = Math.sqrt(1 + t1 * t1);
 									a11 *= t1;
 									a21 *= t1;
 								}
@@ -34716,7 +33411,7 @@
 						a11 = a22 = 1;
 						a12 = a21 = 0;
 					}
-					// KEY  INDEX   AFFECTS
+					// KEY  INDEX   AFFECTS a[row][column]
 					// a11  0       rotation, rotationY, scaleX
 					// a21  1       rotation, rotationY, scaleX
 					// a31  2       rotationY, scaleX
@@ -34830,9 +33525,18 @@
 			p.x = p.y = p.z = p.skewX = p.skewY = p.rotation = p.rotationX = p.rotationY = p.zOrigin = p.xPercent = p.yPercent = p.xOffset = p.yOffset = 0;
 			p.scaleX = p.scaleY = p.scaleZ = 1;
 	
-			_registerComplexSpecialProp("transform,scale,scaleX,scaleY,scaleZ,x,y,z,rotation,rotationX,rotationY,rotationZ,skewX,skewY,shortRotation,shortRotationX,shortRotationY,shortRotationZ,transformOrigin,svgOrigin,transformPerspective,directionalRotation,parseTransform,force3D,skewType,xPercent,yPercent,smoothOrigin", {parser:function(t, e, p, cssp, pt, plugin, vars) {
+			_registerComplexSpecialProp("transform,scale,scaleX,scaleY,scaleZ,x,y,z,rotation,rotationX,rotationY,rotationZ,skewX,skewY,shortRotation,shortRotationX,shortRotationY,shortRotationZ,transformOrigin,svgOrigin,transformPerspective,directionalRotation,parseTransform,force3D,skewType,xPercent,yPercent,smoothOrigin", {parser:function(t, e, parsingProp, cssp, pt, plugin, vars) {
 				if (cssp._lastParsedTransform === vars) { return pt; } //only need to parse the transform once, and only if the browser supports it.
 				cssp._lastParsedTransform = vars;
+				var scaleFunc = (vars.scale && typeof(vars.scale) === "function") ? vars.scale : 0, //if there's a function-based "scale" value, swap in the resulting numeric value temporarily. Otherwise, if it's called for both scaleX and scaleY independently, they may not match (like if the function uses Math.random()).
+					swapFunc;
+				if (typeof(vars[parsingProp]) === "function") { //whatever property triggers the initial parsing might be a function-based value in which case it already got called in parse(), thus we don't want to call it again in here. The most efficient way to avoid this is to temporarily swap the value directly into the vars object, and then after we do all our parsing in this function, we'll swap it back again.
+					swapFunc = vars[parsingProp];
+					vars[parsingProp] = e;
+				}
+				if (scaleFunc) {
+					vars.scale = scaleFunc(_index, t);
+				}
 				var originalGSTransform = t._gsTransform,
 					style = t.style,
 					min = 0.000001,
@@ -34840,16 +33544,25 @@
 					v = vars,
 					endRotations = {},
 					transformOriginString = "transformOrigin",
-					m1 = _getTransform(t, _cs, true, vars.parseTransform),
-					m2, copy, orig, has3D, hasChange, dr, x, y, matrix;
+					m1 = _getTransform(t, _cs, true, v.parseTransform),
+					orig = v.transform && ((typeof(v.transform) === "function") ? v.transform(_index, _target) : v.transform),
+					m2, copy, has3D, hasChange, dr, x, y, matrix, p;
+				m1.skewType = v.skewType || m1.skewType || CSSPlugin.defaultSkewType;
 				cssp._transform = m1;
-				if (typeof(v.transform) === "string" && _transformProp) { //for values like transform:"rotate(60deg) scale(0.5, 0.8)"
+				if (orig && typeof(orig) === "string" && _transformProp) { //for values like transform:"rotate(60deg) scale(0.5, 0.8)"
 					copy = _tempDiv.style; //don't use the original target because it might be SVG in which case some browsers don't report computed style correctly.
-					copy[_transformProp] = v.transform;
+					copy[_transformProp] = orig;
 					copy.display = "block"; //if display is "none", the browser often refuses to report the transform properties correctly.
 					copy.position = "absolute";
+					if (orig.indexOf("%") !== -1) { //%-based translations will fail unless we set the width/height to match the original target...
+						copy.width = _getStyle(t, "width");
+						copy.height = _getStyle(t, "height");
+					}
 					_doc.body.appendChild(_tempDiv);
 					m2 = _getTransform(_tempDiv, null, false);
+					if (m1.skewType === "simple") { //the default _getTransform() reports the skewX/scaleY as if skewType is "compensated", thus we need to adjust that here if skewType is "simple".
+						m2.scaleY *= Math.cos(m2.skewX * _DEG2RAD);
+					}
 					if (m1.svg) { //if it's an SVG element, x/y part of the matrix will be affected by whatever we use as the origin and the offsets, so compensate here...
 						x = m1.xOrigin;
 						y = m1.yOrigin;
@@ -34908,25 +33621,18 @@
 						m2.yPercent = _parseVal(v.y, m1.yPercent);
 					}
 	
-					m2.rotation = _parseAngle(("rotation" in v) ? v.rotation : ("shortRotation" in v) ? v.shortRotation + "_short" : ("rotationZ" in v) ? v.rotationZ : m1.rotation - m1.skewY, m1.rotation - m1.skewY, "rotation", endRotations); //see notes below about skewY for why we subtract it from rotation here
+					m2.rotation = _parseAngle(("rotation" in v) ? v.rotation : ("shortRotation" in v) ? v.shortRotation + "_short" : ("rotationZ" in v) ? v.rotationZ : m1.rotation, m1.rotation, "rotation", endRotations);
 					if (_supports3D) {
 						m2.rotationX = _parseAngle(("rotationX" in v) ? v.rotationX : ("shortRotationX" in v) ? v.shortRotationX + "_short" : m1.rotationX || 0, m1.rotationX, "rotationX", endRotations);
 						m2.rotationY = _parseAngle(("rotationY" in v) ? v.rotationY : ("shortRotationY" in v) ? v.shortRotationY + "_short" : m1.rotationY || 0, m1.rotationY, "rotationY", endRotations);
 					}
-					m2.skewX = _parseAngle(v.skewX, m1.skewX - m1.skewY); //see notes below about skewY and why we subtract it from skewX here
-	
-					//note: for performance reasons, we combine all skewing into the skewX and rotation values, ignoring skewY but we must still record it so that we can discern how much of the overall skew is attributed to skewX vs. skewY. Otherwise, if the skewY would always act relative (tween skewY to 10deg, for example, multiple times and if we always combine things into skewX, we can't remember that skewY was 10 from last time). Remember, a skewY of 10 degrees looks the same as a rotation of 10 degrees plus a skewX of -10 degrees.
-					if ((m2.skewY = _parseAngle(v.skewY, m1.skewY))) {
-						m2.skewX += m2.skewY;
-						m2.rotation += m2.skewY;
-					}
+					m2.skewX = _parseAngle(v.skewX, m1.skewX);
+					m2.skewY = _parseAngle(v.skewY, m1.skewY);
 				}
 				if (_supports3D && v.force3D != null) {
 					m1.force3D = v.force3D;
 					hasChange = true;
 				}
-	
-				m1.skewType = v.skewType || m1.skewType || CSSPlugin.defaultSkewType;
 	
 				has3D = (m1.force3D || m1.z || m1.rotationX || m1.rotationY || m2.z || m2.rotationX || m2.rotationY || m2.perspective);
 				if (!has3D && v.scale != null) {
@@ -34959,7 +33665,7 @@
 						pt = _addNonTweeningNumericPT(m1, "xOffset", (originalGSTransform ? x : m1.xOffset), m1.xOffset, pt, transformOriginString);
 						pt = _addNonTweeningNumericPT(m1, "yOffset", (originalGSTransform ? y : m1.yOffset), m1.yOffset, pt, transformOriginString);
 					}
-					orig = _useSVGTransformAttr ? null : "0px 0px"; //certain browsers (like firefox) completely botch transform-origin, so we must remove it to prevent it from contaminating transforms. We manage it ourselves with xOrigin and yOrigin
+					orig = "0px 0px"; //certain browsers (like firefox) completely botch transform-origin, so we must remove it to prevent it from contaminating transforms. We manage it ourselves with xOrigin and yOrigin
 				}
 				if (orig || (_supports3D && has3D && m1.zOrigin)) { //if anything 3D is happening and there's a transformOrigin with a z component that's non-zero, we must ensure that the transformOrigin's z-component is set to 0 so that we can manually do those calculations to get around Safari bugs. Even if the user didn't specifically define a "transformOrigin" in this particular tween (maybe they did it via css directly).
 					if (_transformProp) {
@@ -34988,6 +33694,12 @@
 				}
 				if (hasChange) {
 					cssp._transformType = (!(m1.svg && _useSVGTransformAttr) && (has3D || this._transformType === 3)) ? 3 : 2; //quicker than calling cssp._enableTransforms();
+				}
+				if (swapFunc) {
+					vars[parsingProp] = swapFunc;
+				}
+				if (scaleFunc) {
+					vars.scale = scaleFunc;
 				}
 				return pt;
 			}, prefix:true});
@@ -35080,7 +33792,10 @@
 				}
 				return this.parseComplex(t.style, bs, es, pt, plugin);
 			}, formatter:_parsePosition});
-			_registerComplexSpecialProp("backgroundSize", {defaultValue:"0 0", formatter:_parsePosition});
+			_registerComplexSpecialProp("backgroundSize", {defaultValue:"0 0", formatter:function(v) {
+				v += ""; //ensure it's a string
+				return (v.substr(0,2) === "co") ? v : _parsePosition(v.indexOf(" ") === -1 ? v + " " + v : v); //if set to something like "100% 100%", Safari typically reports the computed style as just "100%" (no 2nd value), but we should ensure that there are two values, so copy the first one. Otherwise, it'd be interpreted as "100% 0" (wrong). Also remember that it could be "cover" or "contain" which we can't tween but should be able to set.
+			}});
 			_registerComplexSpecialProp("perspective", {defaultValue:"0px", prefix:true});
 			_registerComplexSpecialProp("perspectiveOrigin", {defaultValue:"50% 50%", prefix:true});
 			_registerComplexSpecialProp("transformStyle", {prefix:true});
@@ -35313,13 +34028,14 @@
 			p._firstPT = p._lastParsedTransform = p._transform = null;
 	
 			//gets called when the tween renders for the first time. This kicks everything off, recording start/end values, etc.
-			p._onInitTween = function(target, vars, tween) {
+			p._onInitTween = function(target, vars, tween, index) {
 				if (!target.nodeType) { //css is only for dom elements
 					return false;
 				}
-				this._target = target;
+				this._target = _target = target;
 				this._tween = tween;
 				this._vars = vars;
+				_index = index;
 				_autoRound = vars.autoRound;
 				_hasPriority = false;
 				_suffixMap = vars.suffixMap || CSSPlugin.suffixMap;
@@ -35419,10 +34135,15 @@
 					p, sp, bn, en, bs, es, bsfx, esfx, isStr, rel;
 				for (p in vars) {
 					es = vars[p]; //ending value string
+					if (typeof(es) === "function") {
+						es = es(_index, _target);
+					}
 					sp = _specialProps[p]; //SpecialProp lookup.
 					if (sp) {
 						pt = sp.parse(target, es, p, this, pt, plugin, vars);
-	
+					} else if (p.substr(0,2) === "--") { //for tweening CSS variables (which always start with "--"). To maximize performance and simplicity, we bypass CSSPlugin altogether and just add a normal property tween to the tween instance itself.
+						this._tween._propLookup[p] = this._addTween.call(this._tween, target.style, "setProperty", _getComputedStyle(target).getPropertyValue(p) + "", es + "", p, false, p);
+						continue;
 					} else {
 						bs = _getStyle(target, p, _cs) + "";
 						isStr = (typeof(es) === "string");
@@ -35469,9 +34190,8 @@
 							}
 	
 							es = (en || en === 0) ? (rel ? en + bn : en) + esfx : vars[p]; //ensures that any += or -= prefixes are taken care of. Record the end value before normalizing the suffix because we always want to end the tween on exactly what they intended even if it doesn't match the beginning value's suffix.
-	
 							//if the beginning/ending suffixes don't match, normalize them...
-							if (bsfx !== esfx) if (esfx !== "") if (en || en === 0) if (bn) { //note: if the beginning value (bn) is 0, we don't need to convert units!
+							if (bsfx !== esfx) if (esfx !== "" || p === "lineHeight") if (en || en === 0) if (bn) { //note: if the beginning value (bn) is 0, we don't need to convert units!
 								bn = _convertToPixels(target, p, bn, bsfx);
 								if (esfx === "%") {
 									bn /= _convertToPixels(target, p, 100, "%") / 100;
@@ -35527,7 +34247,7 @@
 					while (pt) {
 						if (pt.type !== 2) {
 							if (pt.r && pt.type !== -1) {
-								val = Math.round(pt.s + pt.c);
+								val = pt.r(pt.s + pt.c);
 								if (!pt.type) {
 									pt.t[pt.p] = val + pt.xs0;
 								} else if (pt.type === 1) { //complex value (one that typically has multiple numbers inside a string, like "rect(5px,10px,20px,25px)"
@@ -35551,7 +34271,7 @@
 					while (pt) {
 						val = pt.c * v + pt.s;
 						if (pt.r) {
-							val = Math.round(val);
+							val = pt.r(val);
 						} else if (val < min) if (val > -min) {
 							val = 0;
 						}
@@ -35651,6 +34371,16 @@
 				return pt;
 			};
 	
+			p._mod = function(lookup) {
+				var pt = this._firstPT;
+				while (pt) {
+					if (typeof(lookup[pt.p]) === "function") { //only gets called by RoundPropsPlugin (ModifyPlugin manages all the rendering internally for CSSPlugin properties that need modification). Remember, we handle rounding a bit differently in this plugin for performance reasons, leveraging "r" as an indicator that the value should be rounded internally.
+						pt.r = lookup[pt.p];
+					}
+					pt = pt._next;
+				}
+			};
+	
 			//we need to make sure that if alpha or autoAlpha is killed, opacity is too. And autoAlpha affects the "visibility" property.
 			p._kill = function(lookup) {
 				var copy = lookup,
@@ -35676,6 +34406,14 @@
 						this._linkCSSP(pt._next, pt._next._next, xfirst._prev);
 					}
 					this._classNamePT = null;
+				}
+				pt = this._firstPT;
+				while (pt) {
+					if (pt.plugin && pt.plugin !== p && pt.plugin._kill) { //for plugins that are registered with CSSPlugin, we should notify them of the kill.
+						pt.plugin._kill(lookup);
+						p = pt.plugin;
+					}
+					pt = pt._next;
 				}
 				return TweenPlugin.prototype._kill.call(this, copy);
 			};
@@ -35785,7 +34523,7 @@
 	
 			var RoundPropsPlugin = _gsScope._gsDefine.plugin({
 					propName: "roundProps",
-					version: "1.5",
+					version: "1.7.0",
 					priority: -1,
 					API: 2,
 	
@@ -35796,10 +34534,16 @@
 					}
 	
 				}),
-				_roundLinkedList = function(node) {
+				_getRoundFunc = function(v) { //pass in 0.1 get a function that'll round to the nearest tenth, or 5 to round to the closest 5, or 0.001 to the closest 1000th, etc.
+					var p = v < 1 ? Math.pow(10, (v + "").length - 2) : 1; //to avoid floating point math errors (like 24 * 0.1 == 2.4000000000000004), we chop off at a specific number of decimal places (much faster than toFixed()
+					return function(n) {
+						return ((Math.round(n / v) * v * p) | 0) / p;
+					};
+				},
+				_roundLinkedList = function(node, mod) {
 					while (node) {
 						if (!node.f && !node.blob) {
-							node.r = 1;
+							node.m = mod || Math.round;
 						}
 						node = node._next;
 					}
@@ -35808,27 +34552,35 @@
 	
 			p._onInitAllProps = function() {
 				var tween = this._tween,
-					rp = (tween.vars.roundProps.join) ? tween.vars.roundProps : tween.vars.roundProps.split(","),
-					i = rp.length,
+					rp = tween.vars.roundProps,
 					lookup = {},
 					rpt = tween._propLookup.roundProps,
-					prop, pt, next;
-				while (--i > -1) {
-					lookup[rp[i]] = 1;
+					pt, next, i, p;
+				if (typeof(rp) === "object" && !rp.push) {
+					for (p in rp) {
+						lookup[p] = _getRoundFunc(rp[p]);
+					}
+				} else {
+					if (typeof(rp) === "string") {
+						rp = rp.split(",");
+					}
+					i = rp.length;
+					while (--i > -1) {
+						lookup[rp[i]] = Math.round;
+					}
 				}
-				i = rp.length;
-				while (--i > -1) {
-					prop = rp[i];
+	
+				for (p in lookup) {
 					pt = tween._firstPT;
 					while (pt) {
 						next = pt._next; //record here, because it may get removed
 						if (pt.pg) {
-							pt.t._roundProps(lookup, true);
-						} else if (pt.n === prop) {
+							pt.t._mod(lookup);
+						} else if (pt.n === p) {
 							if (pt.f === 2 && pt.t) { //a blob (text containing multiple numeric values)
-								_roundLinkedList(pt.t._firstPT);
+								_roundLinkedList(pt.t._firstPT, lookup[p]);
 							} else {
-								this._add(pt.t, prop, pt.s, pt.c);
+								this._add(pt.t, p, pt.s, pt.c, lookup[p]);
 								//remove from linked list
 								if (next) {
 									next._prev = pt._prev;
@@ -35839,7 +34591,7 @@
 									tween._firstPT = next;
 								}
 								pt._next = pt._prev = null;
-								tween._propLookup[prop] = rpt;
+								tween._propLookup[p] = rpt;
 							}
 						}
 						pt = next;
@@ -35848,8 +34600,8 @@
 				return false;
 			};
 	
-			p._add = function(target, p, s, c) {
-				this._addTween(target, p, s, s + c, p, true);
+			p._add = function(target, p, s, c, mod) {
+				this._addTween(target, p, s, s + c, p, mod || Math.round);
 				this._overwriteProps.push(p);
 			};
 	
@@ -35875,16 +34627,20 @@
 			_gsScope._gsDefine.plugin({
 				propName: "attr",
 				API: 2,
-				version: "0.5.0",
+				version: "0.6.1",
 	
 				//called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-				init: function(target, value, tween) {
-					var p;
+				init: function(target, value, tween, index) {
+					var p, end;
 					if (typeof(target.setAttribute) !== "function") {
 						return false;
 					}
 					for (p in value) {
-						this._addTween(target, "setAttribute", target.getAttribute(p) + "", value[p] + "", p, false, p);
+						end = value[p];
+						if (typeof(end) === "function") {
+							end = end(index, target);
+						}
+						this._addTween(target, "setAttribute", target.getAttribute(p) + "", end + "", p, false, p);
 						this._overwriteProps.push(p);
 					}
 					return true;
@@ -35910,11 +34666,11 @@
 	 */
 		_gsScope._gsDefine.plugin({
 			propName: "directionalRotation",
-			version: "0.2.1",
+			version: "0.3.1",
 			API: 2,
 	
 			//called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
-			init: function(target, value, tween) {
+			init: function(target, value, tween, index) {
 				if (typeof(value) !== "object") {
 					value = {rotation:value};
 				}
@@ -35924,7 +34680,11 @@
 					p, v, start, end, dif, split;
 				for (p in value) {
 					if (p !== "useRadians") {
-						split = (value[p] + "").split("_");
+						end = value[p];
+						if (typeof(end) === "function") {
+							end = end(index, target);
+						}
+						split = (end + "").split("_");
 						v = split[0];
 						start = parseFloat( (typeof(target[p]) !== "function") ? target[p] : target[ ((p.indexOf("set") || typeof(target["get" + p.substr(3)]) !== "function") ? p : "get" + p.substr(3)) ]() );
 						end = this.finals[p] = (typeof(v) === "string" && v.charAt(1) === "=") ? start + parseInt(v.charAt(0) + "1", 10) * Number(v.substr(2)) : Number(v) || 0;
@@ -36065,7 +34825,7 @@
 					this._calcEnd = (yoyoMode === true);
 				}, true),
 				p = SlowMo.prototype = new Ease(),
-				SteppedEase, RoughEase, _createElastic;
+				SteppedEase, ExpoScaleEase, RoughEase, _createElastic;
 	
 			p.constructor = SlowMo;
 			p.getRatio = function(p) {
@@ -36073,7 +34833,7 @@
 				if (p < this._p1) {
 					return this._calcEnd ? 1 - ((p = 1 - (p / this._p1)) * p) : r - ((p = 1 - (p / this._p1)) * p * p * p * r);
 				} else if (p > this._p3) {
-					return this._calcEnd ? 1 - (p = (p - this._p3) / this._p1) * p : r + ((p - r) * (p = (p - this._p3) / this._p1) * p * p * p);
+					return this._calcEnd ? (p === 1 ? 0 : 1 - (p = (p - this._p3) / this._p1) * p) : r + ((p - r) * (p = (p - this._p3) / this._p1) * p * p * p); //added p === 1 ? 0 to avoid floating point rounding errors from affecting the final value, like 1 - 0.7 = 0.30000000000000004 instead of 0.3
 				}
 				return this._calcEnd ? 1 : r;
 			};
@@ -36085,10 +34845,11 @@
 	
 	
 			//SteppedEase
-			SteppedEase = _class("easing.SteppedEase", function(steps) {
+			SteppedEase = _class("easing.SteppedEase", function(steps, immediateStart) {
 					steps = steps || 1;
 					this._p1 = 1 / steps;
-					this._p2 = steps + 1;
+					this._p2 = steps + (immediateStart ? 0 : 1);
+					this._p3 = immediateStart ? 1 : 0;
 				}, true);
 			p = SteppedEase.prototype = new Ease();
 			p.constructor = SteppedEase;
@@ -36098,10 +34859,29 @@
 				} else if (p >= 1) {
 					p = 0.999999999;
 				}
-				return ((this._p2 * p) >> 0) * this._p1;
+				return (((this._p2 * p) | 0) + this._p3) * this._p1;
 			};
-			p.config = SteppedEase.config = function(steps) {
-				return new SteppedEase(steps);
+			p.config = SteppedEase.config = function(steps, immediateStart) {
+				return new SteppedEase(steps, immediateStart);
+			};
+	
+			//ExpoScaleEase
+			ExpoScaleEase = _class("easing.ExpoScaleEase", function(start, end, ease) {
+				this._p1 = Math.log(end / start);
+				this._p2 = end - start;
+				this._p3 = start;
+				this._ease = ease;
+			}, true);
+			p = ExpoScaleEase.prototype = new Ease();
+			p.constructor = ExpoScaleEase;
+			p.getRatio = function(p) {
+				if (this._ease) {
+					p = this._ease.getRatio(p);
+				}
+				return (this._p3 * Math.exp(this._p1 * p) - this._p3) / this._p2;
+			};
+			p.config = ExpoScaleEase.config = function(start, end, ease) {
+				return new ExpoScaleEase(start, end, ease);
 			};
 	
 	
@@ -36339,9 +35119,10 @@
 	
 			"use strict";
 			var _exports = {},
+				_doc = window.document,
 				_globals = window.GreenSockGlobals = window.GreenSockGlobals || window;
 			if (_globals.TweenLite) {
-				return; //in case the core set of classes is already loaded, don't instantiate twice.
+				return _globals.TweenLite; //in case the core set of classes is already loaded, don't instantiate twice.
 			}
 			var _namespace = function(ns) {
 					var a = ns.split("."),
@@ -36413,7 +35194,7 @@
 					this.check = function(init) {
 						var i = dependencies.length,
 							missing = i,
-							cur, a, n, cl, hasModule;
+							cur, a, n, cl;
 						while (--i > -1) {
 							if ((cur = _defLookup[dependencies[i]] || new Definition(dependencies[i], [])).gsClass) {
 								_classes[i] = cur.gsClass;
@@ -36429,11 +35210,8 @@
 	
 							//exports to multiple environments
 							if (global) {
-								_globals[n] = cl; //provides a way to avoid global namespace pollution. By default, the main classes like TweenLite, Power1, Strong, etc. are added to window unless a GreenSockGlobals is defined. So if you want to have things added to a custom object instead, just do something like window.GreenSockGlobals = {} before loading any GreenSock files. You can even set up an alias like window.GreenSockGlobals = windows.gs = {} so that you can access everything like gs.TweenLite. Also remember that ALL classes are added to the window.com.greensock object (in their respective packages, like com.greensock.easing.Power1, com.greensock.TweenLite, etc.)
-								hasModule = (typeof(module) !== "undefined" && module.exports);
-								if (!hasModule && "function" === "function" && __webpack_require__(144)){ //AMD
-									!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() { return cl; }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-								} else if (hasModule){ //node
+								_globals[n] = _exports[n] = cl; //provides a way to avoid global namespace pollution. By default, the main classes like TweenLite, Power1, Strong, etc. are added to window unless a GreenSockGlobals is defined. So if you want to have things added to a custom object instead, just do something like window.GreenSockGlobals = {} before loading any GreenSock files. You can even set up an alias like window.GreenSockGlobals = windows.gs = {} so that you can access everything like gs.TweenLite. Also remember that ALL classes are added to the window.com.greensock object (in their respective packages, like com.greensock.easing.Power1, com.greensock.TweenLite, etc.)
+								if (typeof(module) !== "undefined" && module.exports) { //node
 									if (ns === moduleName) {
 										module.exports = _exports[moduleName] = cl;
 										for (i in _exports) {
@@ -36442,6 +35220,8 @@
 									} else if (_exports[moduleName]) {
 										_exports[moduleName][n] = cl;
 									}
+								} else if (true){ //AMD
+									!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() { return cl; }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 								}
 							}
 							for (i = 0; i < this.sc.length; i++) {
@@ -36474,7 +35254,6 @@
 	 * ----------------------------------------------------------------
 	 */
 			var _baseParams = [0, 0, 1, 1],
-				_blankArray = [],
 				Ease = _class("easing.Ease", function(func, extraParams, type, power) {
 					this._func = func;
 					this._type = type || 0;
@@ -36585,6 +35364,9 @@
 					i, t, listener;
 				if (list) {
 					i = list.length;
+					if (i > 1) {
+						list = list.slice(0); //in case addEventListener() is called from within a listener/callback (otherwise the index could change, resulting in a skip)
+					}
 					t = this._eventTarget;
 					while (--i > -1) {
 						listener = list[i];
@@ -36655,6 +35437,9 @@
 				};
 	
 				_self.lagSmoothing = function(threshold, adjustedLag) {
+					if (!arguments.length) { //if lagSmoothing() is called with no arguments, treat it like a getter that returns a boolean indicating if it's enabled or not. This is purposely undocumented and is for internal use.
+						return (_lagThreshold < 1 / _tinyNum);
+					}
 					_lagThreshold = threshold || (1 / _tinyNum); //zero should be interpreted as basically unlimited
 					_adjustedLag = Math.min(adjustedLag, _lagThreshold, 0);
 				};
@@ -36712,7 +35497,7 @@
 	
 				//a bug in iOS 6 Safari occasionally prevents the requestAnimationFrame from working initially, so we use a 1.5-second timeout that automatically falls back to setTimeout() if it senses this condition.
 				setTimeout(function() {
-					if (_useRAF === "auto" && _self.frame < 5 && document.visibilityState !== "hidden") {
+					if (_useRAF === "auto" && _self.frame < 5 && (_doc || {}).visibilityState !== "hidden") {
 						_self.useRAF(false);
 					}
 				}, 1500);
@@ -36762,10 +35547,14 @@
 	
 			//some browsers (like iOS) occasionally drop the requestAnimationFrame event when the user switches to a different tab and then comes back again, so we use a 2-second setTimeout() to sense if/when that condition occurs and then wake() the ticker.
 			var _checkTimeout = function() {
-					if (_tickerActive && _getTime() - _lastUpdate > 2000) {
+					if (_tickerActive && _getTime() - _lastUpdate > 2000 && ((_doc || {}).visibilityState !== "hidden" || !_ticker.lagSmoothing())) { //note: if the tab is hidden, we should still wake if lagSmoothing has been disabled.
 						_ticker.wake();
 					}
-					setTimeout(_checkTimeout, 2000);
+					var t = setTimeout(_checkTimeout, 2000);
+					if (t.unref) {
+						// allows a node process to exit even if the timeout’s callback hasn't been invoked. Without it, the node process could hang as this function is called every two seconds.
+						t.unref();
+					}
 				};
 			_checkTimeout();
 	
@@ -36824,7 +35613,7 @@
 				var tl = this._timeline, //the 2 root timelines won't have a _timeline; they're always active.
 					startTime = this._startTime,
 					rawTime;
-				return (!tl || (!this._gc && !this._paused && tl.isActive() && (rawTime = tl.rawTime()) >= startTime && rawTime < startTime + this.totalDuration() / this._timeScale));
+				return (!tl || (!this._gc && !this._paused && tl.isActive() && (rawTime = tl.rawTime(true)) >= startTime && rawTime < startTime + this.totalDuration() / this._timeScale - 0.0000001));
 			};
 	
 			p._enabled = function (enabled, ignoreTimeline) {
@@ -36874,8 +35663,17 @@
 			};
 	
 			p._callback = function(type) {
-				var v = this.vars;
-				v[type].apply(v[type + "Scope"] || v.callbackScope || this, v[type + "Params"] || _blankArray);
+				var v = this.vars,
+					callback = v[type],
+					params = v[type + "Params"],
+					scope = v[type + "Scope"] || v.callbackScope || this,
+					l = params ? params.length : 0;
+				switch (l) { //speed optimization; call() is faster than apply() so use it when there are only a few parameters (which is by far most common). Previously we simply did var v = this.vars; v[type].apply(v[type + "Scope"] || v.callbackScope || this, v[type + "Params"] || _blankArray);
+					case 0: callback.call(scope); break;
+					case 1: callback.call(scope, params[0]); break;
+					case 2: callback.call(scope, params[0], params[1]); break;
+					default: callback.apply(scope, params);
+				}
 			};
 	
 	//----Animation getters/setters --------------------------------------------------------
@@ -37015,14 +35813,21 @@
 				if (!arguments.length) {
 					return this._timeScale;
 				}
+				var pauseTime, t;
 				value = value || _tinyNum; //can't allow zero because it'll throw the math off
 				if (this._timeline && this._timeline.smoothChildTiming) {
-					var pauseTime = this._pauseTime,
-						t = (pauseTime || pauseTime === 0) ? pauseTime : this._timeline.totalTime();
+					pauseTime = this._pauseTime;
+					t = (pauseTime || pauseTime === 0) ? pauseTime : this._timeline.totalTime();
 					this._startTime = t - ((t - this._startTime) * this._timeScale / value);
 				}
 				this._timeScale = value;
-				return this._uncache(false);
+				t = this.timeline;
+				while (t && t.timeline) { //must update the duration/totalDuration of all ancestor timelines immediately in case in the middle of a render loop, one tween alters another tween's timeScale which shoves its startTime before 0, forcing the parent timeline to shift around and shiftChildren() which could affect that next tween's render (startTime). Doesn't matter for the root timeline though.
+					t._dirty = true;
+					t.totalDuration();
+					t = t.timeline;
+				}
+				return this;
 			};
 	
 			p.reversed = function(value) {
@@ -37087,7 +35892,7 @@
 				var prevTween, st;
 				child._startTime = Number(position || 0) + child._delay;
 				if (child._paused) if (this !== child._timeline) { //we only adjust the _pauseTime if it wasn't in this timeline already. Remember, sometimes a tween will be inserted again into the same timeline when its startTime is changed so that the tweens in the TimelineLite/Max are re-ordered properly in the linked list (so everything renders in the proper order).
-					child._pauseTime = child._startTime + ((this.rawTime() - child._startTime) / child._timeScale);
+					child._pauseTime = this.rawTime() - (child._timeline.rawTime() - child._pauseTime);
 				}
 				if (child.timeline) {
 					child.timeline._remove(child, true); //removes from existing timeline so that it can be properly added to this one.
@@ -37157,7 +35962,7 @@
 				this._totalTime = this._time = this._rawPrevTime = time;
 				while (tween) {
 					next = tween._next; //record it here because the value could change after rendering...
-					if (tween._active || (time >= tween._startTime && !tween._paused)) {
+					if (tween._active || (time >= tween._startTime && !tween._paused && !tween._gc)) {
 						if (!tween._reversed) {
 							tween.render((time - tween._startTime) * tween._timeScale, suppressEvents, force);
 						} else {
@@ -37259,7 +36064,7 @@
 			p._firstPT = p._targets = p._overwrittenProps = p._startAt = null;
 			p._notifyPluginsOfEnabled = p._lazy = false;
 	
-			TweenLite.version = "1.18.5";
+			TweenLite.version = "1.20.5";
 			TweenLite.defaultEase = p._ease = new Ease(null, null, 1, 1);
 			TweenLite.defaultOverwrite = "auto";
 			TweenLite.ticker = _ticker;
@@ -37274,22 +36079,26 @@
 					TweenLite.selector = selector;
 					return selector(e);
 				}
-				return (typeof(document) === "undefined") ? e : (document.querySelectorAll ? document.querySelectorAll(e) : document.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
+				if (!_doc) { //in some dev environments (like Angular 6), GSAP gets loaded before the document is defined! So re-query it here if/when necessary.
+					_doc = window.document;
+				}
+				return (!_doc) ? e : (_doc.querySelectorAll ? _doc.querySelectorAll(e) : _doc.getElementById((e.charAt(0) === "#") ? e.substr(1) : e));
 			};
 	
 			var _lazyTweens = [],
 				_lazyLookup = {},
 				_numbersExp = /(?:(-|-=|\+=)?\d*\.?\d*(?:e[\-+]?\d+)?)[0-9]/ig,
+				_relExp = /[\+-]=-?[\.\d]/,
 				//_nonNumbersExp = /(?:([\-+](?!(\d|=)))|[^\d\-+=e]|(e(?![\-+][\d])))+/ig,
 				_setRatio = function(v) {
 					var pt = this._firstPT,
 						min = 0.000001,
 						val;
 					while (pt) {
-						val = !pt.blob ? pt.c * v + pt.s : v ? this.join("") : this.start;
-						if (pt.r) {
-							val = Math.round(val);
-						} else if (val < min) if (val > -min) { //prevents issues with converting very small numbers to strings in the browser
+						val = !pt.blob ? pt.c * v + pt.s : (v === 1 && this.end != null) ? this.end : v ? this.join("") : this.start;
+						if (pt.m) {
+							val = pt.m.call(this._tween, val, this._target || pt.t, this._tween);
+						} else if (val < min) if (val > -min && !pt.blob) { //prevents issues with converting very small numbers to strings in the browser
 							val = 0;
 						}
 						if (!pt.f) {
@@ -37304,12 +36113,15 @@
 				},
 				//compares two strings (start/end), finds the numbers that are different and spits back an array representing the whole value but with the changing values isolated as elements. For example, "rgb(0,0,0)" and "rgb(100,50,0)" would become ["rgb(", 0, ",", 50, ",0)"]. Notice it merges the parts that are identical (performance optimization). The array also has a linked list of PropTweens attached starting with _firstPT that contain the tweening data (t, p, s, c, f, etc.). It also stores the starting value as a "start" property so that we can revert to it if/when necessary, like when a tween rewinds fully. If the quantity of numbers differs between the start and end, it will always prioritize the end value(s). The pt parameter is optional - it's for a PropTween that will be appended to the end of the linked list and is typically for actually setting the value after all of the elements have been updated (with array.join("")).
 				_blobDif = function(start, end, filter, pt) {
-					var a = [start, end],
+					var a = [],
 						charIndex = 0,
 						s = "",
 						color = 0,
 						startNums, endNums, num, i, l, nonNumbers, currentNum;
 					a.start = start;
+					a.end = end;
+					start = a[0] = start + ""; //ensure values are strings
+					end = a[1] = end + "";
 					if (filter) {
 						filter(a); //pass an array with the starting and ending values and let the filter do whatever it needs to the values.
 						start = a[0];
@@ -37321,7 +36133,7 @@
 					if (pt) {
 						pt._next = null;
 						pt.blob = 1;
-						a._firstPT = pt; //apply last in the linked list (which means inserting it first)
+						a._firstPT = a._applyPT = pt; //apply last in the linked list (which means inserting it first)
 					}
 					l = endNums.length;
 					for (i = 0; i < l; i++) {
@@ -37343,7 +36155,7 @@
 							}
 							num = parseFloat(startNums[i]);
 							a.push(num);
-							a._firstPT = {_next: a._firstPT, t:a, p: a.length-1, s:num, c:((currentNum.charAt(1) === "=") ? parseInt(currentNum.charAt(0) + "1", 10) * parseFloat(currentNum.substr(2)) : (parseFloat(currentNum) - num)) || 0, f:0, r:(color && color < 4)};
+							a._firstPT = {_next: a._firstPT, t:a, p: a.length-1, s:num, c:((currentNum.charAt(1) === "=") ? parseInt(currentNum.charAt(0) + "1", 10) * parseFloat(currentNum.substr(2)) : (parseFloat(currentNum) - num)) || 0, f:0, m:(color && color < 4) ? Math.round : 0};
 							//note: we don't set _prev because we'll never need to remove individual PropTweens from this list.
 						}
 						charIndex += currentNum.length;
@@ -37353,28 +36165,34 @@
 						a.push(s);
 					}
 					a.setRatio = _setRatio;
+					if (_relExp.test(end)) { //if the end string contains relative values, delete it so that on the final render (in _setRatio()), we don't actually set it to the string with += or -= characters (forces it to use the calculated value).
+						a.end = null;
+					}
 					return a;
 				},
 				//note: "funcParam" is only necessary for function-based getters/setters that require an extra parameter like getAttribute("width") and setAttribute("width", value). In this example, funcParam would be "width". Used by AttrPlugin for example.
-				_addPropTween = function(target, prop, start, end, overwriteProp, round, funcParam, stringFilter) {
-					var s = (start === "get") ? target[prop] : start,
-						type = typeof(target[prop]),
+				_addPropTween = function(target, prop, start, end, overwriteProp, mod, funcParam, stringFilter, index) {
+					if (typeof(end) === "function") {
+						end = end(index || 0, target);
+					}
+					var type = typeof(target[prop]),
+						getterName = (type !== "function") ? "" : ((prop.indexOf("set") || typeof(target["get" + prop.substr(3)]) !== "function") ? prop : "get" + prop.substr(3)),
+						s = (start !== "get") ? start : !getterName ? target[prop] : funcParam ? target[getterName](funcParam) : target[getterName](),
 						isRelative = (typeof(end) === "string" && end.charAt(1) === "="),
-						pt = {t:target, p:prop, s:s, f:(type === "function"), pg:0, n:overwriteProp || prop, r:round, pr:0, c:isRelative ? parseInt(end.charAt(0) + "1", 10) * parseFloat(end.substr(2)) : (parseFloat(end) - s) || 0},
-						blob, getterName;
-					if (type !== "number") {
-						if (type === "function" && start === "get") {
-							getterName = ((prop.indexOf("set") || typeof(target["get" + prop.substr(3)]) !== "function") ? prop : "get" + prop.substr(3));
-							pt.s = s = funcParam ? target[getterName](funcParam) : target[getterName]();
-						}
-						if (typeof(s) === "string" && (funcParam || isNaN(s))) {
+						pt = {t:target, p:prop, s:s, f:(type === "function"), pg:0, n:overwriteProp || prop, m:(!mod ? 0 : (typeof(mod) === "function") ? mod : Math.round), pr:0, c:isRelative ? parseInt(end.charAt(0) + "1", 10) * parseFloat(end.substr(2)) : (parseFloat(end) - s) || 0},
+						blob;
+	
+					if (typeof(s) !== "number" || (typeof(end) !== "number" && !isRelative)) {
+						if (funcParam || isNaN(s) || (!isRelative && isNaN(end)) || typeof(s) === "boolean" || typeof(end) === "boolean") {
 							//a blob (string that has multiple numbers in it)
 							pt.fp = funcParam;
-							blob = _blobDif(s, end, stringFilter || TweenLite.defaultStringFilter, pt);
-							pt = {t:blob, p:"setRatio", s:0, c:1, f:2, pg:0, n:overwriteProp || prop, pr:0}; //"2" indicates it's a Blob property tween. Needed for RoundPropsPlugin for example.
-						} else if (!isRelative) {
+							blob = _blobDif(s, (isRelative ? (parseFloat(pt.s) + pt.c) + (pt.s + "").replace(/[0-9\-\.]/g, "") : end), stringFilter || TweenLite.defaultStringFilter, pt);
+							pt = {t: blob, p: "setRatio", s: 0, c: 1, f: 2, pg: 0, n: overwriteProp || prop, pr: 0, m: 0}; //"2" indicates it's a Blob property tween. Needed for RoundPropsPlugin for example.
+						} else {
 							pt.s = parseFloat(s);
-							pt.c = (parseFloat(end) - pt.s) || 0;
+							if (!isRelative) {
+								pt.c = (parseFloat(end) - pt.s) || 0;
+							}
 						}
 					}
 					if (pt.c) { //only add it to the linked list if there's a change.
@@ -37389,7 +36207,7 @@
 				_plugins = TweenLite._plugins = {},
 				_tweenLookup = _internals.tweenLookup = {},
 				_tweenLookupNum = 0,
-				_reservedProps = _internals.reservedProps = {ease:1, delay:1, overwrite:1, onComplete:1, onCompleteParams:1, onCompleteScope:1, useFrames:1, runBackwards:1, startAt:1, onUpdate:1, onUpdateParams:1, onUpdateScope:1, onStart:1, onStartParams:1, onStartScope:1, onReverseComplete:1, onReverseCompleteParams:1, onReverseCompleteScope:1, onRepeat:1, onRepeatParams:1, onRepeatScope:1, easeParams:1, yoyo:1, immediateRender:1, repeat:1, repeatDelay:1, data:1, paused:1, reversed:1, autoCSS:1, lazy:1, onOverwrite:1, callbackScope:1, stringFilter:1, id:1},
+				_reservedProps = _internals.reservedProps = {ease:1, delay:1, overwrite:1, onComplete:1, onCompleteParams:1, onCompleteScope:1, useFrames:1, runBackwards:1, startAt:1, onUpdate:1, onUpdateParams:1, onUpdateScope:1, onStart:1, onStartParams:1, onStartScope:1, onReverseComplete:1, onReverseCompleteParams:1, onReverseCompleteScope:1, onRepeat:1, onRepeatParams:1, onRepeatScope:1, easeParams:1, yoyo:1, immediateRender:1, repeat:1, repeatDelay:1, data:1, paused:1, reversed:1, autoCSS:1, lazy:1, onOverwrite:1, callbackScope:1, stringFilter:1, id:1, yoyoEase:1},
 				_overwriteLookup = {none:0, all:1, auto:2, concurrent:3, allOnStart:4, preexisting:5, "true":1, "false":0},
 				_rootFramesTimeline = Animation._rootFramesTimeline = new SimpleTimeline(),
 				_rootTimeline = Animation._rootTimeline = new SimpleTimeline(),
@@ -37560,7 +36378,7 @@
 					dur = this._duration,
 					immediate = !!v.immediateRender,
 					ease = v.ease,
-					i, initPlugins, pt, p, startVars;
+					i, initPlugins, pt, p, startVars, l;
 				if (v.startAt) {
 					if (this._startAt) {
 						this._startAt.render(-1, true); //if we've run a startAt previously (when the tween instantiated), we should revert it so that the values re-instantiate correctly particularly for relative tweens. Without this, a TweenLite.fromTo(obj, 1, {x:"+=100"}, {x:"-=100"}), for example, would actually jump to +=200 because the startAt would run twice, doubling the relative change.
@@ -37570,11 +36388,15 @@
 					for (p in v.startAt) { //copy the properties/values into a new object to avoid collisions, like var to = {x:0}, from = {x:500}; timeline.fromTo(e, 1, from, to).fromTo(e, 1, to, from);
 						startVars[p] = v.startAt[p];
 					}
+					startVars.data = "isStart";
 					startVars.overwrite = false;
 					startVars.immediateRender = true;
 					startVars.lazy = (immediate && v.lazy !== false);
 					startVars.startAt = startVars.delay = null; //no nesting of startAt objects allowed (otherwise it could cause an infinite loop).
-					this._startAt = TweenLite.to(this.target, 0, startVars);
+					startVars.onUpdate = v.onUpdate;
+					startVars.onUpdateParams = v.onUpdateParams;
+					startVars.onUpdateScope = v.onUpdateScope || v.callbackScope || this;
+					this._startAt = TweenLite.to(this.target || {}, 0, startVars);
 					if (immediate) {
 						if (this._time > 0) {
 							this._startAt = null; //tweens that render immediately (like most from() and fromTo() tweens) shouldn't revert when their parent timeline's playhead goes backward past the startTime because the initial render could have happened anytime and it shouldn't be directly correlated to this tween's startTime. Imagine setting up a complex animation where the beginning states of various objects are rendered immediately but the tween doesn't happen for quite some time - if we revert to the starting values as soon as the playhead goes backward past the tween's startTime, it will throw things off visually. Reversion should only happen in TimelineLite/Max instances where immediateRender was false (which is the default in the convenience methods like from()).
@@ -37623,14 +36445,14 @@
 				this._firstPT = null;
 	
 				if (this._targets) {
-					i = this._targets.length;
-					while (--i > -1) {
-						if ( this._initProps( this._targets[i], (this._propLookup[i] = {}), this._siblings[i], (op ? op[i] : null)) ) {
+					l = this._targets.length;
+					for (i = 0; i < l; i++) {
+						if ( this._initProps( this._targets[i], (this._propLookup[i] = {}), this._siblings[i], (op ? op[i] : null), i) ) {
 							initPlugins = true;
 						}
 					}
 				} else {
-					initPlugins = this._initProps(this.target, this._propLookup, this._siblings, op);
+					initPlugins = this._initProps(this.target, this._propLookup, this._siblings, op, 0);
 				}
 	
 				if (initPlugins) {
@@ -37651,7 +36473,7 @@
 				this._initted = true;
 			};
 	
-			p._initProps = function(target, propLookup, siblings, overwrittenProps) {
+			p._initProps = function(target, propLookup, siblings, overwrittenProps, index) {
 				var p, i, initPlugins, plugin, pt, v;
 				if (target == null) {
 					return false;
@@ -37671,7 +36493,7 @@
 							this.vars[p] = v = this._swapSelfInParams(v, this);
 						}
 	
-					} else if (_plugins[p] && (plugin = new _plugins[p]())._onInitTween(target, this.vars[p], this)) {
+					} else if (_plugins[p] && (plugin = new _plugins[p]())._onInitTween(target, this.vars[p], this, index)) {
 	
 						//t - target 		[object]
 						//p - property 		[string]
@@ -37681,7 +36503,8 @@
 						//n - name			[string]
 						//pg - isPlugin 	[boolean]
 						//pr - priority		[number]
-						this._firstPT = pt = {_next:this._firstPT, t:plugin, p:"setRatio", s:0, c:1, f:1, n:p, pg:1, pr:plugin._priority};
+						//m - mod           [function | 0]
+						this._firstPT = pt = {_next:this._firstPT, t:plugin, p:"setRatio", s:0, c:1, f:1, n:p, pg:1, pr:plugin._priority, m:0};
 						i = plugin._overwriteProps.length;
 						while (--i > -1) {
 							propLookup[plugin._overwriteProps[i]] = this._firstPT;
@@ -37697,16 +36520,16 @@
 						}
 	
 					} else {
-						propLookup[p] = _addPropTween.call(this, target, p, "get", v, p, 0, null, this.vars.stringFilter);
+						propLookup[p] = _addPropTween.call(this, target, p, "get", v, p, 0, null, this.vars.stringFilter, index);
 					}
 				}
 	
 				if (overwrittenProps) if (this._kill(overwrittenProps, target)) { //another tween may have tried to overwrite properties of this tween before init() was called (like if two tweens start at the same time, the one created second will run first)
-					return this._initProps(target, propLookup, siblings, overwrittenProps);
+					return this._initProps(target, propLookup, siblings, overwrittenProps, index);
 				}
 				if (this._overwrite > 1) if (this._firstPT) if (siblings.length > 1) if (_applyOverwrite(target, this, propLookup, this._overwrite, siblings)) {
 					this._kill(propLookup, target);
-					return this._initProps(target, propLookup, siblings, overwrittenProps);
+					return this._initProps(target, propLookup, siblings, overwrittenProps, index);
 				}
 				if (this._firstPT) if ((this.vars.lazy !== false && this._duration) || (this.vars.lazy && !this._duration)) { //zero duration tweens don't lazy render by default; everything else does.
 					_lazyLookup[target._gsTweenID] = true;
@@ -37719,7 +36542,7 @@
 					duration = this._duration,
 					prevRawPrevTime = this._rawPrevTime,
 					isComplete, callback, pt, rawPrevTime;
-				if (time >= duration - 0.0000001) { //to work around occasional floating point math artifacts.
+				if (time >= duration - 0.0000001 && time >= 0) { //to work around occasional floating point math artifacts.
 					this._totalTime = this._time = duration;
 					this.ratio = this._ease._calcEnd ? this._ease.getRatio(1) : 1;
 					if (!this._reversed ) {
@@ -37756,7 +36579,7 @@
 							this._rawPrevTime = rawPrevTime = (!suppressEvents || time || prevRawPrevTime === time) ? time : _tinyNum; //when the playhead arrives at EXACTLY time 0 (right on top) of a zero-duration tween, we need to discern if events are suppressed so that when the playhead moves again (next time), it'll trigger the callback. If events are NOT suppressed, obviously the callback would be triggered in this render. Basically, the callback should fire either when the playhead ARRIVES or LEAVES this exact spot, not both. Imagine doing a timeline.seek(0) and there's a callback that sits at 0. Since events are suppressed on that seek() by default, nothing will fire, but when the playhead moves off of that position, the callback should fire. This behavior is what people intuitively expect. We set the _rawPrevTime to be a precise tiny number to indicate this scenario rather than using another property/variable which would increase memory usage. This technique is less readable, but more efficient.
 						}
 					}
-					if (!this._initted) { //if we render the very beginning (time == 0) of a fromTo(), we must force the render (normal tweens wouldn't need to render at a time of 0 when the prevTime was also 0). This is also mandatory to make sure overwriting kicks in immediately.
+					if (!this._initted || (this._startAt && this._startAt.progress())) { //if we render the very beginning (time == 0) of a fromTo(), we must force the render (normal tweens wouldn't need to render at a time of 0 when the prevTime was also 0). This is also mandatory to make sure overwriting kicks in immediately. Also, we check progress() because if startAt has already rendered at its end, we should force a render at its beginning. Otherwise, if you put the playhead directly on top of where a fromTo({immediateRender:false}) starts, and then move it backwards, the from() won't revert its values.
 						force = true;
 					}
 				} else {
@@ -37824,7 +36647,7 @@
 				if (prevTime === 0) {
 					if (this._startAt) {
 						if (time >= 0) {
-							this._startAt.render(time, suppressEvents, force);
+							this._startAt.render(time, true, force);
 						} else if (!callback) {
 							callback = "_dummyGS"; //if no callback is defined, use a dummy value just so that the condition at the end evaluates as true because _startAt should render AFTER the normal render loop when the time is negative. We could handle this in a more intuitive way, of course, but the render loop is the MOST important thing to optimize, so this technique allows us to avoid adding extra conditional logic in a high-frequency area.
 						}
@@ -37845,7 +36668,7 @@
 	
 				if (this._onUpdate) {
 					if (time < 0) if (this._startAt && time !== -0.0001) { //if the tween is positioned at the VERY beginning (_startTime 0) of its parent timeline, it's illegal for the playhead to go back further, so we should not render the recorded startAt values.
-						this._startAt.render(time, suppressEvents, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
+						this._startAt.render(time, true, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
 					}
 					if (!suppressEvents) if (this._time !== prevTime || isComplete || force) {
 						this._callback("onUpdate");
@@ -37853,7 +36676,7 @@
 				}
 				if (callback) if (!this._gc || force) { //check _gc because there's a chance that kill() could be called in an onUpdate
 					if (time < 0 && this._startAt && !this._onUpdate && time !== -0.0001) { //-0.0001 is a special value that we use when looping back to the beginning of a repeated TimelineMax, in which case we shouldn't render the _startAt values.
-						this._startAt.render(time, suppressEvents, force);
+						this._startAt.render(time, true, force);
 					}
 					if (isComplete) {
 						if (this._timeline.autoRemoveChildren) {
@@ -38047,7 +36870,7 @@
 							}
 						}
 					}
-				} else {
+				} else if (target._gsTweenID) {
 					a = _register(target).concat();
 					i = a.length;
 					while (--i > -1) {
@@ -38056,7 +36879,7 @@
 						}
 					}
 				}
-				return a;
+				return a || [];
 			};
 	
 			TweenLite.killTweensOf = TweenLite.killDelayedCallsTo = function(target, onlyActive, vars) {
@@ -38086,7 +36909,7 @@
 					}, true);
 	
 			p = TweenPlugin.prototype;
-			TweenPlugin.version = "1.18.0";
+			TweenPlugin.version = "1.19.0";
 			TweenPlugin.API = 2;
 			p._firstPT = null;
 			p._addTween = _addPropTween;
@@ -38123,11 +36946,17 @@
 				return false;
 			};
 	
-			p._roundProps = function(lookup, value) {
-				var pt = this._firstPT;
+			p._mod = p._roundProps = function(lookup) {
+				var pt = this._firstPT,
+					val;
 				while (pt) {
-					if (lookup[this._propName] || (pt.n != null && lookup[ pt.n.split(this._propName + "_").join("") ])) { //some properties that are very plugin-specific add a prefix named after the _propName plus an underscore, so we need to ignore that extra stuff here.
-						pt.r = value;
+					val = lookup[this._propName] || (pt.n != null && lookup[ pt.n.split(this._propName + "_").join("") ]);
+					if (val && typeof(val) === "function") { //some properties that are very plugin-specific add a prefix named after the _propName plus an underscore, so we need to ignore that extra stuff here.
+						if (pt.f === 2) {
+							pt.t._applyPT.m = val;
+						} else {
+							pt.m = val;
+						}
 					}
 					pt = pt._next;
 				}
@@ -38183,7 +37012,7 @@
 				var propName = config.propName,
 					priority = config.priority || 0,
 					overwriteProps = config.overwriteProps,
-					map = {init:"_onInitTween", set:"setRatio", kill:"_kill", round:"_roundProps", initAll:"_onInitAllProps"},
+					map = {init:"_onInitTween", set:"setRatio", kill:"_kill", round:"_mod", mod:"_mod", initAll:"_onInitAllProps"},
 					Plugin = _class("plugins." + propName.charAt(0).toUpperCase() + propName.substr(1) + "Plugin",
 						function() {
 							TweenPlugin.call(this, propName, priority);
@@ -38212,7 +37041,7 @@
 				}
 				for (p in _defLookup) {
 					if (!_defLookup[p].func) {
-						window.console.log("GSAP encountered missing dependency: com.greensock." + p);
+						window.console.log("GSAP encountered missing dependency: " + p);
 					}
 				}
 			}
@@ -38222,17 +37051,9 @@
 	})((typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window, "TweenMax");
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-/***/ },
-/* 144 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, {}))
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -38248,27 +37069,27 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _gsap = __webpack_require__(143);
+	var _gsap = __webpack_require__(140);
 	
 	var _gsap2 = _interopRequireDefault(_gsap);
 	
-	var _config = __webpack_require__(140);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _InputManager = __webpack_require__(146);
+	var _InputManager = __webpack_require__(142);
 	
 	var _InputManager2 = _interopRequireDefault(_InputManager);
 	
-	var _CookieManager = __webpack_require__(151);
+	var _CookieManager = __webpack_require__(143);
 	
 	var _CookieManager2 = _interopRequireDefault(_CookieManager);
 	
-	var _utils = __webpack_require__(147);
+	var _utils = __webpack_require__(144);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _Screen2 = __webpack_require__(148);
+	var _Screen2 = __webpack_require__(145);
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
@@ -38286,11 +37107,31 @@
 		function GameScreen(label) {
 			_classCallCheck(this, GameScreen);
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameScreen).call(this, label));
+			var _this = _possibleConstructorReturn(this, (GameScreen.__proto__ || Object.getPrototypeOf(GameScreen)).call(this, label));
 	
-			_this.shapes = [{ shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD" }, { shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER" }, { shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER" }];
+			_this.shapes = [{
+				shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER"
+			}, {
+				shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER"
+			}];
 	
-			_this.whatPiece = { shape: [[0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0]], type: "WHAT" };
+			_this.whatPiece = {
+				shape: [[0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0]], type: "WHAT"
+			};
 	
 			_this.bestScore = _config2.default.cookieManager.getCookie("bestPoints");
 			_this.gameTitle = "Simple\nBRICK GAME";
@@ -38302,6 +37143,9 @@
 		_createClass(GameScreen, [{
 			key: 'shuffleText',
 			value: function shuffleText(label) {
+				if (Math.random() > 0.2) {
+					return label;
+				}
 				var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
 				var rnd2 = Math.floor(Math.random() * 9);
 				var rnd3 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
@@ -38328,13 +37172,24 @@
 				window.open('http://www.jefframos.me', '_blank');
 			}
 		}, {
+			key: 'resize',
+			value: function resize(newSize) {
+				this.allContainer.scale.x = _config2.default.width / newSize.width / (_config2.default.height / window.innerHeight);
+				this.allContainer.pivot.x = _config2.default.width / 2;
+				var s = newSize.width / _config2.default.width;
+				this.allContainer.x = window.innerWidth / 2 / s;
+			}
+		}, {
 			key: 'build',
 			value: function build() {
-				_get(Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
+				_get(GameScreen.prototype.__proto__ || Object.getPrototypeOf(GameScreen.prototype), 'build', this).call(this);
+	
+				this.allContainer = new _pixi2.default.Container();
+	
 				//create background shape
 				this.background = new _pixi2.default.Graphics();
 				this.background.beginFill(0xFFFFFF);
-				this.background.drawRect(-100, -100, _config2.default.width + 200, _config2.default.height + 200);
+				this.background.drawRect(-100, -100, _config2.default.width + 100, _config2.default.height + 200);
 				this.addChild(this.background);
 				this.backgroundColor = 0x101010;
 				this.backgroundStandardColor = 0x101010;
@@ -38343,6 +37198,7 @@
 				this.bulletList = [];
 				this.createParticles();
 	
+				this.addChild(this.allContainer);
 				this.gameContainer = new _pixi2.default.Container();
 				this.gameQueueContainer = new _pixi2.default.Container();
 				this.gameBorderContainer = new _pixi2.default.Container();
@@ -38360,7 +37216,7 @@
 				this.creatorLabel.buttonMode = true;
 				_utils2.default.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
 				this.creatorLabel.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
-				this.addChild(this.creatorLabel);
+				this.allContainer.addChild(this.creatorLabel);
 				this.creatorLabel.position.x = _config2.default.width - this.creatorLabel.width;
 				this.creatorLabel.position.y = 20;
 				// config.effectsLayer.removePixelate();
@@ -38368,36 +37224,36 @@
 				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 				// config.effectsLayer.shakeSplitter(1,10,1.8);
 				this.labelPoints = new _pixi2.default.Text('0000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.addChild(this.labelPoints);
+				this.allContainer.addChild(this.labelPoints);
 				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
 				this.labelPoints.position.y = 80;
 				this.labelPoints.alpha = 0;
 	
 				this.currentLevel = 1;
 				this.labelLevel = new _pixi2.default.Text('Level: ' + this.currentLevel, { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.addChild(this.labelLevel);
+				this.allContainer.addChild(this.labelLevel);
 				this.labelLevel.position.x = 5;
 				this.labelLevel.position.y = 90;
 				this.labelLevel.alpha = 0;
 	
-				this.labelBestScore = new _pixi2.default.Text("BEST SCORE: " + this.bestScore, { font: '20px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.addChild(this.labelBestScore);
+				this.labelBestScore = new _pixi2.default.Text("BEST SCORE: " + (this.bestScore ? this.bestScore : "0"), { font: '20px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.allContainer.addChild(this.labelBestScore);
 				this.labelBestScore.position.x = _config2.default.width - this.labelBestScore.width - 5;
 				this.labelBestScore.position.y = 60;
 				this.labelBestScore.alpha = 0;
 	
 				this.labelTitle = new _pixi2.default.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-				this.addChild(this.labelTitle);
+				this.allContainer.addChild(this.labelTitle);
 				this.labelTitle.position.x = _config2.default.width / 2 - this.labelTitle.width / 2;
 				this.labelTitle.position.y = 70;
 				this.labelTitle.alpha = 0;
 	
-				this.addChild(this.gameContainer);
-				this.addChild(this.gameQueueContainer);
-				this.addChild(this.gameBorderContainer);
-				this.addChild(this.gameInfoContainer);
-				this.addChild(this.gameComboBarContainer);
-				this.addChild(this.inGameButtons);
+				this.allContainer.addChild(this.gameContainer);
+				this.allContainer.addChild(this.gameQueueContainer);
+				this.allContainer.addChild(this.gameBorderContainer);
+				this.allContainer.addChild(this.gameInfoContainer);
+				this.allContainer.addChild(this.gameComboBarContainer);
+				this.allContainer.addChild(this.inGameButtons);
 				this.drawComboContainer();
 	
 				this.gameComboBarContainer.position.x = 0;
@@ -38515,26 +37371,30 @@
 			key: 'starterEffect',
 			value: function starterEffect() {
 				_config2.default.effectsLayer.removeAllFilters();
-				_config2.default.effectsLayer.updateRGBSplitter(5);
-				_config2.default.effectsLayer.fadeSplitter(1, 3, 0.2);
+				_config2.default.effectsLayer.updateRGBSplitter(2);
+				_config2.default.effectsLayer.fadeSplitter(0.5, 3, 0.2);
 				_config2.default.effectsLayer.addPixelate();
 			}
 		}, {
 			key: 'removeFilter',
 			value: function removeFilter() {
+				this.gameContainer.scale.x = 1;
+				this.gameBorderContainer.scale.x = 1;
+				this.gameContainer.scale.y = 1;
+				this.gameBorderContainer.scale.y = 1;
 				switch (this.currentEffectID) {
 					case 0:
-						//this.currentEffect = "INVERT";
+						this.currentEffect = "INVERT";
 						_config2.default.effectsLayer.removeInvert();
 						_config2.default.effectsLayer.removeAllFilters();
 						break;
-					// case 1:
-					// 	//this.currentEffect = "CROSS";
-					// 	config.effectsLayer.removeAllFilters();
-					// break
+					case 1:
+						this.currentEffect = "CROSS";
+						_config2.default.effectsLayer.removeAllFilters();
+						break;
 					case 2:
-						//this.currentEffect = "ASCII";
-						//config.effectsLayer.removeAllFilters();
+						this.currentEffect = "ASCII";
+						_config2.default.effectsLayer.removeAllFilters();
 						break;
 					case 3:
 						this.gameContainer.scale.y = 1;
@@ -38558,7 +37418,7 @@
 			}
 		}, {
 			key: 'changeFilter',
-			value: function changeFilter(effect) {
+			value: function changeFilter() {
 				var nextID = this.currentEffectID;
 				if (this.currentEffectID >= 0) {
 					nextID = -1;
@@ -38567,14 +37427,19 @@
 					nextID = Math.floor(Math.random() * 8);
 				}
 	
+				if (nextID == 1 || nextID == 2) {
+					nextID = Math.floor(Math.random() * 8);
+				}
+	
 				if (this.scoring > 4) {
 					// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
 					// 	this.crazyCurrentPieces();
 					// }
 	
-					if (Math.random() < 0.05 + this.currentLevel * 0.01) {
-						this.changeBackgroundColor();
-					}
+	
+					if (Math.random() < 0.05 + this.currentLevel * 0.01) {}
+					//this.changeBackgroundColor();
+	
 					// if(Math.random() < this.rotatingCrazy ? 0.1 : 0.05){
 					// 	this.removeOneColum();
 					// }
@@ -38584,7 +37449,7 @@
 					// }
 	
 					if (!this.rotatingCrazy && Math.random() < 0.01 + this.currentLevel * 0.01) {
-						this.fallForRandomSide();
+						//this.fallForRandomSide();
 					}
 				}
 	
@@ -38593,7 +37458,7 @@
 	
 				this.removeFilter();
 				this.starterEffect();
-				//nextID = 4
+				//nextID = 1
 				// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
 				switch (nextID) {
 					case 0:
@@ -38602,17 +37467,18 @@
 						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
 						this.addInfoLabel(["INVERT", ["COLOR"]]);
 						break;
-					// case 1:
-					// 	config.effectsLayer.fadeSplitter(-5, 3, 0);
-					// 	//this.currentEffect = "CROSS";
-					// 	config.effectsLayer.removeAllFilters();
-					// 	config.effectsLayer.addCrossHatch();
-					// 	this.addInfoLabel(["CROSS"])
-					// break
+					case 1:
+						_config2.default.effectsLayer.fadeSplitter(-5, 3, 0);
+						// this.currentEffect = "CROSS";
+						// config.effectsLayer.removeAllFilters();
+						// config.effectsLayer.addInvert();
+						// config.effectsLayer.addCrossHatch();
+						// this.addInfoLabel(["CROSS"])
+						break;
 					case 2:
 						_config2.default.effectsLayer.shakeSplitter(1, 80, 5);
-						this.addInfoLabel(["EARTHQUAKE"]);
-						//this.currentEffect = "ASCII";
+						//this.addInfoLabel(["EARTHQUAKE"])
+						// this.currentEffect = "ASCII";
 						// config.effectsLayer.removeAllFilters();
 						// config.effectsLayer.addAscii();
 						// this.scale.y = -1;
@@ -38801,7 +37667,7 @@
 					this.brickBreakerPiece.position.y = _config2.default.pieceSize * 2;
 					this.gameContainer.addChild(this.brickBreakerPiece);
 					this.brickBreakerSpeed = { x: 0, y: 0 };
-					this.brickBreakerStandardSpeed = 300;
+					this.brickBreakerStandardSpeed = 500;
 					this.brickBreakerSpeed.y = this.brickBreakerStandardSpeed;
 					this.brickBreakerSpeed.x = this.brickBreakerStandardSpeed;
 				}
@@ -38842,14 +37708,16 @@
 				var tempLabel = new _pixi2.default.Text(value, { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				tempLabel.position.x = entity.position.x + entity.width / 2 - tempLabel.width / 2;
 				tempLabel.position.y = entity.position.y;
-				_gsap2.default.to(tempLabel, 1, { onStart: function onStart(element, parent, toRemove) {
+				_gsap2.default.to(tempLabel, 1, {
+					onStart: function onStart(element, parent, toRemove) {
 						parent.addChild(element);
 						if (toRemove && toRemove.parent) {
 							toRemove.parent.removeChild(toRemove);
 						}
 					}, onStartParams: [tempLabel, this.gameContainer, toRemove], delay: delay, y: entity.position.y - _config2.default.pieceSize, onComplete: function onComplete(toRemove) {
 						toRemove.parent.removeChild(toRemove);
-					}, onCompleteScope: this, onCompleteParams: [tempLabel] });
+					}, onCompleteScope: this, onCompleteParams: [tempLabel]
+				});
 			}
 		}, {
 			key: 'updateBulletList',
@@ -38893,7 +37761,7 @@
 							this.addShockwaveByPiece(this.bulletList[i]);
 							this.bulletList[i].parent.removeChild(this.bulletList[i]);
 							_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
-							_config2.default.effectsLayer.updateRGBSplitter(5);
+							_config2.default.effectsLayer.updateRGBSplitter(2);
 							_config2.default.effectsLayer.fadeSplitter(0, 4, 0);
 						}
 						this.bulletList.splice(i, 1);
@@ -38923,8 +37791,8 @@
 						//tempShape.scale.y = 0.7;
 						//tempShape.scale.x = 0.7;
 					} else {
-							tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
-						}
+						tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+					}
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
 					tempShape.position.y = 130 * (i + 1);
@@ -39058,8 +37926,8 @@
 			value: function addEvents() {
 				this.removeEvents();
 				this.interactive = true;
-				//this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this));
-				//this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this)); 	  
+				//this.on('mousedown', this.onTapDown.bind(this)).on('touchstart', this.onTapDown.bind(this)); 
+				//this.on('mouseup', this.onTapUp.bind(this)).on('touchend', this.onTapUp.bind(this)); 	    
 			}
 		}, {
 			key: 'onMouseMoveCallback',
@@ -39130,12 +37998,12 @@
 				var tempId = void 0;
 				for (var i = 0; i < 200; i++) {
 					tempId = Math.floor(this.shapes.length * Math.random());
-					if (this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.2 || i < 35) {
+					if (this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.1 || i < 35) {
 						// console.log("RECALC BRICK");
-						tempId = Math.floor(this.shapes.length * Math.random());
+						tempId = Math.floor((this.shapes.length - 1) * Math.random());
 					}
 	
-					if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.5 || i < 20) {
+					if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.3 || i < 20) {
 						// console.log("RECALC BRICK");
 						tempId = Math.floor(this.shapes.length * Math.random());
 					}
@@ -39160,7 +38028,7 @@
 				var tempButton = this.drawSquare(Math.random() * 0xFFFFFF, -10);
 				tempButton.interactive = true;
 				tempButton.on('tap', callback.bind(this)).on('click', callback.bind(this));
-				this.addChild(tempButton);
+				this.allContainer.addChild(tempButton);
 				tempButton.position.x = tempButton.width * this.buttonList.length + tempButton.width;
 				tempButton.position.y = tempButton.height / 2;
 				this.buttonList.push(tempButton);
@@ -39179,7 +38047,7 @@
 					this.blinkLetter.parent.removeChild(this.blinkLetter);
 				}
 				this.blinkLetter = new _pixi2.default.Text(label, { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-				this.addChild(this.blinkLetter);
+				this.allContainer.addChild(this.blinkLetter);
 				this.blinkLetter.position.x = _config2.default.width / 2 - this.blinkLetter.width / 2;
 				this.blinkLetter.position.y = _config2.default.height - this.blinkLetter.height * 1.5;
 			}
@@ -39188,7 +38056,7 @@
 			value: function addInfoLabel(label, addEffects, dontRemove, grey) {
 				var tempLabel = label;
 				if (!addEffects) {
-					_config2.default.effectsLayer.updateRGBSplitter(-4);
+					_config2.default.effectsLayer.updateRGBSplitter(-2);
 					_config2.default.effectsLayer.fadeSplitter(1, 1, 0);
 					// config.effectsLayer.fadeSplitter(1, 1, 1);
 					// config.effectsLayer.fadeBloom(2,0, 2, 0, true);
@@ -39211,7 +38079,8 @@
 				var rainbowColorsID = Math.floor(Math.random() * rainbowColors.length);
 				for (var i = 0; i < tempLabel.length; i++) {
 					for (var j = 0; j < tempLabel[i].length; j++) {
-						var tempLetter = new _pixi2.default.Text(tempLabel[i][j], { font: '80px super_smash_tvregular', fill: fontColor, align: 'center',
+						var tempLetter = new _pixi2.default.Text(tempLabel[i][j], {
+							font: '80px super_smash_tvregular', fill: fontColor, align: 'center',
 							dropShadow: true,
 							dropShadowColor: rainbowColors[rainbowColorsID],
 							dropShadowAngle: 45,
@@ -39238,11 +38107,13 @@
 	
 						if (!dontRemove) {
 							_gsap2.default.to(tempLetter.position, time / 2, { y: tempLetter.position.y - 30, delay: delay + timeToRemove });
-							_gsap2.default.to(tempLetter, time / 2, { alpha: 0, delay: delay + timeToRemove, onComplete: function onComplete(toRemove) {
+							_gsap2.default.to(tempLetter, time / 2, {
+								alpha: 0, delay: delay + timeToRemove, onComplete: function onComplete(toRemove) {
 									if (toRemove && toRemove.parent) {
 										toRemove.parent.removeChild(toRemove);
 									}
-								}, onCompleteParams: [tempLetter] });
+								}, onCompleteParams: [tempLetter]
+							});
 						}
 					}
 				}
@@ -39285,6 +38156,7 @@
 				this.removeFilter();
 				this.currentEffectID = 99999;
 				// this.changeFilter();
+	
 	
 				this.shapesOrder.push(0);
 				this.shapesOrder.push(1);
@@ -39580,9 +38452,11 @@
 				tempEffect.drawRect(0, 0, _config2.default.pieceSize, _config2.default.pieceSize * _config2.default.bounds.y);
 				tempEffect.position.x = columID * _config2.default.pieceSize;
 				tempEffect.height = _config2.default.bounds.y * _config2.default.pieceSize;
-				_gsap2.default.to(tempEffect, 0.5, { alpha: 0, onComplete: function onComplete(toRemove) {
+				_gsap2.default.to(tempEffect, 0.5, {
+					alpha: 0, onComplete: function onComplete(toRemove) {
 						toRemove.parent.removeChild(toRemove);
-					}, onCompleteParams: [tempEffect] });
+					}, onCompleteParams: [tempEffect]
+				});
 				this.gameContainer.addChild(tempEffect);
 				for (var i = this.gameMatrix[columID].length; i >= 0; i--) {
 					if (this.gameMatrix[columID][i]) {
@@ -39593,7 +38467,7 @@
 				}
 				var delayAcc = 0;
 				_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
-				_config2.default.effectsLayer.updateRGBSplitter(5);
+				_config2.default.effectsLayer.updateRGBSplitter(2);
 				_config2.default.effectsLayer.fadeSplitter(1, 3);
 	
 				var yNormal = (this.gameContainer.position.y - this.gameContainer.pivot.y + _config2.default.bounds.y * _config2.default.pieceSize) / _config2.default.height;
@@ -40007,7 +38881,7 @@
 					this.addShockwaveByPiece(this.currentEntityList[this.currentEntityList.length - 1]);
 					_config2.default.effectsLayer.shakeX(0.5, 5, 0.5);
 					_config2.default.effectsLayer.shakeY(0.5, 5, 0.5);
-					_config2.default.effectsLayer.updateRGBSplitter(4);
+					_config2.default.effectsLayer.updateRGBSplitter(2);
 					_config2.default.effectsLayer.fadeSplitter(0, 2, 0);
 	
 					this.border.tint = this.currentColor;
@@ -40088,9 +38962,9 @@
 					_config2.default.cookieManager.createCookie("bestPoints", this.bestScore, 365);
 					//save best score
 				} else {
-						this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
-						this.addBlinkingLabel("BEST SCORE: " + this.bestScore);
-					}
+					this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
+					this.addBlinkingLabel("BEST SCORE: " + this.bestScore);
+				}
 			}
 		}, {
 			key: 'onBackCallback',
@@ -40151,7 +39025,7 @@
 					uvs: true,
 					alpha: true
 				});
-				this.addChild(this.particlesContainer);
+				this.allContainer.addChild(this.particlesContainer);
 				this.particles = [];
 				for (var i = 0; i < 50; i++) {
 					var particle = _pixi2.default.Sprite.fromImage('./assets/particle2.png');
@@ -40215,7 +39089,7 @@
 				this.rawDelta = delta;
 				delta *= this.normalizedDelta + this.downSpeedIncrease;
 	
-				_get(Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
+				_get(GameScreen.prototype.__proto__ || Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
 				this.updateParticles(delta);
 				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
 	
@@ -40272,9 +39146,9 @@
 	
 	exports.default = GameScreen;
 
-/***/ },
-/* 146 */
-/***/ function(module, exports) {
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -40351,9 +39225,58 @@
 	
 	exports.default = InputManager;
 
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 143 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var CookieManager = function () {
+		function CookieManager() {
+			_classCallCheck(this, CookieManager);
+		}
+	
+		_createClass(CookieManager, [{
+			key: "createCookie",
+			value: function createCookie(name, value, days) {
+				if (days) {
+					var date = new Date();
+					date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+					var expires = "; expires=" + date.toGMTString();
+				} else var expires = "";
+				document.cookie = name + "=" + value + expires + "; path=/";
+			}
+		}, {
+			key: "getCookie",
+			value: function getCookie(name) {
+				var regexp = new RegExp("(?:^" + name + "|;\s*" + name + ")=(.*?)(?:;|$)", "g");
+				var result = regexp.exec(document.cookie);
+				return result === null ? null : result[1];
+			}
+		}, {
+			key: "deleteCookie",
+			value: function deleteCookie(name, path, domain) {
+				// If the cookie exists
+				if (getCookie(name)) createCookie(name, "", -1, path, domain);
+			}
+		}]);
+	
+		return CookieManager;
+	}();
+	
+	exports.default = CookieManager;
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -40361,7 +39284,7 @@
 	  value: true
 	});
 	
-	var _config = __webpack_require__(140);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
@@ -40437,9 +39360,9 @@
 	  }
 	};
 
-/***/ },
-/* 148 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -40469,7 +39392,7 @@
 		function Screen(label) {
 			_classCallCheck(this, Screen);
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Screen).call(this));
+			var _this = _possibleConstructorReturn(this, (Screen.__proto__ || Object.getPrototypeOf(Screen)).call(this));
 	
 			_this.label = label;
 			_this.entityList = [];
@@ -40485,7 +39408,7 @@
 		_createClass(Screen, [{
 			key: 'addChild',
 			value: function addChild(entity) {
-				_get(Object.getPrototypeOf(Screen.prototype), 'addChild', this).call(this, entity);
+				_get(Screen.prototype.__proto__ || Object.getPrototypeOf(Screen.prototype), 'addChild', this).call(this, entity);
 				this.entityList.push(entity);
 			}
 			//if the element is inside another, put here to force updates on the screen
@@ -40536,6 +39459,9 @@
 				this.entityList = [];
 			}
 		}, {
+			key: 'resize',
+			value: function resize(newSize) {}
+		}, {
 			key: 'build',
 			value: function build() {
 				this.built = true;
@@ -40569,9 +39495,9 @@
 	
 	exports.default = Screen;
 
-/***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 146 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -40587,19 +39513,19 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _gsap = __webpack_require__(143);
+	var _gsap = __webpack_require__(140);
 	
 	var _gsap2 = _interopRequireDefault(_gsap);
 	
-	var _config = __webpack_require__(140);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utils = __webpack_require__(147);
+	var _utils = __webpack_require__(144);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _Screen2 = __webpack_require__(148);
+	var _Screen2 = __webpack_require__(145);
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
@@ -40617,13 +39543,13 @@
 		function InitScreen(label) {
 			_classCallCheck(this, InitScreen);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(InitScreen).call(this, label));
+			return _possibleConstructorReturn(this, (InitScreen.__proto__ || Object.getPrototypeOf(InitScreen)).call(this, label));
 		}
 	
 		_createClass(InitScreen, [{
 			key: 'build',
 			value: function build() {
-				_get(Object.getPrototypeOf(InitScreen.prototype), 'build', this).call(this);
+				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'build', this).call(this);
 				this.background = new _pixi2.default.Graphics();
 				this.background.beginFill(0);
 				this.background.drawRect(0, 0, _config2.default.width, _config2.default.height);
@@ -40734,7 +39660,7 @@
 		}, {
 			key: 'update',
 			value: function update(delta) {
-				_get(Object.getPrototypeOf(InitScreen.prototype), 'update', this).call(this, delta);
+				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'update', this).call(this, delta);
 				this.description.text = this.shuffleText('By JEFF RAMOS');
 				this.updateParticles(delta);
 			}
@@ -40815,9 +39741,9 @@
 	
 	exports.default = InitScreen;
 
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -40845,7 +39771,7 @@
 		function ScreenManager() {
 			_classCallCheck(this, ScreenManager);
 	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScreenManager).call(this));
+			var _this = _possibleConstructorReturn(this, (ScreenManager.__proto__ || Object.getPrototypeOf(ScreenManager)).call(this));
 	
 			_this.currentScreen = null;
 			_this.screenList = [];
@@ -40870,6 +39796,13 @@
 				}
 				if (this.currentScreen) {
 					this.currentScreen.transitionOut(tempScreen);
+				}
+			}
+		}, {
+			key: 'resize',
+			value: function resize(newSize) {
+				if (this.currentScreen.resize) {
+					this.currentScreen.resize(newSize);
 				}
 			}
 			//change between screens
@@ -40907,55 +39840,6 @@
 	
 	exports.default = ScreenManager;
 
-/***/ },
-/* 151 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var CookieManager = function () {
-		function CookieManager() {
-			_classCallCheck(this, CookieManager);
-		}
-	
-		_createClass(CookieManager, [{
-			key: "createCookie",
-			value: function createCookie(name, value, days) {
-				if (days) {
-					var date = new Date();
-					date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-					var expires = "; expires=" + date.toGMTString();
-				} else var expires = "";
-				document.cookie = name + "=" + value + expires + "; path=/";
-			}
-		}, {
-			key: "getCookie",
-			value: function getCookie(name) {
-				var regexp = new RegExp("(?:^" + name + "|;\s*" + name + ")=(.*?)(?:;|$)", "g");
-				var result = regexp.exec(document.cookie);
-				return result === null ? null : result[1];
-			}
-		}, {
-			key: "deleteCookie",
-			value: function deleteCookie(name, path, domain) {
-				// If the cookie exists
-				if (getCookie(name)) createCookie(name, "", -1, path, domain);
-			}
-		}]);
-	
-		return CookieManager;
-	}();
-	
-	exports.default = CookieManager;
-
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=game.js.map
