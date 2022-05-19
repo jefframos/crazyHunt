@@ -226,6 +226,8 @@ export default class GameScreen extends Screen {
 		this.gameComboBarContainer.position.x = 0;
 		this.gameComboBarContainer.position.y = this.labelPoints.position.y + this.labelPoints.height;
 
+		this.inputManager = new InputManager(this);
+
 		this.initGame();
 
 
@@ -261,7 +263,8 @@ export default class GameScreen extends Screen {
 
 		//utils.correctPosition(this.gameContainer);
 
-		this.inputManager = new InputManager(this);
+
+		
 		// config.effectsLayer.removeBloom();
 		// setTimeout(function(){
 		// 	config.effectsLayer.addRGBSplitter();
@@ -387,7 +390,7 @@ export default class GameScreen extends Screen {
 		}
 
 
-		if(nextID == 1 || nextID == 2){
+		if (nextID == 1 || nextID == 2) {
 			nextID = Math.floor(Math.random() * 8)
 		}
 
@@ -1046,6 +1049,7 @@ export default class GameScreen extends Screen {
 		}
 	}
 	initGame() {
+		console.log("INIT GAME")
 		// this.started = true;
 		// this.addButtonHUD(this.changeBackgroundColor);
 		// this.addButtonHUD(this.crazyCurrentPieces);
@@ -1058,8 +1062,10 @@ export default class GameScreen extends Screen {
 		//this.bestScore = 0;// get best
 		this.interactive = false;
 
+		this.inputManager.keysContainer.visible = false;
+
 		this.comboTimer = 0;
-		this.comboMaxTimer = 5;
+		this.comboMaxTimer = 8;
 		this.comboCounter = 0;
 		this.resetRotation();
 		this.rotatingCrazy = false;
@@ -1135,6 +1141,9 @@ export default class GameScreen extends Screen {
 	}
 	showGame() {
 		console.log("showGame");
+		this.inputManager.keysContainer.visible = true;
+
+		this.gameOverState = false;
 		this.hideBlinkingLabel();
 		TweenLite.to(this.gameContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
 		TweenLite.to(this.gameBorderContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x, onComplete: this.adjustQueuePosition, onCompleteScope: this });
@@ -1170,15 +1179,19 @@ export default class GameScreen extends Screen {
 	}
 	showMenu() {
 		this.gameMode = "MENU";
+		console.log("SHOW MENU")
+		this.gameOverState = false;
 
-		if(window.isMobile){
+		this.started = true;
+
+		if (window.isMobile) {
 			this.addBlinkingLabel("TAP TO START");
 
 			this.interactive = true;
 			this.currentSelectedMenuItem = 0;
 			this.on('touchstart', this.selectMenu.bind(this)).on('mousedown', this.selectMenu.bind(this))
 
-		}else{
+		} else {
 
 			this.addBlinkingLabel("PESS SPACE");
 		}
@@ -1469,14 +1482,20 @@ export default class GameScreen extends Screen {
 
 	//
 	stopAction(type) {
-		if (!this.started) {
+		if (this.gameOverState) {
 			if (type == "space") {
-				this.initGame();
+				this.showMenu();
 				return;
 			}
 		}
 		if (!this.started || this.gameOvering) {
 			return;
+		}
+		if (!this.started) {
+			if (type == "space") {
+				this.initGame();
+				return;
+			}
 		}
 		if (this.gameMode == "MENU") {
 			// if(!this.inMenuKeyPressed){
@@ -1787,6 +1806,7 @@ export default class GameScreen extends Screen {
 				}
 			}
 			if (isColided && this.updateVisibleParts()) {
+				console.log(this.gameMatrix);
 				this.gameOver();
 			}
 		} else {
@@ -1812,7 +1832,7 @@ export default class GameScreen extends Screen {
 		this.started = false;
 		this.gameOvering = true;
 		this.hideGame();
-
+		this.inputManager.keysContainer.visible = false;
 
 		console.log(this.points);
 
@@ -1823,6 +1843,7 @@ export default class GameScreen extends Screen {
 				if (this.gameMatrix[i][j]) {
 					this.pointsParticle(accum, this.gameMatrix[i][j], accum * 0.05 + 0.1, this.gameMatrix[i][j]);
 					accum++;
+					this.gameMatrix[i][j] = 0;
 				}
 			}
 		}
@@ -1834,6 +1855,8 @@ export default class GameScreen extends Screen {
 	//SCREEN
 	showGameOverInfo() {
 		this.gameOvering = false;
+
+		this.gameOverState = true;
 
 		if (this.bestScore < this.points) {
 			this.addInfoLabel(["new", "record", this.updatePoints()], false, true);
@@ -1848,6 +1871,13 @@ export default class GameScreen extends Screen {
 			this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
 			this.addBlinkingLabel("BEST SCORE: " + this.bestScore);
 		}
+if(window.isMobile){
+
+	this.addBlinkingLabel("TAP TO GO BACK ");
+}else{
+	this.addBlinkingLabel("PRESS SPACE TO GO BACK ");
+
+}
 
 	}
 	onBackCallback() {

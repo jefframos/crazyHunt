@@ -28318,7 +28318,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	window.isMobile = true; //navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+	window.isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
 	
 	PIXI.loader.add('./assets/tvlines.png').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
 	
@@ -37261,6 +37261,8 @@
 				this.gameComboBarContainer.position.x = 0;
 				this.gameComboBarContainer.position.y = this.labelPoints.position.y + this.labelPoints.height;
 	
+				this.inputManager = new _InputManager2.default(this);
+	
 				this.initGame();
 	
 				this.gameContainer.position.x = _config2.default.width / 2 - this.gameContainer.width / 2;
@@ -37292,7 +37294,7 @@
 	
 				//utils.correctPosition(this.gameContainer);
 	
-				this.inputManager = new _InputManager2.default(this);
+	
 				// config.effectsLayer.removeBloom();
 				// setTimeout(function(){
 				// 	config.effectsLayer.addRGBSplitter();
@@ -38126,6 +38128,7 @@
 		}, {
 			key: 'initGame',
 			value: function initGame() {
+				console.log("INIT GAME");
 				// this.started = true;
 				// this.addButtonHUD(this.changeBackgroundColor);
 				// this.addButtonHUD(this.crazyCurrentPieces);
@@ -38138,8 +38141,10 @@
 				//this.bestScore = 0;// get best
 				this.interactive = false;
 	
+				this.inputManager.keysContainer.visible = false;
+	
 				this.comboTimer = 0;
-				this.comboMaxTimer = 5;
+				this.comboMaxTimer = 8;
 				this.comboCounter = 0;
 				this.resetRotation();
 				this.rotatingCrazy = false;
@@ -38215,6 +38220,9 @@
 			key: 'showGame',
 			value: function showGame() {
 				console.log("showGame");
+				this.inputManager.keysContainer.visible = true;
+	
+				this.gameOverState = false;
 				this.hideBlinkingLabel();
 				_gsap2.default.to(this.gameContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x });
 				_gsap2.default.to(this.gameBorderContainer.position, 0.5, { x: 50 + this.gameContainer.pivot.x, onComplete: this.adjustQueuePosition, onCompleteScope: this });
@@ -38254,6 +38262,10 @@
 			key: 'showMenu',
 			value: function showMenu() {
 				this.gameMode = "MENU";
+				console.log("SHOW MENU");
+				this.gameOverState = false;
+	
+				this.started = true;
 	
 				if (window.isMobile) {
 					this.addBlinkingLabel("TAP TO START");
@@ -38577,14 +38589,20 @@
 		}, {
 			key: 'stopAction',
 			value: function stopAction(type) {
-				if (!this.started) {
+				if (this.gameOverState) {
 					if (type == "space") {
-						this.initGame();
+						this.showMenu();
 						return;
 					}
 				}
 				if (!this.started || this.gameOvering) {
 					return;
+				}
+				if (!this.started) {
+					if (type == "space") {
+						this.initGame();
+						return;
+					}
 				}
 				if (this.gameMode == "MENU") {
 					// if(!this.inMenuKeyPressed){
@@ -38920,6 +38938,7 @@
 						}
 					}
 					if (isColided && this.updateVisibleParts()) {
+						console.log(this.gameMatrix);
 						this.gameOver();
 					}
 				} else {
@@ -38946,6 +38965,7 @@
 				this.started = false;
 				this.gameOvering = true;
 				this.hideGame();
+				this.inputManager.keysContainer.visible = false;
 	
 				console.log(this.points);
 	
@@ -38955,6 +38975,7 @@
 						if (this.gameMatrix[i][j]) {
 							this.pointsParticle(accum, this.gameMatrix[i][j], accum * 0.05 + 0.1, this.gameMatrix[i][j]);
 							accum++;
+							this.gameMatrix[i][j] = 0;
 						}
 					}
 				}
@@ -38970,6 +38991,8 @@
 			value: function showGameOverInfo() {
 				this.gameOvering = false;
 	
+				this.gameOverState = true;
+	
 				if (this.bestScore < this.points) {
 					this.addInfoLabel(["new", "record", this.updatePoints()], false, true);
 					this.bestScore = this.points;
@@ -38982,6 +39005,12 @@
 				} else {
 					this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
 					this.addBlinkingLabel("BEST SCORE: " + this.bestScore);
+				}
+				if (window.isMobile) {
+	
+					this.addBlinkingLabel("TAP TO GO BACK ");
+				} else {
+					this.addBlinkingLabel("PRESS SPACE TO GO BACK ");
 				}
 			}
 		}, {

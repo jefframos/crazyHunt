@@ -7,7 +7,7 @@ import InitScreen from './game/screen/InitScreen';
 import ScreenManager from './screenManager/ScreenManager';
 import CookieManager  from './game/CookieManager';
 
-window.isMobile = true//navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+window.isMobile =  navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
 
 PIXI.loader
 	.add('./assets/tvlines.png')
