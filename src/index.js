@@ -13,6 +13,7 @@ PIXI.loader
 	.add('./assets/tvlines.png')
 	.add('./assets/glitch1.jpg')
 	.add('./assets/particle2.png')
+	.add('./assets/textures-0.json')
 	.add('./assets/fonts/super_smash_tv-webfont.woff')
 	.add('./assets/fonts/super_smash_tv-webfont.woff2')
 	.add('./assets/fonts/stylesheet.css')
@@ -42,6 +43,7 @@ function configGame(){
 	let initScreen = new InitScreen("INIT");
 	//add effect layer
 	let effectLayer = new EffectLayer(screenManager);
+	console.log(game.stage)
 	game.stage.addChild(screenManager);
 
 	config.effectsLayer = effectLayer;

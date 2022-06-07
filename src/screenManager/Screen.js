@@ -1,4 +1,4 @@
-import PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';;
 
 export default class Screen extends PIXI.Container{
 	constructor(label){  		

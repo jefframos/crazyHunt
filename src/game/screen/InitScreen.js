@@ -1,4 +1,4 @@
-import PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';;
 import TweenLite from 'gsap';
 import config  from '../../config';
 import utils  from '../../utils';

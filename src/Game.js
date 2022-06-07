@@ -1,9 +1,8 @@
-import PIXI from 'pixi.js';
-
+import * as PIXI from 'pixi.js';;
 export default class Game {
 	constructor(config) {
 		this.config = config;
-		const Renderer = (config.webgl) ? PIXI.autoDetectRenderer : PIXI.CanvasRenderer;
+		//const Renderer = (config.webgl) ? PIXI.autoDetectRenderer : PIXI.CanvasRenderer;
 
 		this.desktopResolution = {
 			width: config.width,
@@ -12,13 +11,24 @@ export default class Game {
 		//config.width = window.screen.width;
 		//config.height = window.screen.height;
 		this.ratio = this.config.width / this.config.height;
-		this.renderer = new Renderer(this.config.width || 800, this.config.height || 600, this.config.rendererOptions);
-		document.body.appendChild(this.renderer.view);
+		//this.app = new Renderer(this.config.width || 800, this.config.height || 600, this.config.rendererOptions);
+		console.log(this.app)
 
-		window.renderer = this.renderer;
+		this.app = new PIXI.Application(
+			{
+				width: this.config.width,
+				height: this.config.height,
+				// resolution: this.config.rendererOptions,
+				autoResize: false,
+				backgroundColor: 0xFFFFFF,
+			}
+		);
+		document.body.appendChild(this.app.view);
 
-		this.animationLoop = new PIXI.AnimationLoop(this.renderer);
-		this.animationLoop.on('prerender', this.update.bind(this));
+		window.renderer = this.app;
+		this.stage = this.app.stage
+		this.isRunning = true;
+		this.update();
 		this.resize();
 	}
 	resize() {
@@ -29,7 +39,7 @@ export default class Game {
 		}
 		var w = window.innerWidth;
 		var h = window.innerHeight;
-		this.renderer.view.style.position = 'absolute';
+		this.app.view.style.position = 'absolute';
 		this.innerResolution = { width: window.innerWidth, height: window.innerHeight };
 
 
@@ -39,7 +49,7 @@ export default class Game {
 
 		const scl = Math.min(sclX, sclY);
 
-		this.renderer.view.style.position = 'absolute';
+		this.app.view.style.position = 'absolute';
 
 		const newSize = {
 			width: window.innerWidth,//* scl,
@@ -47,15 +57,15 @@ export default class Game {
 		};
 
 
-		this.renderer.view.style.width = `${newSize.width}px`;
-		this.renderer.view.style.height = `${newSize.height}px`;
+		this.app.view.style.width = `${newSize.width}px`;
+		this.app.view.style.height = `${newSize.height}px`;
 
 		if (newSize.height < window.innerHeight) {
-			this.renderer.view.style.top = `${window.innerHeight / 2 - (newSize.height) / 2}px`;
+			this.app.view.style.top = `${window.innerHeight / 2 - (newSize.height) / 2}px`;
 		}
 		if (newSize.width < window.innerWidth) {
 		}
-		this.renderer.view.style.left = `${window.innerWidth / 2 - (newSize.width) / 2}px`;
+		this.app.view.style.left = `${window.innerWidth / 2 - (newSize.width) / 2}px`;
 
 		if (this.screenManager) {
 			this.screenManager.resize(newSize);
@@ -64,27 +74,39 @@ export default class Game {
 	}
 
 	update() {
+		if (!this.isRunning) {
+			return
+		}
+
+		let now = Date.now();
+		this.dt = now - this.lastUpdate;
+		this.lastUpdate = now;
+		
+		this.dt /= 1000
+
 		for (let i = 0; i < this.stage.children.length; i++) {
 			if (this.stage.children[i].update) {
-				this.stage.children[i].update(this.animationLoop.delta);
+				this.stage.children[i].update(this.dt);
 			}
 		}
 		this.resize();
+
+		requestAnimationFrame(this.update.bind(this));
 	}
 
 	start() {
-		this.animationLoop.start();
+		this.isRunning = true
 	}
 
 	stop() {
-		this.animationLoop.stop();
+		this.isRunning = false
 	}
 
-	get stage() {
-		return this.animationLoop.stage;
-	}
+	// get stage() {
+	// 	return this.animationLoop.stage;
+	// }
 
-	set stage(stage) {
-		this.animationLoop.stage = stage;
-	}
+	// set stage(stage) {
+	// 	this.animationLoop.stage = stage;
+	// }
 }

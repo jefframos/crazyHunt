@@ -1,7 +1,6 @@
 /*
   import all the plugins to extend pixi here.
 */
-import PIXI from 'pixi.js';
-import AnimationLoop from 'pixi-animationloop';
+import * as PIXI from 'pixi.js';;
 
 export default {};

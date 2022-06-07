@@ -1,15 +1,17 @@
-import PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js';;
 import TweenLite from 'gsap';
 import config from '../../config';
 import InputManager from '../InputManager';
 import CookieManager from '../CookieManager';
 import utils from '../../utils';
 import Screen from '../../screenManager/Screen';
+import Prompt from './Prompt';
+import Button1 from './Button1';
 
 export default class GameScreen extends Screen {
 	constructor(label) {
 		super(label);
-
+		this.currentEntityList = []
 		this.shapes = [
 			{
 				shape:
@@ -144,6 +146,13 @@ export default class GameScreen extends Screen {
 		this.allContainer.pivot.x = config.width / 2
 		let s = (newSize.width / config.width)
 		this.allContainer.x = window.innerWidth / 2 / s
+
+
+		this.prompts.x = config.width - this.prompts.width - 10
+		this.prompts.y = config.height - this.prompts.height - 10
+
+		this.mainButton.x = config.width / 2 - this.mainButton.width / 2
+		this.mainButton.y = config.height - this.mainButton.height - 30
 	}
 	build() {
 		super.build();
@@ -170,6 +179,8 @@ export default class GameScreen extends Screen {
 		this.gameComboBarContainer = new PIXI.Container();
 		this.inGameButtons = new PIXI.Container();
 		this.gameMatrix = [];
+
+
 
 
 		this.filterLabel = "JUST";
@@ -227,6 +238,7 @@ export default class GameScreen extends Screen {
 		this.gameComboBarContainer.position.y = this.labelPoints.position.y + this.labelPoints.height;
 
 		this.inputManager = new InputManager(this);
+		this.mainButton = new Button1();
 
 		this.initGame();
 
@@ -261,10 +273,15 @@ export default class GameScreen extends Screen {
 		this.filterDescription.position.y = this.gameBorderContainer.height / 2 - this.filterDescription.height;
 
 
+		this.prompts = new Prompt();
+
+		this.allContainer.addChild(this.mainButton)
+		this.allContainer.addChild(this.prompts)
+
 		//utils.correctPosition(this.gameContainer);
 
 
-		
+
 		// config.effectsLayer.removeBloom();
 		// setTimeout(function(){
 		// 	config.effectsLayer.addRGBSplitter();
@@ -417,7 +434,7 @@ export default class GameScreen extends Screen {
 		}
 
 
-		this.standardLabels = ['SIMPLE', 'JUICY', 'FUN', 'CRAZY?', 'INSANE', 'BRICK', 'WHY']
+		this.standardLabels = ['SIMPLE', 'JUICY', 'FUN', 'WHAT', 'BRICK', 'WHY', 'BANANA', 'JOHN', 'STEAK', 'DROP']
 		this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
 
 		this.removeFilter();
@@ -762,11 +779,15 @@ export default class GameScreen extends Screen {
 
 			this.currentShapeData = this.getShape();
 			this.currentShape = this.currentShapeData.shape;
+			this.prompts.rotateLabel.text = "ROTATE"
 			if (this.currentShapeData.type == "SHOOTER") {
 				this.shooterErase = Math.random() < 0.4;//!this.shooterErase;
 				if (this.shooterErase) {
 					this.addInfoLabel(["ERASE"]);
+
+					this.prompts.rotateLabel.text = "SHOOT"
 				} else {
+					this.prompts.rotateLabel.text = "SHOOT"
 					this.addInfoLabel(["ADD"]);
 				}
 			} else if (this.currentShapeData.type == "BRICK_BREAKER") {
@@ -831,6 +852,10 @@ export default class GameScreen extends Screen {
 		}
 
 		this.stopAction("space");
+
+		if (this.randomizeCrazy) {
+			this.prompts.rotateLabel.text = "SHUFFLE"
+		}
 	}
 	drawSquare(color, padding) {
 		let newPadding = padding;
@@ -840,6 +865,7 @@ export default class GameScreen extends Screen {
 		let square = new PIXI.Graphics();
 		square.beginFill(color);
 		square.drawRect(newPadding, newPadding, config.pieceSize - newPadding * 2, config.pieceSize - newPadding * 2);
+		square.cacheAsBitmap = true;
 		return square;
 	}
 	drawCircle(color, padding) {
@@ -969,15 +995,15 @@ export default class GameScreen extends Screen {
 			this.blinkLetter.parent.removeChild(this.blinkLetter);
 		}
 		this.blinkLetter = new PIXI.Text(label, { font: '40px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-		this.allContainer.addChild(this.blinkLetter);
+		//this.allContainer.addChild(this.blinkLetter);
 		this.blinkLetter.position.x = config.width / 2 - this.blinkLetter.width / 2;
 		this.blinkLetter.position.y = config.height - this.blinkLetter.height * 1.5;
 	}
 	addInfoLabel(label, addEffects, dontRemove, grey) {
 		let tempLabel = label;
 		if (!addEffects) {
-			config.effectsLayer.updateRGBSplitter(-2);
-			config.effectsLayer.fadeSplitter(1, 1, 0);
+			//config.effectsLayer.updateRGBSplitter(-2);
+			//config.effectsLayer.fadeSplitter(1, 1, 0);
 			// config.effectsLayer.fadeSplitter(1, 1, 1);
 			// config.effectsLayer.fadeBloom(2,0, 2, 0, true);
 		}
@@ -1060,6 +1086,10 @@ export default class GameScreen extends Screen {
 		// // this.addButtonHUD(this.fallForRandomSide);
 		// this.addButtonHUD(this.changeFilter);
 		//this.bestScore = 0;// get best
+
+		this.mainButton.callback = this.selectMenu.bind(this);
+		this.mainButton.setLabel("PLAY");
+
 		this.interactive = false;
 
 		this.inputManager.keysContainer.visible = false;
@@ -1156,7 +1186,7 @@ export default class GameScreen extends Screen {
 		TweenLite.to(this.labelPoints, 0.3, { alpha: 1 });
 		TweenLite.to(this.labelLevel, 0.3, { alpha: 1 });
 		TweenLite.to(this.labelBestScore, 0.3, { alpha: 1 });
-		TweenLite.to(this.filterDescription, 0.3, { alpha: 1 });
+		TweenLite.to(this.filterDescription, 0.3, { alpha: 0.5 });
 
 
 		this.gameComboBarContainer.alpha = 1;
@@ -1202,7 +1232,7 @@ export default class GameScreen extends Screen {
 		}
 		this.menuContainer = new PIXI.Container();
 		this.gameContainer.addChild(this.menuContainer);
-		this.menuList = ["PLAY", "??????", "??????", "??????", "??????", "??????"];
+		this.menuList = ["", "??????", "??????", "??????", "??????", "??????"];
 		this.currentSelectedMenuItem = 0;
 
 		this.starterEffect();
@@ -1858,6 +1888,11 @@ export default class GameScreen extends Screen {
 
 		this.gameOverState = true;
 
+
+		this.mainButton.callback = this.initGame.bind(this);
+		this.mainButton.setLabel("RETURN");
+
+
 		if (this.bestScore < this.points) {
 			this.addInfoLabel(["new", "record", this.updatePoints()], false, true);
 			this.bestScore = this.points;
@@ -1871,13 +1906,12 @@ export default class GameScreen extends Screen {
 			this.addInfoLabel(["SCORE", this.updatePoints()], false, true, true);
 			this.addBlinkingLabel("BEST SCORE: " + this.bestScore);
 		}
-if(window.isMobile){
+		if (window.isMobile) {
+			this.addBlinkingLabel("TAP TO GO BACK ");
+		} else {
+			this.addBlinkingLabel("PRESS SPACE TO GO BACK ", true);
 
-	this.addBlinkingLabel("TAP TO GO BACK ");
-}else{
-	this.addBlinkingLabel("PRESS SPACE TO GO BACK ");
-
-}
+		}
 
 	}
 	onBackCallback() {
@@ -1999,13 +2033,22 @@ if(window.isMobile){
 		if (this.gameMode == "MENU" || this.gameOvering) {
 			this.updateTitle();
 			//this.updateMenu();
+			this.prompts.visible = false;
+
 			return;
 		}
 
+		if (!this.gameOvering) {
+			this.mainButton.visible = true;
+		}
 
 		if (!this.started) {
 			return;
 		}
+		if (!window.isMobile) {
+			this.prompts.visible = true;
+		}
+		this.mainButton.visible = false;
 
 		this.filterDescription.text = this.shuffleText(this.filterLabel, false, true);
 		this.filterDescription.position.x = (this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2);
