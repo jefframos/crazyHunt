@@ -2,7 +2,7 @@
 
 "button-border.png":
 {
-	"frame": {"x":206,"y":2,"w":36,"h":36},
+	"frame": {"x":2,"y":608,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -10,7 +10,7 @@
 },
 "key-arrow-down.png":
 {
-	"frame": {"x":246,"y":2,"w":36,"h":36},
+	"frame": {"x":42,"y":608,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -18,7 +18,7 @@
 },
 "key-arrow-right.png":
 {
-	"frame": {"x":286,"y":2,"w":36,"h":36},
+	"frame": {"x":82,"y":608,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -26,7 +26,7 @@
 },
 "key-arrowleft.png":
 {
-	"frame": {"x":326,"y":2,"w":36,"h":36},
+	"frame": {"x":122,"y":608,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -34,7 +34,7 @@
 },
 "key-arrowup.png":
 {
-	"frame": {"x":366,"y":2,"w":36,"h":36},
+	"frame": {"x":162,"y":608,"w":36,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
@@ -42,19 +42,27 @@
 },
 "key-space.png":
 {
-	"frame": {"x":2,"y":2,"w":200,"h":36},
+	"frame": {"x":2,"y":568,"w":200,"h":36},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":36},
 	"sourceSize": {"w":200,"h":36}
+},
+"Logo.png":
+{
+	"frame": {"x":2,"y":2,"w":317,"h":562},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":183,"y":0,"w":317,"h":562},
+	"sourceSize": {"w":600,"h":600}
 }},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "textures-0.png",
 	"format": "RGBA8888",
-	"size": {"w":404,"h":40},
+	"size": {"w":321,"h":646},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:fd054845e9c3c660ac209d057ce797a1:265d5445a0c8e9ae2f1d5d352ffac2a1:6a8467eb9bb2a6a88234602cf74b81b4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:163c447ec2a202eb02d38b67d69c0c64:b5417ebce70ecfbc2c1285b2243f5b16:6a8467eb9bb2a6a88234602cf74b81b4$"
 }
 }

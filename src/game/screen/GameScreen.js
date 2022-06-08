@@ -153,6 +153,11 @@ export default class GameScreen extends Screen {
 
 		this.mainButton.x = config.width / 2 - this.mainButton.width / 2
 		this.mainButton.y = config.height - this.mainButton.height - 30
+
+		this.logo.x = config.width / 2
+		this.logo.y = config.height / 2
+
+		this.logo.scale.set(config.height / this.logo.height * this.logo.scale.x * 0.5)
 	}
 	build() {
 		super.build();
@@ -199,10 +204,10 @@ export default class GameScreen extends Screen {
 		// config.effectsLayer.shake(1,15,1);
 		// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 		// config.effectsLayer.shakeSplitter(1,10,1.8);
-		this.labelPoints = new PIXI.Text('0000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+		this.labelPoints = new PIXI.Text('0000000', { font: '48px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 		this.allContainer.addChild(this.labelPoints);
 		this.labelPoints.position.x = config.width - this.labelPoints.width;
-		this.labelPoints.position.y = 80;
+		this.labelPoints.position.y = 86;
 		this.labelPoints.alpha = 0;
 
 		this.currentLevel = 1;
@@ -218,11 +223,11 @@ export default class GameScreen extends Screen {
 		this.labelBestScore.position.y = 60;
 		this.labelBestScore.alpha = 0;
 
-		this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-		this.allContainer.addChild(this.labelTitle);
-		this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
-		this.labelTitle.position.y = 70;
-		this.labelTitle.alpha = 0;
+		// this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+		// this.allContainer.addChild(this.labelTitle);
+		// // this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
+		// this.labelTitle.position.y = 70;
+		// this.labelTitle.alpha = 0;
 
 
 
@@ -278,6 +283,12 @@ export default class GameScreen extends Screen {
 		this.allContainer.addChild(this.mainButton)
 		this.allContainer.addChild(this.prompts)
 
+
+		this.logo = new PIXI.Sprite.fromFrame("Logo.png");
+
+		this.logo.anchor.set(0.5)
+
+		this.allContainer.addChild(this.logo)
 		//utils.correctPosition(this.gameContainer);
 
 
@@ -755,7 +766,8 @@ export default class GameScreen extends Screen {
 			}
 			this.shapeQueue.push(tempShape);
 			this.gameQueueContainer.addChild(tempShape);
-			tempShape.position.y = 130 * (i + 1);
+			tempShape.position.x = 0
+			tempShape.position.y = 90 * (i + 1);
 		}
 
 		//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
@@ -1090,6 +1102,7 @@ export default class GameScreen extends Screen {
 		this.mainButton.callback = this.selectMenu.bind(this);
 		this.mainButton.setLabel("PLAY");
 
+
 		this.interactive = false;
 
 		this.inputManager.keysContainer.visible = false;
@@ -1182,7 +1195,7 @@ export default class GameScreen extends Screen {
 		TweenLite.to(this.gameBorderContainer, 0.5, { rotation: 0 });
 		TweenLite.to(this.gameBorderContainer, 0.5, { alpha: 1 });
 
-		TweenLite.to(this.labelTitle, 0.15, { alpha: 0 });
+		// TweenLite.to(this.labelTitle, 0.15, { alpha: 0 });
 		TweenLite.to(this.labelPoints, 0.3, { alpha: 1 });
 		TweenLite.to(this.labelLevel, 0.3, { alpha: 1 });
 		TweenLite.to(this.labelBestScore, 0.3, { alpha: 1 });
@@ -1203,7 +1216,7 @@ export default class GameScreen extends Screen {
 		TweenLite.to(this.labelPoints, 0.15, { alpha: 0 });
 		TweenLite.to(this.labelLevel, 0.15, { alpha: 0 });
 		TweenLite.to(this.labelBestScore, 0.15, { alpha: 0 });
-		TweenLite.to(this.labelTitle, 0.3, { alpha: 1 });
+		// TweenLite.to(this.labelTitle, 0.3, { alpha: 1 });
 		this.gameComboBarContainer.alpha = 0;
 		this.gameBorderContainer.alpha = 0;
 	}
@@ -1243,8 +1256,9 @@ export default class GameScreen extends Screen {
 
 	}
 	updateTitle() {
-		this.labelTitle.text = this.shuffleText(this.gameTitle);
-		this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
+
+		// this.labelTitle.text = this.shuffleText(this.gameTitle);
+		// // this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
 	}
 	updateMenu() {
 
@@ -2025,7 +2039,7 @@ export default class GameScreen extends Screen {
 		super.update(delta);
 		this.updateParticles(delta);
 		this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
-
+		this.creatorLabel.x = config.width / 2 - this.creatorLabel.width / 2
 
 
 
@@ -2034,21 +2048,31 @@ export default class GameScreen extends Screen {
 			this.updateTitle();
 			//this.updateMenu();
 			this.prompts.visible = false;
+			this.logo.visible = !this.gameOvering;
 
 			return;
 		}
 
 		if (!this.gameOvering) {
 			this.mainButton.visible = true;
+		} else {
+
 		}
 
 		if (!this.started) {
 			return;
 		}
+
+		this.adjustQueuePosition()
+
 		if (!window.isMobile) {
 			this.prompts.visible = true;
 		}
+		this.logo.visible = false;
 		this.mainButton.visible = false;
+
+		this.creatorLabel.position.x = config.width - this.creatorLabel.width;
+		this.creatorLabel.position.y = 20;
 
 		this.filterDescription.text = this.shuffleText(this.filterLabel, false, true);
 		this.filterDescription.position.x = (this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2);

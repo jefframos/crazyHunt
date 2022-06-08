@@ -13,7 +13,7 @@ export default class InputManager {
 		})
 		//document.body.on('keydown', this.getKey.bind(this));
 		this.keysContainer = new PIXI.Container();
-		this.left = this.getSquare();
+		this.left = this.getSquare('button-border.png');
 		this.keysContainer.addChild(this.left)
 		this.left.interactive = true;
 		this.left.buttonMode = true;
@@ -21,7 +21,7 @@ export default class InputManager {
 		this.left.on('touchend', this.stopLeft.bind(this)).on('mouseup', this.stopLeft.bind(this))
 		
 
-		this.right = this.getSquare();
+		this.right = this.getSquare('button-border.png');
 		this.keysContainer.addChild(this.right)
 		this.right.interactive = true;
 		this.right.buttonMode = true;
@@ -30,28 +30,28 @@ export default class InputManager {
 		
 
 
-		this.up = this.getSquare();
+		this.up = this.getSquare('button-border.png');
 		this.keysContainer.addChild(this.up)
 		this.up.interactive = true;
 		this.up.buttonMode = true;
 		this.up.on('touchstart', this.pressUp.bind(this)).on('mousedown', this.pressUp.bind(this))
 		this.up.on('touchend', this.stopUp.bind(this)).on('mouseup', this.stopUp.bind(this))
 
-		this.down = this.getSquare();
+		this.down = this.getSquare('button-border.png');
 		this.keysContainer.addChild(this.down)
 		this.down.interactive = true;
 		this.down.buttonMode = true;
 		this.down.on('touchstart', this.pressSpace.bind(this)).on('mousedown', this.pressSpace.bind(this))
 		this.down.on('touchend', this.stopSpace.bind(this)).on('mouseup', this.stopSpace.bind(this))
 
-		let size = 100
+		let size = 120
 		this.right.x += size * 2
-		this.up.x += size
+		this.up.x += size * 2
 		this.up.y -= size
 		this.down.x += size
 
 		this.keysContainer.x = config.width / 2 - this.keysContainer.width /2
-		this.keysContainer.y = config.height - 100
+		this.keysContainer.y = config.height - 92
 		this.keysContainer.alpha = 0.2
 		
 		if(window.isMobile){
@@ -85,8 +85,13 @@ export default class InputManager {
 	pressRight(){
 		this.game.updateAction('right')
 	}
-	getSquare() {
-		return new PIXI.Graphics().beginFill(0xffffff).drawRect(0, 0, 75, 75)
+	getSquare(src) {
+		let shape = new PIXI.mesh.NineSlicePlane(
+            PIXI.Texture.fromFrame(src), 10, 10, 10, 10)
+        shape.width = 75
+        shape.height = 75
+
+		return shape
 	}
 	//
 	getKey(e) {

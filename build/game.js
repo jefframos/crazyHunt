@@ -42933,11 +42933,11 @@
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(249);
+	var _InitScreen = __webpack_require__(250);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(250);
+	var _ScreenManager = __webpack_require__(251);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
@@ -42947,7 +42947,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	window.isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+	window.isMobile = true; //navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
 	
 	PIXI.loader.add('./assets/tvlines.png').add('./assets/glitch1.jpg').add('./assets/particle2.png').add('./assets/textures-0.json').add('./assets/fonts/super_smash_tv-webfont.woff').add('./assets/fonts/super_smash_tv-webfont.woff2').add('./assets/fonts/stylesheet.css').add('./assets/fonts/specimen_files/specimen_stylesheet.css').load(configGame);
 	
@@ -74611,6 +74611,11 @@
 	
 				this.mainButton.x = _config2.default.width / 2 - this.mainButton.width / 2;
 				this.mainButton.y = _config2.default.height - this.mainButton.height - 30;
+	
+				this.logo.x = _config2.default.width / 2;
+				this.logo.y = _config2.default.height / 2;
+	
+				this.logo.scale.set(_config2.default.height / this.logo.height * this.logo.scale.x * 0.5);
 			}
 		}, {
 			key: 'build',
@@ -74656,10 +74661,10 @@
 				// config.effectsLayer.shake(1,15,1);
 				// config.effectsLayer.addShockwave(0.5,0.5,0.8);
 				// config.effectsLayer.shakeSplitter(1,10,1.8);
-				this.labelPoints = new PIXI.Text('0000000', { font: '70px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.labelPoints = new PIXI.Text('0000000', { font: '48px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.allContainer.addChild(this.labelPoints);
 				this.labelPoints.position.x = _config2.default.width - this.labelPoints.width;
-				this.labelPoints.position.y = 80;
+				this.labelPoints.position.y = 86;
 				this.labelPoints.alpha = 0;
 	
 				this.currentLevel = 1;
@@ -74675,11 +74680,12 @@
 				this.labelBestScore.position.y = 60;
 				this.labelBestScore.alpha = 0;
 	
-				this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
-				this.allContainer.addChild(this.labelTitle);
-				this.labelTitle.position.x = _config2.default.width / 2 - this.labelTitle.width / 2;
-				this.labelTitle.position.y = 70;
-				this.labelTitle.alpha = 0;
+				// this.labelTitle = new PIXI.Text('Just a simple\nTETRIS?', { font: '45px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+				// this.allContainer.addChild(this.labelTitle);
+				// // this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
+				// this.labelTitle.position.y = 70;
+				// this.labelTitle.alpha = 0;
+	
 	
 				this.allContainer.addChild(this.gameContainer);
 				this.allContainer.addChild(this.gameQueueContainer);
@@ -74729,6 +74735,11 @@
 				this.allContainer.addChild(this.mainButton);
 				this.allContainer.addChild(this.prompts);
 	
+				this.logo = new PIXI.Sprite.fromFrame("Logo.png");
+	
+				this.logo.anchor.set(0.5);
+	
+				this.allContainer.addChild(this.logo);
 				//utils.correctPosition(this.gameContainer);
 	
 	
@@ -75236,7 +75247,8 @@
 					}
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
-					tempShape.position.y = 130 * (i + 1);
+					tempShape.position.x = 0;
+					tempShape.position.y = 90 * (i + 1);
 				}
 	
 				//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
@@ -75681,7 +75693,7 @@
 				_gsap2.default.to(this.gameBorderContainer, 0.5, { rotation: 0 });
 				_gsap2.default.to(this.gameBorderContainer, 0.5, { alpha: 1 });
 	
-				_gsap2.default.to(this.labelTitle, 0.15, { alpha: 0 });
+				// TweenLite.to(this.labelTitle, 0.15, { alpha: 0 });
 				_gsap2.default.to(this.labelPoints, 0.3, { alpha: 1 });
 				_gsap2.default.to(this.labelLevel, 0.3, { alpha: 1 });
 				_gsap2.default.to(this.labelBestScore, 0.3, { alpha: 1 });
@@ -75704,7 +75716,7 @@
 				_gsap2.default.to(this.labelPoints, 0.15, { alpha: 0 });
 				_gsap2.default.to(this.labelLevel, 0.15, { alpha: 0 });
 				_gsap2.default.to(this.labelBestScore, 0.15, { alpha: 0 });
-				_gsap2.default.to(this.labelTitle, 0.3, { alpha: 1 });
+				// TweenLite.to(this.labelTitle, 0.3, { alpha: 1 });
 				this.gameComboBarContainer.alpha = 0;
 				this.gameBorderContainer.alpha = 0;
 			}
@@ -75746,8 +75758,9 @@
 		}, {
 			key: 'updateTitle',
 			value: function updateTitle() {
-				this.labelTitle.text = this.shuffleText(this.gameTitle);
-				this.labelTitle.position.x = _config2.default.width / 2 - this.labelTitle.width / 2;
+	
+				// this.labelTitle.text = this.shuffleText(this.gameTitle);
+				// // this.labelTitle.position.x = config.width / 2 - this.labelTitle.width / 2;
 			}
 		}, {
 			key: 'updateMenu',
@@ -76591,26 +76604,35 @@
 				_get(GameScreen.prototype.__proto__ || Object.getPrototypeOf(GameScreen.prototype), 'update', this).call(this, delta);
 				this.updateParticles(delta);
 				this.creatorLabel.text = this.shuffleText('By JEFF RAMOS');
+				this.creatorLabel.x = _config2.default.width / 2 - this.creatorLabel.width / 2;
 	
 				if (this.gameMode == "MENU" || this.gameOvering) {
 					this.updateTitle();
 					//this.updateMenu();
 					this.prompts.visible = false;
+					this.logo.visible = !this.gameOvering;
 	
 					return;
 				}
 	
 				if (!this.gameOvering) {
 					this.mainButton.visible = true;
-				}
+				} else {}
 	
 				if (!this.started) {
 					return;
 				}
+	
+				this.adjustQueuePosition();
+	
 				if (!window.isMobile) {
 					this.prompts.visible = true;
 				}
+				this.logo.visible = false;
 				this.mainButton.visible = false;
+	
+				this.creatorLabel.position.x = _config2.default.width - this.creatorLabel.width;
+				this.creatorLabel.position.y = 20;
 	
 				this.filterDescription.text = this.shuffleText(this.filterLabel, false, true);
 				this.filterDescription.position.x = this.gameBorderContainer.width * this.gameContainer.scale.x / 2 - this.filterDescription.width / 2;
@@ -76693,42 +76715,42 @@
 			});
 			//document.body.on('keydown', this.getKey.bind(this));
 			this.keysContainer = new PIXI.Container();
-			this.left = this.getSquare();
+			this.left = this.getSquare('button-border.png');
 			this.keysContainer.addChild(this.left);
 			this.left.interactive = true;
 			this.left.buttonMode = true;
 			this.left.on('touchstart', this.pressLeft.bind(this)).on('mousedown', this.pressLeft.bind(this));
 			this.left.on('touchend', this.stopLeft.bind(this)).on('mouseup', this.stopLeft.bind(this));
 	
-			this.right = this.getSquare();
+			this.right = this.getSquare('button-border.png');
 			this.keysContainer.addChild(this.right);
 			this.right.interactive = true;
 			this.right.buttonMode = true;
 			this.right.on('touchstart', this.pressRight.bind(this)).on('mousedown', this.pressRight.bind(this));
 			this.right.on('touchend', this.stopRight.bind(this)).on('mouseup', this.stopRight.bind(this));
 	
-			this.up = this.getSquare();
+			this.up = this.getSquare('button-border.png');
 			this.keysContainer.addChild(this.up);
 			this.up.interactive = true;
 			this.up.buttonMode = true;
 			this.up.on('touchstart', this.pressUp.bind(this)).on('mousedown', this.pressUp.bind(this));
 			this.up.on('touchend', this.stopUp.bind(this)).on('mouseup', this.stopUp.bind(this));
 	
-			this.down = this.getSquare();
+			this.down = this.getSquare('button-border.png');
 			this.keysContainer.addChild(this.down);
 			this.down.interactive = true;
 			this.down.buttonMode = true;
 			this.down.on('touchstart', this.pressSpace.bind(this)).on('mousedown', this.pressSpace.bind(this));
 			this.down.on('touchend', this.stopSpace.bind(this)).on('mouseup', this.stopSpace.bind(this));
 	
-			var size = 100;
+			var size = 120;
 			this.right.x += size * 2;
-			this.up.x += size;
+			this.up.x += size * 2;
 			this.up.y -= size;
 			this.down.x += size;
 	
 			this.keysContainer.x = _config2.default.width / 2 - this.keysContainer.width / 2;
-			this.keysContainer.y = _config2.default.height - 100;
+			this.keysContainer.y = _config2.default.height - 92;
 			this.keysContainer.alpha = 0.2;
 	
 			if (window.isMobile) {
@@ -76778,8 +76800,12 @@
 			}
 		}, {
 			key: 'getSquare',
-			value: function getSquare() {
-				return new PIXI.Graphics().beginFill(0xffffff).drawRect(0, 0, 75, 75);
+			value: function getSquare(src) {
+				var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
+				shape.width = 75;
+				shape.height = 75;
+	
+				return shape;
 			}
 			//
 	
@@ -77200,7 +77226,7 @@
 	
 	var _Screen2 = _interopRequireDefault(_Screen);
 	
-	var _signals = __webpack_require__(251);
+	var _signals = __webpack_require__(249);
 	
 	var _signals2 = _interopRequireDefault(_signals);
 	
@@ -77271,357 +77297,6 @@
 
 /***/ }),
 /* 249 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
-	var _pixi = __webpack_require__(1);
-	
-	var PIXI = _interopRequireWildcard(_pixi);
-	
-	var _gsap = __webpack_require__(196);
-	
-	var _gsap2 = _interopRequireDefault(_gsap);
-	
-	var _config = __webpack_require__(193);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	var _utils = __webpack_require__(245);
-	
-	var _utils2 = _interopRequireDefault(_utils);
-	
-	var _Screen2 = __webpack_require__(246);
-	
-	var _Screen3 = _interopRequireDefault(_Screen2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	;
-	
-	var InitScreen = function (_Screen) {
-		_inherits(InitScreen, _Screen);
-	
-		function InitScreen(label) {
-			_classCallCheck(this, InitScreen);
-	
-			return _possibleConstructorReturn(this, (InitScreen.__proto__ || Object.getPrototypeOf(InitScreen)).call(this, label));
-		}
-	
-		_createClass(InitScreen, [{
-			key: 'build',
-			value: function build() {
-				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'build', this).call(this);
-				this.background = new PIXI.Graphics();
-				this.background.beginFill(0);
-				this.background.drawRect(0, 0, _config2.default.width, _config2.default.height);
-				this.addChild(this.background);
-	
-				this.screenContainer = new PIXI.Container();
-				this.addChild(this.screenContainer);
-	
-				this.description = new PIXI.Text('by Jeff Ramos', { font: '36px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
-				this.description.interactive = true;
-				this.description.buttonMode = true;
-				_utils2.default.addMockRect(this.description, this.description.width, this.description.height);
-				this.description.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
-	
-				this.screenContainer.addChild(this.description);
-				this.description.position.set(_config2.default.width - this.description.width - 8, _config2.default.height - this.description.height - 8);
-	
-				this.createParticles();
-	
-				this.planet1 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet1.png'));
-				this.planet2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet2.png'));
-				this.planet3 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet3.png'));
-				this.planet4 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet4.png'));
-				this.sun = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/sun.png'));
-	
-				// this.addChild(this.planet1);
-				// this.addChild(this.planet2);
-				// this.addChild(this.planet3);
-				// this.addChild(this.planet4);
-				// this.addChild(this.sun);
-	
-				this.sun.anchor.set(0.5);
-	
-				this.planet1.scale.set(0.5);
-				this.planet2.scale.set(0.5);
-				this.planet3.scale.set(0.5);
-				this.planet4.scale.set(0.5);
-				this.sun.scale.set(0.5);
-	
-				this.planet1.position.set(20, 20);
-				this.planet2.position.set(150, 300);
-				this.planet3.position.set(500, 10);
-				this.planet4.position.set(500, 300);
-				this.sun.position.set(_config2.default.width / 2, _config2.default.height / 2);
-	
-				this.playButton = this.createButton("");
-				this.addChild(this.screenContainer);
-				this.screenContainer.addChild(this.playButton);
-	
-				this.playButton.position.set(_config2.default.width / 2, _config2.default.height / 1.5 + _config2.default.buttonRadius);
-				_utils2.default.centerPivot(this.playButton);
-	
-				//config.effectsLayer.hideGreyShape(1, 1);
-				_gsap2.default.from(this.buttonShape.scale, 0.5, { delay: _config2.default.firstEntry ? 0 : 1.2, x: 20, y: 20 });
-				this.playButton.on('tap', this.onPlayButtonClick.bind(this)).on('click', this.onPlayButtonClick.bind(this));
-				_config2.default.effectsLayer.removeBloom();
-				_config2.default.firstEntry = true;
-	
-				setTimeout(function () {
-					//config.effectsLayer.addRGBSplitter();
-				}.bind(this), 400);
-			}
-		}, {
-			key: 'goToPortfolio',
-			value: function goToPortfolio() {
-				window.open('http://www.jefframos.me', '_blank');
-			}
-		}, {
-			key: 'onPlayButtonClick',
-			value: function onPlayButtonClick() {
-				_config2.default.effectsLayer.shakeSplitter(0.4, 10, 0.5, true);
-				_config2.default.effectsLayer.shakeSplitter(1, 4, 0.5);
-			}
-		}, {
-			key: 'toGame',
-			value: function toGame() {
-				_utils2.default.setGameScreen80(this.targetColor);
-				this.screenManager.change("GAME");
-			}
-		}, {
-			key: 'onLogoClick',
-			value: function onLogoClick() {
-				_config2.default.effectsLayer.shake(1, 15, 1);
-				_config2.default.effectsLayer.addShockwave(0.5, 0.5, 0.8);
-				_config2.default.effectsLayer.shakeSplitter(1, 10, 1.8);
-				_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
-			}
-		}, {
-			key: 'shuffleText',
-			value: function shuffleText(label) {
-				var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
-				var rnd2 = Math.floor(Math.random() * 9);
-				var rnd3 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
-				var tempLabel = label.split('');
-				var rndPause = Math.random();
-				if (rndPause < 0.2) {
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd2;
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
-				} else if (rndPause < 0.5) {
-					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
-				}
-				var returnLabel = '';
-				for (var i = 0; i < tempLabel.length; i++) {
-					returnLabel += tempLabel[i];
-				}
-				return returnLabel;
-			}
-		}, {
-			key: 'update',
-			value: function update(delta) {
-				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'update', this).call(this, delta);
-				this.description.text = this.shuffleText('By JEFF RAMOS');
-				this.updateParticles(delta);
-			}
-		}, {
-			key: 'createButton',
-			value: function createButton(label) {
-				var button = new PIXI.Container();
-				this.buttonShape = new PIXI.Graphics();
-				var color = 0xFFFFFF;
-	
-				var alphaBG = new PIXI.Graphics();
-				alphaBG.beginFill(0xFF0000);
-				alphaBG.drawCircle(-5, -5, _config2.default.buttonRadius);
-				alphaBG.alpha = 1;
-				//utils.applyPositionCorrection(button.addChild( utils.addToContainer(alphaBG) ));
-				this.buttonShape.beginFill(color);
-				this.buttonShape.drawCircle(0, 0, _config2.default.buttonRadius);
-				button.addChild(this.buttonShape);
-				button.interactive = true;
-				button.buttonMode = true;
-	
-				// utils.addMockObject(button);
-				return button;
-			}
-		}, {
-			key: 'createParticles',
-			value: function createParticles() {
-				this.particleUpdater = 0;
-				this.particlesContainer = new PIXI.ParticleContainer(500, {
-					scale: true,
-					position: true,
-					rotation: true,
-					uvs: true,
-					alpha: true
-				});
-				this.addChild(this.particlesContainer);
-				this.particles = [];
-				for (var i = 0; i < 100; i++) {
-					var particle = PIXI.Sprite.fromImage('./assets/particleMini.png');
-					particle.anchor.set(0.5, 1);
-					particle.scale.set(1, 1);
-					var angle = Math.random() * (Math.PI * 2);
-					particle.x = _config2.default.width / 2 + Math.sin(angle) * Math.random() * _config2.default.height;
-					particle.y = _config2.default.height / 2 + Math.cos(angle) * Math.random() * _config2.default.width;
-					particle.alpha = 0;
-					particle.direction = angle;
-					particle.turningSpeed = 0;
-					particle.speed = Math.random() * 0.001 + 0.001;
-					this.particles.push(particle);
-					this.particlesContainer.addChild(particle);
-				}
-			}
-		}, {
-			key: 'updateParticles',
-			value: function updateParticles(delta) {
-				for (var i = 0; i < this.particleUpdater; i++) {
-					var particle = this.particles[i];
-					particle.direction += particle.turningSpeed * 0.01;
-					particle.position.x += Math.sin(particle.direction) * (particle.speed * particle.scale.y);
-					particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y);
-					particle.rotation = -particle.direction + Math.PI;
-					particle.alpha += delta;
-					if (particle.position.x < 0 || particle.position.x > _config2.default.width || particle.y < 0 || particle.position.y > _config2.default.height) {
-						particle.x = _config2.default.width / 2 + Math.sin(particle.direction) * Math.random() * _config2.default.height;
-						particle.y = _config2.default.height / 2 + Math.cos(particle.direction) * Math.random() * _config2.default.width;
-						particle.alpha = 0;
-					}
-				}
-				this.particleUpdater += delta * 20;
-				if (this.particleUpdater > this.particles.length) {
-					this.particleUpdater = this.particles.length;
-				}
-			}
-		}]);
-	
-		return InitScreen;
-	}(_Screen3.default);
-	
-	exports.default = InitScreen;
-
-/***/ }),
-/* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var PIXI = _interopRequireWildcard(_pixi);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	;
-	
-	var ScreenManager = function (_PIXI$Container) {
-		_inherits(ScreenManager, _PIXI$Container);
-	
-		function ScreenManager() {
-			_classCallCheck(this, ScreenManager);
-	
-			var _this = _possibleConstructorReturn(this, (ScreenManager.__proto__ || Object.getPrototypeOf(ScreenManager)).call(this));
-	
-			_this.currentScreen = null;
-			_this.screenList = [];
-			return _this;
-		}
-	
-		_createClass(ScreenManager, [{
-			key: 'addScreen',
-			value: function addScreen(screen) {
-				this.screenList.push(screen);
-				this.currentScreen = screen;
-				screen.screenManager = this;
-			}
-		}, {
-			key: 'change',
-			value: function change(screenLabel) {
-				var tempScreen = void 0;
-				for (var i = 0; i < this.screenList.length; i++) {
-					if (this.screenList[i].label == screenLabel) {
-						tempScreen = this.screenList[i];
-					}
-				}
-				if (this.currentScreen) {
-					this.currentScreen.transitionOut(tempScreen);
-				}
-			}
-		}, {
-			key: 'resize',
-			value: function resize(newSize) {
-				if (this.currentScreen.resize) {
-					this.currentScreen.resize(newSize);
-				}
-			}
-			//change between screens
-	
-		}, {
-			key: 'forceChange',
-			value: function forceChange(screenLabel) {
-				if (this.currentScreen && this.currentScreen.parent) {
-					this.removeChild(this.currentScreen);
-				}
-				var tempScreen = void 0;
-				for (var i = 0; i < this.screenList.length; i++) {
-					if (this.screenList[i].label == screenLabel) {
-						tempScreen = this.screenList[i];
-					}
-				}
-				this.currentScreen = tempScreen;
-				this.currentScreen.build();
-				this.currentScreen.transitionIn();
-				this.addChild(this.currentScreen);
-			}
-			//update manager
-	
-		}, {
-			key: 'update',
-			value: function update(delta) {
-				if (this.screenList != null) {
-					this.currentScreen.update(delta);
-				}
-			}
-		}]);
-	
-		return ScreenManager;
-	}(PIXI.Container);
-	
-	exports.default = ScreenManager;
-
-/***/ }),
-/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
@@ -78070,6 +77745,357 @@
 	
 	}(this));
 
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var PIXI = _interopRequireWildcard(_pixi);
+	
+	var _gsap = __webpack_require__(196);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	var _config = __webpack_require__(193);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _utils = __webpack_require__(245);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _Screen2 = __webpack_require__(246);
+	
+	var _Screen3 = _interopRequireDefault(_Screen2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	;
+	
+	var InitScreen = function (_Screen) {
+		_inherits(InitScreen, _Screen);
+	
+		function InitScreen(label) {
+			_classCallCheck(this, InitScreen);
+	
+			return _possibleConstructorReturn(this, (InitScreen.__proto__ || Object.getPrototypeOf(InitScreen)).call(this, label));
+		}
+	
+		_createClass(InitScreen, [{
+			key: 'build',
+			value: function build() {
+				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'build', this).call(this);
+				this.background = new PIXI.Graphics();
+				this.background.beginFill(0);
+				this.background.drawRect(0, 0, _config2.default.width, _config2.default.height);
+				this.addChild(this.background);
+	
+				this.screenContainer = new PIXI.Container();
+				this.addChild(this.screenContainer);
+	
+				this.description = new PIXI.Text('by Jeff Ramos', { font: '36px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.description.interactive = true;
+				this.description.buttonMode = true;
+				_utils2.default.addMockRect(this.description, this.description.width, this.description.height);
+				this.description.on('tap', this.goToPortfolio.bind(this)).on('click', this.goToPortfolio.bind(this));
+	
+				this.screenContainer.addChild(this.description);
+				this.description.position.set(_config2.default.width - this.description.width - 8, _config2.default.height - this.description.height - 8);
+	
+				this.createParticles();
+	
+				this.planet1 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet1.png'));
+				this.planet2 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet2.png'));
+				this.planet3 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet3.png'));
+				this.planet4 = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/planet4.png'));
+				this.sun = new PIXI.Sprite(PIXI.Texture.fromImage('./assets/sun.png'));
+	
+				// this.addChild(this.planet1);
+				// this.addChild(this.planet2);
+				// this.addChild(this.planet3);
+				// this.addChild(this.planet4);
+				// this.addChild(this.sun);
+	
+				this.sun.anchor.set(0.5);
+	
+				this.planet1.scale.set(0.5);
+				this.planet2.scale.set(0.5);
+				this.planet3.scale.set(0.5);
+				this.planet4.scale.set(0.5);
+				this.sun.scale.set(0.5);
+	
+				this.planet1.position.set(20, 20);
+				this.planet2.position.set(150, 300);
+				this.planet3.position.set(500, 10);
+				this.planet4.position.set(500, 300);
+				this.sun.position.set(_config2.default.width / 2, _config2.default.height / 2);
+	
+				this.playButton = this.createButton("");
+				this.addChild(this.screenContainer);
+				this.screenContainer.addChild(this.playButton);
+	
+				this.playButton.position.set(_config2.default.width / 2, _config2.default.height / 1.5 + _config2.default.buttonRadius);
+				_utils2.default.centerPivot(this.playButton);
+	
+				//config.effectsLayer.hideGreyShape(1, 1);
+				_gsap2.default.from(this.buttonShape.scale, 0.5, { delay: _config2.default.firstEntry ? 0 : 1.2, x: 20, y: 20 });
+				this.playButton.on('tap', this.onPlayButtonClick.bind(this)).on('click', this.onPlayButtonClick.bind(this));
+				_config2.default.effectsLayer.removeBloom();
+				_config2.default.firstEntry = true;
+	
+				setTimeout(function () {
+					//config.effectsLayer.addRGBSplitter();
+				}.bind(this), 400);
+			}
+		}, {
+			key: 'goToPortfolio',
+			value: function goToPortfolio() {
+				window.open('http://www.jefframos.me', '_blank');
+			}
+		}, {
+			key: 'onPlayButtonClick',
+			value: function onPlayButtonClick() {
+				_config2.default.effectsLayer.shakeSplitter(0.4, 10, 0.5, true);
+				_config2.default.effectsLayer.shakeSplitter(1, 4, 0.5);
+			}
+		}, {
+			key: 'toGame',
+			value: function toGame() {
+				_utils2.default.setGameScreen80(this.targetColor);
+				this.screenManager.change("GAME");
+			}
+		}, {
+			key: 'onLogoClick',
+			value: function onLogoClick() {
+				_config2.default.effectsLayer.shake(1, 15, 1);
+				_config2.default.effectsLayer.addShockwave(0.5, 0.5, 0.8);
+				_config2.default.effectsLayer.shakeSplitter(1, 10, 1.8);
+				_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+			}
+		}, {
+			key: 'shuffleText',
+			value: function shuffleText(label) {
+				var rnd1 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
+				var rnd2 = Math.floor(Math.random() * 9);
+				var rnd3 = String.fromCharCode(Math.floor(Math.random() * 20) + 65);
+				var tempLabel = label.split('');
+				var rndPause = Math.random();
+				if (rndPause < 0.2) {
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd2;
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+				} else if (rndPause < 0.5) {
+					tempLabel[Math.floor(Math.random() * tempLabel.length)] = rnd3;
+				}
+				var returnLabel = '';
+				for (var i = 0; i < tempLabel.length; i++) {
+					returnLabel += tempLabel[i];
+				}
+				return returnLabel;
+			}
+		}, {
+			key: 'update',
+			value: function update(delta) {
+				_get(InitScreen.prototype.__proto__ || Object.getPrototypeOf(InitScreen.prototype), 'update', this).call(this, delta);
+				this.description.text = this.shuffleText('By JEFF RAMOS');
+				this.updateParticles(delta);
+			}
+		}, {
+			key: 'createButton',
+			value: function createButton(label) {
+				var button = new PIXI.Container();
+				this.buttonShape = new PIXI.Graphics();
+				var color = 0xFFFFFF;
+	
+				var alphaBG = new PIXI.Graphics();
+				alphaBG.beginFill(0xFF0000);
+				alphaBG.drawCircle(-5, -5, _config2.default.buttonRadius);
+				alphaBG.alpha = 1;
+				//utils.applyPositionCorrection(button.addChild( utils.addToContainer(alphaBG) ));
+				this.buttonShape.beginFill(color);
+				this.buttonShape.drawCircle(0, 0, _config2.default.buttonRadius);
+				button.addChild(this.buttonShape);
+				button.interactive = true;
+				button.buttonMode = true;
+	
+				// utils.addMockObject(button);
+				return button;
+			}
+		}, {
+			key: 'createParticles',
+			value: function createParticles() {
+				this.particleUpdater = 0;
+				this.particlesContainer = new PIXI.ParticleContainer(500, {
+					scale: true,
+					position: true,
+					rotation: true,
+					uvs: true,
+					alpha: true
+				});
+				this.addChild(this.particlesContainer);
+				this.particles = [];
+				for (var i = 0; i < 100; i++) {
+					var particle = PIXI.Sprite.fromImage('./assets/particleMini.png');
+					particle.anchor.set(0.5, 1);
+					particle.scale.set(1, 1);
+					var angle = Math.random() * (Math.PI * 2);
+					particle.x = _config2.default.width / 2 + Math.sin(angle) * Math.random() * _config2.default.height;
+					particle.y = _config2.default.height / 2 + Math.cos(angle) * Math.random() * _config2.default.width;
+					particle.alpha = 0;
+					particle.direction = angle;
+					particle.turningSpeed = 0;
+					particle.speed = Math.random() * 0.001 + 0.001;
+					this.particles.push(particle);
+					this.particlesContainer.addChild(particle);
+				}
+			}
+		}, {
+			key: 'updateParticles',
+			value: function updateParticles(delta) {
+				for (var i = 0; i < this.particleUpdater; i++) {
+					var particle = this.particles[i];
+					particle.direction += particle.turningSpeed * 0.01;
+					particle.position.x += Math.sin(particle.direction) * (particle.speed * particle.scale.y);
+					particle.position.y += Math.cos(particle.direction) * (particle.speed * particle.scale.y);
+					particle.rotation = -particle.direction + Math.PI;
+					particle.alpha += delta;
+					if (particle.position.x < 0 || particle.position.x > _config2.default.width || particle.y < 0 || particle.position.y > _config2.default.height) {
+						particle.x = _config2.default.width / 2 + Math.sin(particle.direction) * Math.random() * _config2.default.height;
+						particle.y = _config2.default.height / 2 + Math.cos(particle.direction) * Math.random() * _config2.default.width;
+						particle.alpha = 0;
+					}
+				}
+				this.particleUpdater += delta * 20;
+				if (this.particleUpdater > this.particles.length) {
+					this.particleUpdater = this.particles.length;
+				}
+			}
+		}]);
+	
+		return InitScreen;
+	}(_Screen3.default);
+	
+	exports.default = InitScreen;
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var PIXI = _interopRequireWildcard(_pixi);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	;
+	
+	var ScreenManager = function (_PIXI$Container) {
+		_inherits(ScreenManager, _PIXI$Container);
+	
+		function ScreenManager() {
+			_classCallCheck(this, ScreenManager);
+	
+			var _this = _possibleConstructorReturn(this, (ScreenManager.__proto__ || Object.getPrototypeOf(ScreenManager)).call(this));
+	
+			_this.currentScreen = null;
+			_this.screenList = [];
+			return _this;
+		}
+	
+		_createClass(ScreenManager, [{
+			key: 'addScreen',
+			value: function addScreen(screen) {
+				this.screenList.push(screen);
+				this.currentScreen = screen;
+				screen.screenManager = this;
+			}
+		}, {
+			key: 'change',
+			value: function change(screenLabel) {
+				var tempScreen = void 0;
+				for (var i = 0; i < this.screenList.length; i++) {
+					if (this.screenList[i].label == screenLabel) {
+						tempScreen = this.screenList[i];
+					}
+				}
+				if (this.currentScreen) {
+					this.currentScreen.transitionOut(tempScreen);
+				}
+			}
+		}, {
+			key: 'resize',
+			value: function resize(newSize) {
+				if (this.currentScreen.resize) {
+					this.currentScreen.resize(newSize);
+				}
+			}
+			//change between screens
+	
+		}, {
+			key: 'forceChange',
+			value: function forceChange(screenLabel) {
+				if (this.currentScreen && this.currentScreen.parent) {
+					this.removeChild(this.currentScreen);
+				}
+				var tempScreen = void 0;
+				for (var i = 0; i < this.screenList.length; i++) {
+					if (this.screenList[i].label == screenLabel) {
+						tempScreen = this.screenList[i];
+					}
+				}
+				this.currentScreen = tempScreen;
+				this.currentScreen.build();
+				this.currentScreen.transitionIn();
+				this.addChild(this.currentScreen);
+			}
+			//update manager
+	
+		}, {
+			key: 'update',
+			value: function update(delta) {
+				if (this.screenList != null) {
+					this.currentScreen.update(delta);
+				}
+			}
+		}]);
+	
+		return ScreenManager;
+	}(PIXI.Container);
+	
+	exports.default = ScreenManager;
 
 /***/ })
 /******/ ]);

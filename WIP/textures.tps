@@ -185,10 +185,25 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">UI/key arrow down.png</key>
-            <key type="filename">UI/key arrow right.png</key>
-            <key type="filename">UI/key arrowleft.png</key>
-            <key type="filename">UI/key arrowup.png</key>
+            <key type="filename">UI/button-border.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0,0</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>9,9,18,18</rect>
+                <key>scale9Paddings</key>
+                <rect>9,9,18,18</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">UI/key-arrow-down.png</key>
+            <key type="filename">UI/key-arrow-right.png</key>
+            <key type="filename">UI/key-arrowleft.png</key>
+            <key type="filename">UI/key-arrowup.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -203,7 +218,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">UI/key space.png</key>
+            <key type="filename">UI/key-space.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
