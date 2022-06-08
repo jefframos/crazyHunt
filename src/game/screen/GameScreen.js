@@ -481,9 +481,9 @@ export default class GameScreen extends Screen {
 				if (this.currentLevel > 2) {
 					this.gameContainer.scale.y = -1;
 					this.gameBorderContainer.scale.y = -1;
-					config.effectsLayer.removeAllFilters();
-					config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
-					config.effectsLayer.shakeSplitter(1, 6, 0.3);
+					// config.effectsLayer.removeAllFilters();
+					// config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+					// config.effectsLayer.shakeSplitter(1, 6, 0.3);
 					this.addInfoLabel(["INVERT Y"])
 				}
 				break
@@ -491,22 +491,22 @@ export default class GameScreen extends Screen {
 				if (this.currentLevel > 3) {
 					this.gameContainer.scale.x = -1;
 					this.gameBorderContainer.scale.x = -1;
-					config.effectsLayer.removeAllFilters();
-					config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
-					config.effectsLayer.shakeSplitter(1, 6, 0.3);
+					// config.effectsLayer.removeAllFilters();
+					// config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+					// config.effectsLayer.shakeSplitter(1, 6, 0.3);
 					this.addInfoLabel(["X TREVNI"]);
 					this.gameQueueContainer.alpha = 0;
 				}
 
 				break
 			case 5:
-				config.effectsLayer.shakeSplitter(1, 6, 0.3);
-				config.effectsLayer.addGray();
-				config.effectsLayer.addBlur();
+				// config.effectsLayer.shakeSplitter(1, 6, 0.3);
+				// config.effectsLayer.addGray();
+				// config.effectsLayer.addBlur();
 				this.addInfoLabel(["NOT COOL"])
 				break
 			case 6:
-				config.effectsLayer.addGlitch2();
+				// config.effectsLayer.addGlitch2();
 				this.addInfoLabel(["3RRORR"])
 				//config.effectsLayer.addBloom();
 				break
@@ -767,7 +767,7 @@ export default class GameScreen extends Screen {
 			this.shapeQueue.push(tempShape);
 			this.gameQueueContainer.addChild(tempShape);
 			tempShape.position.x = 0
-			tempShape.position.y = 90 * (i + 1);
+			tempShape.position.y = 95 * (i + 1);
 		}
 
 		//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
@@ -1052,7 +1052,7 @@ export default class GameScreen extends Screen {
 					dropShadow: true,
 					dropShadowColor: rainbowColors[rainbowColorsID],
 					dropShadowAngle: 45,
-					dropShadowDistance: 10,
+					dropShadowDistance: 8,
 					stroke: rainbowColors[rainbowColorsID],
 					strokeTickness: 6
 				});
@@ -1206,6 +1206,7 @@ export default class GameScreen extends Screen {
 	}
 	adjustQueuePosition() {
 		this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5);
+		this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 
 	}
 	hideGame() {

@@ -74941,9 +74941,9 @@
 						if (this.currentLevel > 2) {
 							this.gameContainer.scale.y = -1;
 							this.gameBorderContainer.scale.y = -1;
-							_config2.default.effectsLayer.removeAllFilters();
-							_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
-							_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+							// config.effectsLayer.removeAllFilters();
+							// config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+							// config.effectsLayer.shakeSplitter(1, 6, 0.3);
 							this.addInfoLabel(["INVERT Y"]);
 						}
 						break;
@@ -74951,22 +74951,22 @@
 						if (this.currentLevel > 3) {
 							this.gameContainer.scale.x = -1;
 							this.gameBorderContainer.scale.x = -1;
-							_config2.default.effectsLayer.removeAllFilters();
-							_config2.default.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
-							_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
+							// config.effectsLayer.removeAllFilters();
+							// config.effectsLayer.fadeBloom(20, 0, 0.5, 0, true);
+							// config.effectsLayer.shakeSplitter(1, 6, 0.3);
 							this.addInfoLabel(["X TREVNI"]);
 							this.gameQueueContainer.alpha = 0;
 						}
 	
 						break;
 					case 5:
-						_config2.default.effectsLayer.shakeSplitter(1, 6, 0.3);
-						_config2.default.effectsLayer.addGray();
-						_config2.default.effectsLayer.addBlur();
+						// config.effectsLayer.shakeSplitter(1, 6, 0.3);
+						// config.effectsLayer.addGray();
+						// config.effectsLayer.addBlur();
 						this.addInfoLabel(["NOT COOL"]);
 						break;
 					case 6:
-						_config2.default.effectsLayer.addGlitch2();
+						// config.effectsLayer.addGlitch2();
 						this.addInfoLabel(["3RRORR"]);
 						//config.effectsLayer.addBloom();
 						break;
@@ -75248,7 +75248,7 @@
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
 					tempShape.position.x = 0;
-					tempShape.position.y = 90 * (i + 1);
+					tempShape.position.y = 95 * (i + 1);
 				}
 	
 				//this.gameQueueContainer.position.x = (this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5) * this.gameBorderContainer.scale.x;
@@ -75549,7 +75549,7 @@
 							dropShadow: true,
 							dropShadowColor: rainbowColors[rainbowColorsID],
 							dropShadowAngle: 45,
-							dropShadowDistance: 10,
+							dropShadowDistance: 8,
 							stroke: rainbowColors[rainbowColorsID],
 							strokeTickness: 6
 						});
@@ -75705,6 +75705,7 @@
 			key: 'adjustQueuePosition',
 			value: function adjustQueuePosition() {
 				this.gameQueueContainer.position.x = this.gameBorderContainer.position.x + this.gameBorderContainer.width / 2 + 5;
+				this.gameQueueContainer.position.y = this.gameContainer.position.y - this.gameContainer.pivot.y;
 			}
 		}, {
 			key: 'hideGame',
@@ -76715,43 +76716,50 @@
 			});
 			//document.body.on('keydown', this.getKey.bind(this));
 			this.keysContainer = new PIXI.Container();
-			this.left = this.getSquare('button-border.png');
+			this.left = this.getSquare('button-border.png', 'left2.png');
 			this.keysContainer.addChild(this.left);
 			this.left.interactive = true;
 			this.left.buttonMode = true;
 			this.left.on('touchstart', this.pressLeft.bind(this)).on('mousedown', this.pressLeft.bind(this));
 			this.left.on('touchend', this.stopLeft.bind(this)).on('mouseup', this.stopLeft.bind(this));
 	
-			this.right = this.getSquare('button-border.png');
-			this.keysContainer.addChild(this.right);
-			this.right.interactive = true;
-			this.right.buttonMode = true;
-			this.right.on('touchstart', this.pressRight.bind(this)).on('mousedown', this.pressRight.bind(this));
-			this.right.on('touchend', this.stopRight.bind(this)).on('mouseup', this.stopRight.bind(this));
-	
-			this.up = this.getSquare('button-border.png');
+			this.up = this.getSquare('button-border.png', 'rotate.png');
 			this.keysContainer.addChild(this.up);
 			this.up.interactive = true;
 			this.up.buttonMode = true;
 			this.up.on('touchstart', this.pressUp.bind(this)).on('mousedown', this.pressUp.bind(this));
 			this.up.on('touchend', this.stopUp.bind(this)).on('mouseup', this.stopUp.bind(this));
 	
-			this.down = this.getSquare('button-border.png');
+			this.right = this.getSquare('button-border.png', 'right2.png');
+			this.keysContainer.addChild(this.right);
+			this.right.interactive = true;
+			this.right.buttonMode = true;
+			this.right.on('touchstart', this.pressRight.bind(this)).on('mousedown', this.pressRight.bind(this));
+			this.right.on('touchend', this.stopRight.bind(this)).on('mouseup', this.stopRight.bind(this));
+	
+			this.down = this.getSquare('button-border.png', 'down2.png', 125);
 			this.keysContainer.addChild(this.down);
 			this.down.interactive = true;
 			this.down.buttonMode = true;
 			this.down.on('touchstart', this.pressSpace.bind(this)).on('mousedown', this.pressSpace.bind(this));
 			this.down.on('touchend', this.stopSpace.bind(this)).on('mouseup', this.stopSpace.bind(this));
 	
+			var w = 75;
+			var h = 75;
+			this.right.hitArea = new PIXI.Rectangle(-w * 0.1, -h * 0.4, w * 2.2, h * 1.8);
+			this.up.hitArea = new PIXI.Rectangle(-w * 0.1, -h * 0.5, w * 2.2, h * 2.2);
+			this.left.hitArea = new PIXI.Rectangle(-w * 1.1, -h * 0.2, w * 2.2, h * 1.2);
+			this.down.hitArea = new PIXI.Rectangle(0, -h * 0.5, 125, h * 2);
+	
 			var size = 120;
 			this.right.x += size * 2;
 			this.up.x += size * 2;
-			this.up.y -= size;
-			this.down.x += size;
+			this.up.y -= size - 25;
+			this.down.x += size - 25;
 	
 			this.keysContainer.x = _config2.default.width / 2 - this.keysContainer.width / 2;
 			this.keysContainer.y = _config2.default.height - 92;
-			this.keysContainer.alpha = 0.2;
+			this.keysContainer.alpha = 1;
 	
 			if (window.isMobile) {
 				this.game.allContainer.addChild(this.keysContainer);
@@ -76800,11 +76808,19 @@
 			}
 		}, {
 			key: 'getSquare',
-			value: function getSquare(src) {
-				var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
-				shape.width = 75;
-				shape.height = 75;
+			value: function getSquare(src, iconSrc) {
+				var w = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 75;
+				var h = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 75;
 	
+				var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
+				shape.width = w;
+				shape.height = h;
+				var icon = new PIXI.Sprite.fromFrame(iconSrc);
+				icon.anchor.set(0.5);
+				icon.x = w / 2;
+				icon.y = h / 2;
+	
+				shape.addChild(icon);
 				return shape;
 			}
 			//
