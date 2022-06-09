@@ -565,17 +565,76 @@ export default class GameScreen extends Screen {
 			if (this.currentEntityList[i].position.y < minY) {
 				minY = this.currentEntityList[i].position.y;
 			}
-			this.gameContainer.removeChild(this.currentEntityList[i]);
+
 		}
 		let ajdustedPositionY = maxY + (maxY - minY) / 2;
 		let ajdustedPositionX = minX + (maxX - minX) / 2;
 		ajdustedPositionX = Math.floor(ajdustedPositionX / config.pieceSize) * config.pieceSize;
 
+
+		// for (var i = 0; i < this.currentShape.length; i++) {
+		// 	for (var j = 0; j < this.currentShape[i].length; j++) {
+		// 		if (this.currentShape[i][j]) {
+		// 			console.log(this.currentShape[i][j], i,j)
+		// 		}
+		// 	}
+		// }
+
+		// console.log(this.currentEntityList)
 		if (this.randomizeCrazy) {
 			let id = Math.floor(Math.random() * this.shapes.length);
-			this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+
+
+			this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+			this.confirmPiece();
+
 		} else {
-			this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+
+			let tempList = this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+
+
+			for (var i = tempList.length - 1; i >= 0; i--) {
+				let id = {
+					x: tempList[i].x / config.pieceSize,
+					y: Math.ceil(tempList[i].y / config.pieceSize)
+				}
+
+				let id2 = {
+					x: tempList[i].x / config.pieceSize,
+					y: Math.floor(tempList[i].y / config.pieceSize)
+				}
+				if (id2.y >= this.gameMatrix[0].length || id2.x >= this.gameMatrix.length) {
+					return
+				}
+				if (id.y >= this.gameMatrix[0].length || id.x >= this.gameMatrix.length) {
+					return
+				}
+				if (this.gameMatrix) {
+					if (id.x >= 0 || id.y >= 0) {
+						//console.log(id, this.gameMatrix);
+						if (this.gameMatrix[id.x][id.y]) {
+							//console.log("WHAT")
+							return;
+						}
+					}
+
+					if (id2.x >= 0 || id2.y >= 0) {
+						if (this.gameMatrix[id2.x][id2.y]) {
+							//console.log("WHAT")
+							return;
+						}
+					}
+				}
+			}
+
+			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+				this.gameContainer.removeChild(this.currentEntityList[i]);
+			}
+
+			this.currentEntityList = tempList;
+
+			this.confirmPiece();
+
 		}
 	}
 	addShockwaveByPiece(piece) {
@@ -782,7 +841,9 @@ export default class GameScreen extends Screen {
 	}
 	newEntity(shapeArray, starterPosition, randomRotate) {
 
-		this.currentEntityList = [];
+		//this.currentEntityList = [];
+
+		let tempList = [];
 		if (!shapeArray) {
 			this.round++;
 
@@ -845,8 +906,7 @@ export default class GameScreen extends Screen {
 					}
 					currentEntity.position.x = starterXPosition + j * config.pieceSize;
 					currentEntity.position.y = i * config.pieceSize - (this.currentShape[i].length - 2) * config.pieceSize - config.pieceSize / 2 + starterPosition.y;
-					this.currentEntityList.push(currentEntity);
-					this.gameContainer.addChild(currentEntity);
+					tempList.push(currentEntity);
 					if (currentEntity.position.x < 0) {
 						shouldMove = 1;
 					} else if (currentEntity.position.x >= config.bounds.x * config.pieceSize) {
@@ -858,8 +918,8 @@ export default class GameScreen extends Screen {
 		this.updateVisibleParts();
 		// console.log(shouldMove);
 		if (shouldMove) {
-			for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-				this.currentEntityList[i].position.x += config.pieceSize * shouldMove;
+			for (var i = tempList.length - 1; i >= 0; i--) {
+				tempList[i].position.x += config.pieceSize * shouldMove;
 			}
 		}
 
@@ -868,6 +928,8 @@ export default class GameScreen extends Screen {
 		if (this.randomizeCrazy) {
 			this.prompts.rotateLabel.text = "SHUFFLE"
 		}
+
+		return tempList;
 	}
 	drawSquare(color, padding) {
 		let newPadding = padding;
@@ -1175,12 +1237,24 @@ export default class GameScreen extends Screen {
 			this.started = true;
 			//this.showMenu();
 			this.downSpeedIncrease = 0;
-			this.newEntity();
+			this.currentEntityList = this.newEntity();
+			this.confirmPiece();
+
 			TweenLite.to(this.gameQueueContainer, 1, { alpha: 1 });
 
 		}.bind(this), 500);
 
 		this.gameMode = "STANDARD";
+	}
+	confirmPiece() {
+
+		this.currentEntityList.forEach(currentEntity => {
+			this.gameContainer.addChild(currentEntity);
+		});
+
+		this.updateVisibleParts();
+
+
 	}
 	showGame() {
 		console.log("showGame");
@@ -1649,7 +1723,8 @@ export default class GameScreen extends Screen {
 				if (downCollide) {
 					this.verifyLines();
 					//this.started = false;
-					this.newEntity();
+					this.currentEntityList = this.newEntity();
+					this.confirmPiece();
 					return false
 				}
 			}
@@ -1755,22 +1830,25 @@ export default class GameScreen extends Screen {
 	}
 	verifySide(type) {
 		for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-			if (this.verifySingleSide(this.currentEntityList[i], type)) {
-				return true;
+			let v1 = this.verifySingleSide(this.currentEntityList[i], type);
+			let v2 = this.verifySingleSide(this.currentEntityList[i], type, 1 );
+			if(v1 && v2){
+				return true
 			}
 		}
 	}
-	verifySingleSide(entity, type) {
+	verifySingleSide(entity, type, add = 0.5) {
 		if (!entity) {
 			return false;
 		}
 		let tempX = (entity.position.x / config.pieceSize) + (type == "left" ? -1 : 1);
-		let tempY = (entity.position.y / config.pieceSize) + 0.5;
+		let tempY = (entity.position.y / config.pieceSize) + add;
 		let roundedY = Math.floor(tempY);
 		let roundedX = Math.floor(tempX);
 		if (tempX < 0 || tempX >= this.gameMatrix.length) {
 			return true
 		}
+
 		let matrixContent = this.gameMatrix[roundedX][roundedY]
 		if (matrixContent && matrixContent != 0) {
 			return matrixContent

@@ -75032,17 +75032,70 @@
 					if (this.currentEntityList[i].position.y < minY) {
 						minY = this.currentEntityList[i].position.y;
 					}
-					this.gameContainer.removeChild(this.currentEntityList[i]);
 				}
 				var ajdustedPositionY = maxY + (maxY - minY) / 2;
 				var ajdustedPositionX = minX + (maxX - minX) / 2;
 				ajdustedPositionX = Math.floor(ajdustedPositionX / _config2.default.pieceSize) * _config2.default.pieceSize;
 	
+				// for (var i = 0; i < this.currentShape.length; i++) {
+				// 	for (var j = 0; j < this.currentShape[i].length; j++) {
+				// 		if (this.currentShape[i][j]) {
+				// 			console.log(this.currentShape[i][j], i,j)
+				// 		}
+				// 	}
+				// }
+	
+				// console.log(this.currentEntityList)
 				if (this.randomizeCrazy) {
 					var id = Math.floor(Math.random() * this.shapes.length);
-					this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+	
+					this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+					this.confirmPiece();
 				} else {
-					this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+	
+					var tempList = this.newEntity(this.rotateMatrixRight(this.currentShape), { x: ajdustedPositionX, y: ajdustedPositionY });
+	
+					for (var i = tempList.length - 1; i >= 0; i--) {
+						var _id = {
+							x: tempList[i].x / _config2.default.pieceSize,
+							y: Math.ceil(tempList[i].y / _config2.default.pieceSize)
+						};
+	
+						var id2 = {
+							x: tempList[i].x / _config2.default.pieceSize,
+							y: Math.floor(tempList[i].y / _config2.default.pieceSize)
+						};
+						if (id2.y >= this.gameMatrix[0].length || id2.x >= this.gameMatrix.length) {
+							return;
+						}
+						if (_id.y >= this.gameMatrix[0].length || _id.x >= this.gameMatrix.length) {
+							return;
+						}
+						if (this.gameMatrix) {
+							if (_id.x >= 0 || _id.y >= 0) {
+								//console.log(id, this.gameMatrix);
+								if (this.gameMatrix[_id.x][_id.y]) {
+									//console.log("WHAT")
+									return;
+								}
+							}
+	
+							if (id2.x >= 0 || id2.y >= 0) {
+								if (this.gameMatrix[id2.x][id2.y]) {
+									//console.log("WHAT")
+									return;
+								}
+							}
+						}
+					}
+	
+					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
+						this.gameContainer.removeChild(this.currentEntityList[i]);
+					}
+	
+					this.currentEntityList = tempList;
+	
+					this.confirmPiece();
 				}
 			}
 		}, {
@@ -75267,7 +75320,9 @@
 			key: 'newEntity',
 			value: function newEntity(shapeArray, starterPosition, randomRotate) {
 	
-				this.currentEntityList = [];
+				//this.currentEntityList = [];
+	
+				var tempList = [];
 				if (!shapeArray) {
 					this.round++;
 	
@@ -75329,8 +75384,7 @@
 							}
 							currentEntity.position.x = starterXPosition + j * _config2.default.pieceSize;
 							currentEntity.position.y = i * _config2.default.pieceSize - (this.currentShape[i].length - 2) * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
-							this.currentEntityList.push(currentEntity);
-							this.gameContainer.addChild(currentEntity);
+							tempList.push(currentEntity);
 							if (currentEntity.position.x < 0) {
 								shouldMove = 1;
 							} else if (currentEntity.position.x >= _config2.default.bounds.x * _config2.default.pieceSize) {
@@ -75342,8 +75396,8 @@
 				this.updateVisibleParts();
 				// console.log(shouldMove);
 				if (shouldMove) {
-					for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-						this.currentEntityList[i].position.x += _config2.default.pieceSize * shouldMove;
+					for (var i = tempList.length - 1; i >= 0; i--) {
+						tempList[i].position.x += _config2.default.pieceSize * shouldMove;
 					}
 				}
 	
@@ -75352,6 +75406,8 @@
 				if (this.randomizeCrazy) {
 					this.prompts.rotateLabel.text = "SHUFFLE";
 				}
+	
+				return tempList;
 			}
 		}, {
 			key: 'drawSquare',
@@ -75672,11 +75728,24 @@
 					this.started = true;
 					//this.showMenu();
 					this.downSpeedIncrease = 0;
-					this.newEntity();
+					this.currentEntityList = this.newEntity();
+					this.confirmPiece();
+	
 					_gsap2.default.to(this.gameQueueContainer, 1, { alpha: 1 });
 				}.bind(this), 500);
 	
 				this.gameMode = "STANDARD";
+			}
+		}, {
+			key: 'confirmPiece',
+			value: function confirmPiece() {
+				var _this2 = this;
+	
+				this.currentEntityList.forEach(function (currentEntity) {
+					_this2.gameContainer.addChild(currentEntity);
+				});
+	
+				this.updateVisibleParts();
 			}
 		}, {
 			key: 'showGame',
@@ -76182,7 +76251,8 @@
 						if (downCollide) {
 							this.verifyLines();
 							//this.started = false;
-							this.newEntity();
+							this.currentEntityList = this.newEntity();
+							this.confirmPiece();
 							return false;
 						}
 					}
@@ -76295,7 +76365,9 @@
 			key: 'verifySide',
 			value: function verifySide(type) {
 				for (var i = this.currentEntityList.length - 1; i >= 0; i--) {
-					if (this.verifySingleSide(this.currentEntityList[i], type)) {
+					var v1 = this.verifySingleSide(this.currentEntityList[i], type);
+					var v2 = this.verifySingleSide(this.currentEntityList[i], type, 1);
+					if (v1 && v2) {
 						return true;
 					}
 				}
@@ -76303,16 +76375,19 @@
 		}, {
 			key: 'verifySingleSide',
 			value: function verifySingleSide(entity, type) {
+				var add = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.5;
+	
 				if (!entity) {
 					return false;
 				}
 				var tempX = entity.position.x / _config2.default.pieceSize + (type == "left" ? -1 : 1);
-				var tempY = entity.position.y / _config2.default.pieceSize + 0.5;
+				var tempY = entity.position.y / _config2.default.pieceSize + add;
 				var roundedY = Math.floor(tempY);
 				var roundedX = Math.floor(tempX);
 				if (tempX < 0 || tempX >= this.gameMatrix.length) {
 					return true;
 				}
+	
 				var matrixContent = this.gameMatrix[roundedX][roundedY];
 				if (matrixContent && matrixContent != 0) {
 					return matrixContent;
