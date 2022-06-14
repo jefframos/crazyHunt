@@ -57,12 +57,56 @@ export default class EffectLayer extends PIXI.Container {
 		this.gray = new PIXI.filters.ColorMatrixFilter();
 
 		//invert
-		this.invertFilter = new PIXI.filters.ColorMatrixFilter();
-		this.invertFilter.negative(1)
+
 		//ascii
 		this.ascii = new AsciiFilter();
 
 
+		this.invertFilter = new PIXI.filters.ColorMatrixFilter();
+		this.invertFilter.negative(1)
+		this.browni = new PIXI.filters.ColorMatrixFilter();
+		this.browni.browni(1)
+		this.desaturate = new PIXI.filters.ColorMatrixFilter();
+		this.desaturate.desaturate(1)
+		this.contrast = new PIXI.filters.ColorMatrixFilter();
+		this.contrast.contrast(1)
+		this.hue = new PIXI.filters.ColorMatrixFilter();
+		this.hue.hue(90)
+		this.koda = new PIXI.filters.ColorMatrixFilter();
+		this.koda.kodachrome(1)
+		this.lsd = new PIXI.filters.ColorMatrixFilter();
+		this.lsd.lsd(1)
+
+		this.sepia = new PIXI.filters.ColorMatrixFilter();
+		this.sepia.sepia(1)
+
+		this.techni = new PIXI.filters.ColorMatrixFilter();
+		this.techni.technicolor(1)
+
+		this.vintage = new PIXI.filters.ColorMatrixFilter();
+		this.vintage.vintage(1)
+
+		this.predator = new PIXI.filters.ColorMatrixFilter();
+		this.predator.predator(0.5)
+
+		this.polaroid = new PIXI.filters.ColorMatrixFilter();
+		this.polaroid.polaroid(1)
+
+
+		this.allColorFilters = [];
+
+		this.allColorFilters.push(this.invertFilter)
+		this.allColorFilters.push(this.browni)
+		this.allColorFilters.push(this.desaturate)
+		this.allColorFilters.push(this.contrast)
+		this.allColorFilters.push(this.hue)
+		this.allColorFilters.push(this.koda)
+		this.allColorFilters.push(this.lsd)
+		this.allColorFilters.push(this.sepia)
+		this.allColorFilters.push(this.techni)
+		this.allColorFilters.push(this.vintage)
+		this.allColorFilters.push(this.predator)
+		this.allColorFilters.push(this.polaroid)
 		//GLITCH 1
 		this.glitch1 = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/glitch1.jpg', config.width, config.height))
 		this.addChild(this.glitch1)
@@ -125,6 +169,14 @@ export default class EffectLayer extends PIXI.Container {
 		this.updatePixelate(config.pixelSize, config.pixelSize);
 
 	}
+	addColorFilter(id) {
+
+		let filter = this.allColorFilters[id]
+		this.screenManager.filters = [filter]
+	}
+	removeColorFilter() {
+		this.screenManager.filters = []
+	}
 	hideGreyShape(time, delay) {
 		TweenLite.to(this.grey, time, { alpha: 0, delay: delay });
 	}
@@ -140,6 +192,7 @@ export default class EffectLayer extends PIXI.Container {
 		this.rgpSplit.blue = new PIXI.Point(value, -value);
 	}
 	updateFilters() {
+		return
 		var filtersToApply = [];
 		for (var i = 0; i < this.filtersList.length; i++) {
 
@@ -147,7 +200,7 @@ export default class EffectLayer extends PIXI.Container {
 				filtersToApply.push(this.filtersList[i]);
 			}
 		};
-		console.log(filtersToApply)
+		//console.log(filtersToApply)
 		this.screenManager.filters = filtersToApply.length > 0 ? filtersToApply : null;
 		// console.log(this.screenManager.filters);
 	}
