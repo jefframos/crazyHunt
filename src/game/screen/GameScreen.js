@@ -7,11 +7,14 @@ import utils from '../../utils';
 import Screen from '../../screenManager/Screen';
 import Prompt from './Prompt';
 import Button1 from './Button1';
+import PopUp from './PopUp';
 
 export default class GameScreen extends Screen {
 	constructor(label) {
 		super(label);
 		this.currentEntityList = []
+
+
 		this.shapes = [
 			{
 				shape: [
@@ -75,6 +78,24 @@ export default class GameScreen extends Screen {
 					[0, 0, 0, 0, 0],
 				], type: "STANDARD"
 			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 1, 0, 0],
+				], type: "STANDARD"
+			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 1, 0, 1, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 1, 0, 0],
+				], type: "STANDARD"
+			},
 			// {
 			// 	shape: [
 			// 		[0, 0, 0, 0, 0],
@@ -113,6 +134,7 @@ export default class GameScreen extends Screen {
 	}
 
 	shuffleText(label) {
+		return label
 		if (Math.random() > 0.2) {
 			return label
 		}
@@ -140,7 +162,7 @@ export default class GameScreen extends Screen {
 		return returnLabel
 	}
 	goToPortfolio() {
-		window.open('http://www.jefframos.me', '_blank');
+		//window.open('http://www.jefframos.me', '_blank');
 	}
 	resize(newSize) {
 		this.allContainer.scale.x = (config.width / newSize.width) / (config.height / window.innerHeight)
@@ -204,7 +226,7 @@ export default class GameScreen extends Screen {
 		this.filterDescription = new PIXI.Text(this.filterLabel, { font: '50px super_smash_tvregular', fill: 0xBBBBBB, align: 'center' });
 		this.filterDescription.alpha = 0;
 
-		this.creatorLabel = new PIXI.Text('by Jeff Ramos', { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+		this.creatorLabel = new PIXI.Text('by Jeff Ramos', { font: '18px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 		this.creatorLabel.interactive = true;
 		this.creatorLabel.buttonMode = true;
 		utils.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
@@ -229,7 +251,7 @@ export default class GameScreen extends Screen {
 		this.labelLevel.position.y = 90;
 		this.labelLevel.alpha = 0;
 
-		this.labelBestScore = new PIXI.Text("BEST SCORE: " + (this.bestScore ? this.bestScore : "0"), { font: '20px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+		this.labelBestScore = new PIXI.Text("BEST SCORE: " + (this.bestScore ? this.bestScore : "0"), { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 		this.allContainer.addChild(this.labelBestScore);
 		this.labelBestScore.position.x = config.width - this.labelBestScore.width - 5;
 		this.labelBestScore.position.y = 60;
@@ -301,6 +323,10 @@ export default class GameScreen extends Screen {
 		this.logo.anchor.set(0.5)
 
 		this.allContainer.addChild(this.logo)
+
+		this.popUp = new PopUp(this);
+		this.allContainer.addChild(this.popUp);
+		this.popUp.hide();
 		//utils.correctPosition(this.gameContainer);
 
 
@@ -319,7 +345,7 @@ export default class GameScreen extends Screen {
 		this.labelLevel.text = 'Level: ' + this.currentLevel;
 
 		if (this.points > 0) {
-			this.gameLevelSpeed = this.gameLevelSpeedMax - this.currentLevel * 0.1;
+			this.gameLevelSpeed = this.gameLevelSpeedMax - this.currentLevel * 0.075;
 		}
 
 		if (this.gameLevelSpeed < 0.09) {
@@ -427,20 +453,25 @@ export default class GameScreen extends Screen {
 		}
 
 
-		if (nextID == 1 || nextID == 2) {
-			nextID = Math.floor(Math.random() * 7)
+		let next = Math.random() * 7;
+		if (this.currentLevel <= 1) {
+		} else if (this.currentLevel <= 2) {
+			next = 3
+		} else if (this.currentLevel <= 4) {
+			next = 3
+			//draw = 7
+		} else if (this.currentLevel <= 5) {
+			next = 4
+			//draw = 8
+		} else if (this.currentLevel <= 7) {
+			next = 5
+			//draw = 9
+		} else {
+			next = 7
+			//draw = 10
 		}
 
-		if (this.scoring > 4) {
-
-			if (Math.random() < (0.05 + this.currentLevel * 0.01)) {
-				//this.changeBackgroundColor();
-			}
-
-			if (!this.rotatingCrazy && Math.random() < (0.01 + this.currentLevel * 0.01)) {
-				//this.fallForRandomSide();
-			}
-		}
+		nextID = Math.floor(Math.random() * next)
 
 
 		this.standardLabels = ['BRICKS', 'BRICKS', 'BRICKS', 'JUICY', 'FUN', 'WHAT', 'BRICK', 'WHY', 'DROP']
@@ -469,19 +500,17 @@ export default class GameScreen extends Screen {
 
 				break
 			case 3:
-				if (this.currentLevel > 2) {
-					this.gameContainer.scale.y = -1;
-					this.gameBorderContainer.scale.y = -1;
-					this.addInfoLabel(["INVERT Y"])
-				}
+				this.gameContainer.scale.y = -1;
+				this.gameBorderContainer.scale.y = -1;
+				this.addInfoLabel(["INVERT Y"])
+
 				break
 			case 4:
-				if (this.currentLevel > 3) {
-					this.gameContainer.scale.x = -1;
-					this.gameBorderContainer.scale.x = -1;
-					this.addInfoLabel(["X TREVNI"]);
-					this.gameQueueContainer.alpha = 0;
-				}
+				this.gameContainer.scale.x = -1;
+				this.gameBorderContainer.scale.x = -1;
+				this.addInfoLabel(["X TREVNI"]);
+				this.gameQueueContainer.alpha = 0;
+
 				break
 			case 5:
 				config.effectsLayer.addColorFilter(colorFilterID);
@@ -808,17 +837,22 @@ export default class GameScreen extends Screen {
 		let tempId;
 		let newId = 0;
 		for (var i = 0; i < totalQueue; i++) {
-			tempId = this.shapeStep + i + 1;
-			if (tempId >= this.shapesOrder.length) {
-				tempId = newId;
-				newId++;
-			}
+			// tempId = this.shapeStep + i + 1;
+			// if (tempId >= this.shapesOrder.length) {
+			// 	tempId = newId;
+			// 	newId++;
+			// }
 			if (this.scoring > 4 && Math.random() < 0.1) {
 				tempShape = this.drawShapeOnList(this.whatPiece.shape);
 				//tempShape.scale.y = 0.7;
 				//tempShape.scale.x = 0.7;
 			} else {
-				tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+				tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[0]].shape);
+			}
+			console.log(this.shapesOrder);
+
+			if (this.shapesOrder.length <= 4) {
+				this.appendMorePieces();
 			}
 			this.shapeQueue.push(tempShape);
 			this.gameQueueContainer.addChild(tempShape);
@@ -834,7 +868,9 @@ export default class GameScreen extends Screen {
 		if (this.shapeStep >= this.shapesOrder.length) {
 			this.shapeStep = 0;
 		}
-		return this.shapes[this.shapesOrder[this.shapeStep]];
+		let shape = this.shapes[this.shapesOrder[0]]
+		this.shapesOrder.shift();
+		return shape;
 	}
 	newEntity(shapeArray, starterPosition, randomRotate) {
 
@@ -843,8 +879,11 @@ export default class GameScreen extends Screen {
 		let tempList = [];
 		if (!shapeArray) {
 			this.round++;
-
-			this.currentLevel = Math.floor(this.round / this.roundLevelAccum) + 1;
+			let next = Math.floor(this.round / this.roundLevelAccum) + 1;
+			if (next != this.currentLevel) {
+				this.popUp.show(this.currentLevel, () => { });
+			}
+			this.currentLevel = next;
 			this.updateCurrentLevel();
 
 			this.currentShapeData = this.getShape();
@@ -853,6 +892,7 @@ export default class GameScreen extends Screen {
 			if (this.currentShapeData.type == "SHOOTER") {
 				this.shooterErase = Math.random() < 0;//!this.shooterErase;
 				if (this.shooterErase) {
+					a
 					this.addInfoLabel(["ERASE"]);
 
 					this.prompts.rotateLabel.text = "SHOOT"
@@ -927,7 +967,7 @@ export default class GameScreen extends Screen {
 			this.prompts.rotateLabel.text = "SHUFFLE"
 		}
 
-		console.log(this.gameMatrix)
+		//console.log(this.gameMatrix)
 
 		//this.drawMatrix2();
 
@@ -960,7 +1000,7 @@ export default class GameScreen extends Screen {
 				this.matrixDebug.addChild(square);
 
 				if (this.gameMatrix[index][j]) {
-					console.log(this.gameMatrix[index][j])
+					//console.log(this.gameMatrix[index][j])
 					square.visible = true
 				} else {
 					square.visible = false
@@ -976,7 +1016,7 @@ export default class GameScreen extends Screen {
 	drawSquare(color, padding) {
 		let newPadding = padding;
 		if (!newPadding) {
-			newPadding = 2;
+			newPadding = 0;
 		}
 
 		if (!window.SHAPE_POOL) {
@@ -1073,26 +1113,43 @@ export default class GameScreen extends Screen {
 		let tempArray = [];
 		let tempId;
 
-		if(!this.latestBrick){
+		if (!this.latestBrick) {
 			this.latestBrick = 1;
 		}
-		for (var i = 0; i < 200; i++) {
-			tempId = Math.floor((this.shapes.length - 1) * Math.random());
+		console.log("APPEND")
 
-			if (this.latestBrick > 2) {
-				tempId = this.shapes.length - 1//Math.floor((this.shapes.length) * Math.random());
-				this.latestBrick = 0;
-			}
+
+		let limit = this.shapes.length - 1;
+		if (this.currentLevel <= 1) {
+			limit = 4
+		} else if (this.currentLevel <= 2) {
+			limit = 6
+		} else if (this.currentLevel <= 4) {
+			limit = 7
+		} else if (this.currentLevel <= 5) {
+			limit = 8
+		} else if (this.currentLevel <= 7) {
+			limit = 9
+		}
+
+		console.log("WHY NOT BRICK BREAKER")
+		for (var i = 0; i < 10; i++) {
+			tempId = Math.floor((limit) * Math.random());
+
+			// if (this.latestBrick > 2) {
+			// 	tempId = this.shapes.length - 1//Math.floor((this.shapes.length) * Math.random());
+			// 	this.latestBrick = 0;
+			// }
 
 			// if (this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.1 || i < 35) {
 			// 	// console.log("RECALC BRICK");
 			// 	tempId = Math.floor((this.shapes.length - 1) * Math.random());
 			// }
 
-			if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.3 || i < 20) {
-				// console.log("RECALC BRICK");
-				tempId = Math.floor(this.shapes.length * Math.random());
-			}
+			// if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.3 || i < 20) {
+			// 	// console.log("RECALC BRICK");
+			// 	tempId = Math.floor(this.shapes.length * Math.random());
+			// }
 
 			if (i > 3) {
 				while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3] || tempId == tempArray[i - 4]) {
@@ -1100,13 +1157,13 @@ export default class GameScreen extends Screen {
 				}
 			}
 
-			tempArray.push(tempId);
+			this.shapesOrder.push(tempId);
 		}
 
-		this.latestBrick ++
+		this.latestBrick++
 
-		this.shapesOrder = this.shapesOrder.slice(0, this.shapeStep + 3);
-		this.shapesOrder = this.shapesOrder.concat(tempArray);
+		// this.shapesOrder = this.shapesOrder.slice(0, this.shapeStep + 3);
+		// this.shapesOrder = this.shapesOrder.concat(tempArray);
 
 	}
 
@@ -1246,7 +1303,7 @@ export default class GameScreen extends Screen {
 		this.bombList = [];
 		this.shapeStep = 0;
 		this.round = 0;
-		this.roundLevelAccum = 10;
+		this.roundLevelAccum = 5//15;
 		this.shapeQueue = [];
 		this.points = 0;
 		this.gameLevelSpeedMax = 1;
@@ -1418,7 +1475,31 @@ export default class GameScreen extends Screen {
 		// }
 	}
 	//end timer
-
+	doTheBreak(callback) {
+		this.inABreak = true;
+		PokiSDK.commercialBreak().then(
+			() => {
+				console.log("Commercial break finished, proceeding to game");
+				//PokiSDK.gameplayStart();
+				// fire your function to continue to game
+				this.inABreak = false;
+				callback();
+				// if (!wasMute) {
+				// 	SOUND_MANAGER.toggleMute();
+				// }
+			}
+		).catch(
+			() => {
+				console.log("Initialized, but the user likely has adblock");
+				// fire your function to continue to game
+				this.inABreak = false;
+				callback();
+				// if (!wasMute) {
+				// 	SOUND_MANAGER.toggleMute();
+				// }
+			}
+		);
+	}
 	//THIS START THE GAME
 	selectMenu() {
 
@@ -1429,26 +1510,7 @@ export default class GameScreen extends Screen {
 
 		switch (this.currentSelectedMenuItem) {
 			case 0:
-				PokiSDK.commercialBreak().then(
-					() => {
-						console.log("Commercial break finished, proceeding to game");
-						//PokiSDK.gameplayStart();
-						// fire your function to continue to game
-						this.startTheGame();
-						// if (!wasMute) {
-						// 	SOUND_MANAGER.toggleMute();
-						// }
-					}
-				).catch(
-					() => {
-						console.log("Initialized, but the user likely has adblock");
-						// fire your function to continue to game
-						this.startTheGame();
-						// if (!wasMute) {
-						// 	SOUND_MANAGER.toggleMute();
-						// }
-					}
-				);
+				this.doTheBreak(this.startTheGame.bind(this))
 				break
 		}
 	}
@@ -1706,6 +1768,10 @@ export default class GameScreen extends Screen {
 
 	//
 	stopAction(type) {
+		// if(this.popUp.visible){
+		// 	//on space should confirm
+		// 	return;
+		// }
 		if (this.gameOverState) {
 			if (type == "space") {
 				this.showMenu();
@@ -1763,7 +1829,10 @@ export default class GameScreen extends Screen {
 		return haveOne;
 	}
 	updateAction(type) {
-
+		if (this.popUp.visible || this.inABreak) {
+			//on space should confirm
+			return;
+		}
 		if (!this.started || this.gameOvering) {
 			return;
 		}
@@ -1864,6 +1933,8 @@ export default class GameScreen extends Screen {
 			//console.log(this.gameMatrix);
 			this.scoring++;
 
+			console.log(this.shapesOrder)
+
 			if (this.scoring == 1) {
 				this.filterLabel = "JUST\nA"
 			} else if (this.scoring == 2) {
@@ -1872,7 +1943,6 @@ export default class GameScreen extends Screen {
 				this.filterLabel = "BRICK\nGAME?"
 				this.changeFilter();
 			} else if (this.scoring == 4) {
-				this.appendMorePieces();
 				this.changeFilter();
 			} else {
 				this.changeFilter();
@@ -2045,7 +2115,7 @@ export default class GameScreen extends Screen {
 
 				this.removeCurrentPiece();
 
-				console.log(this.gameMatrix);
+				//console.log(this.gameMatrix);
 				this.gameOver();
 			}
 		} else {
@@ -2255,9 +2325,14 @@ export default class GameScreen extends Screen {
 
 		}
 
+		if (this.popUp.visible || this.inABreak) {
+			this.mainButton.visible = false;
+			return;
+		}
 		if (!this.started) {
 			return;
 		}
+
 
 		this.adjustQueuePosition()
 

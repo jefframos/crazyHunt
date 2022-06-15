@@ -201,6 +201,7 @@
                 <false/>
             </struct>
             <key type="filename">UI/button-border.png</key>
+            <key type="filename">UI/popUp.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -215,6 +216,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">UI/cancel.png</key>
+            <key type="filename">UI/check-mark.png</key>
             <key type="filename">UI/down2.png</key>
             <key type="filename">UI/left2.png</key>
             <key type="filename">UI/right2.png</key>

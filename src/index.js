@@ -131,7 +131,7 @@ function configGame(){
 	let effectLayer = new EffectLayer(screenManager);
 	console.log(game.stage)
 	game.stage.addChild(screenManager);
-window.fx = effectLayer
+	window.fx = effectLayer
 	config.effectsLayer = effectLayer;
 	screenManager.addScreen(gameScreen);
 	screenManager.addScreen(initScreen);

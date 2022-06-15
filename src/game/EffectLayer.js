@@ -22,7 +22,7 @@ export default class EffectLayer extends PIXI.Container {
 		this.grey.beginFill(0X555555);
 		this.grey.drawRect(0, 0, config.width, config.height);
 		this.grey.alpha = 0;
-		this.addChild(this.grey);
+		//this.addChild(this.grey);
 
 		this.tvLines = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/tvlines.png', config.width, config.height))
 		this.addChild(this.tvLines)
@@ -455,7 +455,7 @@ export default class EffectLayer extends PIXI.Container {
 	}
 
 	update(delta) {
-		this.blackShape.alpha = 0//Math.random() * 0.3;
-		this.glitch1.tilePosition.y += 1;
+		// this.blackShape.alpha = 0//Math.random() * 0.3;
+		// this.glitch1.tilePosition.y += 1;
 	}
 }

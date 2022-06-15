@@ -18,7 +18,7 @@ export default class Game {
 			{
 				width: this.config.width,
 				height: this.config.height,
-				// resolution: this.config.rendererOptions,
+				resolution: 2,
 				autoResize: false,
 				backgroundColor: 0xFFFFFF,
 			}

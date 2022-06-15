@@ -43172,7 +43172,7 @@
 			this.app = new PIXI.Application({
 				width: this.config.width,
 				height: this.config.height,
-				// resolution: this.config.rendererOptions,
+				resolution: 2,
 				autoResize: false,
 				backgroundColor: 0xFFFFFF
 			});
@@ -43329,7 +43329,7 @@
 			_this.grey.beginFill(0X555555);
 			_this.grey.drawRect(0, 0, _config2.default.width, _config2.default.height);
 			_this.grey.alpha = 0;
-			_this.addChild(_this.grey);
+			//this.addChild(this.grey);
 	
 			_this.tvLines = new PIXI.extras.TilingSprite(PIXI.Texture.fromImage('./assets/tvlines.png', _config2.default.width, _config2.default.height));
 			_this.addChild(_this.tvLines);
@@ -43808,8 +43808,8 @@
 		}, {
 			key: 'update',
 			value: function update(delta) {
-				this.blackShape.alpha = 0; //Math.random() * 0.3;
-				this.glitch1.tilePosition.y += 1;
+				// this.blackShape.alpha = 0//Math.random() * 0.3;
+				// this.glitch1.tilePosition.y += 1;
 			}
 		}]);
 	
@@ -74637,6 +74637,10 @@
 	
 	var _Button2 = _interopRequireDefault(_Button);
 	
+	var _PopUp = __webpack_require__(252);
+	
+	var _PopUp2 = _interopRequireDefault(_PopUp);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -74658,6 +74662,7 @@
 			var _this = _possibleConstructorReturn(this, (GameScreen.__proto__ || Object.getPrototypeOf(GameScreen)).call(this, label));
 	
 			_this.currentEntityList = [];
+	
 			_this.shapes = [{
 				shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD"
 			}, {
@@ -74672,6 +74677,10 @@
 				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
 				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
 			},
 			// {
 			// 	shape: [
@@ -74701,6 +74710,7 @@
 		_createClass(GameScreen, [{
 			key: 'shuffleText',
 			value: function shuffleText(label) {
+				return label;
 				if (Math.random() > 0.2) {
 					return label;
 				}
@@ -74727,7 +74737,7 @@
 		}, {
 			key: 'goToPortfolio',
 			value: function goToPortfolio() {
-				window.open('http://www.jefframos.me', '_blank');
+				//window.open('http://www.jefframos.me', '_blank');
 			}
 		}, {
 			key: 'resize',
@@ -74791,7 +74801,7 @@
 				this.filterDescription = new PIXI.Text(this.filterLabel, { font: '50px super_smash_tvregular', fill: 0xBBBBBB, align: 'center' });
 				this.filterDescription.alpha = 0;
 	
-				this.creatorLabel = new PIXI.Text('by Jeff Ramos', { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.creatorLabel = new PIXI.Text('by Jeff Ramos', { font: '18px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.creatorLabel.interactive = true;
 				this.creatorLabel.buttonMode = true;
 				_utils2.default.addMockRect(this.creatorLabel, this.creatorLabel.width, this.creatorLabel.height);
@@ -74816,7 +74826,7 @@
 				this.labelLevel.position.y = 90;
 				this.labelLevel.alpha = 0;
 	
-				this.labelBestScore = new PIXI.Text("BEST SCORE: " + (this.bestScore ? this.bestScore : "0"), { font: '20px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
+				this.labelBestScore = new PIXI.Text("BEST SCORE: " + (this.bestScore ? this.bestScore : "0"), { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'right' });
 				this.allContainer.addChild(this.labelBestScore);
 				this.labelBestScore.position.x = _config2.default.width - this.labelBestScore.width - 5;
 				this.labelBestScore.position.y = 60;
@@ -74882,6 +74892,10 @@
 				this.logo.anchor.set(0.5);
 	
 				this.allContainer.addChild(this.logo);
+	
+				this.popUp = new _PopUp2.default(this);
+				this.allContainer.addChild(this.popUp);
+				this.popUp.hide();
 				//utils.correctPosition(this.gameContainer);
 	
 	
@@ -74900,7 +74914,7 @@
 				this.labelLevel.text = 'Level: ' + this.currentLevel;
 	
 				if (this.points > 0) {
-					this.gameLevelSpeed = this.gameLevelSpeedMax - this.currentLevel * 0.1;
+					this.gameLevelSpeed = this.gameLevelSpeedMax - this.currentLevel * 0.075;
 				}
 	
 				if (this.gameLevelSpeed < 0.09) {
@@ -75018,20 +75032,24 @@
 					nextID = Math.floor(Math.random() * 7);
 				}
 	
-				if (nextID == 1 || nextID == 2) {
-					nextID = Math.floor(Math.random() * 7);
+				var next = Math.random() * 7;
+				if (this.currentLevel <= 1) {} else if (this.currentLevel <= 2) {
+					next = 3;
+				} else if (this.currentLevel <= 4) {
+					next = 3;
+					//draw = 7
+				} else if (this.currentLevel <= 5) {
+					next = 4;
+					//draw = 8
+				} else if (this.currentLevel <= 7) {
+					next = 5;
+					//draw = 9
+				} else {
+					next = 7;
+					//draw = 10
 				}
 	
-				if (this.scoring > 4) {
-	
-					if (Math.random() < 0.05 + this.currentLevel * 0.01) {
-						//this.changeBackgroundColor();
-					}
-	
-					if (!this.rotatingCrazy && Math.random() < 0.01 + this.currentLevel * 0.01) {
-						//this.fallForRandomSide();
-					}
-				}
+				nextID = Math.floor(Math.random() * next);
 	
 				this.standardLabels = ['BRICKS', 'BRICKS', 'BRICKS', 'JUICY', 'FUN', 'WHAT', 'BRICK', 'WHY', 'DROP'];
 				this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
@@ -75059,19 +75077,17 @@
 	
 						break;
 					case 3:
-						if (this.currentLevel > 2) {
-							this.gameContainer.scale.y = -1;
-							this.gameBorderContainer.scale.y = -1;
-							this.addInfoLabel(["INVERT Y"]);
-						}
+						this.gameContainer.scale.y = -1;
+						this.gameBorderContainer.scale.y = -1;
+						this.addInfoLabel(["INVERT Y"]);
+	
 						break;
 					case 4:
-						if (this.currentLevel > 3) {
-							this.gameContainer.scale.x = -1;
-							this.gameBorderContainer.scale.x = -1;
-							this.addInfoLabel(["X TREVNI"]);
-							this.gameQueueContainer.alpha = 0;
-						}
+						this.gameContainer.scale.x = -1;
+						this.gameBorderContainer.scale.x = -1;
+						this.addInfoLabel(["X TREVNI"]);
+						this.gameQueueContainer.alpha = 0;
+	
 						break;
 					case 5:
 						_config2.default.effectsLayer.addColorFilter(colorFilterID);
@@ -75416,17 +75432,22 @@
 				var tempId = void 0;
 				var newId = 0;
 				for (var i = 0; i < totalQueue; i++) {
-					tempId = this.shapeStep + i + 1;
-					if (tempId >= this.shapesOrder.length) {
-						tempId = newId;
-						newId++;
-					}
+					// tempId = this.shapeStep + i + 1;
+					// if (tempId >= this.shapesOrder.length) {
+					// 	tempId = newId;
+					// 	newId++;
+					// }
 					if (this.scoring > 4 && Math.random() < 0.1) {
 						tempShape = this.drawShapeOnList(this.whatPiece.shape);
 						//tempShape.scale.y = 0.7;
 						//tempShape.scale.x = 0.7;
 					} else {
-						tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[tempId]].shape);
+						tempShape = this.drawShapeOnList(this.shapes[this.shapesOrder[0]].shape);
+					}
+					console.log(this.shapesOrder);
+	
+					if (this.shapesOrder.length <= 4) {
+						this.appendMorePieces();
 					}
 					this.shapeQueue.push(tempShape);
 					this.gameQueueContainer.addChild(tempShape);
@@ -75444,7 +75465,9 @@
 				if (this.shapeStep >= this.shapesOrder.length) {
 					this.shapeStep = 0;
 				}
-				return this.shapes[this.shapesOrder[this.shapeStep]];
+				var shape = this.shapes[this.shapesOrder[0]];
+				this.shapesOrder.shift();
+				return shape;
 			}
 		}, {
 			key: 'newEntity',
@@ -75455,8 +75478,11 @@
 				var tempList = [];
 				if (!shapeArray) {
 					this.round++;
-	
-					this.currentLevel = Math.floor(this.round / this.roundLevelAccum) + 1;
+					var next = Math.floor(this.round / this.roundLevelAccum) + 1;
+					if (next != this.currentLevel) {
+						this.popUp.show(this.currentLevel, function () {});
+					}
+					this.currentLevel = next;
 					this.updateCurrentLevel();
 	
 					this.currentShapeData = this.getShape();
@@ -75465,6 +75491,7 @@
 					if (this.currentShapeData.type == "SHOOTER") {
 						this.shooterErase = Math.random() < 0; //!this.shooterErase;
 						if (this.shooterErase) {
+							a;
 							this.addInfoLabel(["ERASE"]);
 	
 							this.prompts.rotateLabel.text = "SHOOT";
@@ -75538,7 +75565,7 @@
 					this.prompts.rotateLabel.text = "SHUFFLE";
 				}
 	
-				console.log(this.gameMatrix);
+				//console.log(this.gameMatrix)
 	
 				//this.drawMatrix2();
 	
@@ -75572,7 +75599,7 @@
 						this.matrixDebug.addChild(square);
 	
 						if (this.gameMatrix[_index][j]) {
-							console.log(this.gameMatrix[_index][j]);
+							//console.log(this.gameMatrix[index][j])
 							square.visible = true;
 						} else {
 							square.visible = false;
@@ -75588,7 +75615,7 @@
 			value: function drawSquare(color, padding) {
 				var newPadding = padding;
 				if (!newPadding) {
-					newPadding = 2;
+					newPadding = 0;
 				}
 	
 				if (!window.SHAPE_POOL) {
@@ -75704,23 +75731,39 @@
 				if (!this.latestBrick) {
 					this.latestBrick = 1;
 				}
-				for (var i = 0; i < 200; i++) {
-					tempId = Math.floor((this.shapes.length - 1) * Math.random());
+				console.log("APPEND");
 	
-					if (this.latestBrick > 2) {
-						tempId = this.shapes.length - 1; //Math.floor((this.shapes.length) * Math.random());
-						this.latestBrick = 0;
-					}
+				var limit = this.shapes.length - 1;
+				if (this.currentLevel <= 1) {
+					limit = 4;
+				} else if (this.currentLevel <= 2) {
+					limit = 6;
+				} else if (this.currentLevel <= 4) {
+					limit = 7;
+				} else if (this.currentLevel <= 5) {
+					limit = 8;
+				} else if (this.currentLevel <= 7) {
+					limit = 9;
+				}
+	
+				console.log("WHY NOT BRICK BREAKER");
+				for (var i = 0; i < 10; i++) {
+					tempId = Math.floor(limit * Math.random());
+	
+					// if (this.latestBrick > 2) {
+					// 	tempId = this.shapes.length - 1//Math.floor((this.shapes.length) * Math.random());
+					// 	this.latestBrick = 0;
+					// }
 	
 					// if (this.shapes[tempId].type == "BRICK_BREAKER" && Math.random() < 0.1 || i < 35) {
 					// 	// console.log("RECALC BRICK");
 					// 	tempId = Math.floor((this.shapes.length - 1) * Math.random());
 					// }
 	
-					if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.3 || i < 20) {
-						// console.log("RECALC BRICK");
-						tempId = Math.floor(this.shapes.length * Math.random());
-					}
+					// if (this.shapes[tempId].type == "SHOOTER" && Math.random() < 0.3 || i < 20) {
+					// 	// console.log("RECALC BRICK");
+					// 	tempId = Math.floor(this.shapes.length * Math.random());
+					// }
 	
 					if (i > 3) {
 						while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3] || tempId == tempArray[i - 4]) {
@@ -75728,13 +75771,13 @@
 						}
 					}
 	
-					tempArray.push(tempId);
+					this.shapesOrder.push(tempId);
 				}
 	
 				this.latestBrick++;
 	
-				this.shapesOrder = this.shapesOrder.slice(0, this.shapeStep + 3);
-				this.shapesOrder = this.shapesOrder.concat(tempArray);
+				// this.shapesOrder = this.shapesOrder.slice(0, this.shapeStep + 3);
+				// this.shapesOrder = this.shapesOrder.concat(tempArray);
 			}
 		}, {
 			key: 'addButtonHUD',
@@ -75870,7 +75913,7 @@
 				this.bombList = [];
 				this.shapeStep = 0;
 				this.round = 0;
-				this.roundLevelAccum = 10;
+				this.roundLevelAccum = 5; //15;
 				this.shapeQueue = [];
 				this.points = 0;
 				this.gameLevelSpeedMax = 1;
@@ -76047,12 +76090,36 @@
 			}
 			//end timer
 	
+		}, {
+			key: 'doTheBreak',
+			value: function doTheBreak(callback) {
+				var _this3 = this;
+	
+				this.inABreak = true;
+				PokiSDK.commercialBreak().then(function () {
+					console.log("Commercial break finished, proceeding to game");
+					//PokiSDK.gameplayStart();
+					// fire your function to continue to game
+					_this3.inABreak = false;
+					callback();
+					// if (!wasMute) {
+					// 	SOUND_MANAGER.toggleMute();
+					// }
+				}).catch(function () {
+					console.log("Initialized, but the user likely has adblock");
+					// fire your function to continue to game
+					_this3.inABreak = false;
+					callback();
+					// if (!wasMute) {
+					// 	SOUND_MANAGER.toggleMute();
+					// }
+				});
+			}
 			//THIS START THE GAME
 	
 		}, {
 			key: 'selectMenu',
 			value: function selectMenu() {
-				var _this3 = this;
 	
 				// let wasMute = SOUND_MANAGER.isMute
 				// if (!wasMute) {
@@ -76061,22 +76128,7 @@
 	
 				switch (this.currentSelectedMenuItem) {
 					case 0:
-						PokiSDK.commercialBreak().then(function () {
-							console.log("Commercial break finished, proceeding to game");
-							//PokiSDK.gameplayStart();
-							// fire your function to continue to game
-							_this3.startTheGame();
-							// if (!wasMute) {
-							// 	SOUND_MANAGER.toggleMute();
-							// }
-						}).catch(function () {
-							console.log("Initialized, but the user likely has adblock");
-							// fire your function to continue to game
-							_this3.startTheGame();
-							// if (!wasMute) {
-							// 	SOUND_MANAGER.toggleMute();
-							// }
-						});
+						this.doTheBreak(this.startTheGame.bind(this));
 						break;
 				}
 			}
@@ -76355,6 +76407,10 @@
 		}, {
 			key: 'stopAction',
 			value: function stopAction(type) {
+				// if(this.popUp.visible){
+				// 	//on space should confirm
+				// 	return;
+				// }
 				if (this.gameOverState) {
 					if (type == "space") {
 						this.showMenu();
@@ -76415,7 +76471,10 @@
 		}, {
 			key: 'updateAction',
 			value: function updateAction(type) {
-	
+				if (this.popUp.visible || this.inABreak) {
+					//on space should confirm
+					return;
+				}
 				if (!this.started || this.gameOvering) {
 					return;
 				}
@@ -76521,6 +76580,8 @@
 					//console.log(this.gameMatrix);
 					this.scoring++;
 	
+					console.log(this.shapesOrder);
+	
 					if (this.scoring == 1) {
 						this.filterLabel = "JUST\nA";
 					} else if (this.scoring == 2) {
@@ -76529,7 +76590,6 @@
 						this.filterLabel = "BRICK\nGAME?";
 						this.changeFilter();
 					} else if (this.scoring == 4) {
-						this.appendMorePieces();
 						this.changeFilter();
 					} else {
 						this.changeFilter();
@@ -76717,7 +76777,7 @@
 	
 						this.removeCurrentPiece();
 	
-						console.log(this.gameMatrix);
+						//console.log(this.gameMatrix);
 						this.gameOver();
 					}
 				} else {
@@ -76937,6 +76997,10 @@
 					this.mainButton.visible = true;
 				} else {}
 	
+				if (this.popUp.visible || this.inABreak) {
+					this.mainButton.visible = false;
+					return;
+				}
 				if (!this.started) {
 					return;
 				}
@@ -78480,6 +78544,180 @@
 	}(PIXI.Container);
 	
 	exports.default = ScreenManager;
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var PIXI = _interopRequireWildcard(_pixi);
+	
+	var _gsap = __webpack_require__(196);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	var _Screen = __webpack_require__(246);
+	
+	var _Screen2 = _interopRequireDefault(_Screen);
+	
+	var _config = __webpack_require__(193);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	;
+	
+	var PopUp = function (_PIXI$Container) {
+	        _inherits(PopUp, _PIXI$Container);
+	
+	        function PopUp(game) {
+	                _classCallCheck(this, PopUp);
+	
+	                var _this = _possibleConstructorReturn(this, (PopUp.__proto__ || Object.getPrototypeOf(PopUp)).call(this));
+	
+	                _this.game = game;
+	                _this.blocker = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
+	                _this.blocker.width = _config2.default.width * 10;
+	                _this.blocker.height = _config2.default.height * 10;
+	                _this.blocker.pivot.x = _this.blocker.width / 2;
+	                _this.blocker.pivot.y = _this.blocker.height / 2;
+	
+	                _this.backShape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
+	                _this.backShape.width = _config2.default.width * 0.75;
+	                _this.backShape.height = _config2.default.height * 0.5;
+	
+	                _this.addChild(_this.blocker);
+	                _this.blocker.interactive = true;
+	                _this.blocker.alpha = 0.5;
+	                _this.addChild(_this.backShape);
+	
+	                _this.confirm = _this.getSquare('button-border.png', 'check-mark.png');
+	                _this.confirm.interactive = true;
+	                _this.confirm.buttonMode = true;
+	                _this.confirm.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
+	
+	                _this.cancel = _this.getSquare('button-border.png', 'cancel.png');
+	                _this.cancel.interactive = true;
+	                _this.cancel.buttonMode = true;
+	                _this.cancel.on('touchstart', _this.onCancel.bind(_this)).on('mousedown', _this.onCancel.bind(_this));
+	                _this.cancel.icon.tint = 0xFF110C;
+	
+	                _this.continue = _this.getSquare('button-border.png', 'check-mark.png', _this.backShape.width - 60);
+	                _this.continue.interactive = true;
+	                _this.continue.buttonMode = true;
+	                _this.continue.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
+	                _this.continue.icon.tint = 0x3DFD0B;
+	                _this.confirm.icon.tint = 0x3DFD0B;
+	
+	                _this.backShape.addChild(_this.confirm);
+	                _this.backShape.addChild(_this.cancel);
+	                _this.backShape.addChild(_this.continue);
+	
+	                _this.confirm.x = _this.backShape.width - _this.confirm.width - 30;
+	                _this.confirm.y = _this.backShape.height - _this.confirm.height - 30;
+	
+	                _this.cancel.x = 30;
+	                _this.cancel.y = _this.confirm.y;
+	
+	                _this.continue.x = 30;
+	                _this.continue.y = _this.confirm.y;
+	
+	                _this.backShape.x = _config2.default.width / 2 - _this.backShape.width / 2;
+	                _this.backShape.y = _config2.default.height / 2 - _this.backShape.height / 2;
+	                return _this;
+	        }
+	
+	        _createClass(PopUp, [{
+	                key: 'onConfirm',
+	                value: function onConfirm() {
+	                        this.callback();
+	                        this.hide();
+	                }
+	        }, {
+	                key: 'onCancel',
+	                value: function onCancel() {
+	                        this.callbackCancel();
+	                        this.hide();
+	                }
+	        }, {
+	                key: 'hide',
+	                value: function hide() {
+	                        this.visible = false;
+	                }
+	        }, {
+	                key: 'show',
+	                value: function show(currentLevel, callback, callbackCancel) {
+	                        this.visible = true;
+	                        this.callback = callback;
+	                        this.callbackCancel = callbackCancel;
+	
+	                        if (!callbackCancel) {
+	                                this.confirm.visible = false;
+	                                this.cancel.visible = false;
+	                                this.continue.visible = true;
+	                        } else {
+	                                this.confirm.visible = true;
+	                                this.cancel.visible = true;
+	                                this.continue.visible = false;
+	                        }
+	                        this.currentLevel = currentLevel;
+	
+	                        if (this.currentLevel <= 1) {} else if (this.currentLevel <= 2) {
+	                                //draw 5-6
+	                        } else if (this.currentLevel <= 4) {
+	                                //draw = 7
+	                        } else if (this.currentLevel <= 5) {
+	                                //draw = 8
+	                        } else if (this.currentLevel <= 7) {
+	                                //draw = 9
+	                        } else if (this.currentLevel <= 9) {
+	                                //draw = 10
+	                        }
+	
+	                        var tempShape = this.game.drawShapeOnList(this.game.shapes[4].shape);
+	                        this.backShape.addChild(tempShape);
+	                }
+	        }, {
+	                key: 'getSquare',
+	                value: function getSquare(src, iconSrc) {
+	                        var w = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 75;
+	                        var h = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 75;
+	
+	                        var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
+	                        shape.width = w;
+	                        shape.height = h;
+	                        var icon = new PIXI.Sprite.fromFrame(iconSrc);
+	                        icon.anchor.set(0.5);
+	                        icon.x = w / 2;
+	                        icon.y = h / 2;
+	                        shape.icon = icon;
+	                        shape.addChild(icon);
+	                        return shape;
+	                }
+	        }]);
+	
+	        return PopUp;
+	}(PIXI.Container);
+	
+	exports.default = PopUp;
 
 /***/ })
 /******/ ]);
