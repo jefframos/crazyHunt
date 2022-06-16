@@ -42933,11 +42933,11 @@
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(250);
+	var _InitScreen = __webpack_require__(251);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(251);
+	var _ScreenManager = __webpack_require__(252);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
@@ -43090,7 +43090,7 @@
 		cookieManager: null,
 		width: 414,
 		height: 736,
-		bounds: { x: 10, y: 20 },
+		bounds: { x: 10, y: 21 },
 		squareSize: 20,
 		hitCorrection: { x: 20, y: 50 },
 		buttonRadius: 30,
@@ -43376,6 +43376,13 @@
 			_this.contrast.contrast(1);
 			_this.hue = new PIXI.filters.ColorMatrixFilter();
 			_this.hue.hue(90);
+	
+			_this.hue2 = new PIXI.filters.ColorMatrixFilter();
+			_this.hue2.hue(45);
+	
+			_this.hue3 = new PIXI.filters.ColorMatrixFilter();
+			_this.hue3.hue(135);
+	
 			_this.koda = new PIXI.filters.ColorMatrixFilter();
 			_this.koda.kodachrome(1);
 			_this.lsd = new PIXI.filters.ColorMatrixFilter();
@@ -43399,15 +43406,17 @@
 			_this.allColorFilters = [];
 	
 			_this.allColorFilters.push(_this.invertFilter);
-			_this.allColorFilters.push(_this.browni);
+			// this.allColorFilters.push(this.browni)
 			_this.allColorFilters.push(_this.desaturate);
 			_this.allColorFilters.push(_this.contrast);
 			_this.allColorFilters.push(_this.hue);
+			_this.allColorFilters.push(_this.hue2);
+			_this.allColorFilters.push(_this.hue3);
 			_this.allColorFilters.push(_this.koda);
 			_this.allColorFilters.push(_this.lsd);
-			_this.allColorFilters.push(_this.sepia);
+			// this.allColorFilters.push(this.sepia)
 			_this.allColorFilters.push(_this.techni);
-			_this.allColorFilters.push(_this.vintage);
+			// this.allColorFilters.push(this.vintage)
 			_this.allColorFilters.push(_this.predator);
 			_this.allColorFilters.push(_this.polaroid);
 			//GLITCH 1
@@ -74637,7 +74646,7 @@
 	
 	var _Button2 = _interopRequireDefault(_Button);
 	
-	var _PopUp = __webpack_require__(252);
+	var _PopUp = __webpack_require__(250);
 	
 	var _PopUp2 = _interopRequireDefault(_PopUp);
 	
@@ -74678,9 +74687,11 @@
 			}, {
 				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
+				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
+				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			},
 			// {
 			// 	shape: [
@@ -74691,7 +74702,11 @@
 			// 	], type: "SHOOTER"
 			// },
 			{
+				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
 				shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}];
 	
 			_this.whatPiece = {
@@ -74703,6 +74718,8 @@
 			console.log(window.cookieManager);
 			_this.gameTitle = "Simple\nBRICK GAME";
 			_this.addEvents();
+	
+			_this.shapesOrderAllowed = [0, 1, 2, 3];
 	
 			return _this;
 		}
@@ -74896,6 +74913,8 @@
 				this.popUp = new _PopUp2.default(this);
 				this.allContainer.addChild(this.popUp);
 				this.popUp.hide();
+	
+				this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
 				//utils.correctPosition(this.gameContainer);
 	
 	
@@ -74903,6 +74922,17 @@
 				// setTimeout(function(){
 				// 	config.effectsLayer.addRGBSplitter();
 				// }.bind(this), 300);
+			}
+		}, {
+			key: 'showPop',
+			value: function showPop() {
+				var _this2 = this;
+	
+				this.currentLevel++;
+				setTimeout(function () {
+	
+					_this2.popUp.showPieceChoice(_this2.currentLevel, _this2.showPop.bind(_this2));
+				}, 10);
 			}
 		}, {
 			key: 'updateCurrentLevel',
@@ -75748,7 +75778,7 @@
 	
 				console.log("WHY NOT BRICK BREAKER");
 				for (var i = 0; i < 10; i++) {
-					tempId = Math.floor(limit * Math.random());
+					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 	
 					// if (this.latestBrick > 2) {
 					// 	tempId = this.shapes.length - 1//Math.floor((this.shapes.length) * Math.random());
@@ -75766,8 +75796,8 @@
 					// }
 	
 					if (i > 3) {
-						while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3] || tempId == tempArray[i - 4]) {
-							tempId = Math.floor(this.shapes.length * Math.random());
+						while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3]) {
+							tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 						}
 					}
 	
@@ -75931,11 +75961,14 @@
 	
 				this.shapesOrder.push(1);
 				var tempId = void 0;
+	
+				this.shapesOrderAllowed = [0, 1, 2, 3];
+	
 				for (var i = 0; i < 10; i++) {
-					tempId = Math.floor(Math.random() * 4);
+					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 					if (this.shapesOrder.length > 1) {
 						while (tempId == this.shapesOrder[this.shapesOrder.length - 1] || tempId == this.shapesOrder[this.shapesOrder.length - 2]) {
-							tempId = Math.floor(Math.random() * 4);
+							tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 						}
 					}
 					this.shapesOrder.push(tempId);
@@ -75948,6 +75981,16 @@
 				this.started = true;
 				this.updateComboBar();
 				this.showMenu();
+			}
+		}, {
+			key: 'appenPieceAllowed',
+			value: function appenPieceAllowed(id) {
+				this.shapesOrderAllowed.forEach(function (element) {
+					if (element == id) {
+						return;
+					}
+				});
+				this.shapesOrderAllowed.push(id);
 			}
 		}, {
 			key: 'setInGamePositions',
@@ -75980,10 +76023,10 @@
 		}, {
 			key: 'confirmPiece',
 			value: function confirmPiece() {
-				var _this2 = this;
+				var _this3 = this;
 	
 				this.currentEntityList.forEach(function (currentEntity) {
-					_this2.gameContainer.addChild(currentEntity);
+					_this3.gameContainer.addChild(currentEntity);
 				});
 	
 				this.updateVisibleParts();
@@ -76093,14 +76136,14 @@
 		}, {
 			key: 'doTheBreak',
 			value: function doTheBreak(callback) {
-				var _this3 = this;
+				var _this4 = this;
 	
 				this.inABreak = true;
 				PokiSDK.commercialBreak().then(function () {
 					console.log("Commercial break finished, proceeding to game");
 					//PokiSDK.gameplayStart();
 					// fire your function to continue to game
-					_this3.inABreak = false;
+					_this4.inABreak = false;
 					callback();
 					// if (!wasMute) {
 					// 	SOUND_MANAGER.toggleMute();
@@ -76108,7 +76151,7 @@
 				}).catch(function () {
 					console.log("Initialized, but the user likely has adblock");
 					// fire your function to continue to game
-					_this3.inABreak = false;
+					_this4.inABreak = false;
 					callback();
 					// if (!wasMute) {
 					// 	SOUND_MANAGER.toggleMute();
@@ -77356,7 +77399,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	var _config = __webpack_require__(193);
@@ -77366,73 +77409,157 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
-	  getRandomValue: function getRandomValue(array, exception) {
-	    var value = array[Math.floor(Math.random() * array.length)];
-	    if (exception) {
-	      var equal = true;
-	      while (equal) {
-	        equal = false;
-	        for (var i = 0; i < exception.length; i++) {
-	          if (exception[i] == value) {
-	            equal = true;
-	          }
+	    getRandomValue: function getRandomValue(array, exception) {
+	        var value = array[Math.floor(Math.random() * array.length)];
+	        if (exception) {
+	            var equal = true;
+	            while (equal) {
+	                equal = false;
+	                for (var i = 0; i < exception.length; i++) {
+	                    if (exception[i] == value) {
+	                        equal = true;
+	                    }
+	                }
+	                if (equal) {
+	                    value = array[Math.floor(Math.random() * array.length)];
+	                }
+	            }
 	        }
-	        if (equal) {
-	          value = array[Math.floor(Math.random() * array.length)];
+	        return value;
+	    },
+	    shuffle: function shuffle(a) {
+	        for (var i = a.length; i; i--) {
+	            var j = Math.floor(Math.random() * i);
+	            var _ref = [a[j], a[i - 1]];
+	            a[i - 1] = _ref[0];
+	            a[j] = _ref[1];
 	        }
-	      }
+	    },
+	    trimMatrix: function trimMatrix(pieces) {
+	        var ignoreBlocker = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	
+	        if (pieces.length <= 0) {
+	            return;
+	        }
+	        var colCounters = [];
+	        var lineCounters = [];
+	        for (var i = 0; i < pieces.length; i++) {
+	            colCounters.push(0);
+	        }
+	        for (var _i = 0; _i < pieces[0].length; _i++) {
+	            lineCounters.push(0);
+	        }
+	        for (var _i2 = 0; _i2 < pieces.length; _i2++) {
+	            for (var j = 0; j < pieces[_i2].length; j++) {
+	                var element = pieces[_i2][j];
+	                if (element > 0) {
+	                    lineCounters[j]++;
+	                    colCounters[_i2]++;
+	                }
+	            }
+	        }
+	
+	        console.log(colCounters);
+	        var padding = { left: 0, right: 0, top: 0, bottom: 0 };
+	
+	        for (var _i3 = 0; _i3 < lineCounters.length; _i3++) {
+	            var _element = lineCounters[_i3];
+	            console.log(_element);
+	            if (_element == 0) {
+	                padding.left++;
+	            } else {
+	                break;
+	            }
+	        }
+	        for (var _i4 = lineCounters.length - 1; _i4 >= 0; _i4--) {
+	            var _element2 = lineCounters[_i4];
+	            if (_element2 == 0) {
+	                padding.right++;
+	            } else {
+	                break;
+	            }
+	        }
+	
+	        for (var _i5 = 0; _i5 < colCounters.length; _i5++) {
+	            var _element3 = colCounters[_i5];
+	            if (_element3 == 0) {
+	                padding.top++;
+	            } else {
+	                break;
+	            }
+	        }
+	        for (var _i6 = colCounters.length - 1; _i6 >= 0; _i6--) {
+	            var _element4 = colCounters[_i6];
+	            if (_element4 == 0) {
+	                padding.bottom++;
+	            } else {
+	                break;
+	            }
+	        }
+	
+	        pieces.splice(0, padding.top);
+	        pieces.splice(pieces.length - padding.bottom, padding.bottom);
+	
+	        for (var _i7 = 0; _i7 < pieces.length; _i7++) {
+	            pieces[_i7].splice(0, padding.left);
+	            pieces[_i7].splice(pieces[_i7].length - padding.right, padding.right);
+	        }
+	
+	        return padding;
+	    },
+	    centerObject: function centerObject(target, parent) {
+	        target.x = parent.width / 2 - target.width * 0.5;
+	        target.y = parent.height / 2 - target.height * 0.5;
+	    },
+	    correctPosition: function correctPosition(element) {
+	        var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
+	        var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
+	        element.position.x = x;
+	        element.position.y = y;
+	    },
+	    setGameScreen80: function setGameScreen80(color) {
+	        _config2.default.palette.gameScreen80 = color;
+	    },
+	    setInitScreen80: function setInitScreen80(color) {
+	        _config2.default.palette.initScreen80 = color;
+	    },
+	    applyPositionCorrection: function applyPositionCorrection(element) {
+	        if (_config2.default.isJuicy == 0) {
+	            return;
+	        }
+	        element.position.x += _config2.default.hitCorrection.x;
+	        element.position.y += _config2.default.hitCorrection.y;
+	    },
+	    addToContainer: function addToContainer(element) {
+	        var elementContainer = new PIXI.Container();
+	        elementContainer.addChild(element);
+	        return elementContainer;
+	    },
+	    centerPivot: function centerPivot(element) {
+	        element.pivot.x = element.width / 2;
+	        element.pivot.y = element.height / 2;
+	        element.position.x += element.width / 2;
+	        element.position.y += element.height / 2;
+	    },
+	    addMockRect: function addMockRect(element, width, height) {
+	        var fake = new PIXI.Graphics();
+	        fake.beginFill(0);
+	        fake.drawRect(-width, -height, width * 2, height * 2);
+	        fake.alpha = 0;
+	        element.addChild(fake);
+	    },
+	    addMockObject: function addMockObject(element) {
+	        if (_config2.default.isJuicy == 0) {
+	            return;
+	        }
+	        var alphaBG2 = new PIXI.Graphics();
+	        alphaBG2.beginFill(0);
+	        alphaBG2.drawRect(-element.width / 2, -element.height / 2, element.width, element.height);
+	        alphaBG2.position.x -= _config2.default.hitCorrection.x;
+	        alphaBG2.position.y -= _config2.default.hitCorrection.y;
+	        alphaBG2.alpha = _config2.default.debugMockobjectsAlpha;
+	        element.addChild(alphaBG2);
 	    }
-	    return value;
-	  },
-	  correctPosition: function correctPosition(element) {
-	    var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    element.position.x = x;
-	    element.position.y = y;
-	  },
-	  setGameScreen80: function setGameScreen80(color) {
-	    _config2.default.palette.gameScreen80 = color;
-	  },
-	  setInitScreen80: function setInitScreen80(color) {
-	    _config2.default.palette.initScreen80 = color;
-	  },
-	  applyPositionCorrection: function applyPositionCorrection(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    element.position.x += _config2.default.hitCorrection.x;
-	    element.position.y += _config2.default.hitCorrection.y;
-	  },
-	  addToContainer: function addToContainer(element) {
-	    var elementContainer = new PIXI.Container();
-	    elementContainer.addChild(element);
-	    return elementContainer;
-	  },
-	  centerPivot: function centerPivot(element) {
-	    element.pivot.x = element.width / 2;
-	    element.pivot.y = element.height / 2;
-	    element.position.x += element.width / 2;
-	    element.position.y += element.height / 2;
-	  },
-	  addMockRect: function addMockRect(element, width, height) {
-	    var fake = new PIXI.Graphics();
-	    fake.beginFill(0);
-	    fake.drawRect(-width, -height, width * 2, height * 2);
-	    fake.alpha = 0;
-	    element.addChild(fake);
-	  },
-	  addMockObject: function addMockObject(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    var alphaBG2 = new PIXI.Graphics();
-	    alphaBG2.beginFill(0);
-	    alphaBG2.drawRect(-element.width / 2, -element.height / 2, element.width, element.height);
-	    alphaBG2.position.x -= _config2.default.hitCorrection.x;
-	    alphaBG2.position.y -= _config2.default.hitCorrection.y;
-	    alphaBG2.alpha = _config2.default.debugMockobjectsAlpha;
-	    element.addChild(alphaBG2);
-	  }
 	};
 
 /***/ }),
@@ -78201,6 +78328,321 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var PIXI = _interopRequireWildcard(_pixi);
+	
+	var _gsap = __webpack_require__(196);
+	
+	var _gsap2 = _interopRequireDefault(_gsap);
+	
+	var _Screen = __webpack_require__(246);
+	
+	var _Screen2 = _interopRequireDefault(_Screen);
+	
+	var _config = __webpack_require__(193);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	var _utils = __webpack_require__(245);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	;
+	
+	var PopUp = function (_PIXI$Container) {
+	    _inherits(PopUp, _PIXI$Container);
+	
+	    function PopUp(game) {
+	        _classCallCheck(this, PopUp);
+	
+	        var _this = _possibleConstructorReturn(this, (PopUp.__proto__ || Object.getPrototypeOf(PopUp)).call(this));
+	
+	        _this.game = game;
+	        _this.blocker = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
+	        _this.blocker.width = _config2.default.width * 10;
+	        _this.blocker.height = _config2.default.height * 10;
+	        _this.blocker.pivot.x = _this.blocker.width / 2;
+	        _this.blocker.pivot.y = _this.blocker.height / 2;
+	
+	        _this.backShape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
+	        _this.backShape.width = _config2.default.width * 0.8;
+	        _this.backShape.height = _config2.default.height * 0.5;
+	
+	        _this.addChild(_this.blocker);
+	        _this.blocker.interactive = true;
+	        _this.blocker.alpha = 0.5;
+	        _this.addChild(_this.backShape);
+	
+	        _this.confirm = _this.getSquare('button-border.png', 'check-mark.png');
+	        _this.confirm.interactive = true;
+	        _this.confirm.buttonMode = true;
+	        _this.confirm.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
+	
+	        _this.cancel = _this.getSquare('button-border.png', 'cancel.png');
+	        _this.cancel.interactive = true;
+	        _this.cancel.buttonMode = true;
+	        _this.cancel.on('touchstart', _this.onCancel.bind(_this)).on('mousedown', _this.onCancel.bind(_this));
+	        _this.cancel.icon.tint = 0xFF110C;
+	
+	        var size = (_this.backShape.width - 70) / 2;
+	        _this.piece1 = _this.getSquare('button-border.png', 'check-mark.png', size, size);
+	        _this.piece1.interactive = true;
+	        _this.piece1.buttonMode = true;
+	        _this.piece1.on('touchstart', _this.onConfirmPiece1.bind(_this)).on('mousedown', _this.onConfirmPiece1.bind(_this));
+	
+	        _this.piece2 = _this.getSquare('button-border.png', 'cancel.png', size, size);
+	        _this.piece2.interactive = true;
+	        _this.piece2.buttonMode = true;
+	        _this.piece2.on('touchstart', _this.onConfirmPiece2.bind(_this)).on('mousedown', _this.onConfirmPiece2.bind(_this));
+	
+	        _this.continue = _this.getSquare('button-border.png', 'check-mark.png', _this.backShape.width - 60);
+	        _this.continue.interactive = true;
+	        _this.continue.buttonMode = true;
+	        _this.continue.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
+	        _this.continue.icon.tint = 0x3DFD0B;
+	        _this.confirm.icon.tint = 0x3DFD0B;
+	
+	        _this.backShape.addChild(_this.confirm);
+	        _this.backShape.addChild(_this.cancel);
+	        _this.backShape.addChild(_this.continue);
+	
+	        _this.backShape.addChild(_this.piece1);
+	        _this.backShape.addChild(_this.piece2);
+	
+	        _this.confirm.x = _this.backShape.width - _this.confirm.width - 30;
+	        _this.confirm.y = _this.backShape.height - _this.confirm.height - 30;
+	
+	        _this.piece2.x = _this.backShape.width - _this.piece2.width - 30;
+	        _this.piece1.x = 30;
+	
+	        _this.piece1.y = _this.backShape.height / 2 - _this.piece1.height / 2;
+	        _this.piece2.y = _this.backShape.height / 2 - _this.piece2.height / 2;
+	
+	        _this.cancel.x = 30;
+	        _this.cancel.y = _this.confirm.y;
+	
+	        _this.continue.x = 30;
+	        _this.continue.y = _this.confirm.y;
+	
+	        _this.backShape.x = _config2.default.width / 2 - _this.backShape.width / 2;
+	        _this.backShape.y = _config2.default.height / 2 - _this.backShape.height / 2;
+	        return _this;
+	    }
+	
+	    _createClass(PopUp, [{
+	        key: 'onConfirmPiece2',
+	        value: function onConfirmPiece2() {
+	            this.game.appenPieceAllowed(this.piece2.id);
+	            this.callback();
+	            this.hide();
+	        }
+	    }, {
+	        key: 'onConfirmPiece1',
+	        value: function onConfirmPiece1() {
+	            this.game.appenPieceAllowed(this.piece1.id);
+	            this.callback();
+	            this.hide();
+	        }
+	    }, {
+	        key: 'onConfirm',
+	        value: function onConfirm() {
+	            this.callback();
+	            this.hide();
+	        }
+	    }, {
+	        key: 'onCancel',
+	        value: function onCancel() {
+	            this.callbackCancel();
+	            this.hide();
+	        }
+	    }, {
+	        key: 'hide',
+	        value: function hide() {
+	            this.visible = false;
+	        }
+	    }, {
+	        key: 'showPieceChoice',
+	        value: function showPieceChoice(currentLevel, callback, callbackCancel) {
+	            var _this2 = this;
+	
+	            if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
+	                this.hide();
+	                return;
+	            }
+	            this.piece1.x = 30;
+	            this.piece2.x = this.backShape.width - this.piece2.width - 30;
+	
+	            this.visible = true;
+	            this.callback = callback;
+	            this.callbackCancel = callbackCancel;
+	            this.piece1.visible = true;
+	            this.piece2.visible = true;
+	
+	            this.confirm.visible = false;
+	            this.cancel.visible = false;
+	            this.continue.visible = false;
+	
+	            this.currentLevel = currentLevel;
+	
+	            var nexts = [];
+	
+	            var limit = this.game.shapesOrderAllowed.length + 2;
+	            limit = Math.min(limit, this.game.shapes.length - 1);
+	
+	            var _loop = function _loop(index) {
+	                var find = false;
+	
+	                if (index > limit) {
+	                    find = true;
+	                }
+	                _this2.game.shapesOrderAllowed.forEach(function (order) {
+	                    if (index == order) {
+	                        find = true;
+	                    }
+	                });
+	                if (!find) {
+	                    nexts.push(index);
+	                }
+	            };
+	
+	            for (var index = 0; index < this.game.shapes.length; index++) {
+	                _loop(index);
+	            }
+	
+	            _utils2.default.shuffle(nexts);
+	            console.log(nexts);
+	
+	            this.piece1.removeChild(this.piece1.icon);
+	            this.piece2.removeChild(this.piece2.icon);
+	
+	            var id1 = nexts[0];
+	            var id2 = nexts[1];
+	            this.piece1.id = id1;
+	            this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape);
+	            _utils2.default.centerObject(this.piece1.icon, this.piece1);
+	            this.piece1.addChild(this.piece1.icon);
+	            this.piece1.icon.y += _config2.default.pieceSize / 2;
+	
+	            if (!id2 || id2 >= this.game.shapes.length) {
+	                this.piece2.visible = false;
+	                this.piece1.x = this.backShape.width / 2 - this.piece1.width / 2;
+	
+	                return;
+	            }
+	            this.piece2.id = id2;
+	            this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape);
+	            _utils2.default.centerObject(this.piece2.icon, this.piece2);
+	            this.piece2.icon.y += _config2.default.pieceSize / 2;
+	            this.piece2.addChild(this.piece2.icon);
+	        }
+	    }, {
+	        key: 'show',
+	        value: function show(currentLevel, callback, callbackCancel) {
+	            this.visible = true;
+	            this.callback = callback;
+	            this.callbackCancel = callbackCancel;
+	
+	            this.piece1.visible = false;
+	            this.piece2.visible = false;
+	            if (!callbackCancel) {
+	                this.confirm.visible = false;
+	                this.cancel.visible = false;
+	                this.continue.visible = true;
+	            } else {
+	                this.confirm.visible = true;
+	                this.cancel.visible = true;
+	                this.continue.visible = false;
+	            }
+	            this.currentLevel = currentLevel;
+	
+	            if (this.currentLevel <= 1) {} else if (this.currentLevel <= 2) {
+	                //draw 5-6
+	            } else if (this.currentLevel <= 4) {
+	                //draw = 7
+	            } else if (this.currentLevel <= 5) {
+	                //draw = 8
+	            } else if (this.currentLevel <= 7) {
+	                //draw = 9
+	            } else if (this.currentLevel <= 9) {
+	                //draw = 10
+	            }
+	        }
+	    }, {
+	        key: 'getSquare',
+	        value: function getSquare(src, iconSrc) {
+	            var w = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 75;
+	            var h = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 75;
+	
+	            var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
+	            shape.width = w;
+	            shape.height = h;
+	            var icon = new PIXI.Sprite.fromFrame(iconSrc);
+	            icon.anchor.set(0.5);
+	            icon.x = w / 2;
+	            icon.y = h / 2;
+	            shape.icon = icon;
+	            shape.addChild(icon);
+	            return shape;
+	        }
+	    }, {
+	        key: 'drawShapeOnList',
+	        value: function drawShapeOnList(array) {
+	            var shape = new PIXI.Container();
+	            var starterPosition = { x: 0, y: 0 };
+	
+	            var copy = [];
+	            for (var i = 0; i < array.length; i++) {
+	                var line = [];
+	                for (var j = 0; j < array[i].length; j++) {
+	                    line.push(array[i][j]);
+	                }
+	                copy.push(line);
+	            }
+	
+	            _utils2.default.trimMatrix(copy);
+	            console.log(copy);
+	            for (var i = 0; i < copy.length; i++) {
+	                for (var j = 0; j < copy[i].length; j++) {
+	                    if (copy[i][j]) {
+	                        var currentEntity = this.game.drawSquare(0xFFFFFF);
+	                        currentEntity.position.x = starterPosition.x + j * _config2.default.pieceSize;
+	                        currentEntity.position.y = i * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
+	                        shape.addChild(currentEntity);
+	                    }
+	                }
+	            }
+	            return shape;
+	        }
+	    }]);
+	
+	    return PopUp;
+	}(PIXI.Container);
+	
+	exports.default = PopUp;
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	
@@ -78445,7 +78887,7 @@
 	exports.default = InitScreen;
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78544,180 +78986,6 @@
 	}(PIXI.Container);
 	
 	exports.default = ScreenManager;
-
-/***/ }),
-/* 252 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	        value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var PIXI = _interopRequireWildcard(_pixi);
-	
-	var _gsap = __webpack_require__(196);
-	
-	var _gsap2 = _interopRequireDefault(_gsap);
-	
-	var _Screen = __webpack_require__(246);
-	
-	var _Screen2 = _interopRequireDefault(_Screen);
-	
-	var _config = __webpack_require__(193);
-	
-	var _config2 = _interopRequireDefault(_config);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	;
-	
-	var PopUp = function (_PIXI$Container) {
-	        _inherits(PopUp, _PIXI$Container);
-	
-	        function PopUp(game) {
-	                _classCallCheck(this, PopUp);
-	
-	                var _this = _possibleConstructorReturn(this, (PopUp.__proto__ || Object.getPrototypeOf(PopUp)).call(this));
-	
-	                _this.game = game;
-	                _this.blocker = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
-	                _this.blocker.width = _config2.default.width * 10;
-	                _this.blocker.height = _config2.default.height * 10;
-	                _this.blocker.pivot.x = _this.blocker.width / 2;
-	                _this.blocker.pivot.y = _this.blocker.height / 2;
-	
-	                _this.backShape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame('popUp.png'), 10, 10, 10, 10);
-	                _this.backShape.width = _config2.default.width * 0.75;
-	                _this.backShape.height = _config2.default.height * 0.5;
-	
-	                _this.addChild(_this.blocker);
-	                _this.blocker.interactive = true;
-	                _this.blocker.alpha = 0.5;
-	                _this.addChild(_this.backShape);
-	
-	                _this.confirm = _this.getSquare('button-border.png', 'check-mark.png');
-	                _this.confirm.interactive = true;
-	                _this.confirm.buttonMode = true;
-	                _this.confirm.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
-	
-	                _this.cancel = _this.getSquare('button-border.png', 'cancel.png');
-	                _this.cancel.interactive = true;
-	                _this.cancel.buttonMode = true;
-	                _this.cancel.on('touchstart', _this.onCancel.bind(_this)).on('mousedown', _this.onCancel.bind(_this));
-	                _this.cancel.icon.tint = 0xFF110C;
-	
-	                _this.continue = _this.getSquare('button-border.png', 'check-mark.png', _this.backShape.width - 60);
-	                _this.continue.interactive = true;
-	                _this.continue.buttonMode = true;
-	                _this.continue.on('touchstart', _this.onConfirm.bind(_this)).on('mousedown', _this.onConfirm.bind(_this));
-	                _this.continue.icon.tint = 0x3DFD0B;
-	                _this.confirm.icon.tint = 0x3DFD0B;
-	
-	                _this.backShape.addChild(_this.confirm);
-	                _this.backShape.addChild(_this.cancel);
-	                _this.backShape.addChild(_this.continue);
-	
-	                _this.confirm.x = _this.backShape.width - _this.confirm.width - 30;
-	                _this.confirm.y = _this.backShape.height - _this.confirm.height - 30;
-	
-	                _this.cancel.x = 30;
-	                _this.cancel.y = _this.confirm.y;
-	
-	                _this.continue.x = 30;
-	                _this.continue.y = _this.confirm.y;
-	
-	                _this.backShape.x = _config2.default.width / 2 - _this.backShape.width / 2;
-	                _this.backShape.y = _config2.default.height / 2 - _this.backShape.height / 2;
-	                return _this;
-	        }
-	
-	        _createClass(PopUp, [{
-	                key: 'onConfirm',
-	                value: function onConfirm() {
-	                        this.callback();
-	                        this.hide();
-	                }
-	        }, {
-	                key: 'onCancel',
-	                value: function onCancel() {
-	                        this.callbackCancel();
-	                        this.hide();
-	                }
-	        }, {
-	                key: 'hide',
-	                value: function hide() {
-	                        this.visible = false;
-	                }
-	        }, {
-	                key: 'show',
-	                value: function show(currentLevel, callback, callbackCancel) {
-	                        this.visible = true;
-	                        this.callback = callback;
-	                        this.callbackCancel = callbackCancel;
-	
-	                        if (!callbackCancel) {
-	                                this.confirm.visible = false;
-	                                this.cancel.visible = false;
-	                                this.continue.visible = true;
-	                        } else {
-	                                this.confirm.visible = true;
-	                                this.cancel.visible = true;
-	                                this.continue.visible = false;
-	                        }
-	                        this.currentLevel = currentLevel;
-	
-	                        if (this.currentLevel <= 1) {} else if (this.currentLevel <= 2) {
-	                                //draw 5-6
-	                        } else if (this.currentLevel <= 4) {
-	                                //draw = 7
-	                        } else if (this.currentLevel <= 5) {
-	                                //draw = 8
-	                        } else if (this.currentLevel <= 7) {
-	                                //draw = 9
-	                        } else if (this.currentLevel <= 9) {
-	                                //draw = 10
-	                        }
-	
-	                        var tempShape = this.game.drawShapeOnList(this.game.shapes[4].shape);
-	                        this.backShape.addChild(tempShape);
-	                }
-	        }, {
-	                key: 'getSquare',
-	                value: function getSquare(src, iconSrc) {
-	                        var w = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 75;
-	                        var h = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 75;
-	
-	                        var shape = new PIXI.mesh.NineSlicePlane(PIXI.Texture.fromFrame(src), 10, 10, 10, 10);
-	                        shape.width = w;
-	                        shape.height = h;
-	                        var icon = new PIXI.Sprite.fromFrame(iconSrc);
-	                        icon.anchor.set(0.5);
-	                        icon.x = w / 2;
-	                        icon.y = h / 2;
-	                        shape.icon = icon;
-	                        shape.addChild(icon);
-	                        return shape;
-	                }
-	        }]);
-	
-	        return PopUp;
-	}(PIXI.Container);
-	
-	exports.default = PopUp;
 
 /***/ })
 /******/ ]);

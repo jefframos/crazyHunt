@@ -81,19 +81,29 @@ export default class GameScreen extends Screen {
 			{
 				shape: [
 					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
 					[0, 0, 1, 0, 0],
 					[0, 1, 1, 1, 0],
 					[0, 0, 1, 0, 0],
+					[0, 0, 0, 0, 0],
+				], type: "STANDARD"
+			},
+			
+			
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 1, 0, 1, 0],
+					[0, 1, 1, 1, 0],
+					[0, 1, 0, 1, 0],
+					[0, 0, 0, 0, 0],
 				], type: "STANDARD"
 			},
 			{
 				shape: [
 					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 1, 0, 1, 0],
 					[0, 1, 1, 1, 0],
-					[0, 0, 1, 0, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 0, 0, 0],
 				], type: "STANDARD"
 			},
 			// {
@@ -106,11 +116,29 @@ export default class GameScreen extends Screen {
 			// },
 			{
 				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 1, 0, 1, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 0, 0, 0],
+				], type: "STANDARD"
+			},
+			{
+				shape: [
 					[0, 0, 0, 0],
 					[0, 0, 0, 0],
 					[0, 0, 0, 0],
 					[0, 1, 1, 0],
 				], type: "BRICK_BREAKER"
+			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 1, 0, 1, 0],
+					[0, 0, 1, 0, 0],
+					[0, 1, 0, 1, 0],
+					[0, 0, 0, 0, 0],
+				], type: "STANDARD"
 			},
 		]
 
@@ -130,6 +158,8 @@ export default class GameScreen extends Screen {
 		console.log(window.cookieManager)
 		this.gameTitle = "Simple\nBRICK GAME";
 		this.addEvents();
+
+		this.shapesOrderAllowed = [0, 1, 2, 3]
 
 	}
 
@@ -327,6 +357,8 @@ export default class GameScreen extends Screen {
 		this.popUp = new PopUp(this);
 		this.allContainer.addChild(this.popUp);
 		this.popUp.hide();
+
+		this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
 		//utils.correctPosition(this.gameContainer);
 
 
@@ -336,6 +368,13 @@ export default class GameScreen extends Screen {
 		// 	config.effectsLayer.addRGBSplitter();
 		// }.bind(this), 300);
 
+	}
+	showPop(){
+		this.currentLevel ++;
+		setTimeout(() => {
+			
+			this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
+		}, 10);
 	}
 	updateCurrentLevel() {
 
@@ -1134,7 +1173,7 @@ export default class GameScreen extends Screen {
 
 		console.log("WHY NOT BRICK BREAKER")
 		for (var i = 0; i < 10; i++) {
-			tempId = Math.floor((limit) * Math.random());
+			tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 
 			// if (this.latestBrick > 2) {
 			// 	tempId = this.shapes.length - 1//Math.floor((this.shapes.length) * Math.random());
@@ -1152,8 +1191,8 @@ export default class GameScreen extends Screen {
 			// }
 
 			if (i > 3) {
-				while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3] || tempId == tempArray[i - 4]) {
-					tempId = Math.floor(this.shapes.length * Math.random());
+				while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3]) {
+					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 				}
 			}
 
@@ -1321,11 +1360,14 @@ export default class GameScreen extends Screen {
 
 		this.shapesOrder.push(1)
 		let tempId;
+
+		this.shapesOrderAllowed = [0, 1, 2, 3]
+
 		for (var i = 0; i < 10; i++) {
-			tempId = Math.floor(Math.random() * 4);
+			tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 			if (this.shapesOrder.length > 1) {
 				while (tempId == this.shapesOrder[this.shapesOrder.length - 1] || tempId == this.shapesOrder[this.shapesOrder.length - 2]) {
-					tempId = Math.floor(Math.random() * 4);
+					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 				}
 			}
 			this.shapesOrder.push(tempId)
@@ -1338,9 +1380,14 @@ export default class GameScreen extends Screen {
 		this.started = true;
 		this.updateComboBar();
 		this.showMenu();
-
-
-
+	}
+	appenPieceAllowed(id) {
+		this.shapesOrderAllowed.forEach(element => {
+			if (element == id) {
+				return
+			}
+		});
+		this.shapesOrderAllowed.push(id);
 	}
 	setInGamePositions() {
 		if (this.menuContainer) {

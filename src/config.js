@@ -2,7 +2,7 @@
 	cookieManager: null,
 	width: 414,
 	height: 736,
-	bounds: {x:10, y:20},
+	bounds: {x:10, y:21},
 	squareSize: 20,
 	hitCorrection:{x:20,y:50},  
 	buttonRadius: 30,

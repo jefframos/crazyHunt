@@ -72,6 +72,13 @@ export default class EffectLayer extends PIXI.Container {
 		this.contrast.contrast(1)
 		this.hue = new PIXI.filters.ColorMatrixFilter();
 		this.hue.hue(90)
+
+		this.hue2 = new PIXI.filters.ColorMatrixFilter();
+		this.hue2.hue(45)
+
+		this.hue3 = new PIXI.filters.ColorMatrixFilter();
+		this.hue3.hue(135)
+
 		this.koda = new PIXI.filters.ColorMatrixFilter();
 		this.koda.kodachrome(1)
 		this.lsd = new PIXI.filters.ColorMatrixFilter();
@@ -96,15 +103,17 @@ export default class EffectLayer extends PIXI.Container {
 		this.allColorFilters = [];
 
 		this.allColorFilters.push(this.invertFilter)
-		this.allColorFilters.push(this.browni)
+		// this.allColorFilters.push(this.browni)
 		this.allColorFilters.push(this.desaturate)
 		this.allColorFilters.push(this.contrast)
 		this.allColorFilters.push(this.hue)
+		this.allColorFilters.push(this.hue2)
+		this.allColorFilters.push(this.hue3)
 		this.allColorFilters.push(this.koda)
 		this.allColorFilters.push(this.lsd)
-		this.allColorFilters.push(this.sepia)
+		// this.allColorFilters.push(this.sepia)
 		this.allColorFilters.push(this.techni)
-		this.allColorFilters.push(this.vintage)
+		// this.allColorFilters.push(this.vintage)
 		this.allColorFilters.push(this.predator)
 		this.allColorFilters.push(this.polaroid)
 		//GLITCH 1
