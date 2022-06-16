@@ -81,6 +81,31 @@ export default class GameScreen extends Screen {
 			{
 				shape: [
 					[0, 0, 0, 0, 0],
+					[0, 1, 1, 1, 0],
+					[0, 1, 1, 1, 0],
+					[0, 0, 0, 0, 0],
+				], type: "STANDARD"
+			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 1, 0, 0],
+				], type: "STANDARD"
+			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 1, 0, 0],
+					[0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0],
+				], type: "STANDARD"
+			},
+			{
+				shape: [
+					[0, 0, 0, 0, 0],
 					[0, 0, 1, 0, 0],
 					[0, 1, 1, 1, 0],
 					[0, 0, 1, 0, 0],
@@ -98,14 +123,7 @@ export default class GameScreen extends Screen {
 					[0, 0, 0, 0, 0],
 				], type: "STANDARD"
 			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 1, 1, 1, 0],
-					[0, 1, 1, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
+			
 			// {
 			// 	shape: [
 			// 		[0, 0, 0, 0, 0],
@@ -131,15 +149,15 @@ export default class GameScreen extends Screen {
 					[0, 1, 1, 0],
 				], type: "BRICK_BREAKER"
 			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 1, 0, 1, 0],
-					[0, 0, 1, 0, 0],
-					[0, 1, 0, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
+			// {
+			// 	shape: [
+			// 		[0, 0, 0, 0, 0],
+			// 		[0, 1, 0, 1, 0],
+			// 		[0, 0, 1, 0, 0],
+			// 		[0, 1, 0, 1, 0],
+			// 		[0, 0, 0, 0, 0],
+			// 	], type: "STANDARD"
+			// },
 		]
 
 		this.whatPiece = {
@@ -358,7 +376,7 @@ export default class GameScreen extends Screen {
 		this.allContainer.addChild(this.popUp);
 		this.popUp.hide();
 
-		this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
+		//this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
 		//utils.correctPosition(this.gameContainer);
 
 
@@ -920,7 +938,7 @@ export default class GameScreen extends Screen {
 			this.round++;
 			let next = Math.floor(this.round / this.roundLevelAccum) + 1;
 			if (next != this.currentLevel) {
-				this.popUp.show(this.currentLevel, () => { });
+				this.popUp.showPieceChoice(this.currentLevel, () => { });
 			}
 			this.currentLevel = next;
 			this.updateCurrentLevel();
@@ -931,7 +949,7 @@ export default class GameScreen extends Screen {
 			if (this.currentShapeData.type == "SHOOTER") {
 				this.shooterErase = Math.random() < 0;//!this.shooterErase;
 				if (this.shooterErase) {
-					a
+					
 					this.addInfoLabel(["ERASE"]);
 
 					this.prompts.rotateLabel.text = "SHOOT"

@@ -74687,12 +74687,17 @@
 			}, {
 				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
+			}, {
+				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
+			}, {
 				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
 				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			},
+	
 			// {
 			// 	shape: [
 			// 		[0, 0, 0, 0, 0],
@@ -74705,8 +74710,6 @@
 				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}, {
 				shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
 			}];
 	
 			_this.whatPiece = {
@@ -74914,7 +74917,7 @@
 				this.allContainer.addChild(this.popUp);
 				this.popUp.hide();
 	
-				this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
+				//this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
 				//utils.correctPosition(this.gameContainer);
 	
 	
@@ -75510,7 +75513,7 @@
 					this.round++;
 					var next = Math.floor(this.round / this.roundLevelAccum) + 1;
 					if (next != this.currentLevel) {
-						this.popUp.show(this.currentLevel, function () {});
+						this.popUp.showPieceChoice(this.currentLevel, function () {});
 					}
 					this.currentLevel = next;
 					this.updateCurrentLevel();
@@ -75521,7 +75524,7 @@
 					if (this.currentShapeData.type == "SHOOTER") {
 						this.shooterErase = Math.random() < 0; //!this.shooterErase;
 						if (this.shooterErase) {
-							a;
+	
 							this.addInfoLabel(["ERASE"]);
 	
 							this.prompts.rotateLabel.text = "SHOOT";
@@ -78418,9 +78421,16 @@
 	        _this.continue.icon.tint = 0x3DFD0B;
 	        _this.confirm.icon.tint = 0x3DFD0B;
 	
+	        _this.choosePiece = new PIXI.Text('Choose a new pice to\nadd on the game', { font: '32px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+	        _this.choosePiece.interactive = true;
+	        _this.choosePiece.buttonMode = true;
+	
 	        _this.backShape.addChild(_this.confirm);
 	        _this.backShape.addChild(_this.cancel);
 	        _this.backShape.addChild(_this.continue);
+	        _this.backShape.addChild(_this.choosePiece);
+	        _this.choosePiece.x = _this.backShape.width / 2 - _this.choosePiece.width / 2;
+	        _this.choosePiece.y = 30;
 	
 	        _this.backShape.addChild(_this.piece1);
 	        _this.backShape.addChild(_this.piece2);
@@ -78462,8 +78472,19 @@
 	    }, {
 	        key: 'onConfirm',
 	        value: function onConfirm() {
-	            this.callback();
-	            this.hide();
+	            var _this2 = this;
+	
+	            window.GAMEPLAY_STOP();
+	            PokiSDK.rewardedBreak().then(function (success) {
+	                if (success) {
+	                    window.GAMEPLAY_START();
+	                    //this.callback()
+	                    _this2.hide();
+	                } else {
+	                    //this.callback()
+	                    _this2.hide();
+	                }
+	            });
 	        }
 	    }, {
 	        key: 'onCancel',
@@ -78479,7 +78500,7 @@
 	    }, {
 	        key: 'showPieceChoice',
 	        value: function showPieceChoice(currentLevel, callback, callbackCancel) {
-	            var _this2 = this;
+	            var _this3 = this;
 	
 	            if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
 	                this.hide();
@@ -78496,7 +78517,7 @@
 	
 	            this.confirm.visible = false;
 	            this.cancel.visible = false;
-	            this.continue.visible = false;
+	            this.continue.visible = true;
 	
 	            this.currentLevel = currentLevel;
 	
@@ -78511,7 +78532,7 @@
 	                if (index > limit) {
 	                    find = true;
 	                }
-	                _this2.game.shapesOrderAllowed.forEach(function (order) {
+	                _this3.game.shapesOrderAllowed.forEach(function (order) {
 	                    if (index == order) {
 	                        find = true;
 	                    }
@@ -78534,10 +78555,10 @@
 	            var id1 = nexts[0];
 	            var id2 = nexts[1];
 	            this.piece1.id = id1;
-	            this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape);
+	            this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape, _utils2.default.getRandomValue(_config2.default.palette.colors80));
 	            _utils2.default.centerObject(this.piece1.icon, this.piece1);
 	            this.piece1.addChild(this.piece1.icon);
-	            this.piece1.icon.y += _config2.default.pieceSize / 2;
+	            this.piece1.icon.tint = this.piece1.icon.y += _config2.default.pieceSize / 2;
 	
 	            if (!id2 || id2 >= this.game.shapes.length) {
 	                this.piece2.visible = false;
@@ -78546,7 +78567,7 @@
 	                return;
 	            }
 	            this.piece2.id = id2;
-	            this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape);
+	            this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape, _utils2.default.getRandomValue(_config2.default.palette.colors80));
 	            _utils2.default.centerObject(this.piece2.icon, this.piece2);
 	            this.piece2.icon.y += _config2.default.pieceSize / 2;
 	            this.piece2.addChild(this.piece2.icon);
@@ -78602,7 +78623,7 @@
 	        }
 	    }, {
 	        key: 'drawShapeOnList',
-	        value: function drawShapeOnList(array) {
+	        value: function drawShapeOnList(array, color) {
 	            var shape = new PIXI.Container();
 	            var starterPosition = { x: 0, y: 0 };
 	
@@ -78616,11 +78637,10 @@
 	            }
 	
 	            _utils2.default.trimMatrix(copy);
-	            console.log(copy);
 	            for (var i = 0; i < copy.length; i++) {
 	                for (var j = 0; j < copy[i].length; j++) {
 	                    if (copy[i][j]) {
-	                        var currentEntity = this.game.drawSquare(0xFFFFFF);
+	                        var currentEntity = this.game.drawSquare(color);
 	                        currentEntity.position.x = starterPosition.x + j * _config2.default.pieceSize;
 	                        currentEntity.position.y = i * _config2.default.pieceSize - _config2.default.pieceSize / 2 + starterPosition.y;
 	                        shape.addChild(currentEntity);

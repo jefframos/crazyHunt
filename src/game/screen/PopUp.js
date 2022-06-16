@@ -60,9 +60,16 @@ export default class PopUp extends PIXI.Container {
         this.continue.icon.tint = 0x3DFD0B
         this.confirm.icon.tint = 0x3DFD0B
 
+        this.choosePiece = new PIXI.Text('Choose a new pice to\nadd on the game', { font: '32px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+        this.choosePiece.interactive = true;
+        this.choosePiece.buttonMode = true;
+
         this.backShape.addChild(this.confirm);
         this.backShape.addChild(this.cancel);
         this.backShape.addChild(this.continue);
+        this.backShape.addChild(this.choosePiece);
+        this.choosePiece.x = this.backShape.width / 2 - this.choosePiece.width / 2
+        this.choosePiece.y = 30
 
         this.backShape.addChild(this.piece1);
         this.backShape.addChild(this.piece2);
@@ -97,9 +104,23 @@ export default class PopUp extends PIXI.Container {
         this.hide();
     }
     onConfirm() {
-        this.callback()
-        this.hide();
-        
+
+        window.GAMEPLAY_STOP()
+        PokiSDK.rewardedBreak().then(
+            (success) => {
+                if (success) {
+                    window.GAMEPLAY_START()
+                    //this.callback()
+                    this.hide();
+                } else {
+                    //this.callback()
+                    this.hide();
+                }
+            }
+
+        )
+
+
     }
     onCancel() {
         this.callbackCancel()
@@ -109,7 +130,7 @@ export default class PopUp extends PIXI.Container {
         this.visible = false;
     }
     showPieceChoice(currentLevel, callback, callbackCancel) {
-        if(this.game.shapesOrderAllowed.length >= this.game.shapes.length){
+        if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
             this.hide();
             return;
         }
@@ -124,7 +145,7 @@ export default class PopUp extends PIXI.Container {
 
         this.confirm.visible = false;
         this.cancel.visible = false;
-        this.continue.visible = false;
+        this.continue.visible = true;
 
         this.currentLevel = currentLevel
 
@@ -157,12 +178,13 @@ export default class PopUp extends PIXI.Container {
         let id1 = nexts[0]
         let id2 = nexts[1]
         this.piece1.id = id1
-        this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape);
+        this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape, utils.getRandomValue(config.palette.colors80));
         utils.centerObject(this.piece1.icon, this.piece1)
         this.piece1.addChild(this.piece1.icon);
-        this.piece1.icon.y += config.pieceSize / 2
+        this.piece1.icon.tint =
+            this.piece1.icon.y += config.pieceSize / 2
 
-        if(!id2 || id2 >= this.game.shapes.length){
+        if (!id2 || id2 >= this.game.shapes.length) {
             this.piece2.visible = false;
             this.piece1.x = this.backShape.width / 2 - this.piece1.width / 2
 
@@ -170,7 +192,7 @@ export default class PopUp extends PIXI.Container {
 
         }
         this.piece2.id = id2;
-        this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape);
+        this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape, utils.getRandomValue(config.palette.colors80));
         utils.centerObject(this.piece2.icon, this.piece2)
         this.piece2.icon.y += config.pieceSize / 2
         this.piece2.addChild(this.piece2.icon);
@@ -224,7 +246,7 @@ export default class PopUp extends PIXI.Container {
         return shape
     }
 
-    drawShapeOnList(array) {
+    drawShapeOnList(array, color) {
         let shape = new PIXI.Container();
         let starterPosition = { x: 0, y: 0 };
 
@@ -233,18 +255,17 @@ export default class PopUp extends PIXI.Container {
             let line = []
             for (var j = 0; j < array[i].length; j++) {
                 line.push(array[i][j])
-                
+
             }
             copy.push(line)
         }
 
 
         utils.trimMatrix(copy)
-        console.log(copy)
         for (var i = 0; i < copy.length; i++) {
             for (var j = 0; j < copy[i].length; j++) {
                 if (copy[i][j]) {
-                    let currentEntity = this.game.drawSquare(0xFFFFFF);
+                    let currentEntity = this.game.drawSquare(color);
                     currentEntity.position.x = starterPosition.x + (j) * config.pieceSize;
                     currentEntity.position.y = (i) * config.pieceSize - config.pieceSize / 2 + starterPosition.y;
                     shape.addChild(currentEntity);
