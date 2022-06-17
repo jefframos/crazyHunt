@@ -8,157 +8,15 @@ import Screen from '../../screenManager/Screen';
 import Prompt from './Prompt';
 import Button1 from './Button1';
 import PopUp from './PopUp';
+import Shapes from './Shapes';
 
 export default class GameScreen extends Screen {
 	constructor(label) {
 		super(label);
 		this.currentEntityList = []
 
-
-		this.shapes = [
-			{
-				shape: [
-					[0, 0, 0, 0],
-					[0, 1, 1, 0],
-					[0, 1, 1, 0],
-					[0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 1, 0],
-					[0, 1, 1, 0, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 1, 1, 0, 0],
-					[0, 0, 1, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 1, 1, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 1, 1, 1, 0],
-					[0, 1, 1, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 1, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 0, 1, 0, 0],
-					[0, 1, 1, 1, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			
-			
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 1, 0, 1, 0],
-					[0, 1, 1, 1, 0],
-					[0, 1, 0, 1, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			
-			// {
-			// 	shape: [
-			// 		[0, 0, 0, 0, 0],
-			// 		[0, 0, 0, 0, 0],
-			// 		[0, 0, 1, 0, 0],
-			// 		[0, 0, 1, 0, 0],
-			// 	], type: "SHOOTER"
-			// },
-			{
-				shape: [
-					[0, 0, 0, 0, 0],
-					[0, 1, 0, 1, 0],
-					[0, 1, 1, 1, 0],
-					[0, 0, 1, 0, 0],
-					[0, 0, 0, 0, 0],
-				], type: "STANDARD"
-			},
-			{
-				shape: [
-					[0, 0, 0, 0],
-					[0, 0, 0, 0],
-					[0, 0, 0, 0],
-					[0, 1, 1, 0],
-				], type: "BRICK_BREAKER"
-			},
-			// {
-			// 	shape: [
-			// 		[0, 0, 0, 0, 0],
-			// 		[0, 1, 0, 1, 0],
-			// 		[0, 0, 1, 0, 0],
-			// 		[0, 1, 0, 1, 0],
-			// 		[0, 0, 0, 0, 0],
-			// 	], type: "STANDARD"
-			// },
-		]
+		this.shapesManager = new Shapes(this);
+		this.shapes = this.shapesManager.shapes;
 
 		this.whatPiece = {
 			shape: [
@@ -387,10 +245,10 @@ export default class GameScreen extends Screen {
 		// }.bind(this), 300);
 
 	}
-	showPop(){
-		this.currentLevel ++;
+	showPop() {
+		this.currentLevel++;
 		setTimeout(() => {
-			
+
 			this.popUp.showPieceChoice(this.currentLevel, this.showPop.bind(this));
 		}, 10);
 	}
@@ -471,136 +329,30 @@ export default class GameScreen extends Screen {
 		this.gameBorderContainer.scale.y = 1;
 
 		config.effectsLayer.removeColorFilter();
-		switch (this.currentEffectID) {
-			case 0:
-				this.currentEffect = "INVERT";
-				break
-			case 1:
-				this.currentEffect = "CROSS";
-				break
-			case 2:
-				this.currentEffect = "ASCII";
-				break
-			case 3:
-				this.gameContainer.scale.y = 1;
-				this.gameBorderContainer.scale.y = 1;
-				break
-			case 4:
-				this.gameContainer.scale.x = 1;
-				this.gameBorderContainer.scale.x = 1;
-				this.gameQueueContainer.alpha = 1;
-			case 5:
-			case 6:
-				this.resetRotation();
-			case 7:
-				this.resetRotation();
-				this.randomizeCrazy = false;
-			default:
-				this.linearParticles();
-				break
-		}
+
+		this.shapesManager.resetCurrentEffect();
+		
 	}
 	changeFilter() {
-		let nextID = this.currentEffectID;
-		if (this.currentEffectID >= 0) {
-			nextID = -1;
-		} else {
-			//nao shuffle
-			nextID = Math.floor(Math.random() * 7)
-		}
-
-
-		let next = Math.random() * 7;
-		if (this.currentLevel <= 1) {
-		} else if (this.currentLevel <= 2) {
-			next = 3
-		} else if (this.currentLevel <= 4) {
-			next = 3
-			//draw = 7
-		} else if (this.currentLevel <= 5) {
-			next = 4
-			//draw = 8
-		} else if (this.currentLevel <= 7) {
-			next = 5
-			//draw = 9
-		} else {
-			next = 7
-			//draw = 10
-		}
-
-		nextID = Math.floor(Math.random() * next)
-
-
+		
 		this.standardLabels = ['BRICKS', 'BRICKS', 'BRICKS', 'JUICY', 'FUN', 'WHAT', 'BRICK', 'WHY', 'DROP']
 		this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
 
-		this.removeFilter();
 		this.starterEffect();
-		//nextID = 1
-
 
 		let maxColors = config.effectsLayer.allColorFilters.length;
 		let colorFilterID = Math.floor(maxColors * Math.random())
-		// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
-		switch (nextID) {
-			case 0:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				this.addInfoLabel(["BRICKS", ["BRICKS"]])
-				break
-			case 1:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				this.addInfoLabel(["SIMPLE", ["WHY"]])
-				break
-			case 2:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				this.addInfoLabel(["BRICKS"])
+		
+		config.effectsLayer.addColorFilter(colorFilterID);
 
-				break
-			case 3:
-				this.gameContainer.scale.y = -1;
-				this.gameBorderContainer.scale.y = -1;
-				this.addInfoLabel(["INVERT Y"])
-
-				break
-			case 4:
-				this.gameContainer.scale.x = -1;
-				this.gameBorderContainer.scale.x = -1;
-				this.addInfoLabel(["X TREVNI"]);
-				this.gameQueueContainer.alpha = 0;
-
-				break
-			case 5:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				this.addInfoLabel(["NOT COOL"])
-				break
-			case 6:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				this.addInfoLabel(["3RRORR"])
-				this.rotateStuff();
-
-				break
-			case 7:
-				config.effectsLayer.addColorFilter(colorFilterID);
-				if (this.currentLevel > 4) {
-					this.randomizeCrazy = true;
-					this.randomParticles();
-					this.addInfoLabel(["SHUFFLE"])
-				}
-
-				this.rotateStuff();
-				break
+		if(this.shapesManager.activeEvent == ""){
+			if(Math.random() < 0.75){
+				this.shapesManager.apllyRandomEffect();
+			}
+		}else{
+			this.removeFilter();
 		}
-		this.currentEffectID = nextID;
-	}
-	resetRotation() {
-		TweenLite.killTweensOf(this.gameContainer)
-		TweenLite.to(this.gameContainer, 5, { rotation: 0 })
-	}
-	rotateStuff() {
-		TweenLite.killTweensOf(this.gameContainer)
-		let side = Math.random() < 0.5 ? -1 : 1
-		TweenLite.to(this.gameContainer, 5, { rotation: side * 0.075 })
-	}
+	}	
 	//END FILTERS
 	printMatrix(shapeArray) {
 		let tempLine;
@@ -648,21 +400,12 @@ export default class GameScreen extends Screen {
 		let ajdustedPositionX = minX + (maxX - minX) / 2;
 		ajdustedPositionX = Math.floor(ajdustedPositionX / config.pieceSize) * config.pieceSize;
 
-
-		// for (var i = 0; i < this.currentShape.length; i++) {
-		// 	for (var j = 0; j < this.currentShape[i].length; j++) {
-		// 		if (this.currentShape[i][j]) {
-		// 			console.log(this.currentShape[i][j], i,j)
-		// 		}
-		// 	}
-		// }
-
-		// console.log(this.currentEntityList)
 		if (this.randomizeCrazy) {
-			let id = Math.floor(Math.random() * this.shapes.length);
+			let id = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 
-
-			this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+			this.removeCurrentPiece();
+			
+			this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY });
 			this.confirmPiece();
 
 		} else {
@@ -921,6 +664,11 @@ export default class GameScreen extends Screen {
 	}
 	getShape() {
 		this.stopAction("space");
+		if (this.forceNextPiece >= 0) {
+			let next = this.forceNextPiece;
+			this.forceNextPiece = -1
+			return this.shapes[next]
+		}
 		this.shapeStep++;
 		if (this.shapeStep >= this.shapesOrder.length) {
 			this.shapeStep = 0;
@@ -929,16 +677,23 @@ export default class GameScreen extends Screen {
 		this.shapesOrder.shift();
 		return shape;
 	}
+	forcePiece() {
+		this.currentEntityList = this.newEntity();
+		this.confirmPiece();
+	}
 	newEntity(shapeArray, starterPosition, randomRotate) {
-
-		//this.currentEntityList = [];
 
 		let tempList = [];
 		if (!shapeArray) {
-			this.round++;
-			let next = Math.floor(this.round / this.roundLevelAccum) + 1;
-			if (next != this.currentLevel) {
-				this.popUp.showPieceChoice(this.currentLevel, () => { });
+			if(this.scoring > 3){
+				this.round++;
+			}
+			let next = Math.floor(this.round / Math.max(this.roundLevelAccum - this.scoring, Math.ceil(this.roundLevelAccum *0.6))) + 1;
+
+			if (next != this.currentLevel && this.popUp.shouldShow()) {
+				let shouldShow = this.popUp.showPieceChoice(this.currentLevel, this.forcePiece.bind(this), this.forcePiece.bind(this));
+				this.currentLevel = next;
+				return
 			}
 			this.currentLevel = next;
 			this.updateCurrentLevel();
@@ -947,9 +702,9 @@ export default class GameScreen extends Screen {
 			this.currentShape = this.currentShapeData.shape;
 			this.prompts.rotateLabel.text = "ROTATE"
 			if (this.currentShapeData.type == "SHOOTER") {
-				this.shooterErase = Math.random() < 0;//!this.shooterErase;
+				this.shooterErase = Math.random() >= 0;//!this.shooterErase;
 				if (this.shooterErase) {
-					
+
 					this.addInfoLabel(["ERASE"]);
 
 					this.prompts.rotateLabel.text = "SHOOT"
@@ -961,12 +716,12 @@ export default class GameScreen extends Screen {
 				this.normalizedDelta = 1;
 				this.downSpeedIncrease = 0;
 			} else {
-				if (!this.meteorRain) {// && this.scoring > 5) {
-					//if (Math.random() < 0.15) {
-					//this.startMeteorRain(false, 2);
-					//this.startMeteorRain(Math.random() < 0.1, 5 + Math.floor(Math.random() * 9));
-					//}
-				}
+				// if (!this.meteorRain) {// && this.scoring > 5) {
+				// 	if (Math.random() < 0.15) {
+				// 		this.startMeteorRain(true, 2 + Math.floor(Math.random() * 2));
+				// 		//this.startMeteorRain(Math.random() < 0.1, 5 + Math.floor(Math.random() * 9));
+				// 	}
+				// }
 			}
 			this.updateQueue();
 		} else {
@@ -1010,7 +765,10 @@ export default class GameScreen extends Screen {
 				}
 			}
 		}
-		this.updateVisibleParts();
+		
+		if (this.currentEntityList) {
+			this.updateVisibleParts();
+		}
 		// console.log(shouldMove);
 		if (shouldMove) {
 			for (var i = tempList.length - 1; i >= 0; i--) {
@@ -1026,7 +784,7 @@ export default class GameScreen extends Screen {
 
 		//console.log(this.gameMatrix)
 
-		//this.drawMatrix2();
+		this.drawMatrix2();
 
 		return tempList;
 	}
@@ -1173,8 +931,6 @@ export default class GameScreen extends Screen {
 		if (!this.latestBrick) {
 			this.latestBrick = 1;
 		}
-		console.log("APPEND")
-
 
 		let limit = this.shapes.length - 1;
 		if (this.currentLevel <= 1) {
@@ -1189,7 +945,6 @@ export default class GameScreen extends Screen {
 			limit = 9
 		}
 
-		console.log("WHY NOT BRICK BREAKER")
 		for (var i = 0; i < 10; i++) {
 			tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 
@@ -1209,7 +964,7 @@ export default class GameScreen extends Screen {
 			// }
 
 			if (i > 3) {
-				while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3]) {
+				while (tempId == this.shapesOrder[i - 1] || tempId == this.shapesOrder[i - 2] || tempId == this.shapesOrder[i - 3]) {
 					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 				}
 			}
@@ -1360,7 +1115,7 @@ export default class GameScreen extends Screen {
 		this.bombList = [];
 		this.shapeStep = 0;
 		this.round = 0;
-		this.roundLevelAccum = 5//15;
+		this.roundLevelAccum = 15;
 		this.shapeQueue = [];
 		this.points = 0;
 		this.gameLevelSpeedMax = 1;
@@ -1399,12 +1154,21 @@ export default class GameScreen extends Screen {
 		this.updateComboBar();
 		this.showMenu();
 	}
+	appendEffect(effect){
+		this.shapesManager.appendEffect(effect.type);
+
+		this.shapesManager.activeEffect(effect.type)
+
+	}
 	appenPieceAllowed(id) {
 		this.shapesOrderAllowed.forEach(element => {
 			if (element == id) {
 				return
 			}
 		});
+		this.forceNextPiece = id;
+		//this.shapesOrder.unshift(this.forceNextPiece)
+		this.updateQueue();
 		this.shapesOrderAllowed.push(id);
 	}
 	setInGamePositions() {
@@ -1421,9 +1185,13 @@ export default class GameScreen extends Screen {
 		this.filterLabel = "JUST";
 		//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
 		config.effectsLayer.fadeSplitter(1, 1, 0);
+
+		this.shapesManager.resetStats();
 		//this.updateQueue();
 		setTimeout(function () {
 			this.started = true;
+
+			this.forceNextPiece = -1
 			//this.showMenu();
 			this.downSpeedIncrease = 0;
 			this.currentEntityList = this.newEntity();
@@ -1436,7 +1204,9 @@ export default class GameScreen extends Screen {
 		this.gameMode = "STANDARD";
 	}
 	confirmPiece() {
-
+		if (!this.currentEntityList) {
+			return
+		}
 		this.currentEntityList.forEach(currentEntity => {
 			this.gameContainer.addChild(currentEntity);
 		});
@@ -1998,7 +1768,8 @@ export default class GameScreen extends Screen {
 			//console.log(this.gameMatrix);
 			this.scoring++;
 
-			console.log(this.shapesOrder)
+			
+			this.changeFilter();
 
 			if (this.scoring == 1) {
 				this.filterLabel = "JUST\nA"
@@ -2006,11 +1777,11 @@ export default class GameScreen extends Screen {
 				this.filterLabel = "JUST\nA\nSIMPLE"
 			} else if (this.scoring == 3) {
 				this.filterLabel = "BRICK\nGAME?"
-				this.changeFilter();
+				//this.changeFilter();
 			} else if (this.scoring == 4) {
-				this.changeFilter();
+				//this.changeFilter();
 			} else {
-				this.changeFilter();
+				//this.changeFilter();
 			}
 		}
 		for (var i = linesToRemove.length - 1; i >= 0; i--) {
@@ -2115,8 +1886,8 @@ export default class GameScreen extends Screen {
 		}
 
 		if (
-			Math.ceil(tempX) > 0 && Math.ceil(tempX) < this.gameMatrix.length &&
-			(roundedY + 1) > 0 && (roundedY + 1) < this.gameMatrix[0].length
+			Math.ceil(tempX) >= 0 && Math.ceil(tempX) < this.gameMatrix.length &&
+			(roundedY + 1) >= 0 && (roundedY + 1) < this.gameMatrix[0].length
 		) {
 
 			let matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1]
@@ -2282,12 +2053,7 @@ export default class GameScreen extends Screen {
 				particle.y = (config.height) + 200 * Math.random();
 			}
 		}
-		// this.particleUpdater += delta*20;
-		// if(this.particleUpdater > this.particles.length){
-		// 	this.particleUpdater = this.particles.length;
-		// }
 	}
-	//create new particles
 	randomParticles() {
 		for (var i = 0; i < this.particles.length; i++) {
 			var particle = this.particles[i];

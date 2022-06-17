@@ -94,26 +94,44 @@ export default class PopUp extends PIXI.Container {
         this.backShape.y = config.height / 2 - this.backShape.height / 2
     }
     onConfirmPiece2() {
-        this.game.appenPieceAllowed(this.piece2.id)
+        if(this.piece2.id.type){
+
+            this.game.appendEffect(this.piece2.id)
+        }else{
+
+            this.game.appenPieceAllowed(this.piece2.id)
+        }
         this.callback()
         this.hide();
     }
     onConfirmPiece1() {
-        this.game.appenPieceAllowed(this.piece1.id)
+
+        if(this.piece1.id.type){
+
+            this.game.appendEffect(this.piece1.id)
+        }else{
+
+            this.game.appenPieceAllowed(this.piece1.id)
+        }
+        
         this.callback()
         this.hide();
     }
     onConfirm() {
 
         window.GAMEPLAY_STOP()
+        this.callback()
+        this.hide();
+
+        return
         PokiSDK.rewardedBreak().then(
             (success) => {
                 if (success) {
                     window.GAMEPLAY_START()
-                    //this.callback()
+                    this.callback()
                     this.hide();
                 } else {
-                    //this.callback()
+                    this.callback()
                     this.hide();
                 }
             }
@@ -129,11 +147,36 @@ export default class PopUp extends PIXI.Container {
     hide() {
         this.visible = false;
     }
-    showPieceChoice(currentLevel, callback, callbackCancel) {
+    shouldShow(){
+        let hasPieces = true;
+        let hasEffects = true;
         if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
-            this.hide();
-            return;
+            hasPieces = false;
+
         }
+
+        let shapeEffects = this.game.shapesManager.allowedEffects;
+        let extras = this.game.shapesManager.extras;
+
+        if (shapeEffects.length >= extras.length) {
+            hasEffects = false;
+
+        }
+        if (!hasPieces && !hasEffects) {
+            return false;
+        }
+
+        return true;
+    }
+    showPieceChoice(currentLevel, callback, callbackCancel) {
+        let shapeEffects = this.game.shapesManager.allowedEffects;
+        let extras = this.game.shapesManager.extras;
+
+        if (!this.shouldShow()) {
+            return false;
+        }
+
+
         this.piece1.x = 30
         this.piece2.x = this.backShape.width - this.piece2.width - 30
 
@@ -150,7 +193,6 @@ export default class PopUp extends PIXI.Container {
         this.currentLevel = currentLevel
 
         let nexts = [];
-
         let limit = this.game.shapesOrderAllowed.length + 2;
         limit = Math.min(limit, this.game.shapes.length - 1)
         for (let index = 0; index < this.game.shapes.length; index++) {
@@ -168,8 +210,32 @@ export default class PopUp extends PIXI.Container {
                 nexts.push(index);
             }
         }
+        utils.shuffle(nexts)
+
+
+        let nextsFX = [];
+
+       
+
+        for (let index = 0; index < extras.length; index++) {
+            let find = false;
+
+            shapeEffects.forEach(order => {
+                if (extras[index].type == order) {
+                    find = true;
+                }
+            });
+            if (!find) {
+                nextsFX.push(extras[index]);
+            }
+        }
+
+
+        nexts = nexts.concat(nextsFX)
 
         utils.shuffle(nexts)
+
+
         console.log(nexts)
 
         this.piece1.removeChild(this.piece1.icon)
@@ -177,26 +243,43 @@ export default class PopUp extends PIXI.Container {
 
         let id1 = nexts[0]
         let id2 = nexts[1]
-        this.piece1.id = id1
-        this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape, utils.getRandomValue(config.palette.colors80));
-        utils.centerObject(this.piece1.icon, this.piece1)
-        this.piece1.addChild(this.piece1.icon);
-        this.piece1.icon.tint =
-            this.piece1.icon.y += config.pieceSize / 2
+        
+        if(id1.type){
+            this.getEffectIcon(this.piece1, id1)
+        }else{
 
-        if (!id2 || id2 >= this.game.shapes.length) {
-            this.piece2.visible = false;
-            this.piece1.x = this.backShape.width / 2 - this.piece1.width / 2
-
-            return
-
+            this.getPieceIcon(this.piece1, id1)
         }
-        this.piece2.id = id2;
-        this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape, utils.getRandomValue(config.palette.colors80));
-        utils.centerObject(this.piece2.icon, this.piece2)
-        this.piece2.icon.y += config.pieceSize / 2
-        this.piece2.addChild(this.piece2.icon);
+        
+        if (nexts.length <= 1) {
+            this.piece2.visible = false;
+            this.piece1.x = this.backShape.width / 2 - this.piece1.width / 2            
+            return true
+            
+        }
+        if(id2.type){
+            this.getEffectIcon(this.piece2, id2)
+        }else{
 
+            this.getPieceIcon(this.piece2, id2)
+        }
+        return true
+    }
+    getEffectIcon(piece, id){
+        piece.type = 'effect'
+        piece.id = id
+        piece.icon = new PIXI.Text(id.type, { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+        utils.centerObject(piece.icon, piece)
+        piece.addChild(piece.icon);
+        piece.icon.y += config.pieceSize / 2
+    }
+    getPieceIcon(piece, id){
+        piece.type = 'piece'
+        piece.id = id
+        piece.icon = this.drawShapeOnList(this.game.shapes[id].shape, utils.getRandomValue(config.palette.colors80));
+        utils.centerObject(piece.icon, piece)
+        piece.addChild(piece.icon);
+        piece.icon.y += config.pieceSize / 2
     }
     show(currentLevel, callback, callbackCancel) {
         this.visible = true;

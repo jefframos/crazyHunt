@@ -42933,11 +42933,11 @@
 	
 	var _GameScreen2 = _interopRequireDefault(_GameScreen);
 	
-	var _InitScreen = __webpack_require__(251);
+	var _InitScreen = __webpack_require__(252);
 	
 	var _InitScreen2 = _interopRequireDefault(_InitScreen);
 	
-	var _ScreenManager = __webpack_require__(252);
+	var _ScreenManager = __webpack_require__(253);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
@@ -74650,6 +74650,10 @@
 	
 	var _PopUp2 = _interopRequireDefault(_PopUp);
 	
+	var _Shapes = __webpack_require__(251);
+	
+	var _Shapes2 = _interopRequireDefault(_Shapes);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -74672,45 +74676,8 @@
 	
 			_this.currentEntityList = [];
 	
-			_this.shapes = [{
-				shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			},
-	
-			// {
-			// 	shape: [
-			// 		[0, 0, 0, 0, 0],
-			// 		[0, 0, 0, 0, 0],
-			// 		[0, 0, 1, 0, 0],
-			// 		[0, 0, 1, 0, 0],
-			// 	], type: "SHOOTER"
-			// },
-			{
-				shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD"
-			}, {
-				shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER"
-			}];
+			_this.shapesManager = new _Shapes2.default(_this);
+			_this.shapes = _this.shapesManager.shapes;
 	
 			_this.whatPiece = {
 				shape: [[0, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0]], type: "WHAT"
@@ -75025,138 +74992,30 @@
 				this.gameBorderContainer.scale.y = 1;
 	
 				_config2.default.effectsLayer.removeColorFilter();
-				switch (this.currentEffectID) {
-					case 0:
-						this.currentEffect = "INVERT";
-						break;
-					case 1:
-						this.currentEffect = "CROSS";
-						break;
-					case 2:
-						this.currentEffect = "ASCII";
-						break;
-					case 3:
-						this.gameContainer.scale.y = 1;
-						this.gameBorderContainer.scale.y = 1;
-						break;
-					case 4:
-						this.gameContainer.scale.x = 1;
-						this.gameBorderContainer.scale.x = 1;
-						this.gameQueueContainer.alpha = 1;
-					case 5:
-					case 6:
-						this.resetRotation();
-					case 7:
-						this.resetRotation();
-						this.randomizeCrazy = false;
-					default:
-						this.linearParticles();
-						break;
-				}
+	
+				this.shapesManager.resetCurrentEffect();
 			}
 		}, {
 			key: 'changeFilter',
 			value: function changeFilter() {
-				var nextID = this.currentEffectID;
-				if (this.currentEffectID >= 0) {
-					nextID = -1;
-				} else {
-					//nao shuffle
-					nextID = Math.floor(Math.random() * 7);
-				}
-	
-				var next = Math.random() * 7;
-				if (this.currentLevel <= 1) {} else if (this.currentLevel <= 2) {
-					next = 3;
-				} else if (this.currentLevel <= 4) {
-					next = 3;
-					//draw = 7
-				} else if (this.currentLevel <= 5) {
-					next = 4;
-					//draw = 8
-				} else if (this.currentLevel <= 7) {
-					next = 5;
-					//draw = 9
-				} else {
-					next = 7;
-					//draw = 10
-				}
-	
-				nextID = Math.floor(Math.random() * next);
 	
 				this.standardLabels = ['BRICKS', 'BRICKS', 'BRICKS', 'JUICY', 'FUN', 'WHAT', 'BRICK', 'WHY', 'DROP'];
 				this.filterLabel = this.standardLabels[Math.floor(Math.random() * this.standardLabels.length)];
 	
-				this.removeFilter();
 				this.starterEffect();
-				//nextID = 1
-	
 	
 				var maxColors = _config2.default.effectsLayer.allColorFilters.length;
 				var colorFilterID = Math.floor(maxColors * Math.random());
-				// config.effectsLayer.updatePixelate(config.pixelSize,config.pixelSize);
-				switch (nextID) {
-					case 0:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						this.addInfoLabel(["BRICKS", ["BRICKS"]]);
-						break;
-					case 1:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						this.addInfoLabel(["SIMPLE", ["WHY"]]);
-						break;
-					case 2:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						this.addInfoLabel(["BRICKS"]);
 	
-						break;
-					case 3:
-						this.gameContainer.scale.y = -1;
-						this.gameBorderContainer.scale.y = -1;
-						this.addInfoLabel(["INVERT Y"]);
+				_config2.default.effectsLayer.addColorFilter(colorFilterID);
 	
-						break;
-					case 4:
-						this.gameContainer.scale.x = -1;
-						this.gameBorderContainer.scale.x = -1;
-						this.addInfoLabel(["X TREVNI"]);
-						this.gameQueueContainer.alpha = 0;
-	
-						break;
-					case 5:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						this.addInfoLabel(["NOT COOL"]);
-						break;
-					case 6:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						this.addInfoLabel(["3RRORR"]);
-						this.rotateStuff();
-	
-						break;
-					case 7:
-						_config2.default.effectsLayer.addColorFilter(colorFilterID);
-						if (this.currentLevel > 4) {
-							this.randomizeCrazy = true;
-							this.randomParticles();
-							this.addInfoLabel(["SHUFFLE"]);
-						}
-	
-						this.rotateStuff();
-						break;
+				if (this.shapesManager.activeEvent == "") {
+					if (Math.random() < 0.75) {
+						this.shapesManager.apllyRandomEffect();
+					}
+				} else {
+					this.removeFilter();
 				}
-				this.currentEffectID = nextID;
-			}
-		}, {
-			key: 'resetRotation',
-			value: function resetRotation() {
-				_gsap2.default.killTweensOf(this.gameContainer);
-				_gsap2.default.to(this.gameContainer, 5, { rotation: 0 });
-			}
-		}, {
-			key: 'rotateStuff',
-			value: function rotateStuff() {
-				_gsap2.default.killTweensOf(this.gameContainer);
-				var side = Math.random() < 0.5 ? -1 : 1;
-				_gsap2.default.to(this.gameContainer, 5, { rotation: side * 0.075 });
 			}
 			//END FILTERS
 	
@@ -75211,19 +75070,12 @@
 				var ajdustedPositionX = minX + (maxX - minX) / 2;
 				ajdustedPositionX = Math.floor(ajdustedPositionX / _config2.default.pieceSize) * _config2.default.pieceSize;
 	
-				// for (var i = 0; i < this.currentShape.length; i++) {
-				// 	for (var j = 0; j < this.currentShape[i].length; j++) {
-				// 		if (this.currentShape[i][j]) {
-				// 			console.log(this.currentShape[i][j], i,j)
-				// 		}
-				// 	}
-				// }
-	
-				// console.log(this.currentEntityList)
 				if (this.randomizeCrazy) {
-					var id = Math.floor(Math.random() * this.shapes.length);
+					var id = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 	
-					this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY }, true);
+					this.removeCurrentPiece();
+	
+					this.currentEntityList = this.newEntity(this.shapes[id].shape, { x: ajdustedPositionX, y: ajdustedPositionY });
 					this.confirmPiece();
 				} else {
 	
@@ -75494,6 +75346,11 @@
 			key: 'getShape',
 			value: function getShape() {
 				this.stopAction("space");
+				if (this.forceNextPiece >= 0) {
+					var next = this.forceNextPiece;
+					this.forceNextPiece = -1;
+					return this.shapes[next];
+				}
 				this.shapeStep++;
 				if (this.shapeStep >= this.shapesOrder.length) {
 					this.shapeStep = 0;
@@ -75503,17 +75360,26 @@
 				return shape;
 			}
 		}, {
+			key: 'forcePiece',
+			value: function forcePiece() {
+				this.currentEntityList = this.newEntity();
+				this.confirmPiece();
+			}
+		}, {
 			key: 'newEntity',
 			value: function newEntity(shapeArray, starterPosition, randomRotate) {
 	
-				//this.currentEntityList = [];
-	
 				var tempList = [];
 				if (!shapeArray) {
-					this.round++;
-					var next = Math.floor(this.round / this.roundLevelAccum) + 1;
-					if (next != this.currentLevel) {
-						this.popUp.showPieceChoice(this.currentLevel, function () {});
+					if (this.scoring > 3) {
+						this.round++;
+					}
+					var next = Math.floor(this.round / Math.max(this.roundLevelAccum - this.scoring, Math.ceil(this.roundLevelAccum * 0.6))) + 1;
+	
+					if (next != this.currentLevel && this.popUp.shouldShow()) {
+						var shouldShow = this.popUp.showPieceChoice(this.currentLevel, this.forcePiece.bind(this), this.forcePiece.bind(this));
+						this.currentLevel = next;
+						return;
 					}
 					this.currentLevel = next;
 					this.updateCurrentLevel();
@@ -75522,7 +75388,7 @@
 					this.currentShape = this.currentShapeData.shape;
 					this.prompts.rotateLabel.text = "ROTATE";
 					if (this.currentShapeData.type == "SHOOTER") {
-						this.shooterErase = Math.random() < 0; //!this.shooterErase;
+						this.shooterErase = Math.random() >= 0; //!this.shooterErase;
 						if (this.shooterErase) {
 	
 							this.addInfoLabel(["ERASE"]);
@@ -75536,12 +75402,12 @@
 						this.normalizedDelta = 1;
 						this.downSpeedIncrease = 0;
 					} else {
-						if (!this.meteorRain) {// && this.scoring > 5) {
-							//if (Math.random() < 0.15) {
-							//this.startMeteorRain(false, 2);
-							//this.startMeteorRain(Math.random() < 0.1, 5 + Math.floor(Math.random() * 9));
-							//}
-						}
+						// if (!this.meteorRain) {// && this.scoring > 5) {
+						// 	if (Math.random() < 0.15) {
+						// 		this.startMeteorRain(true, 2 + Math.floor(Math.random() * 2));
+						// 		//this.startMeteorRain(Math.random() < 0.1, 5 + Math.floor(Math.random() * 9));
+						// 	}
+						// }
 					}
 					this.updateQueue();
 				} else {
@@ -75584,7 +75450,10 @@
 						}
 					}
 				}
-				this.updateVisibleParts();
+	
+				if (this.currentEntityList) {
+					this.updateVisibleParts();
+				}
 				// console.log(shouldMove);
 				if (shouldMove) {
 					for (var i = tempList.length - 1; i >= 0; i--) {
@@ -75600,7 +75469,7 @@
 	
 				//console.log(this.gameMatrix)
 	
-				//this.drawMatrix2();
+				this.drawMatrix2();
 	
 				return tempList;
 			}
@@ -75764,7 +75633,6 @@
 				if (!this.latestBrick) {
 					this.latestBrick = 1;
 				}
-				console.log("APPEND");
 	
 				var limit = this.shapes.length - 1;
 				if (this.currentLevel <= 1) {
@@ -75779,7 +75647,6 @@
 					limit = 9;
 				}
 	
-				console.log("WHY NOT BRICK BREAKER");
 				for (var i = 0; i < 10; i++) {
 					tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 	
@@ -75799,7 +75666,7 @@
 					// }
 	
 					if (i > 3) {
-						while (tempId == tempArray[i - 1] || tempId == tempArray[i - 2] || tempId == tempArray[i - 3]) {
+						while (tempId == this.shapesOrder[i - 1] || tempId == this.shapesOrder[i - 2] || tempId == this.shapesOrder[i - 3]) {
 							tempId = this.shapesOrderAllowed[Math.floor(Math.random() * this.shapesOrderAllowed.length)];
 						}
 					}
@@ -75946,7 +75813,7 @@
 				this.bombList = [];
 				this.shapeStep = 0;
 				this.round = 0;
-				this.roundLevelAccum = 5; //15;
+				this.roundLevelAccum = 15;
 				this.shapeQueue = [];
 				this.points = 0;
 				this.gameLevelSpeedMax = 1;
@@ -75986,6 +75853,13 @@
 				this.showMenu();
 			}
 		}, {
+			key: 'appendEffect',
+			value: function appendEffect(effect) {
+				this.shapesManager.appendEffect(effect.type);
+	
+				this.shapesManager.activeEffect(effect.type);
+			}
+		}, {
 			key: 'appenPieceAllowed',
 			value: function appenPieceAllowed(id) {
 				this.shapesOrderAllowed.forEach(function (element) {
@@ -75993,6 +75867,9 @@
 						return;
 					}
 				});
+				this.forceNextPiece = id;
+				//this.shapesOrder.unshift(this.forceNextPiece)
+				this.updateQueue();
 				this.shapesOrderAllowed.push(id);
 			}
 		}, {
@@ -76010,9 +75887,13 @@
 				this.filterLabel = "JUST";
 				//config.effectsLayer.fadeBloom(config.effectsLayer.bloom.blur?config.effectsLayer.bloom.blur:0, 0, 2, 0.5, true);
 				_config2.default.effectsLayer.fadeSplitter(1, 1, 0);
+	
+				this.shapesManager.resetStats();
 				//this.updateQueue();
 				setTimeout(function () {
 					this.started = true;
+	
+					this.forceNextPiece = -1;
 					//this.showMenu();
 					this.downSpeedIncrease = 0;
 					this.currentEntityList = this.newEntity();
@@ -76028,6 +75909,9 @@
 			value: function confirmPiece() {
 				var _this3 = this;
 	
+				if (!this.currentEntityList) {
+					return;
+				}
 				this.currentEntityList.forEach(function (currentEntity) {
 					_this3.gameContainer.addChild(currentEntity);
 				});
@@ -76626,7 +76510,7 @@
 					//console.log(this.gameMatrix);
 					this.scoring++;
 	
-					console.log(this.shapesOrder);
+					this.changeFilter();
 	
 					if (this.scoring == 1) {
 						this.filterLabel = "JUST\nA";
@@ -76634,12 +76518,12 @@
 						this.filterLabel = "JUST\nA\nSIMPLE";
 					} else if (this.scoring == 3) {
 						this.filterLabel = "BRICK\nGAME?";
-						this.changeFilter();
+						//this.changeFilter();
 					} else if (this.scoring == 4) {
-						this.changeFilter();
+						//this.changeFilter();
 					} else {
-						this.changeFilter();
-					}
+							//this.changeFilter();
+						}
 				}
 				for (var i = linesToRemove.length - 1; i >= 0; i--) {
 					this.removeLine(linesToRemove[i]);
@@ -76753,7 +76637,7 @@
 					return true;
 				}
 	
-				if (Math.ceil(tempX) > 0 && Math.ceil(tempX) < this.gameMatrix.length && roundedY + 1 > 0 && roundedY + 1 < this.gameMatrix[0].length) {
+				if (Math.ceil(tempX) >= 0 && Math.ceil(tempX) < this.gameMatrix.length && roundedY + 1 >= 0 && roundedY + 1 < this.gameMatrix[0].length) {
 	
 					var matrixContent = this.gameMatrix[Math.ceil(tempX)][roundedY + 1];
 					if (matrixContent && matrixContent != 0) {
@@ -76927,13 +76811,7 @@
 						particle.y = _config2.default.height + 200 * Math.random();
 					}
 				}
-				// this.particleUpdater += delta*20;
-				// if(this.particleUpdater > this.particles.length){
-				// 	this.particleUpdater = this.particles.length;
-				// }
 			}
-			//create new particles
-	
 		}, {
 			key: 'randomParticles',
 			value: function randomParticles() {
@@ -77462,12 +77340,10 @@
 	            }
 	        }
 	
-	        console.log(colCounters);
 	        var padding = { left: 0, right: 0, top: 0, bottom: 0 };
 	
 	        for (var _i3 = 0; _i3 < lineCounters.length; _i3++) {
 	            var _element = lineCounters[_i3];
-	            console.log(_element);
 	            if (_element == 0) {
 	                padding.left++;
 	            } else {
@@ -78458,14 +78334,28 @@
 	    _createClass(PopUp, [{
 	        key: 'onConfirmPiece2',
 	        value: function onConfirmPiece2() {
-	            this.game.appenPieceAllowed(this.piece2.id);
+	            if (this.piece2.id.type) {
+	
+	                this.game.appendEffect(this.piece2.id);
+	            } else {
+	
+	                this.game.appenPieceAllowed(this.piece2.id);
+	            }
 	            this.callback();
 	            this.hide();
 	        }
 	    }, {
 	        key: 'onConfirmPiece1',
 	        value: function onConfirmPiece1() {
-	            this.game.appenPieceAllowed(this.piece1.id);
+	
+	            if (this.piece1.id.type) {
+	
+	                this.game.appendEffect(this.piece1.id);
+	            } else {
+	
+	                this.game.appenPieceAllowed(this.piece1.id);
+	            }
+	
 	            this.callback();
 	            this.hide();
 	        }
@@ -78475,13 +78365,17 @@
 	            var _this2 = this;
 	
 	            window.GAMEPLAY_STOP();
+	            this.callback();
+	            this.hide();
+	
+	            return;
 	            PokiSDK.rewardedBreak().then(function (success) {
 	                if (success) {
 	                    window.GAMEPLAY_START();
-	                    //this.callback()
+	                    _this2.callback();
 	                    _this2.hide();
 	                } else {
-	                    //this.callback()
+	                    _this2.callback();
 	                    _this2.hide();
 	                }
 	            });
@@ -78498,14 +78392,38 @@
 	            this.visible = false;
 	        }
 	    }, {
+	        key: 'shouldShow',
+	        value: function shouldShow() {
+	            var hasPieces = true;
+	            var hasEffects = true;
+	            if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
+	                hasPieces = false;
+	            }
+	
+	            var shapeEffects = this.game.shapesManager.allowedEffects;
+	            var extras = this.game.shapesManager.extras;
+	
+	            if (shapeEffects.length >= extras.length) {
+	                hasEffects = false;
+	            }
+	            if (!hasPieces && !hasEffects) {
+	                return false;
+	            }
+	
+	            return true;
+	        }
+	    }, {
 	        key: 'showPieceChoice',
 	        value: function showPieceChoice(currentLevel, callback, callbackCancel) {
 	            var _this3 = this;
 	
-	            if (this.game.shapesOrderAllowed.length >= this.game.shapes.length) {
-	                this.hide();
-	                return;
+	            var shapeEffects = this.game.shapesManager.allowedEffects;
+	            var extras = this.game.shapesManager.extras;
+	
+	            if (!this.shouldShow()) {
+	                return false;
 	            }
+	
 	            this.piece1.x = 30;
 	            this.piece2.x = this.backShape.width - this.piece2.width - 30;
 	
@@ -78522,7 +78440,6 @@
 	            this.currentLevel = currentLevel;
 	
 	            var nexts = [];
-	
 	            var limit = this.game.shapesOrderAllowed.length + 2;
 	            limit = Math.min(limit, this.game.shapes.length - 1);
 	
@@ -78545,8 +78462,31 @@
 	            for (var index = 0; index < this.game.shapes.length; index++) {
 	                _loop(index);
 	            }
+	            _utils2.default.shuffle(nexts);
+	
+	            var nextsFX = [];
+	
+	            var _loop2 = function _loop2(index) {
+	                var find = false;
+	
+	                shapeEffects.forEach(function (order) {
+	                    if (extras[index].type == order) {
+	                        find = true;
+	                    }
+	                });
+	                if (!find) {
+	                    nextsFX.push(extras[index]);
+	                }
+	            };
+	
+	            for (var index = 0; index < extras.length; index++) {
+	                _loop2(index);
+	            }
+	
+	            nexts = nexts.concat(nextsFX);
 	
 	            _utils2.default.shuffle(nexts);
+	
 	            console.log(nexts);
 	
 	            this.piece1.removeChild(this.piece1.icon);
@@ -78554,23 +78494,46 @@
 	
 	            var id1 = nexts[0];
 	            var id2 = nexts[1];
-	            this.piece1.id = id1;
-	            this.piece1.icon = this.drawShapeOnList(this.game.shapes[id1].shape, _utils2.default.getRandomValue(_config2.default.palette.colors80));
-	            _utils2.default.centerObject(this.piece1.icon, this.piece1);
-	            this.piece1.addChild(this.piece1.icon);
-	            this.piece1.icon.tint = this.piece1.icon.y += _config2.default.pieceSize / 2;
 	
-	            if (!id2 || id2 >= this.game.shapes.length) {
+	            if (id1.type) {
+	                this.getEffectIcon(this.piece1, id1);
+	            } else {
+	
+	                this.getPieceIcon(this.piece1, id1);
+	            }
+	
+	            if (nexts.length <= 1) {
 	                this.piece2.visible = false;
 	                this.piece1.x = this.backShape.width / 2 - this.piece1.width / 2;
-	
-	                return;
+	                return true;
 	            }
-	            this.piece2.id = id2;
-	            this.piece2.icon = this.drawShapeOnList(this.game.shapes[id2].shape, _utils2.default.getRandomValue(_config2.default.palette.colors80));
-	            _utils2.default.centerObject(this.piece2.icon, this.piece2);
-	            this.piece2.icon.y += _config2.default.pieceSize / 2;
-	            this.piece2.addChild(this.piece2.icon);
+	            if (id2.type) {
+	                this.getEffectIcon(this.piece2, id2);
+	            } else {
+	
+	                this.getPieceIcon(this.piece2, id2);
+	            }
+	            return true;
+	        }
+	    }, {
+	        key: 'getEffectIcon',
+	        value: function getEffectIcon(piece, id) {
+	            piece.type = 'effect';
+	            piece.id = id;
+	            piece.icon = new PIXI.Text(id.type, { font: '24px super_smash_tvregular', fill: 0xFFFFFF, align: 'center' });
+	            _utils2.default.centerObject(piece.icon, piece);
+	            piece.addChild(piece.icon);
+	            piece.icon.y += _config2.default.pieceSize / 2;
+	        }
+	    }, {
+	        key: 'getPieceIcon',
+	        value: function getPieceIcon(piece, id) {
+	            piece.type = 'piece';
+	            piece.id = id;
+	            piece.icon = this.drawShapeOnList(this.game.shapes[id].shape, _utils2.default.getRandomValue(_config2.default.palette.colors80));
+	            _utils2.default.centerObject(piece.icon, piece);
+	            piece.addChild(piece.icon);
+	            piece.icon.y += _config2.default.pieceSize / 2;
 	        }
 	    }, {
 	        key: 'show',
@@ -78658,6 +78621,258 @@
 
 /***/ }),
 /* 251 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Shapes = function () {
+	    function Shapes(game) {
+	        _classCallCheck(this, Shapes);
+	
+	        this.game = game;
+	        this.shapes = [{
+	            shape: [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0.5
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0.5
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 1, 0, 0]], type: "SHOOTER",
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]], type: "STANDARD",
+	            bonus: {
+	                mult: 0.5
+	            }
+	        }, {
+	            shape: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]], type: "BRICK_BREAKER",
+	            bonus: {
+	                mult: 0
+	            }
+	        }];
+	
+	        this.extras = [{
+	            type: 'meteore',
+	            bonus: {
+	                mult: 0.2
+	            }
+	        }, {
+	            type: 'invertX',
+	            bonus: {
+	                mult: 0.5
+	            }
+	        }, {
+	            type: 'invertY',
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            type: 'rotateBorder',
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            type: 'rotateGame',
+	            bonus: {
+	                mult: 0
+	            }
+	        }, {
+	            type: 'shuffle',
+	            bonus: {
+	                mult: 0.2
+	            }
+	        }];
+	
+	        this.activeEvent = "";
+	
+	        this.allowedEffects = [];
+	    }
+	
+	    _createClass(Shapes, [{
+	        key: "apllyRandomEffect",
+	        value: function apllyRandomEffect() {
+	            if (this.allowedEffects.length) {
+	                this.resetCurrentEffect();
+	                this.activeEffect(this.allowedEffects[Math.floor(Math.random() * this.allowedEffects.length)]);
+	            }
+	        }
+	    }, {
+	        key: "appendEffect",
+	        value: function appendEffect(effect) {
+	            this.allowedEffects.push(effect);
+	        }
+	    }, {
+	        key: "resetStats",
+	        value: function resetStats() {
+	            this.resetCurrentEffect();
+	            this.allowedEffects = [];
+	        }
+	    }, {
+	        key: "activeEffect",
+	        value: function activeEffect(id) {
+	            this.resetCurrentEffect();
+	
+	            if (this[id]) {
+	                this[id]();
+	                this.activeEvent = id;
+	            }
+	        }
+	    }, {
+	        key: "resetCurrentEffect",
+	        value: function resetCurrentEffect() {
+	            if (this['reset' + this.activeEvent]) {
+	                this['reset' + this.activeEvent]();
+	                this.activeEvent = "";
+	            }
+	        }
+	    }, {
+	        key: "shuffle",
+	        value: function shuffle() {
+	            this.game.randomizeCrazy = true;
+	            this.game.randomParticles();
+	            this.game.addInfoLabel(["SHUFFLE"]);
+	        }
+	    }, {
+	        key: "resetshuffle",
+	        value: function resetshuffle() {
+	            this.game.randomizeCrazy = false;
+	            this.game.linearParticles();
+	        }
+	    }, {
+	        key: "meteore",
+	        value: function meteore() {
+	            this.game.startMeteorRain(true, 2 + Math.floor(Math.random() * 3));
+	        }
+	    }, {
+	        key: "resetmeteore",
+	        value: function resetmeteore() {}
+	    }, {
+	        key: "invertX",
+	        value: function invertX() {
+	            this.game.gameContainer.scale.x = -1;
+	            this.game.gameBorderContainer.scale.x = -1;
+	            this.game.addInfoLabel(["X TREVNI"]);
+	            this.game.gameQueueContainer.alpha = 0;
+	        }
+	    }, {
+	        key: "resetinvertX",
+	        value: function resetinvertX() {
+	            this.game.gameContainer.scale.x = 1;
+	            this.game.gameBorderContainer.scale.x = 1;
+	            this.game.gameQueueContainer.alpha = 1;
+	        }
+	    }, {
+	        key: "invertY",
+	        value: function invertY() {
+	            this.game.gameContainer.scale.y = -1;
+	            this.game.gameBorderContainer.scale.y = -1;
+	            this.game.addInfoLabel(["INVERT Y"]);
+	        }
+	    }, {
+	        key: "resetinvertY",
+	        value: function resetinvertY() {
+	            this.game.gameContainer.scale.y = 1;
+	            this.game.gameBorderContainer.scale.y = 1;
+	        }
+	    }, {
+	        key: "rotateBorder",
+	        value: function rotateBorder() {
+	            TweenLite.killTweensOf(this.game.gameBorderContainer);
+	            var side = Math.random() < 0.5 ? -1 : 1;
+	            TweenLite.to(this.game.gameBorderContainer, 5, { rotation: side * 0.075 });
+	        }
+	    }, {
+	        key: "resetrotateBorder",
+	        value: function resetrotateBorder() {
+	            TweenLite.killTweensOf(this.game.gameBorderContainer);
+	            TweenLite.to(this.game.gameBorderContainer, 5, { rotation: 0 });
+	        }
+	    }, {
+	        key: "rotateGame",
+	        value: function rotateGame() {
+	            TweenLite.killTweensOf(this.game.gameContainer);
+	            var side = Math.random() < 0.5 ? -1 : 1;
+	            TweenLite.to(this.game.gameContainer, 5, { rotation: side * 0.075 });
+	        }
+	    }, {
+	        key: "resetrotateGame",
+	        value: function resetrotateGame() {
+	            TweenLite.killTweensOf(this.game.gameContainer);
+	            TweenLite.to(this.game.gameContainer, 5, { rotation: 0 });
+	        }
+	    }]);
+	
+	    return Shapes;
+	}();
+	
+	exports.default = Shapes;
+
+/***/ }),
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78907,7 +79122,7 @@
 	exports.default = InitScreen;
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';

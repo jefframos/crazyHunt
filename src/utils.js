@@ -46,12 +46,10 @@ export default {
         }
     }
 
-console.log(colCounters)
     let padding = { left: 0, right: 0, top: 0, bottom: 0 }
 
     for (let i = 0; i < lineCounters.length; i++) {
         const element = lineCounters[i];
-        console.log(element)
         if (element == 0) {
             padding.left++;
         } else {
