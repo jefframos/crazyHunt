@@ -1,6 +1,7 @@
 export default class Shapes {
     constructor(game) {
         this.game = game;
+        this.starters = [0, 1, 2, 3,4,5];
         this.shapes = [
             {
                 shape: [
@@ -82,8 +83,9 @@ export default class Shapes {
                     [0, 0, 0, 0, 0],
                 ], type: "STANDARD",
                 bonus: {
-                    mult: 0
-                }
+                    mult: 0.5
+                },
+                
             },
             {
                 shape: [
@@ -155,7 +157,8 @@ export default class Shapes {
                 ], type: "SHOOTER",
                 bonus: {
                     mult: 0
-                }
+                },
+                desc:'shooter'
             },
             {
                 shape: [
@@ -178,46 +181,51 @@ export default class Shapes {
                 ], type: "BRICK_BREAKER",
                 bonus: {
                     mult: 0
-                }
+                },
+                desc:'brick breaker'
             }
         ]
 
         this.extras = [
             {
-                type: 'meteore',
+                type: 'meteor',
+                desc: 'meteor rain',
                 bonus: {
                     mult: 0.2
-                }
+                },
+                img:'meteor.png'
             },
             {
-                type: 'invertX',
+                type: 'flip',
+                desc: 'flip\ncontrols',
                 bonus: {
                     mult: 0.5
-                }
+                },
+                img:'invertX.png'
             },
             {
-                type: 'invertY',
+                type: 'upsidedown',
+                desc: 'upside down',
                 bonus: {
-                    mult: 0
-                }
-            },
-            {
-                type: 'rotateBorder',
-                bonus: {
-                    mult: 0
-                }
+                    mult: 0.1
+                },
+               img:'inverty.png'
             },
             {
                 type: 'rotateGame',
+                desc: 'rotate\ngame',
                 bonus: {
-                    mult: 0
-                }
+                    mult: 0.2
+                },
+               img:'rot.png'
             },
             {
                 type: 'shuffle',
+                desc: 'shuffle\npieces',
                 bonus: {
                     mult: 0.2
-                }
+                },
+               img:'random.png'
             }
         ]
 
@@ -261,30 +269,30 @@ export default class Shapes {
         this.game.randomizeCrazy = false;
         this.game.linearParticles();
     }
-    meteore() {
+    meteor() {
         this.game.startMeteorRain(true, 2 + Math.floor(Math.random() * 3));
     }
-    resetmeteore() {
+    resetmeteor() {
 
     }
-    invertX() {
+    flip() {
         this.game.gameContainer.scale.x = -1;
         this.game.gameBorderContainer.scale.x = -1;
         this.game.addInfoLabel(["X TREVNI"]);
         this.game.gameQueueContainer.alpha = 0;
 
     }
-    resetinvertX() {
+    resetflip() {
         this.game.gameContainer.scale.x = 1;
         this.game.gameBorderContainer.scale.x = 1;
         this.game.gameQueueContainer.alpha = 1;
     }
-    invertY() {
+    upsidedown() {
         this.game.gameContainer.scale.y = -1;
         this.game.gameBorderContainer.scale.y = -1;
         this.game.addInfoLabel(["INVERT Y"])
     }
-    resetinvertY() {
+    resetupsidedown() {
         this.game.gameContainer.scale.y = 1;
         this.game.gameBorderContainer.scale.y = 1;
     }

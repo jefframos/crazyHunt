@@ -31,9 +31,15 @@ export default class CookieManager {
 		}
 	}
 	wipeData() {
-		this.resetCookie();
-		window.localStorage.clear();
-		window.location.reload();
+
+
+		try {
+			this.resetCookie();
+			window.localStorage.clear();
+			window.location.reload();
+		} catch (error) {
+
+		}
 	}
 	updateSettings(data) {
 		for (const key in data) {
@@ -52,14 +58,28 @@ export default class CookieManager {
 		}
 	}
 	getCookie(name) {
-		return JSON.parse(window.localStorage.getItem(name))//(result === null) ? null : result[1];
+		try {
+			return JSON.parse(window.localStorage.getItem(name))//(result === null) ? null : result[1];
+		} catch (error) {
+
+		}
+
 	}
 	storeObject(name, value) {
-		window.localStorage.setItem(name, JSON.stringify(value))
+		try {
+			window.localStorage.setItem(name, JSON.stringify(value))
+		} catch (error) {
+
+		}
 	}
 	resetCookie() {
-		for (var i in window.localStorage) {
-			window.localStorage.removeItem(i);
+		try {
+
+			for (var i in window.localStorage) {
+				window.localStorage.removeItem(i);
+			}
+		} catch (error) {
+
 		}
 	}
 }
